@@ -1,0 +1,39 @@
+context Endpoint {
+    
+    guard: self.partner.isDefined()
+
+    // if partners are specified on both sides of a relation then endpoints must reference to each other
+    constraint InvalidPartnerReferences {
+    	check: not self.partner.partner.isDefined() or self.partner.partner = self
+    	message: "Invalid opposite partner reference for " + self.displayName()
+    }
+    
+    // target and partner types must be aligned
+    constraint InvalidPartnerType {
+        check: self.partner.getEntityType() = self.target and self.partner.target = self.getEntityType()
+        message: "Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
+    }
+    
+    // 1-1 single required relationship is not supported
+	critique OneToOneRelationNotSupported {
+    	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
+		check: not(self.required and not self.collection and self.partner.required and not self.partner.collection)
+		message: "1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
+	}
+}
+
+@cached
+operation Endpoint displayName() {
+	return self.getEntityType().name + "." + self.name;
+}
+
+@cached
+operation Endpoint getEntityType() {
+    return EntityType.all().select(et | et.endpoints.select(e | e = self).size() = 1).first();
+}
+
+@cached
+operation Endpoint getOpposites() {
+	var opposites = self.target.endpoints.select(e | e.target = self.getEntityType());
+	return opposites;
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:Model name="TEST PSM model" xmi:version="2.0"
+          xmlns:xmi="http://www.omg.org/XMI"
+          xmlns:ns="http://blackbelt.hu/judo/meta/psm/namespace"
+          xmlns:data="http://blackbelt.hu/judo/meta/psm/data">
+    <ns:packages name="hu.blackbelt.psm.model.test">
+        <data:entityTypes name="A" xmi:id="a8f38e06-7c21-4de4-967f-adb0a4b5a3b4">
+            <data:endpoints name="b" collection="false" required="true" xmi:id="fb6beb9f-3bc7-42af-825f-ac289b70025f"
+                            target="15e662ef-e3d6-4903-b1af-aa883fe0b707"
+                            partner="4f45f21a-dc10-43d9-9598-e8d8db3ffa5b"/>
+            <data:endpoints name="c" collection="false" required="true" xmi:id="fb6beb9f-3bc7-42af-825f-ac289b70025a"
+                            target="15e662ef-e3d6-4903-b1af-aa883fe0b707"/>
+        </data:entityTypes>
+        <data:entityTypes name="B" xmi:id="15e662ef-e3d6-4903-b1af-aa883fe0b707">
+            <data:endpoints name="a" collection="false" required="true" xmi:id="4f45f21a-dc10-43d9-9598-e8d8db3ffa5b"
+                            target="a8f38e06-7c21-4de4-967f-adb0a4b5a3b4"
+                            partner="fb6beb9f-3bc7-42af-825f-ac289b70025f"/>
+        </data:entityTypes>
+        <data:entityTypes name="C" xmi:id="f5de6ec2-9823-490d-b08b-2892e2588d27">
+            <data:endpoints name="a" collection="false" required="true" xmi:id="0a48f8ef-d206-42be-a268-3aeee97960df"
+                            target="a8f38e06-7c21-4de4-967f-adb0a4b5a3b4"/>
+        </data:entityTypes>
+    </ns:packages>
+</ns:Model>

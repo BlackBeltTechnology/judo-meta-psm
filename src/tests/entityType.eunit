@@ -1,0 +1,5 @@
+@test
+operation valid() {
+  var errors = new Sequence();
+  assertEquals(0, errors.size);
+}
