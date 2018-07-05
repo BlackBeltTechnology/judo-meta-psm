@@ -1,4 +1,18 @@
 context Endpoint {
+	// endpoint attribute must be a reference
+    constraint EndpointAttributeIsNotAReference {
+    	check: self.attribute.datatype.isTypeOf(Reference)
+    	message: "Invalid attribute type of endpoint " + self.displayName()
+    }
+    
+    // attribute referenced by endpoint must belong to entity type or a supertype of it
+    constraint EndpointReferencesToForeignAttribute {
+    	check: self.getEntityType().getAllTypes().includes(self.attribute.getEntityType())
+    	message: "Foreign attribute referenced by endpoint " + self.displayName() 
+    }
+}
+
+context Endpoint {
     
     guard: self.partner.isDefined()
 
@@ -10,14 +24,14 @@ context Endpoint {
     
     // target and partner types must be aligned
     constraint InvalidPartnerType {
-        check: self.partner.getEntityType() = self.target and self.partner.target = self.getEntityType()
+        check: self.partner.getEntityType() = self.attribute.datatype.target and self.partner.attribute.datatype.target = self.getEntityType()
         message: "Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
     }
     
     // 1-1 single required relationship is not supported
 	critique OneToOneRelationNotSupported {
     	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
-		check: not(self.required and not self.collection and self.partner.required and not self.partner.collection)
+		check: not(self.attribute.required and not self.attribute.datatype.collection and self.partner.attribute.required and not self.partner.attribute.datatype.collection)
 		message: "1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
 	}
 }
@@ -28,12 +42,33 @@ operation Endpoint displayName() {
 }
 
 @cached
+operation Attribute displayName() {
+	return self.getEntityType().name + "." + self.name;
+}
+
+@cached
+operation Attribute getEntityType() {
+	return EntityType.all().select(et | et.attributes.select(a | a = self).size() = 1).first();
+}
+
+@cached
 operation Endpoint getEntityType() {
     return EntityType.all().select(et | et.endpoints.select(e | e = self).size() = 1).first();
 }
 
 @cached
+operation EntityType getAllTypes() {
+	var types = Set{self};
+	if (self.superTypes.isDefined()) {
+		for (st : EntityType in self.superTypes) {
+			types.add(st);
+		}
+	}
+	return types;
+}
+
+@cached
 operation Endpoint getOpposites() {
-	var opposites = self.target.endpoints.select(e | e.target = self.getEntityType());
+	var opposites = self.attribute.datatype.target.endpoints.select(e | e.attribute.datatype.target = self.getEntityType());
 	return opposites;
 }

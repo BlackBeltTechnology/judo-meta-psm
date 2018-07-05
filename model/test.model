@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ns:Model name="TEST PSM model" xmi:version="2.0"
           xmlns:xmi="http://www.omg.org/XMI"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns:ns="http://blackbelt.hu/judo/meta/psm/namespace"
           xmlns:data="http://blackbelt.hu/judo/meta/psm/data">
     <ns:packages name="hu.blackbelt.psm.model.test">
-        <data:entityTypes name="A" xmi:id="a8f38e06-7c21-4de4-967f-adb0a4b5a3b4">
-            <data:endpoints name="b" collection="false" required="true" xmi:id="fb6beb9f-3bc7-42af-825f-ac289b70025f"
-                            target="15e662ef-e3d6-4903-b1af-aa883fe0b707"
-                            partner="4f45f21a-dc10-43d9-9598-e8d8db3ffa5b"/>
-            <data:endpoints name="c" collection="false" required="true" xmi:id="fb6beb9f-3bc7-42af-825f-ac289b70025a"
-                            target="15e662ef-e3d6-4903-b1af-aa883fe0b707"/>
+        <data:entityTypes name="A0" xmi:id="A0-EntityType">
+            <data:attributes name="b" required="true" xmi:id="A-b-Attribute" datatype="SingleReference-B"/>
         </data:entityTypes>
-        <data:entityTypes name="B" xmi:id="15e662ef-e3d6-4903-b1af-aa883fe0b707">
-            <data:endpoints name="a" collection="false" required="true" xmi:id="4f45f21a-dc10-43d9-9598-e8d8db3ffa5b"
-                            target="a8f38e06-7c21-4de4-967f-adb0a4b5a3b4"
-                            partner="fb6beb9f-3bc7-42af-825f-ac289b70025f"/>
+        <data:entityTypes name="A1" xmi:id="A1-EntityType">
+            <data:attributes name="c" required="true" xmi:id="A-c-Attribute" datatype="SingleReference-B"/>
         </data:entityTypes>
-        <data:entityTypes name="C" xmi:id="f5de6ec2-9823-490d-b08b-2892e2588d27">
-            <data:endpoints name="a" collection="false" required="true" xmi:id="0a48f8ef-d206-42be-a268-3aeee97960df"
-                            target="a8f38e06-7c21-4de4-967f-adb0a4b5a3b4"/>
+        <data:entityTypes name="A" xmi:id="A-EntityType" superTypes="A0-EntityType A1-EntityType">
+            <data:endpoints name="b" xmi:id="A-b-Endpoint" attribute="A-b-Attribute" partner="B-a-Endpoint"/>
+            <data:endpoints name="c" xmi:id="A-c-Endpoint" attribute="A-c-Attribute"/>
         </data:entityTypes>
+        <data:entityTypes name="B" xmi:id="B-EntityType">
+            <data:attributes name="a" required="true" xmi:id="B-a-Attribute" datatype="SingleReference-A"/>
+            <data:endpoints name="a" xmi:id="B-a-Endpoint" attribute="B-a-Attribute" partner="A-b-Endpoint"/>
+        </data:entityTypes>
+        <data:entityTypes name="C" xmi:id="C-EntityType">
+            <data:attributes name="a" required="true" xmi:id="C-a-Attribute" datatype="SingleReference-A"/>
+            <data:endpoints name="a" xmi:id="C-a-Endpoint" attribute="C-a-Attribute"/>
+        </data:entityTypes>
+        <data:datatypes xsi:type="data:Reference" name="SingleReference-A" collection="false" target="A-EntityType" xmi:id="SingleReference-A"/>
+        <data:datatypes xsi:type="data:Reference" name="SingleReference-B" collection="false" target="B-EntityType" xmi:id="SingleReference-B"/>
     </ns:packages>
 </ns:Model>
