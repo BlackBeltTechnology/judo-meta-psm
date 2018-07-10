@@ -1,3 +1,11 @@
+context Structure {
+
+	constraint RecursiveStructureIsNotSupported {
+		check: not self.hasCircularReference()
+		message: "Element " + self.name + " is a recursive struct that is not supported"
+	}
+}
+
 context Endpoint {
 	// endpoint attribute must be a reference
     constraint EndpointAttributeIsNotAReference {
@@ -55,4 +63,34 @@ operation EntityType getAllTypes() {
 operation Endpoint getOpposites() {
 	var opposites = self.datatype.target.endpoints.select(e | e.datatype.target = self.getEntityType());
 	return opposites;
+}
+
+@cached
+operation Structure hasCircularReference() {
+	var subTypes = Set{};
+	for (f in self.fields) {
+		if (f.datatype.isTypeOf(Structure)) {
+			subTypes.add(f.datatype);
+		}
+	}
+	return self.hasCircularReference(subTypes);
+}
+
+operation Structure hasCircularReference(visited : Set) {
+    if (visited.includes(self)) {
+        return true;
+    } else if (visited.isEmpty()) {
+        return false;
+    }
+
+    var subTypes = Set{};
+    for (s in visited) {
+		for (f in s.fields) {
+			if (f.datatype.isTypeOf(Structure)) {
+				subTypes.add(f.datatype);
+			}
+		}
+    }
+
+    return self.hasCircularReference(subTypes);
 }
