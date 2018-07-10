@@ -6,7 +6,7 @@
     <groupId>hu.blackbelt.judo.meta</groupId>
     <artifactId>judo-meta-psm</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>Judo PSM metamodel</name>
     <description>Judo Platform Specific Metamodel</description>
@@ -61,24 +61,6 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>create-validations-artifact</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/validations.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -331,12 +313,12 @@
         <epsilon.maven.plugin.version>1.0.0-5</epsilon.maven.plugin.version>
         <generator.runner.version>1.0.0-187</generator.runner.version>
 
-        <src.dir>src</src.dir>
+        <src.dir>src/main</src.dir>
     </properties>
 
     <profiles>
         <profile>
-            <id>test-meta-psm</id>
+            <id>test-judo-psm</id>
             <build>
                 <plugins>
                     <plugin>
