@@ -1,20 +1,20 @@
-context Structure {
+context JUDOPSM!Structure {
 
 	constraint RecursiveStructureIsNotSupported {
 		check: not self.hasCircularReference()
-		message: "Element " + self.name + " is a recursive struct that is not supported"
+		message: "Element " + self.name + " is a recursive structure that is not supported"
 	}
 }
 
-context Endpoint {
+context JUDOPSM!Endpoint {
 	// endpoint attribute must be a reference
     constraint EndpointAttributeIsNotAReference {
-    	check: self.datatype.isTypeOf(Reference)
+        check: self.datatype.isTypeOf(JUDOPSM!Reference)
     	message: "Invalid attribute type of endpoint " + self.displayName()
     }
 }
 
-context Endpoint {
+context JUDOPSM!Endpoint {
     
     guard: self.partner.isDefined()
 
@@ -38,21 +38,62 @@ context Endpoint {
 	}
 }
 
+context JUDOPSM!Model {
+	// model name must be unique
+	constraint NameIsNotUnique {
+		check: not JUDOPSM!Model.all().select(m | m <> self).collect(m | m.name).includes(self.name)
+		message: "Model name is not unique: " + self.name
+	}
+}
+
+context JUDOPSM!Namespace {
+	// data type, entity type and pakcage names must be unique in a package
+	constraint NameIsNotUnique {
+		check {
+			var notUniqueNames = Set{};
+			var names = Set{};
+			for (p in self.packages) {
+				if (names.includes(p.name)) {
+					notUniqueNames.add(p.name);
+					p.name.println("Name already exists (package): ");
+				}
+				names.add(p.name);
+			}
+			for (dt in self.datatypes) {
+				if (names.includes(dt.name)) {
+					notUniqueNames.add(dt.name);
+					dt.name.println("Name already exists (data type): ");
+				}
+				names.add(dt.name);
+			}
+			for (et in self.entityTypes) {
+				if (names.includes(et.name)) {
+					notUniqueNames.add(et.name);
+					et.name.println("Name already exists (entity type): ");
+				}
+				names.add(et.name);
+			}
+			return notUniqueNames.isEmpty();
+		}
+		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name
+	}
+}
+
 @cached
-operation Attribute displayName() {
+operation JUDOPSM!Attribute displayName() {
 	return self.getEntityType().name + "." + self.name;
 }
 
 @cached
-operation Attribute getEntityType() {
-	return EntityType.all().select(et | et.attributes.select(a | a = self).size() = 1).first();
+operation JUDOPSM!Attribute getEntityType() {
+	return JUDOPSM!EntityType.all().select(et | et.attributes.select(a | a = self).size() = 1).first();
 }
 
 @cached
-operation EntityType getAllTypes() {
+operation JUDOPSM!EntityType getAllTypes() {
 	var types = Set{self};
 	if (self.superTypes.isDefined()) {
-		for (st : EntityType in self.superTypes) {
+		for (st in self.superTypes) {
 			types.add(st);
 		}
 	}
@@ -60,23 +101,23 @@ operation EntityType getAllTypes() {
 }
 
 @cached
-operation Endpoint getOpposites() {
+operation JUDOPSM!Endpoint getOpposites() {
 	var opposites = self.datatype.target.endpoints.select(e | e.datatype.target = self.getEntityType());
 	return opposites;
 }
 
 @cached
-operation Structure hasCircularReference() {
+operation JUDOPSM!Structure hasCircularReference() {
 	var subTypes = Set{};
 	for (f in self.fields) {
-		if (f.datatype.isTypeOf(Structure)) {
+		if (f.datatype.isTypeOf(JUDOPSM!Structure)) {
 			subTypes.add(f.datatype);
 		}
 	}
 	return self.hasCircularReference(subTypes);
 }
 
-operation Structure hasCircularReference(visited : Set) {
+operation JUDOPSM!Structure hasCircularReference(visited : Set) {
     if (visited.includes(self)) {
         return true;
     } else if (visited.isEmpty()) {
@@ -86,7 +127,7 @@ operation Structure hasCircularReference(visited : Set) {
     var subTypes = Set{};
     for (s in visited) {
 		for (f in s.fields) {
-			if (f.datatype.isTypeOf(Structure)) {
+			if (f.datatype.isTypeOf(JUDOPSM!Structure)) {
 				subTypes.add(f.datatype);
 			}
 		}
