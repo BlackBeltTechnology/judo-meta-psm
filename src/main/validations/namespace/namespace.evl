@@ -5,7 +5,7 @@ context JUDOPSM!Namespace {
 		check {
 			var notUniqueNames = Set{};
 			var names = Set{};
-			for (p in self.packages.includingAll(self.dataTypes).includingAll(self.entityTypes)) {
+			for (p in self.packages.includingAll(self.dataTypes).includingAll(self.entityTypes).includingAll(self.facades)) {
 				if (names.includes(p.name)) {
 					notUniqueNames.add(p.name);
 				}

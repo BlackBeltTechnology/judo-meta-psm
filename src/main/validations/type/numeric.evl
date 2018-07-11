@@ -1,0 +1,20 @@
+context JUDOPSM!Numeric {
+
+    // scale >= precision
+	constraint PrecisionIsGreaterThanScale {
+		check: self.scale >= self.precision
+		message: "Precision must be at most as scale: " + self.name
+	}
+
+	// scale > 0
+	constraint InvalidScale {
+		check: self.scale > 0
+		message: "Scale must be greater than 0: " + self.name
+	}
+
+	// precision >= 0
+	constraint InvalidPrecision {
+		check: self.precision >= 0
+		message: "Precision must be at least 0: " + self.name
+	}
+}
