@@ -1,0 +1,29 @@
+@cached
+operation JUDOPSM!Structure hasCircularReference() {
+	var subTypes = Set{};
+	for (f in self.fields) {
+		if (f.datatype.isTypeOf(JUDOPSM!Structure)) {
+			subTypes.add(f.datatype);
+		}
+	}
+	return self.hasCircularReference(subTypes);
+}
+
+operation JUDOPSM!Structure hasCircularReference(visited : Set) {
+    if (visited.includes(self)) {
+        return true;
+    } else if (visited.isEmpty()) {
+        return false;
+    }
+
+    var subTypes = Set{};
+    for (s in visited) {
+		for (f in s.fields) {
+			if (f.datatype.isTypeOf(JUDOPSM!Structure)) {
+				subTypes.add(f.datatype);
+			}
+		}
+    }
+
+    return self.hasCircularReference(subTypes);
+}

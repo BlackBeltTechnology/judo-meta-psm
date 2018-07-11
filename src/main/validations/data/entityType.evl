@@ -1,0 +1,10 @@
+import "../../operations/data/_importData.eol";
+
+context JUDOPSM!EntityType {
+
+    // recursive inheritance is not supported 
+	constraint RecursiveInheritance {
+		check: not self.hasCircularReference()
+		message: "Entity type " + self.name + " is recursive"
+	}
+}

@@ -1,0 +1,36 @@
+@cached
+operation JUDOPSM!EntityType getAllTypes() {
+	var types = Set{self};
+	if (self.superTypes.isDefined()) {
+		for (st in self.superTypes) {
+			types.add(st);
+		}
+	}
+	return types;
+}
+
+@cached
+operation JUDOPSM!EntityType hasCircularReference() {
+	var superTypes = Set{};
+	for (s in self.superTypes) {
+		superTypes.add(s);
+	}
+	return self.hasCircularReference(superTypes);
+}
+
+operation JUDOPSM!EntityType hasCircularReference(visited : Set) {
+    if (visited.includes(self)) {
+        return true;
+    } else if (visited.isEmpty()) {
+        return false;
+    }
+
+    var superTypes = Set{};
+    for (s in visited) {
+		for (st in s.superTypes) {
+			superTypes.add(st);
+		}
+    }
+
+    return self.hasCircularReference(superTypes);
+}

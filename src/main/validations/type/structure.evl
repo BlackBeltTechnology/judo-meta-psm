@@ -1,0 +1,10 @@
+import "../../operations/type/_importType.eol";
+
+context JUDOPSM!Structure {
+
+    // recursive structures are not supported, entity types should be used instead
+	constraint RecursiveStructureIsNotSupported {
+		check: not self.hasCircularReference()
+		message: "Element " + self.name + " is a recursive structure that is not supported"
+	}
+}
