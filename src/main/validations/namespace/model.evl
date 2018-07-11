@@ -1,4 +1,5 @@
 context JUDOPSM!Model {
+
 	// model name must be unique
 	constraint NameIsNotUnique {
 		check: not JUDOPSM!Model.all().select(m | m <> self).collect(m | m.name).includes(self.name)

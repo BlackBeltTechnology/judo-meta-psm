@@ -1,30 +1,15 @@
 context JUDOPSM!Namespace {
 
-	// data type, entity type and pakcage names must be unique in a package
+	// data type, entity type and package names must be unique in a package
 	constraint NameIsNotUnique {
 		check {
 			var notUniqueNames = Set{};
 			var names = Set{};
-			for (p in self.packages) {
+			for (p in self.packages.includingAll(self.dataTypes).includingAll(self.entityTypes)) {
 				if (names.includes(p.name)) {
 					notUniqueNames.add(p.name);
-					p.name.println("Name already exists (package): ");
 				}
 				names.add(p.name);
-			}
-			for (dt in self.datatypes) {
-				if (names.includes(dt.name)) {
-					notUniqueNames.add(dt.name);
-					dt.name.println("Name already exists (data type): ");
-				}
-				names.add(dt.name);
-			}
-			for (et in self.entityTypes) {
-				if (names.includes(et.name)) {
-					notUniqueNames.add(et.name);
-					et.name.println("Name already exists (entity type): ");
-				}
-				names.add(et.name);
 			}
 			return notUniqueNames.isEmpty();
 		}

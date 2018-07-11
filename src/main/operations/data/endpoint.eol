@@ -2,6 +2,5 @@ import "attribute.eol";
 
 @cached
 operation JUDOPSM!Endpoint getOpposites() {
-	var opposites = self.datatype.target.endpoints.select(e | e.datatype.target = self.getEntityType());
-	return opposites;
+	return self.dataType.target.endpoints.select(e | e.dataType.target = self.getEntityType());
 }

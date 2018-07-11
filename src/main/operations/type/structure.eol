@@ -1,29 +1,18 @@
 @cached
 operation JUDOPSM!Structure hasCircularReference() {
-	var subTypes = Set{};
-	for (f in self.fields) {
-		if (f.datatype.isTypeOf(JUDOPSM!Structure)) {
-			subTypes.add(f.datatype);
-		}
-	}
-	return self.hasCircularReference(subTypes);
+	return self.hasCircularReference(self.getSubStructures());
 }
 
-operation JUDOPSM!Structure hasCircularReference(visited : Set) {
+@cached
+operation JUDOPSM!Structure getSubStructures() {
+	return self.fields.select(f | f.dataType.isTypeOf(JUDOPSM!Structure)).collect(f | f.dataType);
+}
+
+operation JUDOPSM!Structure hasCircularReference(visited : Collection) {
     if (visited.includes(self)) {
         return true;
     } else if (visited.isEmpty()) {
         return false;
     }
-
-    var subTypes = Set{};
-    for (s in visited) {
-		for (f in s.fields) {
-			if (f.datatype.isTypeOf(JUDOPSM!Structure)) {
-				subTypes.add(f.datatype);
-			}
-		}
-    }
-
-    return self.hasCircularReference(subTypes);
+    return self.hasCircularReference(self.getSubStructures().collect(s | s.getSubStructures()).flatten());
 }
