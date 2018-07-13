@@ -77,6 +77,12 @@
                                 <artifact>
                                     <file>model/judoPSM.ecore</file>
                                     <type>model</type>
+                                    <classifier>psm</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>model/judoPSM.model</file>
+                                    <type>model</type>
+                                    <classifier>skeleton</classifier>
                                 </artifact>
                             </artifacts>
                         </configuration>
@@ -344,6 +350,20 @@
                                     </metaModels>
 
                                     <models>
+                                        <model>
+                                            <artifact>model/judoPSM.model</artifact>
+                                            <name>SKELETON</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
                                         <model>
                                             <artifact>model/test.model</artifact>
                                             <name>TEST</name>
