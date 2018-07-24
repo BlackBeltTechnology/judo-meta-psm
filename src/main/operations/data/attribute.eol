@@ -5,5 +5,5 @@ operation JUDOPSM!Attribute displayName() {
 
 @cached
 operation JUDOPSM!Attribute getEntityType() {
-	return JUDOPSM!EntityType.all().select(et | et.attributes.select(a | a = self).size() = 1).first();
+	return JUDOPSM!EntityType.all().selectOne(et | et.attributes.select(a | a = self).size() = 1);
 }
