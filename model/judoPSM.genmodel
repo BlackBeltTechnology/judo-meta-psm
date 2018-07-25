@@ -40,7 +40,9 @@
       <genClasses ecoreClass="judoPSM.ecore#//type/Enumeration">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//type/Enumeration/members"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//type/Member"/>
+      <genClasses ecoreClass="judoPSM.ecore#//type/Member">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Member/ordinal"/>
+      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/Structure">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//type/Structure/fields"/>
       </genClasses>
