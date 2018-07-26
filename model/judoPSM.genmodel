@@ -23,11 +23,7 @@
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/NavigationExpression"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/Script"/>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/DataType"/>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Primitive/collection"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Primitive/unique"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Primitive/ordered"/>
-      </genClasses>
+      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/Custom"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/String">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/String/maxLength"/>
@@ -73,6 +69,7 @@
       <genClasses ecoreClass="judoPSM.ecore#//data/Reference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/Reference/target"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Reference/collection"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Facade" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//facade">
@@ -95,6 +92,7 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Property/dataType"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/path"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/function"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/orderIndex"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/Link">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
