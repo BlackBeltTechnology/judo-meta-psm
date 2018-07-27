@@ -6,12 +6,11 @@
     <entityTypes xmi:id="A0-EntityType" name="A0"/>
     <entityTypes xmi:id="A1-EntityType" name="A1"/>
     <entityTypes xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
-      <endpoints xsi:type="data:Endpoint" xmi:id="A-b-Endpoint" name="b" reference="SingleReference-B" partner="B-a-Endpoint"/>
+      <endpoints xsi:type="data:Endpoint" xmi:id="A-b-Endpoint" name="b" reference="SingleReference-B" partner="B-a-Endpoint" lower="1"/>
       <endpoints xsi:type="data:Endpoint" xmi:id="A-c-Endpoint" name="c" reference="SingleReference-B"/>
     </entityTypes>
     <entityTypes xmi:id="B-EntityType" name="B">
-      <!--attributes xmi:id="B-a-Attribute" name="a" dataType="SingleReference-A" required="true"/-->
-      <endpoints xsi:type="data:Endpoint" xmi:id="B-a-Endpoint" name="a" reference="SingleReference-A" partner="A-b-Endpoint"/>
+      <endpoints xsi:type="data:Endpoint" xmi:id="B-a-Endpoint" name="a" reference="SingleReference-A" partner="A-b-Endpoint" lower="1"/>
     </entityTypes>
     <entityTypes xmi:id="C-EntityType" name="C">
       <endpoints xsi:type="data:Endpoint" xmi:id="C-a-Endpoint" name="a" reference="SingleReference-A"/>

@@ -28,7 +28,7 @@ context JUDOPSM!Endpoint {
     // 1-1 single required relationship is not supported
 	critique OneToOneRelationNotSupported {
     	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
-		check: not(self.isRequired() and not self.collection and self.partner.isRequired() and not self.partner.collection)
+		check: not(self.isRequired() and not self.isCollection() and self.partner.isRequired() and not self.partner.isCollection())
 		message: "1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
 	}
 }

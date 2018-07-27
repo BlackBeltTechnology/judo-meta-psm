@@ -15,6 +15,10 @@ operation JUDOPSM!Endpoint getEntityType() {
 
 @cached
 operation JUDOPSM!Endpoint isRequired() {
-    // TODO: check minOccours to return if an endpoint is required or not
-	return true;
+	return self.lower > 0;
+}
+
+@cached
+operation JUDOPSM!Endpoint isCollection() {
+	return self.upper > 1 or self.upper == -1;
 }

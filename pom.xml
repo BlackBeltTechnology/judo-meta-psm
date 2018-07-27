@@ -206,7 +206,7 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>hu.blackbelt.judo.generator</groupId>
+                    <groupId>hu.blackbelt.epsilon</groupId>
                     <artifactId>epsilon-maven-plugin</artifactId>
                     <version>${epsilon.maven.plugin.version}</version>
                 </plugin>
@@ -316,7 +316,7 @@
         <tycho.version>0.23.0</tycho.version>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.0.0-5</epsilon.maven.plugin.version>
+        <epsilon.maven.plugin.version>1.1.0-23</epsilon.maven.plugin.version>
         <generator.runner.version>1.0.0-187</generator.runner.version>
 
         <src.dir>src/main</src.dir>
@@ -328,7 +328,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>hu.blackbelt.judo.generator</groupId>
+                        <groupId>hu.blackbelt.epsilon</groupId>
                         <artifactId>epsilon-maven-plugin</artifactId>
                         <!--dependencies>
                             <dependency>
