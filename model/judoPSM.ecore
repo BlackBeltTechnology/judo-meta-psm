@@ -102,12 +102,20 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Property" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
-          eType="#//type/DataType"/>
+          eType="#//type/DataType" transient="true" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" lowerBound="1"
           eType="#//type/NavigationExpression"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" lowerBound="1"
           eType="#//facade/Function"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderDirection" eType="#//facade/OrderDirection"
+          defaultValueLiteral="ASC"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="filterable" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewable" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
@@ -131,6 +139,10 @@
       <eLiterals name="MIN" value="3"/>
       <eLiterals name="MAX" value="4"/>
       <eLiterals name="SUM" value="5"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="OrderDirection">
+      <eLiterals name="ASC"/>
+      <eLiterals name="DESC" value="1"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

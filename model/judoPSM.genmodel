@@ -86,6 +86,10 @@
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/Function/MAX"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/Function/SUM"/>
       </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//facade/OrderDirection">
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/OrderDirection/ASC"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/OrderDirection/DESC"/>
+      </genEnums>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//facade/Facade">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/properties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/links"/>
@@ -98,6 +102,9 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/path"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/function"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/orderIndex"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/orderDirection"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/filterable"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/viewable"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/Link">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
