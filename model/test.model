@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_WZpXEIRPEeipmMyz9cMCRA" name="TEST PSM model">
   <packages xmi:id="_WZp-IIRPEeipmMyz9cMCRA" name="hu.blackbelt.psm.model.test">
-    <dataTypes xsi:type="data:Reference" xmi:id="SingleReference-A" name="SingleReference-A" target="A-EntityType"/>
-    <dataTypes xsi:type="data:Reference" xmi:id="SingleReference-B" name="SingleReference-B" target="B-EntityType"/>
+    <types xsi:type="data:Reference" xmi:id="SingleReference-A" name="SingleReference-A" target="A-EntityType"/>
+    <types xsi:type="data:Reference" xmi:id="SingleReference-B" name="SingleReference-B" target="B-EntityType"/>
     <entityTypes xmi:id="A0-EntityType" name="A0"/>
     <entityTypes xmi:id="A1-EntityType" name="A1"/>
     <entityTypes xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
-      <attributes xsi:type="data:Endpoint" xmi:id="A-b-Endpoint" name="b" dataType="SingleReference-B" required="true" partner="B-a-Endpoint"/>
-      <attributes xsi:type="data:Endpoint" xmi:id="A-c-Endpoint" name="c" dataType="SingleReference-B" required="true"/>
+      <endpoints xsi:type="data:Endpoint" xmi:id="A-b-Endpoint" name="b" reference="SingleReference-B" partner="B-a-Endpoint"/>
+      <endpoints xsi:type="data:Endpoint" xmi:id="A-c-Endpoint" name="c" reference="SingleReference-B"/>
     </entityTypes>
     <entityTypes xmi:id="B-EntityType" name="B">
-      <attributes xmi:id="B-a-Attribute" name="a" dataType="SingleReference-A" required="true"/>
-      <attributes xsi:type="data:Endpoint" xmi:id="B-a-Endpoint" name="a" dataType="SingleReference-A" required="true" partner="A-b-Endpoint"/>
+      <!--attributes xmi:id="B-a-Attribute" name="a" dataType="SingleReference-A" required="true"/-->
+      <endpoints xsi:type="data:Endpoint" xmi:id="B-a-Endpoint" name="a" reference="SingleReference-A" partner="A-b-Endpoint"/>
     </entityTypes>
     <entityTypes xmi:id="C-EntityType" name="C">
-      <attributes xsi:type="data:Endpoint" xmi:id="C-a-Endpoint" name="a" dataType="SingleReference-A" required="true"/>
+      <endpoints xsi:type="data:Endpoint" xmi:id="C-a-Endpoint" name="a" reference="SingleReference-A"/>
     </entityTypes>
   </packages>
-  <dataTypes xsi:type="type:Structure" xmi:id="_XzVG0IRPEeipmMyz9cMCRA" name="S1">
-    <fields xmi:id="_afnG4IRPEeipmMyz9cMCRA" name="a" dataType="SingleReference-A"/>
-    <fields xmi:id="_cjzzQIRPEeipmMyz9cMCRA" name="s2" dataType="_Y7vgYIRPEeipmMyz9cMCRA"/>
-  </dataTypes>
-  <dataTypes xsi:type="type:Structure" xmi:id="_Y7vgYIRPEeipmMyz9cMCRA" name="S2">
-    <fields xmi:id="_d1JfUIRPEeipmMyz9cMCRA" name="b" dataType="SingleReference-B"/>
-  </dataTypes>
+  <types xsi:type="type:Structure" xmi:id="_XzVG0IRPEeipmMyz9cMCRA" name="S1">
+    <fields xmi:id="_afnG4IRPEeipmMyz9cMCRA" name="a" type="SingleReference-A"/>
+    <fields xmi:id="_cjzzQIRPEeipmMyz9cMCRA" name="s2" type="_Y7vgYIRPEeipmMyz9cMCRA"/>
+  </types>
+  <types xsi:type="type:Structure" xmi:id="_Y7vgYIRPEeipmMyz9cMCRA" name="S2">
+    <fields xmi:id="_d1JfUIRPEeipmMyz9cMCRA" name="b" type="SingleReference-B"/>
+  </types>
 </namespace:Model>

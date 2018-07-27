@@ -2,10 +2,10 @@ import "../../operations/data/_importData.eol";
 
 context JUDOPSM!Endpoint {
 
-	// endpoint attribute must be a reference
-    constraint EndpointAttributeIsNotAReference {
-        check: self.dataType.isTypeOf(JUDOPSM!Reference)
-    	message: "Invalid attribute type of endpoint " + self.displayName()
+    // id is a reserved name    
+    constraint IdNameIsNotSupported {
+    	check: self.name <> "id"
+    	message: "Name 'id' is reserved"
     }
 }
 
@@ -21,14 +21,14 @@ context JUDOPSM!Endpoint {
     
     // target and partner types must be aligned
     constraint InvalidPartnerType {
-        check: self.partner.getEntityType() = self.dataType.target and self.partner.dataType.target = self.getEntityType()
+        check: self.partner.getEntityType() = self.reference.target and self.partner.reference.target = self.getEntityType()
         message: "Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
     }
     
     // 1-1 single required relationship is not supported
 	critique OneToOneRelationNotSupported {
     	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
-		check: not(self.required and not self.dataType.collection and self.partner.required and not self.partner.dataType.collection)
+		check: not(self.isRequired() and not self.collection and self.partner.isRequired() and not self.partner.collection)
 		message: "1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
 	}
 }

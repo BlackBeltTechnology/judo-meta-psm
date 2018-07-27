@@ -7,4 +7,9 @@ context JUDOPSM!EntityType {
 		check: not self.hasCircularReference()
 		message: "Entity type " + self.name + " is recursive"
 	}
+	
+	// TODO - endpoint and attribute names must be unique
+	//constraint AttributeAndEndpointNamesAreNotUnique {
+	//	check: self.attributes.all(a | self.attributes.including)
+	//}
 }

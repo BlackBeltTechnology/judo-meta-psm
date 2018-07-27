@@ -1,6 +1,20 @@
-import "attribute.eol";
-
 @cached
 operation JUDOPSM!Endpoint getOpposites() {
 	return self.dataType.target.endpoints.select(e | e.dataType.target = self.getEntityType());
+}
+
+@cached
+operation JUDOPSM!Endpoint displayName() {
+	return self.getEntityType().name + "." + self.name;
+}
+
+@cached
+operation JUDOPSM!Endpoint getEntityType() {
+	return JUDOPSM!EntityType.all().selectOne(et | et.endpoints.select(a | a = self).size() = 1);
+}
+
+@cached
+operation JUDOPSM!Endpoint isRequired() {
+    // TODO: check minOccours to return if an endpoint is required or not
+	return true;
 }

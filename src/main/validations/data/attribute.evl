@@ -1,0 +1,10 @@
+import "../../operations/data/_importData.eol";
+
+context JUDOPSM!Attribute {
+
+    // id is a reserved name    
+    constraint IdNameIsNotSupported {
+    	check: self.name <> "id"
+    	message: "Name 'id' is reserved"
+    }
+}

@@ -5,7 +5,7 @@ operation JUDOPSM!Structure hasCircularReference() {
 
 @cached
 operation JUDOPSM!Structure getSubStructures() {
-	return self.fields.select(f | f.dataType.isTypeOf(JUDOPSM!Structure)).collect(f | f.dataType);
+	return self.fields.select(f | f.type.isTypeOf(JUDOPSM!Structure)).collect(f | f.type);
 }
 
 operation JUDOPSM!Structure hasCircularReference(visited : Collection) {
