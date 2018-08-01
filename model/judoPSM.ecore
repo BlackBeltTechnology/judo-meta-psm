@@ -43,8 +43,8 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordinal" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EDataType" name="NavigationExpression" instanceClassName="java.lang.Object"/>
-    <eClassifiers xsi:type="ecore:EDataType" name="Script" instanceClassName="java.lang.Object"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="NavigationExpression" instanceClassName="java.lang.String"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="Script" instanceClassName="java.lang.String"/>
     <eClassifiers xsi:type="ecore:EClass" name="Structure" eSuperTypes="#//type/DataType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="fields" lowerBound="1"
           upperBound="-1" eType="#//type/Field" containment="true"/>
@@ -102,7 +102,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Property" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
-          eType="#//type/DataType" transient="true" derived="true"/>
+          eType="#//type/DataType" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" lowerBound="1"
           eType="#//type/NavigationExpression"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" lowerBound="1"
