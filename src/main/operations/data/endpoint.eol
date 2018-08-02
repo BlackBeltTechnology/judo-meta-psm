@@ -10,7 +10,7 @@ operation JUDOPSM!Endpoint displayName() {
 
 @cached
 operation JUDOPSM!Endpoint getEntityType() {
-	return JUDOPSM!EntityType.all().selectOne(et | et.endpoints.select(a | a = self).size() = 1);
+	return JUDOPSM!EntityType.all.selectOne(et | et.endpoints.includes(self));
 }
 
 @cached
