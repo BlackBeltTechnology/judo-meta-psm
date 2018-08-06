@@ -330,13 +330,6 @@
                     <plugin>
                         <groupId>hu.blackbelt.epsilon</groupId>
                         <artifactId>epsilon-maven-plugin</artifactId>
-                        <!--dependencies>
-                            <dependency>
-                                <groupId>hu.blackbelt.judo.generator</groupId>
-                                <artifactId>hu.blackbelt.judo.generator.parser.derived.expression.sql</artifactId>
-                                <version>${project.version}</version>
-                            </dependency>
-                        </dependencies-->
                         <executions>
                             <execution>
                                 <id>validate-meta-psm</id>
@@ -350,7 +343,7 @@
                                     </metaModels>
 
                                     <models>
-                                        <model>
+                                        <!--model>
                                             <artifact>model/judoPSM.model</artifact>
                                             <name>SKELETON</name>
                                             <aliases>
@@ -377,21 +370,40 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/facade</param>
                                             </metaModelUris>
                                             <expand>true</expand>
+                                        </model-->
+                                        <model>
+                                            <artifact>${basedir}/src/test/019-OppositePartnerIsNotDefined/t019.model</artifact>
+                                            <name>A1</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
                                         </model>
+                                        <!--model>
+                                            <artifact>${basedir}/src/test/001/t001_a2.model</artifact>
+                                            <name>A2</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model-->
                                     </models>
                                     <eolPrograms>
                                         <Evl>
                                             <source>src/main/validations/judopsm.evl</source>
                                         </Evl>
-                                        <!--Etl>
-                                            <source>src/transformations/rdbms/psmToRdbms.etl</source>
-                                            <parameters>
-                                                <parameter>
-                                                    <name>psmVersion</name>
-                                                    <value>${project.version}-${psmversion}</value>
-                                                </parameter>
-                                            </parameters>
-                                        </Etl-->
                                     </eolPrograms>
                                 </configuration>
                             </execution>

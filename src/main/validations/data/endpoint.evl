@@ -2,33 +2,45 @@ import "../../operations/data/_importData.eol";
 
 context JUDOPSM!Endpoint {
 
-    // id is a reserved name    
-    constraint IdNameIsNotSupported {
+    // reserved reference names: id
+    constraint ReservedReferenceName {
     	check: self.name <> "id"
-    	message: "Name 'id' is reserved"
+    	message: "ReservedReferenceName|Name " + self.displayName() +" is reserved"
+    }
+    
+    constraint SelfPartner {
+    	check: not self.partner.isDefined() or self.partner <> self
+    	message: "SelfPartner|Self partner reference found: " + self.displayName()
     }
 }
 
 context JUDOPSM!Endpoint {
     
     guard: self.partner.isDefined()
+    
+    // opposite partner must be defined if a partner if endpoint is already defined
+    constraint OppositePartnerIsNotDefined {
+    	check: self.partner.partner.isDefined()
+    	message: "OppositePartnerIsNotDefined|Missing opposite partner reference for " + self.displayName()
+    }
 
     // if partners are specified on both sides of a relation then endpoints must reference to each other
     constraint InvalidPartnerReferences {
-    	check: not self.partner.partner.isDefined() or self.partner.partner = self
-    	message: "Invalid opposite partner reference for " + self.displayName()
+    	guard: self.satisfiesAll("OppositePartnerIsNotDefined")
+    	check: self.partner.partner = self
+    	message: "InvalidPartnerReferences|Opposite partner reference of " + self.partner.displayName() + " must be " + self.displayName()
     }
     
     // target and partner types must be aligned
     constraint InvalidPartnerType {
         check: self.partner.getEntityType() = self.reference.target and self.partner.reference.target = self.getEntityType()
-        message: "Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
+        message: "InvalidPartnerType|Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
     }
     
     // 1-1 single required relationship is not supported
 	critique OneToOneRelationNotSupported {
     	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
 		check: not(self.isRequired() and not self.isCollection() and self.partner.isRequired() and not self.partner.isCollection())
-		message: "1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
+		message: "OneToOneRelationNotSupported|1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
 	}
 }

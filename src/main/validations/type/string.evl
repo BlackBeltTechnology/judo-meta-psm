@@ -3,6 +3,6 @@ context JUDOPSM!String {
     // maxLength > 0
 	constraint InvalidMaxLength {
 		check: self.maxLength > 0
-		message: "MaxLength must be greater than 0: " + self.name
+		message: "InvalidMaxLength|MaxLength must be greater than 0: " + self.name
 	}
 }

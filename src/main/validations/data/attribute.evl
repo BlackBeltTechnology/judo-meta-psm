@@ -2,9 +2,9 @@ import "../../operations/data/_importData.eol";
 
 context JUDOPSM!Attribute {
 
-    // id is a reserved name    
-    constraint IdNameIsNotSupported {
+    // reserved attribute names: id    
+    constraint ReservedAttributeName {
     	check: self.name <> "id"
-    	message: "Name 'id' is reserved"
+    	message: "ReservedAttributeName|Name " + self.displayName() + " is reserved"
     }
 }
