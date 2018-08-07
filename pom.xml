@@ -343,7 +343,7 @@
                                     </metaModels>
 
                                     <models>
-                                        <!--model>
+                                        <model>
                                             <artifact>model/judoPSM.model</artifact>
                                             <name>SKELETON</name>
                                             <aliases>
@@ -370,9 +370,9 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/facade</param>
                                             </metaModelUris>
                                             <expand>true</expand>
-                                        </model-->
-                                        <model>
-                                            <artifact>${basedir}/src/test/019-OppositePartnerIsNotDefined/t019.model</artifact>
+                                        </model>
+                                        <!--model>
+                                            <artifact>${basedir}/src/test/018-AttributeAndReferenceWithSameName/t018.model</artifact>
                                             <name>A1</name>
                                             <aliases>
                                                 <alias>JUDOPSM</alias>
@@ -384,7 +384,7 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/facade</param>
                                             </metaModelUris>
                                             <expand>true</expand>
-                                        </model>
+                                        </model-->
                                         <!--model>
                                             <artifact>${basedir}/src/test/001/t001_a2.model</artifact>
                                             <name>A2</name>

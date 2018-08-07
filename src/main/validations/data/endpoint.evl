@@ -15,9 +15,9 @@ context JUDOPSM!Endpoint {
 }
 
 context JUDOPSM!Endpoint {
-    
+
     guard: self.partner.isDefined()
-    
+
     // opposite partner must be defined if a partner if endpoint is already defined
     constraint OppositePartnerIsNotDefined {
     	check: self.partner.partner.isDefined()
@@ -30,13 +30,13 @@ context JUDOPSM!Endpoint {
     	check: self.partner.partner = self
     	message: "InvalidPartnerReferences|Opposite partner reference of " + self.partner.displayName() + " must be " + self.displayName()
     }
-    
+
     // target and partner types must be aligned
     constraint InvalidPartnerType {
         check: self.partner.getEntityType() = self.reference.target and self.partner.reference.target = self.getEntityType()
         message: "InvalidPartnerType|Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
     }
-    
+
     // 1-1 single required relationship is not supported
 	critique OneToOneRelationNotSupported {
     	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")

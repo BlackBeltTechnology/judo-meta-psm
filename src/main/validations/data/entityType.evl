@@ -22,7 +22,7 @@ context JUDOPSM!EntityType {
 
 	// entity has attribute(s) and reference(s) with the same name
 	constraint AttributeAndReferenceWithSameName {
-		check: self.endpoints.select(e | self.attributes.select(e | e.name == a.name).size() > 0).size() == 0
+		check: self.endpoints.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
 		message: "AttributeAndReferenceWithSameName|Entity " + self.name + " has attributes and references with the same name"
 	}
 }
