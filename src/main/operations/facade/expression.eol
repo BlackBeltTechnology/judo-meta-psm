@@ -1,0 +1,39 @@
+import "property.eol";
+
+@cached
+operation parseExpression(expression : String) {
+    var parser = new Native("hu.blackbelt.judo.model.scripting.StringExpressionParser");
+    
+    return parser.parseExpression(expression);
+}
+
+@cached
+operation JUDOPSM!Property validatePath() : Sequence {
+	var expression = parseExpression(self.path);
+	
+	var errors = new Sequence;
+	
+	if (expression.class.name <> "hu.blackbelt.judo.model.scripting.model.SelfEntityFormula") {
+		errors.add("PathValidation|Navagation path is not a SELF expression");
+	} else {
+		var entityType = self.getFacade().entityType;
+		
+		var expressionDataType;
+		
+		for (r in expression.relationList) {
+			var attribute = entityType.attributes.selectOne(a | a.name = r.identifier);
+			var dataType = attribute.dataType;
+			expressionDataType = dataType;
+		}
+		
+		if (expressionDataType <> self.dataType) {
+			errors.add("PathValidation|Invalid data type, expected: " + expressionDataType.name + ", found in model: " + self.dataType.name + "; property: " + self.displayName() + "; path: " + self.path);
+		}
+	}
+	
+	if (not errors.isEmpty()) {
+		errors.println("Invalid navigation path: ");
+	}
+	
+	return errors;
+}

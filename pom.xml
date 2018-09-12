@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>hu.blackbelt.judo.meta</groupId>
     <artifactId>judo-meta-psm</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    
+
     <name>JUDO PSM metamodel</name>
     <description>Judo Platform Specific Metamodel</description>
-    
+
     <url>http://github.com/BlackBeltTechnology/judo-meta-psm</url>
-    
+
     <issueManagement>
         <url>https://github.com/BlackBeltTechnology/judo-meta-psm/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
-    
+
     <scm>
         <connection>scm:git:git://github.com/BlackBeltTechnology/judo-meta-psm.git</connection>
         <developerConnection>scm:git:ssh://${git.username}@github.com:BlackBeltTechnology/judo-meta-psm.git
         </developerConnection>
         <url>http://github.com/BlackBeltTechnology/judo-meta-psm</url>
     </scm>
-    
+
     <developers>
         <developer>
             <id>borcsokj</id>
@@ -51,7 +51,7 @@
             <organizationUrl>http://www.blackbelt.hu</organizationUrl>
         </developer>
     </developers>
-    
+
     <build>
         <sourceDirectory>${src.dir}</sourceDirectory>
         <resources>
@@ -59,7 +59,7 @@
                 <directory>${src.dir}</directory>
             </resource>
         </resources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -89,7 +89,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -112,15 +112,15 @@
                     </instructions>
                 </configuration>
             </plugin>
-            
-            
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
             </plugin>
-            
-            
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -140,25 +140,27 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>hu.blackbelt.epsilon</groupId>
                     <artifactId>epsilon-maven-plugin</artifactId>
                     <version>${epsilon.maven.plugin.version}</version>
                 </plugin>
-                
+
             </plugins>
         </pluginManagement>
     </build>
-    
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.1.0</epsilon.maven.plugin.version>
-        
+        <epsilon.maven.plugin.version>1.1.1</epsilon.maven.plugin.version>
+        <judo.model.scripting.version>1.0.0-SNAPSHOT</judo.model.scripting.version>
+
         <src.dir>src/main</src.dir>
     </properties>
-    
+
     <profiles>
         <profile>
             <id>test-judo-psm</id>
@@ -167,6 +169,13 @@
                     <plugin>
                         <groupId>hu.blackbelt.epsilon</groupId>
                         <artifactId>epsilon-maven-plugin</artifactId>
+                        <dependencies>
+                            <dependency>
+                                <groupId>hu.blackbelt.judo</groupId>
+                                <artifactId>judo-model-scripting</artifactId>
+                                <version>${judo.model.scripting.version}</version>
+                            </dependency>
+                        </dependencies>
                         <executions>
                             <execution>
                                 <id>validate-meta-psm</id>
@@ -178,7 +187,7 @@
                                     <metaModels>
                                         <metaModel>model/judoPSM.ecore</metaModel>
                                     </metaModels>
-                                    
+
                                     <models>
                                         <model>
                                             <artifact>model/judoPSM.model</artifact>
@@ -249,7 +258,7 @@
                 </plugins>
             </build>
         </profile>
-        
+
         <profile>
             <id>release-github</id>
             <build>
@@ -286,7 +295,7 @@
                 </plugins>
             </build>
         </profile>
-        
+
         <profile>
             <id>release-blackbelt</id>
             <distributionManagement>
@@ -300,7 +309,7 @@
                 </repository>
             </distributionManagement>
         </profile>
-        
+
         <profile>
             <id>release-central</id>
             <build>
@@ -316,7 +325,7 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
-                    
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -381,6 +390,6 @@
                 </repository>
             </distributionManagement>
         </profile>
-        
+
     </profiles>
 </project>

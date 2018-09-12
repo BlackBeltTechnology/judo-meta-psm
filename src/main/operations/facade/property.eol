@@ -2,3 +2,8 @@
 operation JUDOPSM!Property getFacade() : JUDOPSM!Facade {
 	return JUDOPSM!Facade.all.selectOne(et | et.properties.includes(self));
 }
+
+@cached
+operation JUDOPSM!Property displayName() : String {
+	return self.getFacade().name + "." + self.name;
+}
