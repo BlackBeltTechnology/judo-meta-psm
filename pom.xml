@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <groupId>hu.blackbelt.judo.meta</groupId>
     <artifactId>judo-meta-psm</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>Judo PSM metamodel</name>
+    <packaging>bundle</packaging>
+    
+    <name>JUDO PSM metamodel</name>
     <description>Judo Platform Specific Metamodel</description>
-
+    
     <url>http://github.com/BlackBeltTechnology/judo-meta-psm</url>
-
+    
     <issueManagement>
         <url>https://github.com/BlackBeltTechnology/judo-meta-psm/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
-
+    
     <scm>
         <connection>scm:git:git://github.com/BlackBeltTechnology/judo-meta-psm.git</connection>
         <developerConnection>scm:git:ssh://${git.username}@github.com:BlackBeltTechnology/judo-meta-psm.git
         </developerConnection>
         <url>http://github.com/BlackBeltTechnology/judo-meta-psm</url>
     </scm>
-
+    
     <developers>
         <developer>
             <id>borcsokj</id>
@@ -51,7 +51,7 @@
             <organizationUrl>http://www.blackbelt.hu</organizationUrl>
         </developer>
     </developers>
-
+    
     <build>
         <sourceDirectory>${src.dir}</sourceDirectory>
         <resources>
@@ -59,7 +59,7 @@
                 <directory>${src.dir}</directory>
             </resource>
         </resources>
-
+        
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -89,102 +89,38 @@
                     </execution>
                 </executions>
             </plugin>
-
+            
             <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-maven-plugin</artifactId>
-                <version>${tycho.version}</version>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>3.3.0</version>
                 <extensions>true</extensions>
-            </plugin>
-
-            <!-- Generate source bundles (exclude target so we don't enter an infinite
-                loop for binary-only plugins, which have itself as the source). -->
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-source-plugin</artifactId>
-                <version>${tycho.version}</version>
-                <executions>
-                    <execution>
-                        <id>plugin-source</id>
-                        <goals>
-                            <goal>plugin-source</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>target/**</exclude>
-                            </excludes>
-                            <strictVersions>false</strictVersions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-packaging-plugin</artifactId>
-                <version>${tycho.version}</version>
                 <configuration>
-                    <strictVersions>false</strictVersions>
+                    <obrRepository>NONE</obrRepository>
+                    <instructions>
+                        <Export-Package>meta/psm;version=${project.version}</Export-Package>
+                        <Judo-Tatami-Meta-Model-Paths>
+                            meta/psm/psm.ecore
+                        </Judo-Tatami-Meta-Model-Paths>
+                        <Judo-Tatami-Model-Paths>
+                            meta/psm/skeleton.model
+                        </Judo-Tatami-Model-Paths>
+                        <Include-Resource>{maven-resources},
+                            meta/psm/psm.ecore=model/judoPSM.ecore,
+                            meta/psm/skeleton.model=model/judoPSM.model
+                        </Include-Resource>
+                    </instructions>
                 </configuration>
             </plugin>
-
+            
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
             </plugin>
-
-            <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>target-platform-configuration</artifactId>
-                <version>${tycho.version}</version>
-                <configuration>
-                    <target>
-                        <artifact>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>hu.blackbelt.judo.generator.targetplatform</artifactId>
-                            <version>${project.version}</version>
-                        </artifact>
-                    </target>
-                    <dependency-resolution>
-                        <extraRequirements>
-                            <requirement>
-                                <type>eclipse-plugin</type>
-                                <id>org.hamcrest.core</id>
-                                <versionRange>0.0.0</versionRange>
-                            </requirement>
-                        </extraRequirements>
-                    </dependency-resolution>
-                    <environments>
-                        <environment>
-                            <os>linux</os>
-                            <ws>gtk</ws>
-                            <arch>x86</arch>
-                        </environment>
-                        <environment>
-                            <os>linux</os>
-                            <ws>gtk</ws>
-                            <arch>x86_64</arch>
-                        </environment>
-                        <environment>
-                            <os>win32</os>
-                            <ws>win32</ws>
-                            <arch>x86</arch>
-                        </environment>
-                        <environment>
-                            <os>win32</os>
-                            <ws>win32</ws>
-                            <arch>x86_64</arch>
-                        </environment>
-                        <environment>
-                            <os>macosx</os>
-                            <ws>cocoa</ws>
-                            <arch>x86_64</arch>
-                        </environment>
-                    </environments>
-                </configuration>
-            </plugin>
-
+            
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -204,124 +140,25 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
-
+                
                 <plugin>
                     <groupId>hu.blackbelt.epsilon</groupId>
                     <artifactId>epsilon-maven-plugin</artifactId>
                     <version>${epsilon.maven.plugin.version}</version>
                 </plugin>
-
-                <plugin>
-                    <groupId>hu.blackbelt.judo.generator.runner</groupId>
-                    <artifactId>run-judo-genertor-maven-plugin</artifactId>
-                    <version>${generator.runner.version}</version>
-                </plugin>
-
-
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.apache.maven.plugins
-                                        </groupId>
-                                        <artifactId>
-                                            maven-compiler-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [2.5.1,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>compile</goal>
-                                            <goal>testCompile</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            hu.blackbelt.judo.generator
-                                        </groupId>
-                                        <artifactId>
-                                            epsilon-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [2.0.0-SNAPSHOT,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>execute</goal>
-                                            <goal>mergeJson</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.apache.maven.plugins
-                                        </groupId>
-                                        <artifactId>
-                                            maven-dependency-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [2.8,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>copy</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.codehaus.gmaven
-                                        </groupId>
-                                        <artifactId>
-                                            gmaven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.4,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>execute</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
+                
             </plugins>
         </pluginManagement>
     </build>
-
+    
     <properties>
-        <tycho.version>0.23.0</tycho.version>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.1.0-23</epsilon.maven.plugin.version>
-        <generator.runner.version>1.0.0-187</generator.runner.version>
-
+        <epsilon.maven.plugin.version>1.1.0</epsilon.maven.plugin.version>
+        
         <src.dir>src/main</src.dir>
     </properties>
-
+    
     <profiles>
         <profile>
             <id>test-judo-psm</id>
@@ -341,7 +178,7 @@
                                     <metaModels>
                                         <metaModel>model/judoPSM.ecore</metaModel>
                                     </metaModels>
-
+                                    
                                     <models>
                                         <model>
                                             <artifact>model/judoPSM.model</artifact>
@@ -386,19 +223,19 @@
                                             <expand>true</expand>
                                         </model-->
                                         <!--model>
-                                            <artifact>${basedir}/src/test/001/t001_a2.model</artifact>
-                                            <name>A2</name>
-                                            <aliases>
-                                                <alias>JUDOPSM</alias>
-                                            </aliases>
-                                            <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                            </metaModelUris>
-                                            <expand>true</expand>
-                                        </model-->
+                                         <artifact>${basedir}/src/test/001/t001_a2.model</artifact>
+                                         <name>A2</name>
+                                         <aliases>
+                                         <alias>JUDOPSM</alias>
+                                         </aliases>
+                                         <metaModelUris>
+                                         <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                         <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                         <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                         <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                         </metaModelUris>
+                                         <expand>true</expand>
+                                         </model-->
                                     </models>
                                     <eolPrograms>
                                         <Evl>
@@ -412,5 +249,138 @@
                 </plugins>
             </build>
         </profile>
+        
+        <profile>
+            <id>release-github</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>de.jutzig</groupId>
+                        <artifactId>github-release-plugin</artifactId>
+                        <version>1.2.0</version>
+                        <configuration>
+                            <repositoryId>https://github.com/BlackBeltTechnology/judo-meta-psm.git</repositoryId>
+                            <description>Branch: ${env.WERCKER_GIT_BRANCH} Wercker: ${env.WERCKER_RUN_URL}</description>
+                            <releaseName>${project.version}</releaseName>
+                            <prerelease>true</prerelease>
+                            <tag>${project.version}</tag>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>target</directory>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>release-to-github</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>release</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>release-blackbelt</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>blackbelt-nexus-distribution</id>
+                    <url>https://nexus.blackbelt.cloud/repository/maven-judo-release/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>blackbelt-nexus-distribution</id>
+                    <url>https://nexus.blackbelt.cloud/repository/maven-judo-release/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        
+        <profile>
+            <id>release-central</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--
+                     <pluginß
+                     <groupId>org.apache.maven.plugins</groupId>
+                     <artifactId>maven-javadoc-plugin</artifactId>
+                     <version>2.9.1</version>
+                     <executions>
+                     <execution>
+                     <id>attach-javadocs</id>
+                     <goals>
+                     <goal>jar</goal>
+                     </goals>
+                     </execution>
+                     </executions>
+                     </plugin>
+                     -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <keyname>${gpg.keyname}</keyname>
+                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                                    <!-- This is necessary for gpg to not try to use the pinentry programs -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        
     </profiles>
 </project>
