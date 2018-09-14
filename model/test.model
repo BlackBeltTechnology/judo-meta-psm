@@ -3,23 +3,24 @@
   <packages xmi:id="_WZp-IIRPEeipmMyz9cMCRA" name="sandbox.model">
     <types xsi:type="data:Reference" xmi:id="SingleReference-A" name="SingleReference-A" target="A-EntityType"/>
     <types xsi:type="data:Reference" xmi:id="SingleReference-B" name="SingleReference-B" target="B-EntityType"/>
+    <types xsi:type="data:Reference" xmi:id="SingleReference-C" name="SingleReference-C" target="C-EntityType"/>
     <entityTypes xmi:id="A0-EntityType" name="A0"/>
     <entityTypes xmi:id="A1-EntityType" name="A1"/>
     <entityTypes xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
       <attributes xmi:id="_AvahILaVEeiphaohSbmpfA" name="x" identifier="true" dataType="_U4jZoLaVEeiphaohSbmpfA"/>
       <endpoints xmi:id="A-b-Endpoint" name="b" partner="B-a-Endpoint" reference="SingleReference-B" lower="1"/>
-      <endpoints xmi:id="A-c-Endpoint" name="c" reference="SingleReference-B"/>
+      <endpoints xmi:id="A-c-Endpoint" name="c" reference="SingleReference-C"/>
     </entityTypes>
     <entityTypes xmi:id="B-EntityType" name="B">
       <endpoints xmi:id="B-a-Endpoint" name="a" partner="A-b-Endpoint" reference="SingleReference-A" lower="1"/>
     </entityTypes>
     <entityTypes xmi:id="C-EntityType" name="C">
-      <endpoints xmi:id="C-a-Endpoint" name="a" reference="SingleReference-A"/>
+      <endpoints xmi:id="C-a-Endpoint" name="a" reference="SingleReference-A" upper="-1"/>
     </entityTypes>
   </packages>
   <packages xmi:id="_lINUkLaUEeiphaohSbmpfA" name="sandbox.facade">
     <facades xsi:type="facade:View" xmi:id="_JW1mwLaREeiphaohSbmpfA" name="A" entityType="A-EntityType">
-      <properties xmi:id="_3fCCQLaREeiphaohSbmpfA" name="x" path="self.x" dataType="_U4jZoLaVEeiphaohSbmpfA"/>
+      <properties xmi:id="_3fCCQLaREeiphaohSbmpfA" name="x" path="self.b.a.x" dataType="_U4jZoLaVEeiphaohSbmpfA"/>
     </facades>
   </packages>
   <types xsi:type="type:Structure" xmi:id="_XzVG0IRPEeipmMyz9cMCRA" name="S1">
