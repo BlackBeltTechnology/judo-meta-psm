@@ -7,7 +7,20 @@ context JUDOPSM!Endpoint {
     	check: self.name <> "id"
     	message: "ReservedReferenceName|Name " + self.displayName() +" is reserved"
     }
+
+	// upper attribute must be at least 1    
+    constraint UpperMustBeAtLeastOne {
+    	check: self.upper > 0 or self.upper == -1
+    	message: "Invalid upper attribute of " + self.displayName()
+    }
     
+    // lower property must be less or equal to upper property
+    constraint LowerMustBeLessOrEqualToUpper {
+    	check: self.upper == -1 or self.lower <= self.upper
+    	message: "Lower (" + self.lower + ") must be less or equal to upper (" + self.upper + ") of attribute: " + self.displayName()
+    }
+    
+    // partner of an endpoint must be a different one
     constraint SelfPartner {
     	check: not self.partner.isDefined() or self.partner <> self
     	message: "SelfPartner|Self partner reference found: " + self.displayName()
