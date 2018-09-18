@@ -51,13 +51,13 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
-          eType="#//data/Refernce" containment="true"/>
+          eType="#//data/Reference" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="superEntityTypes" upperBound="-1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Refernce" abstract="true" eSuperTypes="#//type/Type">
+    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//type/Type">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
@@ -74,8 +74,8 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Refernce"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Refernce">
+    <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Reference"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Reference">
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
     </eClassifiers>
   </eSubpackages>
