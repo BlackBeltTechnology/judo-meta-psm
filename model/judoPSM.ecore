@@ -21,8 +21,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace"/>
   </eSubpackages>
   <eSubpackages name="type" nsURI="http://blackbelt.hu/judo/meta/psm/type" nsPrefix="type">
-    <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true" eSuperTypes="#//type/DataType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true" eSuperTypes="#//type/Type"/>
     <eClassifiers xsi:type="ecore:EClass" name="Custom" eSuperTypes="#//type/Primitive"/>
     <eClassifiers xsi:type="ecore:EClass" name="String" eSuperTypes="#//type/Primitive">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLength" lowerBound="1"
@@ -45,51 +44,39 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EDataType" name="NavigationExpression" instanceClassName="java.lang.String"/>
     <eClassifiers xsi:type="ecore:EDataType" name="Script" instanceClassName="java.lang.String"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Structure" eSuperTypes="#//type/DataType">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="fields" lowerBound="1"
-          upperBound="-1" eType="#//type/Field" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Field" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
-          eType="#//type/Type"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//data/Attribute" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
+          eType="#//data/Refernce" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="superEntityTypes" upperBound="-1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="endpoints" upperBound="-1"
-          eType="#//data/Endpoint" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="composition" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="reference" lowerBound="1"
-          eType="#//data/Reference"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Refernce" abstract="true" eSuperTypes="#//type/Type">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+          eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
-          eType="#//type/DataType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="primitive" lowerBound="1"
+          eType="#//type/Primitive"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Reference" eSuperTypes="#//type/Type">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-          eType="#//data/EntityType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Refernce"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Refernce">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="facade" nsURI="http://blackbelt.hu/judo/meta/psm/facade" nsPrefix="facade">
@@ -101,8 +88,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" eType="#//data/EntityType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Property" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
-          eType="#//type/DataType" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" lowerBound="1"
           eType="#//type/NavigationExpression"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" lowerBound="1"
@@ -116,6 +101,8 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewable" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
+          eType="#//type/Type"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
