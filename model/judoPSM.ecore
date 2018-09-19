@@ -47,7 +47,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
-    <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
@@ -57,14 +57,13 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//type/Type">
+    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="primitive" lowerBound="1"
@@ -109,6 +108,7 @@
           eType="#//facade/View"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" lowerBound="1"
           eType="#//type/NavigationExpression"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expand" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="View" eSuperTypes="#//facade/Facade"/>
     <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//facade/Facade">
@@ -130,6 +130,12 @@
     <eClassifiers xsi:type="ecore:EEnum" name="OrderDirection">
       <eLiterals name="ASC"/>
       <eLiterals name="DESC" value="1"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="behavior">
+    <eClassifiers xsi:type="ecore:EClass" name="CascadeReferences">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
+          eType="#//data/Reference"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
