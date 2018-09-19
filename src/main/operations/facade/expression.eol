@@ -22,14 +22,14 @@ operation JUDOPSM!Property validatePath() : Sequence {
 		
 		for (r in expression.relationList) {
 			var attribute = entityType.attributes.selectOne(a | a.name = r.identifier);
-			var endpoint = entityType.endpoints.selectOne(e | e.name = r.identifier);
+			var reference = entityType.references.selectOne(e | e.name = r.identifier);
+			
 			if (attribute.isDefined()) {
 				entityType = null;
-				expressionDataType = attribute.dataType;
-				// TODO - support structs (?)
-			} else if (endpoint.isDefined()) {
-				entityType = endpoint.reference.target;
-				if (endpoint.isCollection()) {
+				expressionDataType = attribute.primitive;
+			} else if (reference.isDefined()) {
+				entityType = reference.target;
+				if (reference.isCollection()) {
 					errors.add("AggregatedPathsAreNotSupportedYet|Path expression contains aggregation that is not supported yet");
 					break;
 				}
@@ -39,8 +39,8 @@ operation JUDOPSM!Property validatePath() : Sequence {
 			}
 		}
 		
-		if (expressionDataType.isDefined() and expressionDataType <> self.dataType) {
-			errors.add("InvalidPathDataType|Invalid data type, expected: " + expressionDataType.name + ", found in model: " + self.dataType.name + "; property: " + self.displayName() + "; path: " + self.path);
+		if (expressionDataType.isDefined() and expressionDataType <> self.type) {
+			errors.add("InvalidPathDataType|Invalid data type, expected: " + expressionDataType.name + ", found in model: " + self.type.name + "; property: " + self.displayName() + "; path: " + self.path);
 		}
 	}
 	

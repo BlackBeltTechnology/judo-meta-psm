@@ -22,3 +22,13 @@ operation JUDOPSM!EntityType hasCircularReference(visited : Collection) : Boolea
 operation JUDOPSM!EntityType getPackage() : JUDOPSM!Namespace {
 	return JUDOPSM!Namespace.all.selectOne(p | p.entityTypes.includes(self));
 }
+
+@cached
+operation JUDOPSM!EntityType isContainment() : Boolean {
+	return JUDOPSM!Containment.all.select(c | c.target == self).size() > 0;
+}
+
+@cached
+operation JUDOPSM!EntityType isContainer() : Boolean {
+	return self.references.all(r | r.isTypeOf(JUDOPSM!Containment)).size() > 0;
+}

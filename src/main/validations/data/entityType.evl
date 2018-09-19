@@ -16,13 +16,13 @@ context JUDOPSM!EntityType {
 
 	// entity has multiple references with the same name
 	constraint ReferenceAddedMultipleTimes {
-		check: self.endpoints.select(e | self.endpoints.excluding(e).select(e2 | e2.name == e.name).size() > 0).size() == 0
-		message: "ReferenceAddedMultipleTimes|Multiple endpoints are added to entity " + self.name + " with the same name"
+		check: self.references.select(e | self.references.excluding(e).select(e2 | e2.name == e.name).size() > 0).size() == 0
+		message: "ReferenceAddedMultipleTimes|Multiple references are added to entity " + self.name + " with the same name"
 	}
 
 	// entity has attribute(s) and reference(s) with the same name
 	constraint AttributeAndReferenceWithSameName {
-		check: self.endpoints.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
+		check: self.references.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
 		message: "AttributeAndReferenceWithSameName|Entity " + self.name + " has attributes and references with the same name"
 	}
 }

@@ -46,7 +46,7 @@ context JUDOPSM!Endpoint {
 
     // target and partner types must be aligned
     constraint InvalidPartnerType {
-        check: self.partner.getEntityType() = self.reference.target and self.partner.reference.target = self.getEntityType()
+        check: self.partner.getEntityType() = self.target and self.partner.target = self.getEntityType()
         message: "InvalidPartnerType|Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
     }
 
