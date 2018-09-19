@@ -53,19 +53,25 @@
     </developers>
 
     <build>
-        <sourceDirectory>${src.dir}</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>${src.dir}</directory>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
+                    <execution>
+                        <id>add-model-gen-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src-genmodel</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+
                     <execution>
                         <id>attach-artifacts</id>
                         <phase>package</phase>
@@ -98,7 +104,10 @@
                 <configuration>
                     <obrRepository>NONE</obrRepository>
                     <instructions>
-                        <Export-Package>meta/psm;version=${project.version}</Export-Package>
+                        <Export-Package>
+                            meta/psm;version=${project.version},
+                            hu.blackbelt.judo.meta.psm.*;version=${project.version}sss
+                        </Export-Package>
                         <Judo-Tatami-Meta-Model-Paths>
                             meta/psm/psm.ecore
                         </Judo-Tatami-Meta-Model-Paths>
@@ -107,7 +116,9 @@
                         </Judo-Tatami-Model-Paths>
                         <Include-Resource>{maven-resources},
                             meta/psm/psm.ecore=model/judoPSM.ecore,
-                            meta/psm/skeleton.model=model/judoPSM.model
+                            meta/psm/skeleton.model=model/judoPSM.model,
+                            judo/psm/operations=src/main/operations,
+                            judo/psm/validations=src/main/validations
                         </Include-Resource>
                     </instructions>
                 </configuration>
@@ -181,6 +192,24 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.common</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+    </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
