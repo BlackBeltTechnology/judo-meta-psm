@@ -1,0 +1,10 @@
+import "../../operations/facade/_importFacade.eol";
+
+context JUDOPSM!Property {
+
+    // dataType of a Property must match type of its path (NavigationExpression)
+    constraint NavigationExpressionTypeIsInvalid {
+    	check: self.validatePath().isEmpty()
+    	message: "Invalid navigation expression of " + self.displayName() + ": " + self.path
+    }
+}

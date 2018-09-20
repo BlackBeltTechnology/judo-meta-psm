@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmi:id="_WObzYJmJEeiyrNaxr-HdNQ" name="M">
+  <types xsi:type="data:Reference" xmi:id="_USi5AJmKEeiyrNaxr-HdNQ" name="E1Ref" target="_QUnq4JmKEeiyrNaxr-HdNQ"/>
+  <types xsi:type="data:Reference" xmi:id="_Xn5rQJmKEeiyrNaxr-HdNQ" name="E2Ref" target="_SL_cMJmKEeiyrNaxr-HdNQ"/>
+  <types xsi:type="data:Reference" xmi:id="_nyalEJoZEeiyrNaxr-HdNQ" name="E3Ref" target="_mKioUJoZEeiyrNaxr-HdNQ"/>
+  <entityTypes xmi:id="_QUnq4JmKEeiyrNaxr-HdNQ" name="E1">
+    <endpoints xmi:id="_TpIvoJmKEeiyrNaxr-HdNQ" name="e2" reference="_Xn5rQJmKEeiyrNaxr-HdNQ"/>
+    <endpoints xmi:id="_praHAJoZEeiyrNaxr-HdNQ" name="e3" partner="_TpIvoJmKEeiyrNaxr-HdNQ" reference="_nyalEJoZEeiyrNaxr-HdNQ"/>
+  </entityTypes>
+  <entityTypes xmi:id="_SL_cMJmKEeiyrNaxr-HdNQ" name="E2">
+    <endpoints xmi:id="_cKopoJoZEeiyrNaxr-HdNQ" name="e1" partner="_praHAJoZEeiyrNaxr-HdNQ" reference="_USi5AJmKEeiyrNaxr-HdNQ"/>
+  </entityTypes>
+  <entityTypes xmi:id="_mKioUJoZEeiyrNaxr-HdNQ" name="E3"/>
+</namespace:Model>

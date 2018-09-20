@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/JudoPSM/src-gen" editDirectory="/JudoPSM.edit/src-gen"
-    editorDirectory="/JudoPSM.editor/src-gen" modelPluginID="JudoPSM" modelName="JudoPSM"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/judo-meta-psm/src-genmodel" editDirectory="/JudoPSM.edit/src-gen"
+    editorDirectory="/JudoPSM.editor/src-gen" modelPluginID="judo-meta-psm" modelName="JudoPSM"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>judoPSM.ecore</foreignModel>
-  <genPackages prefix="Psm" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#/">
-    <nestedGenPackages prefix="Namespace" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//namespace">
+  <genPackages prefix="Psm" basePackage="hu.blackbelt.judo.meta" resource="XMI" disposableProviderFactory="true"
+      ecorePackage="judoPSM.ecore#/">
+    <nestedGenPackages prefix="Namespace" resource="XMI" disposableProviderFactory="true"
+        ecorePackage="judoPSM.ecore#//namespace">
       <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/NamedElement">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//namespace/NamedElement/name"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/Namespace">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/packages"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/datatypes"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/types"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/entityTypes"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/facades"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//namespace/Model"/>
       <genClasses ecoreClass="judoPSM.ecore#//namespace/Package"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Type" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//type">
+    <nestedGenPackages prefix="Type" resource="XMI" disposableProviderFactory="true"
+        ecorePackage="judoPSM.ecore#//type">
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/NavigationExpression"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/Script"/>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Datatype">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Datatype/collection"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Datatype/unique"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Datatype/ordered"/>
-      </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive"/>
-      <genClasses ecoreClass="judoPSM.ecore#//type/TypeDefinition">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//type/TypeDefinition/primitive"/>
-      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/Custom"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/String">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/String/length"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/String/maxLength"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/Numeric">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Numeric/precision"/>
@@ -41,37 +36,42 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/Boolean"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/Enumeration">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//type/Enumeration/members"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//type/Enumeration/members"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//type/Member"/>
+      <genClasses ecoreClass="judoPSM.ecore#//type/Member">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Member/ordinal"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//type/Type"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Data" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//data">
+    <nestedGenPackages prefix="Data" resource="XMI" disposableProviderFactory="true"
+        ecorePackage="judoPSM.ecore#//data">
       <genClasses ecoreClass="judoPSM.ecore#//data/EntityType">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/attributes"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/references"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/superTypes"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/superEntityTypes"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/EntityType/abstract"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/endpoints"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//data/Endpoint">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Endpoint/composition"/>
+      <genClasses ecoreClass="judoPSM.ecore#//data/Reference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//data/Endpoint/target"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Endpoint/collection"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Endpoint/required"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Endpoint/ordered"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//data/Endpoint/partner"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//data/Reference/target"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Reference/lower"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Reference/upper"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Attribute">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//data/Attribute/datatype"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//data/Attribute/primitive"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Attribute/required"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Attribute/identifier"/>
       </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//data/Containment"/>
+      <genClasses ecoreClass="judoPSM.ecore#//data/Endpoint">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//data/Endpoint/partner"/>
+      </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Facade" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//facade">
+    <nestedGenPackages prefix="Facade" resource="XMI" disposableProviderFactory="true"
+        ecorePackage="judoPSM.ecore#//facade">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//facade/Function">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/Function/VALUE"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/Function/AVG"/>
@@ -80,23 +80,31 @@
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/Function/MAX"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/Function/SUM"/>
       </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//facade/OrderDirection">
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/OrderDirection/ASC"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//facade/OrderDirection/DESC"/>
+      </genEnums>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//facade/Facade">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/properties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/links"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/self"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/entityType"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/Property">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Property/datatype"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/path"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/function"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/orderIndex"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/orderDirection"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/filterable"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Property/viewable"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Property/type"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/Link">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Link/target"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Link/path"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Link/list"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Link/expand"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/View"/>
       <genClasses ecoreClass="judoPSM.ecore#//facade/Action">
@@ -104,6 +112,14 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Action/result"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Action/body"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Action/list"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Action/external"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Behavior" disposableProviderFactory="true" fileExtensions="behavior"
+        ecorePackage="judoPSM.ecore#//behavior">
+      <genClasses ecoreClass="judoPSM.ecore#//behavior/CascadeReferences">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//behavior/CascadeReferences/references"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

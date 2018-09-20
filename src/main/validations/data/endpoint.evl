@@ -1,0 +1,59 @@
+import "../../operations/data/_importData.eol";
+
+context JUDOPSM!Endpoint {
+
+    // reserved reference names: id
+    constraint ReservedReferenceName {
+    	check: self.name <> "id"
+    	message: "ReservedReferenceName|Name " + self.displayName() +" is reserved"
+    }
+
+	// upper attribute must be at least 1    
+    constraint UpperMustBeAtLeastOne {
+    	check: self.upper > 0 or self.upper == -1
+    	message: "Invalid upper attribute of " + self.displayName()
+    }
+    
+    // lower property must be less or equal to upper property
+    constraint LowerMustBeLessOrEqualToUpper {
+    	check: self.upper == -1 or self.lower <= self.upper
+    	message: "Lower (" + self.lower + ") must be less or equal to upper (" + self.upper + ") of attribute: " + self.displayName()
+    }
+    
+    // partner of an endpoint must be a different one
+    constraint SelfPartner {
+    	check: not self.partner.isDefined() or self.partner <> self
+    	message: "SelfPartner|Self partner reference found: " + self.displayName()
+    }
+}
+
+context JUDOPSM!Endpoint {
+
+    guard: self.partner.isDefined()
+
+    // opposite partner must be defined if a partner if endpoint is already defined
+    constraint OppositePartnerIsNotDefined {
+    	check: self.partner.partner.isDefined()
+    	message: "OppositePartnerIsNotDefined|Missing opposite partner reference for " + self.displayName()
+    }
+
+    // if partners are specified on both sides of a relation then endpoints must reference to each other
+    constraint InvalidPartnerReferences {
+    	guard: self.satisfiesAll("OppositePartnerIsNotDefined")
+    	check: self.partner.partner = self
+    	message: "InvalidPartnerReferences|Opposite partner reference of " + self.partner.displayName() + " must be " + self.displayName()
+    }
+
+    // target and partner types must be aligned
+    constraint InvalidPartnerType {
+        check: self.partner.getEntityType() = self.target and self.partner.target = self.getEntityType()
+        message: "InvalidPartnerType|Invalid partner type: " + self.partner.displayName() + " for " + self.displayName()
+    }
+
+    // 1-1 single required relationship is not supported
+	critique OneToOneRelationNotSupported {
+    	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
+		check: not(self.isRequired() and not self.isCollection() and self.partner.isRequired() and not self.partner.isCollection())
+		message: "OneToOneRelationNotSupported|1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
+	}
+}

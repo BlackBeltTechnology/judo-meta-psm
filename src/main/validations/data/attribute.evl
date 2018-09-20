@@ -1,0 +1,10 @@
+import "../../operations/data/_importData.eol";
+
+context JUDOPSM!Attribute {
+
+    // reserved attribute names: id    
+    constraint ReservedAttributeName {
+    	check: self.name <> "id"
+    	message: "ReservedAttributeName|Name " + self.displayName() + " is reserved"
+    }
+}
