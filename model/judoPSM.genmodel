@@ -51,12 +51,11 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/superEntityTypes"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/EntityType/abstract"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/referenceCountConstraints"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Reference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/Reference/target"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Reference/lower"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Reference/upper"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Attribute">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -68,6 +67,14 @@
       <genClasses ecoreClass="judoPSM.ecore#//data/Endpoint">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/Endpoint/partner"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//data/Cardinality">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Cardinality/lower"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Cardinality/upper"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//data/ReferenceCountConstraint">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceCountConstraint/references"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Facade" resource="XMI" disposableProviderFactory="true"

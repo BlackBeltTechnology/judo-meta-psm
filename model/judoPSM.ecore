@@ -56,14 +56,12 @@
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceCountConstraints"
+          upperBound="-1" eType="#//data/ReferenceCountConstraint" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//data/Cardinality">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//data/EntityType"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="primitive" lowerBound="1"
@@ -76,6 +74,16 @@
     <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Reference"/>
     <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Reference">
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Cardinality" abstract="true" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="upper" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ReferenceCountConstraint" eSuperTypes="#//data/Cardinality">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="references" lowerBound="1"
+          upperBound="-1" eType="#//data/Reference"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="facade" nsURI="http://blackbelt.hu/judo/meta/psm/facade" nsPrefix="facade">
