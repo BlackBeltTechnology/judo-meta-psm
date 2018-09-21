@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmi:id="_ij0LwJl1EeiyrNaxr-HdNQ" name="M">
-  <types xsi:type="data:Reference" xmi:id="_V1tsAJl2EeiyrNaxr-HdNQ" name="E2Ref" target="_cn6_oJl2EeiyrNaxr-HdNQ"/>
   <entityTypes xmi:id="__xpX4Jl1EeiyrNaxr-HdNQ" name="E1">
-    <endpoints xmi:id="_MemysJl2EeiyrNaxr-HdNQ" name="id" reference="_V1tsAJl2EeiyrNaxr-HdNQ"/>
+    <references xsi:type="data:Endpoint" xmi:id="_hM3ZoL2VEeiOuYiCo6IbXQ" name="id" target="_cn6_oJl2EeiyrNaxr-HdNQ"/>
   </entityTypes>
   <entityTypes xmi:id="_cn6_oJl2EeiyrNaxr-HdNQ" name="E2"/>
 </namespace:Model>

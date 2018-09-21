@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmi:id="_10jN4Jl7EeiyrNaxr-HdNQ" name="M">
-  <types xsi:type="data:Reference" xmi:id="_7JRP0Jl7EeiyrNaxr-HdNQ" name="E1Ref" target="_3VNIUJl7EeiyrNaxr-HdNQ"/>
   <entityTypes xmi:id="_3VNIUJl7EeiyrNaxr-HdNQ" name="E1">
-    <endpoints xmi:id="_aVlP8Jl-EeiyrNaxr-HdNQ" name="e1" partner="_APbRUJl8EeiyrNaxr-HdNQ" reference="_7JRP0Jl7EeiyrNaxr-HdNQ"/>
-    <endpoints xmi:id="_APbRUJl8EeiyrNaxr-HdNQ" name="e2" partner="__idLsJl9EeiyrNaxr-HdNQ" reference="_7JRP0Jl7EeiyrNaxr-HdNQ"/>
-    <endpoints xmi:id="__idLsJl9EeiyrNaxr-HdNQ" name="e3" partner="_APbRUJl8EeiyrNaxr-HdNQ" reference="_7JRP0Jl7EeiyrNaxr-HdNQ"/>
+    <references xsi:type="data:Endpoint" xmi:id="_qka-4L2VEeiOuYiCo6IbXQ" name="e1" target="_3VNIUJl7EeiyrNaxr-HdNQ" partner="_q9gNQL2VEeiOuYiCo6IbXQ"/>
+    <references xsi:type="data:Endpoint" xmi:id="_q9gNQL2VEeiOuYiCo6IbXQ" name="e2" target="_3VNIUJl7EeiyrNaxr-HdNQ" partner="_rTKUML2VEeiOuYiCo6IbXQ"/>
+    <references xsi:type="data:Endpoint" xmi:id="_rTKUML2VEeiOuYiCo6IbXQ" name="e3" target="_3VNIUJl7EeiyrNaxr-HdNQ" partner="_q9gNQL2VEeiOuYiCo6IbXQ"/>
   </entityTypes>
 </namespace:Model>

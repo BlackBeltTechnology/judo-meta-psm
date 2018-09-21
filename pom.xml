@@ -160,34 +160,34 @@
 
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
-                	<groupId>org.eclipse.m2e</groupId>
-                	<artifactId>lifecycle-mapping</artifactId>
-                	<version>1.0.0</version>
-                	<configuration>
-                		<lifecycleMappingMetadata>
-                			<pluginExecutions>
-                				<pluginExecution>
-                					<pluginExecutionFilter>
-                						<groupId>
-                							hu.blackbelt.epsilon
-                						</groupId>
-                						<artifactId>
-                							epsilon-maven-plugin
-                						</artifactId>
-                						<versionRange>
-                							[1.1.1,)
-                						</versionRange>
-                						<goals>
-                							<goal>execute</goal>
-                						</goals>
-                					</pluginExecutionFilter>
-                					<action>
-                						<ignore></ignore>
-                					</action>
-                				</pluginExecution>
-                			</pluginExecutions>
-                		</lifecycleMappingMetadata>
-                	</configuration>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            hu.blackbelt.epsilon
+                                        </groupId>
+                                        <artifactId>
+                                            epsilon-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.1.1,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>execute</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -270,7 +270,7 @@
                                     </metaModels>
 
                                     <models>
-                                        <model>
+                                        <!--model>
                                             <artifact>model/judoPSM.model</artifact>
                                             <name>SKELETON</name>
                                             <aliases>
@@ -283,7 +283,7 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/facade</param>
                                             </metaModelUris>
                                             <expand>true</expand>
-                                        </model>
+                                        </model-->
                                         <model>
                                             <artifact>model/test.model</artifact>
                                             <name>TEST</name>
@@ -299,7 +299,7 @@
                                             <expand>true</expand>
                                         </model>
                                         <!--model>
-                                            <artifact>${basedir}/src/test/020-MaxLengthIsTooLarge/t020.model</artifact>
+                                            <artifact>${basedir}/src/test/003-EnumerationMemberNameIsNotUnique/t003.model</artifact>
                                             <name>A1</name>
                                             <aliases>
                                                 <alias>JUDOPSM</alias>
@@ -313,19 +313,19 @@
                                             <expand>true</expand>
                                         </model-->
                                         <!--model>
-                                         <artifact>${basedir}/src/test/001/t001_a2.model</artifact>
-                                         <name>A2</name>
-                                         <aliases>
-                                         <alias>JUDOPSM</alias>
-                                         </aliases>
-                                         <metaModelUris>
-                                         <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                         <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                         <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                         <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                         </metaModelUris>
-                                         <expand>true</expand>
-                                         </model-->
+                                            <artifact>${basedir}/src/test/001-ModelIsNotUnique/t001_a2.model</artifact>
+                                            <name>A2</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model-->
                                     </models>
                                     <eolPrograms>
                                         <Evl>
