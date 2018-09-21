@@ -81,6 +81,7 @@ public class DataSwitch<T> extends Switch<T> {
             case DataPackage.REFERENCE: {
                 Reference reference = (Reference)theEObject;
                 T result = caseReference(reference);
+                if (result == null) result = caseCardinality(reference);
                 if (result == null) result = caseNamedElement(reference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -96,6 +97,7 @@ public class DataSwitch<T> extends Switch<T> {
                 Containment containment = (Containment)theEObject;
                 T result = caseContainment(containment);
                 if (result == null) result = caseReference(containment);
+                if (result == null) result = caseCardinality(containment);
                 if (result == null) result = caseNamedElement(containment);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -104,7 +106,23 @@ public class DataSwitch<T> extends Switch<T> {
                 Endpoint endpoint = (Endpoint)theEObject;
                 T result = caseEndpoint(endpoint);
                 if (result == null) result = caseReference(endpoint);
+                if (result == null) result = caseCardinality(endpoint);
                 if (result == null) result = caseNamedElement(endpoint);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case DataPackage.CARDINALITY: {
+                Cardinality cardinality = (Cardinality)theEObject;
+                T result = caseCardinality(cardinality);
+                if (result == null) result = caseNamedElement(cardinality);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case DataPackage.REFERENCE_COUNT_CONSTRAINT: {
+                ReferenceCountConstraint referenceCountConstraint = (ReferenceCountConstraint)theEObject;
+                T result = caseReferenceCountConstraint(referenceCountConstraint);
+                if (result == null) result = caseCardinality(referenceCountConstraint);
+                if (result == null) result = caseNamedElement(referenceCountConstraint);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -184,6 +202,36 @@ public class DataSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEndpoint(Endpoint object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Cardinality</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Cardinality</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCardinality(Cardinality object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Reference Count Constraint</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Reference Count Constraint</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseReferenceCountConstraint(ReferenceCountConstraint object) {
         return null;
     }
 

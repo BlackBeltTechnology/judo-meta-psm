@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferences <em>References</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getSuperEntityTypes <em>Super Entity Types</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#isAbstract <em>Abstract</em>}</li>
+ *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints <em>Reference Count Constraints</em>}</li>
  * </ul>
  *
  * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getEntityType()
@@ -99,5 +100,21 @@ public interface EntityType extends Type {
      * @generated
      */
     void setAbstract(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Reference Count Constraints</b></em>' containment reference list.
+     * The list contents are of type {@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Reference Count Constraints</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Reference Count Constraints</em>' containment reference list.
+     * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getEntityType_ReferenceCountConstraints()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ReferenceCountConstraint> getReferenceCountConstraints();
 
 } // EntityType

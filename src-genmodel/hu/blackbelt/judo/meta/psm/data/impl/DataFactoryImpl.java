@@ -60,6 +60,7 @@ public class DataFactoryImpl extends EFactoryImpl implements DataFactory {
             case DataPackage.ATTRIBUTE: return createAttribute();
             case DataPackage.CONTAINMENT: return createContainment();
             case DataPackage.ENDPOINT: return createEndpoint();
+            case DataPackage.REFERENCE_COUNT_CONSTRAINT: return createReferenceCountConstraint();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -103,6 +104,16 @@ public class DataFactoryImpl extends EFactoryImpl implements DataFactory {
     public Endpoint createEndpoint() {
         EndpointImpl endpoint = new EndpointImpl();
         return endpoint;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ReferenceCountConstraint createReferenceCountConstraint() {
+        ReferenceCountConstraintImpl referenceCountConstraint = new ReferenceCountConstraintImpl();
+        return referenceCountConstraint;
     }
 
     /**

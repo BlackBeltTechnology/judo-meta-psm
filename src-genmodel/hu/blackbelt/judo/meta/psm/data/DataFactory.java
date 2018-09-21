@@ -58,6 +58,15 @@ public interface DataFactory extends EFactory {
     Endpoint createEndpoint();
 
     /**
+     * Returns a new object of class '<em>Reference Count Constraint</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Reference Count Constraint</em>'.
+     * @generated
+     */
+    ReferenceCountConstraint createReferenceCountConstraint();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

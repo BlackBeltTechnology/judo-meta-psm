@@ -7,12 +7,14 @@ import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
 import hu.blackbelt.judo.meta.psm.behavior.impl.BehaviorPackageImpl;
 
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.Cardinality;
 import hu.blackbelt.judo.meta.psm.data.Containment;
 import hu.blackbelt.judo.meta.psm.data.DataFactory;
 import hu.blackbelt.judo.meta.psm.data.DataPackage;
 import hu.blackbelt.judo.meta.psm.data.Endpoint;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Reference;
+import hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint;
 
 import hu.blackbelt.judo.meta.psm.facade.FacadePackage;
 
@@ -74,6 +76,20 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
      * @generated
      */
     private EClass endpointEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass cardinalityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass referenceCountConstraintEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -200,6 +216,15 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getEntityType_ReferenceCountConstraints() {
+        return (EReference)entityTypeEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getReference() {
         return referenceEClass;
     }
@@ -211,24 +236,6 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
      */
     public EReference getReference_Target() {
         return (EReference)referenceEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getReference_Lower() {
-        return (EAttribute)referenceEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getReference_Upper() {
-        return (EAttribute)referenceEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -299,6 +306,51 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getCardinality() {
+        return cardinalityEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCardinality_Lower() {
+        return (EAttribute)cardinalityEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCardinality_Upper() {
+        return (EAttribute)cardinalityEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getReferenceCountConstraint() {
+        return referenceCountConstraintEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getReferenceCountConstraint_References() {
+        return (EReference)referenceCountConstraintEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public DataFactory getDataFactory() {
         return (DataFactory)getEFactoryInstance();
     }
@@ -327,11 +379,10 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
         createEReference(entityTypeEClass, ENTITY_TYPE__REFERENCES);
         createEReference(entityTypeEClass, ENTITY_TYPE__SUPER_ENTITY_TYPES);
         createEAttribute(entityTypeEClass, ENTITY_TYPE__ABSTRACT);
+        createEReference(entityTypeEClass, ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS);
 
         referenceEClass = createEClass(REFERENCE);
         createEReference(referenceEClass, REFERENCE__TARGET);
-        createEAttribute(referenceEClass, REFERENCE__LOWER);
-        createEAttribute(referenceEClass, REFERENCE__UPPER);
 
         attributeEClass = createEClass(ATTRIBUTE);
         createEReference(attributeEClass, ATTRIBUTE__PRIMITIVE);
@@ -342,6 +393,13 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 
         endpointEClass = createEClass(ENDPOINT);
         createEReference(endpointEClass, ENDPOINT__PARTNER);
+
+        cardinalityEClass = createEClass(CARDINALITY);
+        createEAttribute(cardinalityEClass, CARDINALITY__LOWER);
+        createEAttribute(cardinalityEClass, CARDINALITY__UPPER);
+
+        referenceCountConstraintEClass = createEClass(REFERENCE_COUNT_CONSTRAINT);
+        createEReference(referenceCountConstraintEClass, REFERENCE_COUNT_CONSTRAINT__REFERENCES);
     }
 
     /**
@@ -377,10 +435,12 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 
         // Add supertypes to classes
         entityTypeEClass.getESuperTypes().add(theTypePackage.getType());
-        referenceEClass.getESuperTypes().add(theNamespacePackage.getNamedElement());
+        referenceEClass.getESuperTypes().add(this.getCardinality());
         attributeEClass.getESuperTypes().add(theNamespacePackage.getNamedElement());
         containmentEClass.getESuperTypes().add(this.getReference());
         endpointEClass.getESuperTypes().add(this.getReference());
+        cardinalityEClass.getESuperTypes().add(theNamespacePackage.getNamedElement());
+        referenceCountConstraintEClass.getESuperTypes().add(this.getCardinality());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(entityTypeEClass, EntityType.class, "EntityType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -388,11 +448,10 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
         initEReference(getEntityType_References(), this.getReference(), null, "references", null, 0, -1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getEntityType_SuperEntityTypes(), this.getEntityType(), null, "superEntityTypes", null, 0, -1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getEntityType_Abstract(), ecorePackage.getEBoolean(), "abstract", null, 1, 1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getEntityType_ReferenceCountConstraints(), this.getReferenceCountConstraint(), null, "referenceCountConstraints", null, 0, -1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(referenceEClass, Reference.class, "Reference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getReference_Target(), this.getEntityType(), null, "target", null, 1, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getReference_Lower(), ecorePackage.getEInt(), "lower", "0", 1, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getReference_Upper(), ecorePackage.getEInt(), "upper", "1", 1, 1, Reference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(attributeEClass, Attribute.class, "Attribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getAttribute_Primitive(), theTypePackage.getPrimitive(), null, "primitive", null, 1, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -403,6 +462,13 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 
         initEClass(endpointEClass, Endpoint.class, "Endpoint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getEndpoint_Partner(), this.getEndpoint(), null, "partner", null, 0, 1, Endpoint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(cardinalityEClass, Cardinality.class, "Cardinality", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getCardinality_Lower(), ecorePackage.getEInt(), "lower", "0", 1, 1, Cardinality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCardinality_Upper(), ecorePackage.getEInt(), "upper", "1", 1, 1, Cardinality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(referenceCountConstraintEClass, ReferenceCountConstraint.class, "ReferenceCountConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getReferenceCountConstraint_References(), this.getReference(), null, "references", null, 1, -1, ReferenceCountConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

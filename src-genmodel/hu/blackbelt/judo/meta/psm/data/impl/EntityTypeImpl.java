@@ -6,6 +6,7 @@ import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.DataPackage;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Reference;
+import hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint;
 
 import hu.blackbelt.judo.meta.psm.type.impl.TypeImpl;
 
@@ -37,6 +38,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getReferences <em>References</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getSuperEntityTypes <em>Super Entity Types</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#isAbstract <em>Abstract</em>}</li>
+ *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getReferenceCountConstraints <em>Reference Count Constraints</em>}</li>
  * </ul>
  *
  * @generated
@@ -91,6 +93,16 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
      * @ordered
      */
     protected boolean abstract_ = ABSTRACT_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getReferenceCountConstraints() <em>Reference Count Constraints</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getReferenceCountConstraints()
+     * @generated
+     * @ordered
+     */
+    protected EList<ReferenceCountConstraint> referenceCountConstraints;
 
     /**
      * <!-- begin-user-doc -->
@@ -173,6 +185,18 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EList<ReferenceCountConstraint> getReferenceCountConstraints() {
+        if (referenceCountConstraints == null) {
+            referenceCountConstraints = new EObjectContainmentEList<ReferenceCountConstraint>(ReferenceCountConstraint.class, this, DataPackage.ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS);
+        }
+        return referenceCountConstraints;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -180,6 +204,8 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
                 return ((InternalEList<?>)getAttributes()).basicRemove(otherEnd, msgs);
             case DataPackage.ENTITY_TYPE__REFERENCES:
                 return ((InternalEList<?>)getReferences()).basicRemove(otherEnd, msgs);
+            case DataPackage.ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS:
+                return ((InternalEList<?>)getReferenceCountConstraints()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -200,6 +226,8 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
                 return getSuperEntityTypes();
             case DataPackage.ENTITY_TYPE__ABSTRACT:
                 return isAbstract();
+            case DataPackage.ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS:
+                return getReferenceCountConstraints();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -228,6 +256,10 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
             case DataPackage.ENTITY_TYPE__ABSTRACT:
                 setAbstract((Boolean)newValue);
                 return;
+            case DataPackage.ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS:
+                getReferenceCountConstraints().clear();
+                getReferenceCountConstraints().addAll((Collection<? extends ReferenceCountConstraint>)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -252,6 +284,9 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
             case DataPackage.ENTITY_TYPE__ABSTRACT:
                 setAbstract(ABSTRACT_EDEFAULT);
                 return;
+            case DataPackage.ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS:
+                getReferenceCountConstraints().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -272,6 +307,8 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
                 return superEntityTypes != null && !superEntityTypes.isEmpty();
             case DataPackage.ENTITY_TYPE__ABSTRACT:
                 return abstract_ != ABSTRACT_EDEFAULT;
+            case DataPackage.ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS:
+                return referenceCountConstraints != null && !referenceCountConstraints.isEmpty();
         }
         return super.eIsSet(featureID);
     }

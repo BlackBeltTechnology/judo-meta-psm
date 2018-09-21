@@ -6,8 +6,6 @@ import hu.blackbelt.judo.meta.psm.data.DataPackage;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Reference;
 
-import hu.blackbelt.judo.meta.psm.namespace.impl.NamedElementImpl;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -24,13 +22,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl#getTarget <em>Target</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl#getLower <em>Lower</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl#getUpper <em>Upper</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class ReferenceImpl extends NamedElementImpl implements Reference {
+public abstract class ReferenceImpl extends CardinalityImpl implements Reference {
     /**
      * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
      * <!-- begin-user-doc -->
@@ -40,46 +36,6 @@ public abstract class ReferenceImpl extends NamedElementImpl implements Referenc
      * @ordered
      */
     protected EntityType target;
-
-    /**
-     * The default value of the '{@link #getLower() <em>Lower</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getLower()
-     * @generated
-     * @ordered
-     */
-    protected static final int LOWER_EDEFAULT = 0;
-
-    /**
-     * The cached value of the '{@link #getLower() <em>Lower</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getLower()
-     * @generated
-     * @ordered
-     */
-    protected int lower = LOWER_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getUpper() <em>Upper</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getUpper()
-     * @generated
-     * @ordered
-     */
-    protected static final int UPPER_EDEFAULT = 1;
-
-    /**
-     * The cached value of the '{@link #getUpper() <em>Upper</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getUpper()
-     * @generated
-     * @ordered
-     */
-    protected int upper = UPPER_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -143,58 +99,12 @@ public abstract class ReferenceImpl extends NamedElementImpl implements Referenc
      * <!-- end-user-doc -->
      * @generated
      */
-    public int getLower() {
-        return lower;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setLower(int newLower) {
-        int oldLower = lower;
-        lower = newLower;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DataPackage.REFERENCE__LOWER, oldLower, lower));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public int getUpper() {
-        return upper;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setUpper(int newUpper) {
-        int oldUpper = upper;
-        upper = newUpper;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DataPackage.REFERENCE__UPPER, oldUpper, upper));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DataPackage.REFERENCE__TARGET:
                 if (resolve) return getTarget();
                 return basicGetTarget();
-            case DataPackage.REFERENCE__LOWER:
-                return getLower();
-            case DataPackage.REFERENCE__UPPER:
-                return getUpper();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -209,12 +119,6 @@ public abstract class ReferenceImpl extends NamedElementImpl implements Referenc
         switch (featureID) {
             case DataPackage.REFERENCE__TARGET:
                 setTarget((EntityType)newValue);
-                return;
-            case DataPackage.REFERENCE__LOWER:
-                setLower((Integer)newValue);
-                return;
-            case DataPackage.REFERENCE__UPPER:
-                setUpper((Integer)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -231,12 +135,6 @@ public abstract class ReferenceImpl extends NamedElementImpl implements Referenc
             case DataPackage.REFERENCE__TARGET:
                 setTarget((EntityType)null);
                 return;
-            case DataPackage.REFERENCE__LOWER:
-                setLower(LOWER_EDEFAULT);
-                return;
-            case DataPackage.REFERENCE__UPPER:
-                setUpper(UPPER_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -251,30 +149,8 @@ public abstract class ReferenceImpl extends NamedElementImpl implements Referenc
         switch (featureID) {
             case DataPackage.REFERENCE__TARGET:
                 return target != null;
-            case DataPackage.REFERENCE__LOWER:
-                return lower != LOWER_EDEFAULT;
-            case DataPackage.REFERENCE__UPPER:
-                return upper != UPPER_EDEFAULT;
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public String toString() {
-        if (eIsProxy()) return super.toString();
-
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (lower: ");
-        result.append(lower);
-        result.append(", upper: ");
-        result.append(upper);
-        result.append(')');
-        return result.toString();
     }
 
 } //ReferenceImpl
