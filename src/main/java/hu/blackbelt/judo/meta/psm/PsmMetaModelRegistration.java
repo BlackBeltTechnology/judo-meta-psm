@@ -11,23 +11,32 @@ import org.osgi.service.component.annotations.Deactivate;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-@Component(immediate = true)
-public class PsmMetaModelRegistration {
+@Component(immediate = true, service = PsmMetaModel.class)
+public class PsmMetaModelRegistration implements PsmMetaModel {
 
     ServiceRegistration<Resource.Factory> psmFactoryRegistration;
+    Resource.Factory factory;
 
     @Activate
     public void activate(ComponentContext componentContext) {
         Dictionary<String, Object> params = new Hashtable<>();
         params.put("meta", "psm");
         params.put("version", componentContext.getBundleContext().getBundle().getVersion());
+        params.put("bundle", componentContext.getBundleContext().getBundle());
 
+        factory = new PsmResourceFactoryImpl();
         psmFactoryRegistration = componentContext.getBundleContext()
-                .registerService(Resource.Factory.class, new PsmResourceFactoryImpl(), params);
+                .registerService(Resource.Factory.class, factory, params);
     }
 
     @Deactivate
     public void deactivate() {
         psmFactoryRegistration.unregister();
     }
+
+    @Override
+    public Resource.Factory getFactory() {
+        return factory;
+    }
+
 }
