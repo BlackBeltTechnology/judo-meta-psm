@@ -233,7 +233,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.1.1</epsilon.maven.plugin.version>
+        <epsilon.maven.plugin.version>1.1.2_feature_2_verify_EVL_rules-27</epsilon.maven.plugin.version>
         <judo.model.scripting.version>1.0.0_develop-4</judo.model.scripting.version>
 
         <src.dir>src/main</src.dir>
@@ -259,33 +259,19 @@
                         </dependencies>
                         <executions>
                             <execution>
-                                <id>validate-meta-psm</id>
-                                <phase>generate-resources</phase>
+                                <id>VALIDATE</id>
+                                <phase>test</phase>
                                 <goals>
                                     <goal>execute</goal>
                                 </goals>
                                 <configuration>
                                     <metaModels>
-                                        <metaModel>model/judoPSM.ecore</metaModel>
+                                        <metaModel>${basedir}/model/judoPSM.ecore</metaModel>
                                     </metaModels>
 
                                     <models>
-                                        <!--model>
-                                            <artifact>model/judoPSM.model</artifact>
-                                            <name>SKELETON</name>
-                                            <aliases>
-                                                <alias>JUDOPSM</alias>
-                                            </aliases>
-                                            <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                            </metaModelUris>
-                                            <expand>true</expand>
-                                        </model-->
                                         <model>
-                                            <artifact>model/test.model</artifact>
+                                            <artifact>${basedir}/model/test.model</artifact>
                                             <name>TEST</name>
                                             <aliases>
                                                 <alias>JUDOPSM</alias>
@@ -298,8 +284,74 @@
                                             </metaModelUris>
                                             <expand>true</expand>
                                         </model>
-                                        <!--model>
-                                            <artifact>${basedir}/src/test/003-EnumerationMemberNameIsNotUnique/t003.model</artifact>
+                                    </models>
+                                    <eolPrograms>
+                                        <Evl>
+                                            <source>${basedir}/src/main/validations/judopsm.evl</source>
+                                        </Evl>
+                                        <!--Assert>
+                                            <modelsEquals>
+                                                <model>A</model>
+                                                <expectedModel>B</expectedModel>
+                                                <message>fdhfdh</message>
+                                            </modelsEquals>
+                                        </Asserts-->
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>Verify-VALID</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>${basedir}/model/judoPSM.ecore</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>${basedir}/model/test.model</artifact>
+                                            <name>TEST</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Evl>
+                                            <source>${basedir}/src/main/validations/judopsm.evl</source>
+                                            <expectedErrors/>
+                                            <expectedWarnings>
+                                                <expectedWarning>OneToOneRelationNotSupported|1-1 relations required on both sides are not supported: A.b - B.a</expectedWarning>
+                                                <expectedWarning>OneToOneRelationNotSupported|1-1 relations required on both sides are not supported: B.a - A.b</expectedWarning>
+                                            </expectedWarnings>
+                                        </Evl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>verify-ModelIsNotUnique</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>${basedir}/model/judoPSM.ecore</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>${basedir}/src/test/001-ModelIsNotUnique/t001_a1.model</artifact>
                                             <name>A1</name>
                                             <aliases>
                                                 <alias>JUDOPSM</alias>
@@ -311,8 +363,8 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/facade</param>
                                             </metaModelUris>
                                             <expand>true</expand>
-                                        </model-->
-                                        <!--model>
+                                        </model>
+                                        <model>
                                             <artifact>${basedir}/src/test/001-ModelIsNotUnique/t001_a2.model</artifact>
                                             <name>A2</name>
                                             <aliases>
@@ -325,11 +377,125 @@
                                                 <param>http://blackbelt.hu/judo/meta/psm/facade</param>
                                             </metaModelUris>
                                             <expand>true</expand>
-                                        </model-->
+                                        </model>
                                     </models>
                                     <eolPrograms>
                                         <Evl>
-                                            <source>src/main/validations/judopsm.evl</source>
+                                            <source>${basedir}/src/main/validations/judopsm.evl</source>
+                                            <expectedErrors>
+                                                <expectedError>ModelIsNotUnique|Model name is not unique: A</expectedError>
+                                            </expectedErrors>
+                                        </Evl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>verify-NamespaceIsNotUnique</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>${basedir}/model/judoPSM.ecore</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>${basedir}/src/test/002-NamespaceIsNotUnique/t002.model</artifact>
+                                            <name>A1</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Evl>
+                                            <source>${basedir}/src/main/validations/judopsm.evl</source>
+                                            <expectedErrors>
+                                                <expectedError>NamespaceIsNotUnique|Names Set {P, E, String} are not unique in namespace M</expectedError>
+                                            </expectedErrors>
+                                        </Evl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>verify-EnumerationMemberNameIsNotUnique</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>${basedir}/model/judoPSM.ecore</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>${basedir}/src/test/003-EnumerationMemberNameIsNotUnique/t003.model</artifact>
+                                            <name>A1</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Evl>
+                                            <source>${basedir}/src/main/validations/judopsm.evl</source>
+                                            <expectedErrors>
+                                                <expectedError>EnumerationMemberNameIsNotUnique|Enum member names are not unique: E</expectedError>
+                                            </expectedErrors>
+                                        </Evl>
+                                    </eolPrograms>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>verify-EnumerationMemberValueIsNotUnique</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <metaModels>
+                                        <metaModel>${basedir}/model/judoPSM.ecore</metaModel>
+                                    </metaModels>
+
+                                    <models>
+                                        <model>
+                                            <artifact>${basedir}/src/test/004-EnumerationMemberValueIsNotUnique/t004.model</artifact>
+                                            <name>A1</name>
+                                            <aliases>
+                                                <alias>JUDOPSM</alias>
+                                            </aliases>
+                                            <metaModelUris>
+                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+                                            </metaModelUris>
+                                            <expand>true</expand>
+                                        </model>
+                                    </models>
+                                    <eolPrograms>
+                                        <Evl>
+                                            <source>${basedir}/src/main/validations/judopsm.evl</source>
+                                            <expectedErrors>
+                                                <expectedError>EnumerationMemberValueIsNotUnique|Enum member numbers are not unique: E</expectedError>
+                                            </expectedErrors>
                                         </Evl>
                                     </eolPrograms>
                                 </configuration>
