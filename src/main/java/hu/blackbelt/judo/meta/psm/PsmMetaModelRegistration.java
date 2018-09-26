@@ -1,7 +1,15 @@
 package hu.blackbelt.judo.meta.psm;
 
+import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
+import hu.blackbelt.judo.meta.psm.data.DataPackage;
+import hu.blackbelt.judo.meta.psm.facade.FacadePackage;
+import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
+import hu.blackbelt.judo.meta.psm.type.TypePackage;
 import hu.blackbelt.judo.meta.psm.util.PsmResourceFactoryImpl;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -39,4 +47,12 @@ public class PsmMetaModelRegistration implements PsmMetaModel {
         return factory;
     }
 
+    @Override
+    public void registerPsmMetamodel(ResourceSet resourceSet) {
+        resourceSet.getPackageRegistry().put(TypePackage.eINSTANCE.getNsURI(), TypePackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(NamespacePackage.eINSTANCE.getNsURI(), NamespacePackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(DataPackage.eINSTANCE.getNsURI(), DataPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(FacadePackage.eINSTANCE.getNsURI(), FacadePackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(BehaviorPackage.eINSTANCE.getNsURI(), BehaviorPackage.eINSTANCE);
+    }
 }
