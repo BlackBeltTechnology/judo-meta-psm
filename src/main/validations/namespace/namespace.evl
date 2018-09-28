@@ -13,6 +13,6 @@ context JUDOPSM!Namespace {
 			}
 			return notUniqueNames.isEmpty();
 		}
-		message: "NamespaceIsNotUnique|Names " + notUniqueNames + " are not unique in namespace " + self.name
+		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name
 	}
 }

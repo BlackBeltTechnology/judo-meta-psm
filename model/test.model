@@ -5,14 +5,14 @@
     <entityTypes xmi:id="A1-EntityType" name="A1"/>
     <entityTypes xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
       <attributes xmi:id="_mD22ULvrEeiOuYiCo6IbXQ" name="x" primitive="_U4jZoLaVEeiphaohSbmpfA" required="true" identifier="true"/>
-      <references xsi:type="data:Endpoint" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" target="B-EntityType" lower="1" partner="_6cnfMLvrEeiOuYiCo6IbXQ"/>
+      <references xsi:type="data:Endpoint" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" lower="1" target="B-EntityType" partner="_6cnfMLvrEeiOuYiCo6IbXQ"/>
       <references xsi:type="data:Endpoint" xmi:id="_Ke7FMLvsEeiOuYiCo6IbXQ" name="c" target="C-EntityType"/>
     </entityTypes>
     <entityTypes xmi:id="B-EntityType" name="B">
-      <references xsi:type="data:Endpoint" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" lower="1" partner="_0lc3gLvrEeiOuYiCo6IbXQ"/>
+      <references xsi:type="data:Endpoint" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" lower="1" target="A-EntityType" partner="_0lc3gLvrEeiOuYiCo6IbXQ"/>
     </entityTypes>
     <entityTypes xmi:id="C-EntityType" name="C">
-      <references xsi:type="data:Endpoint" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" upper="-1"/>
+      <references xsi:type="data:Endpoint" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" upper="-1" target="A-EntityType"/>
     </entityTypes>
     <entityTypes xmi:id="_lGrKcLvtEeiOuYiCo6IbXQ" name="S1">
       <references xsi:type="data:Endpoint" xmi:id="_pR08QLvtEeiOuYiCo6IbXQ" name="a" target="A-EntityType"/>
