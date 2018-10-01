@@ -104,17 +104,15 @@
                 <configuration>
                     <obrRepository>NONE</obrRepository>
                     <instructions>
+                        <Import-Package>
+                            !lombok, *
+                        </Import-Package>
                         <Export-Package>
                             meta/psm;version=${project.version},
                             hu.blackbelt.judo.meta.psm.*;version=${project.version}sss
                         </Export-Package>
-                        <Judo-Tatami-Meta-Model-Paths>
-                            meta/psm/psm.ecore
-                        </Judo-Tatami-Meta-Model-Paths>
-                        <Judo-Tatami-Model-Paths>
-                            meta/psm/skeleton.model
-                        </Judo-Tatami-Model-Paths>
-                        <Include-Resource>{maven-resources},
+                        <Include-Resource>
+                            {maven-resources},
                             meta/psm/psm.ecore=model/judoPSM.ecore,
                             meta/psm/skeleton.model=model/judoPSM.model,
                             judo/psm/operations=src/main/operations,
@@ -227,6 +225,18 @@
             <version>6.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>hu.blackbelt.osgi.utils</groupId>
+            <artifactId>osgi-api</artifactId>
+            <version>1.0.6_develop-40</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.0</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
