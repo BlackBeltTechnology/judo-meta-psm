@@ -14,7 +14,7 @@ import java.util.Hashtable;
 @AllArgsConstructor
 @ToString
 @Getter
-public class PsmModel {
+public class PsmModelInfo {
 
     public static final String FILE = "file";
     public static final String NAME = "name";
