@@ -56,12 +56,8 @@ public class PsmModelBundleTracker {
 
     private static class PsmBundlePredicate implements Predicate<Bundle> {
         @Override
-        public boolean test(Bundle bundle) {
-            List<Map<String, String>> entries = BundleUtil.getHeaderEntries(bundle, PSM_MODELS);
-            if (entries == null) {
-                return false;
-            }
-            return true;
+        public boolean test(Bundle trackedBundle) {
+            return BundleUtil.hasHeader(trackedBundle, PSM_MODELS);
         }
     }
 
