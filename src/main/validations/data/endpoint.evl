@@ -10,14 +10,14 @@ context JUDOPSM!Endpoint {
 
 	// upper attribute must be at least 1    
     constraint UpperMustBeAtLeastOne {
-    	check: self.upper > 0 or self.upper == -1
+    	check: self.cardinality.upper > 0 or self.cardinality.upper == -1
     	message: "Invalid upper attribute of " + self.displayName()
     }
     
     // lower property must be less or equal to upper property
     constraint LowerMustBeLessOrEqualToUpper {
-    	check: self.upper == -1 or self.lower <= self.upper
-    	message: "Lower (" + self.lower + ") must be less or equal to upper (" + self.upper + ") of attribute: " + self.displayName()
+    	check: self.cardinality.upper == -1 or self.cardinality.lower <= self.cardinality.upper
+    	message: "Lower (" + self.cardinality.lower + ") must be less or equal to upper (" + self.cardinality.upper + ") of attribute: " + self.displayName()
     }
     
     // partner of an endpoint must be a different one

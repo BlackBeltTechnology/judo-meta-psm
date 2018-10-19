@@ -10,10 +10,10 @@ operation JUDOPSM!Reference getEntityType() : JUDOPSM!EntityType {
 
 @cached
 operation JUDOPSM!Reference isRequired() : Boolean {
-	return self.lower > 0;
+	return self.cardinality.lower > 0;
 }
 
 @cached
 operation JUDOPSM!Reference isCollection() : Boolean {
-	return self.upper > 1 or self.upper == -1;
+	return self.cardinality.upper > 1 or self.cardinality.upper == -1;
 }
