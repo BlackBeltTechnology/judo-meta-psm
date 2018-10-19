@@ -10,16 +10,16 @@
     <eClassifiers xsi:type="ecore:EClass" name="Namespace" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
           eType="#//namespace/Package" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
-          eType="#//type/Type" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataTypes" upperBound="-1"
+          eType="#//type/DataType" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="facades" upperBound="-1"
           eType="#//facade/StandaloneFacade" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="entitySelectors" upperBound="-1"
           eType="#//facade/EntitySelector" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="entityTypes" upperBound="-1"
-          eType="#//data/EntityType" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="propertySets" upperBound="-1"
           eType="#//facade/PropertySet" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="entityTypes" upperBound="-1"
+          eType="#//data/EntityType" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace"/>
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace"/>
