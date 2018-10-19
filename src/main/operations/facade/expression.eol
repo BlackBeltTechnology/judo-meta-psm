@@ -26,7 +26,7 @@ operation JUDOPSM!Property validatePath() : Sequence {
 			
 			if (attribute.isDefined()) {
 				entityType = null;
-				expressionDataType = attribute.primitive;
+				expressionDataType = attribute.dataType;
 			} else if (reference.isDefined()) {
 				entityType = reference.target;
 				if (reference.isCollection()) {

@@ -7,3 +7,13 @@ operation JUDOPSM!Attribute displayName() : String {
 operation JUDOPSM!Attribute getEntityType() : JUDOPSM!EntityType {
 	return JUDOPSM!EntityType.all.selectOne(et | et.attributes.includes(self));
 }
+
+@cached
+operation JUDOPSM!Attribute isPrimitive() : Boolean {
+	return self.dataType.isKindOf(JUDOPSM!Primitive);
+}
+
+@cached
+operation JUDOPSM!Attribute isComplex() : Boolean {
+	return self.dataType.isKindOf(JUDOPSM!ComplexType);
+}
