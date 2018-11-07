@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:data="http://blackbelt.hu/judo/meta/psm/data"
-                 xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace"
-                 xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_IF4voJoeEeiyrNaxr-HdNQ" name="M">
-    <dataTypes xsi:type="type:String" xmi:id="_5keiYJoiEeiyrNaxr-HdNQ" name="String" maxLength="255"/>
-    <entityTypes xmi:id="_0tFVoJoiEeiyrNaxr-HdNQ" name="E">
-        <references xsi:type="data:Endpoint" xmi:id="_S3uOIL2XEeiOuYiCo6IbXQ" name="x" target="_0tFVoJoiEeiyrNaxr-HdNQ">
-            <cardinality/>
-        </references>
-        <attributes xmi:id="_1V8FYJoiEeiyrNaxr-HdNQ" name="x" dataType="_5keiYJoiEeiyrNaxr-HdNQ"/>
-    </entityTypes>
+<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_IF4voJoeEeiyrNaxr-HdNQ" name="M">
+  <dataTypes xsi:type="type:String" xmi:id="_5keiYJoiEeiyrNaxr-HdNQ" name="String" maxLength="255"/>
+  <entityTypes xmi:id="_0tFVoJoiEeiyrNaxr-HdNQ" name="E">
+    <references xsi:type="data:Endpoint" xmi:id="_S3uOIL2XEeiOuYiCo6IbXQ" name="x" target="_0tFVoJoiEeiyrNaxr-HdNQ">
+      <cardinality/>
+    </references>
+    <attributes xmi:id="_1V8FYJoiEeiyrNaxr-HdNQ" name="x" dataType="_5keiYJoiEeiyrNaxr-HdNQ"/>
+  </entityTypes>
 </namespace:Model>
