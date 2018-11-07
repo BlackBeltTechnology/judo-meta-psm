@@ -69,9 +69,45 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
-            uri="null"
+            uri="http://blackbelt.hu/judo/meta/psm/action"
+            class="hu.blackbelt.judo.meta.psm.action.ActionPackage"
+            genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="action"
+            class="hu.blackbelt.judo.meta.psm.action.util.ActionResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated judoPSM -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/behavior"
             class="hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage"
             genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="behavior"
+            class="hu.blackbelt.judo.meta.psm.behavior.util.BehaviorResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated JudoPSM -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/facade"
+            class="hu.blackbelt.judo.meta.psm.facade.FacadePackage"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated JudoPSM -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/action"
+            class="hu.blackbelt.judo.meta.psm.action.ActionPackage"/>
    </extension>
 
 </plugin>

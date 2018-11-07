@@ -7,7 +7,10 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: hu.blackbelt.judo.meta.psm.behavior,
+Export-Package: hu.blackbelt.judo.meta.psm.action,
+ hu.blackbelt.judo.meta.psm.action.impl,
+ hu.blackbelt.judo.meta.psm.action.util,
+ hu.blackbelt.judo.meta.psm.behavior,
  hu.blackbelt.judo.meta.psm.behavior.impl,
  hu.blackbelt.judo.meta.psm.behavior.util,
  hu.blackbelt.judo.meta.psm.data,
@@ -24,5 +27,6 @@ Export-Package: hu.blackbelt.judo.meta.psm.behavior,
  hu.blackbelt.judo.meta.psm.type.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ judo-meta-psm;visibility:=reexport
 Bundle-ActivationPolicy: lazy

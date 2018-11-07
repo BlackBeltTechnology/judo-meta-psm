@@ -13,5 +13,5 @@ package hu.blackbelt.judo.meta.psm.type;
  * @model abstract="true"
  * @generated
  */
-public interface Primitive extends Type {
+public interface Primitive extends DataType {
 } // Primitive

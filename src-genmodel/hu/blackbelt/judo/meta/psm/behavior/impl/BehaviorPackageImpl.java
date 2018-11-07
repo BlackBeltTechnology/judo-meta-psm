@@ -2,6 +2,10 @@
  */
 package hu.blackbelt.judo.meta.psm.behavior.impl;
 
+import hu.blackbelt.judo.meta.psm.action.ActionPackage;
+
+import hu.blackbelt.judo.meta.psm.action.impl.ActionPackageImpl;
+
 import hu.blackbelt.judo.meta.psm.behavior.BehaviorFactory;
 import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
 import hu.blackbelt.judo.meta.psm.behavior.CascadeReferences;
@@ -93,6 +97,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
         TypePackageImpl theTypePackage = (TypePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI) instanceof TypePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI) : TypePackage.eINSTANCE);
         DataPackageImpl theDataPackage = (DataPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) instanceof DataPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) : DataPackage.eINSTANCE);
         FacadePackageImpl theFacadePackage = (FacadePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) instanceof FacadePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) : FacadePackage.eINSTANCE);
+        ActionPackageImpl theActionPackage = (ActionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) instanceof ActionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) : ActionPackage.eINSTANCE);
 
         // Create package meta-data objects
         theBehaviorPackage.createPackageContents();
@@ -100,6 +105,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
         theTypePackage.createPackageContents();
         theDataPackage.createPackageContents();
         theFacadePackage.createPackageContents();
+        theActionPackage.createPackageContents();
 
         // Initialize created meta-data
         theBehaviorPackage.initializePackageContents();
@@ -107,6 +113,7 @@ public class BehaviorPackageImpl extends EPackageImpl implements BehaviorPackage
         theTypePackage.initializePackageContents();
         theDataPackage.initializePackageContents();
         theFacadePackage.initializePackageContents();
+        theActionPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theBehaviorPackage.freeze();

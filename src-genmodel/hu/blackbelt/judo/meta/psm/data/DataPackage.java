@@ -80,22 +80,13 @@ public interface DataPackage extends EPackage {
     int ENTITY_TYPE__NAME = TypePackage.TYPE__NAME;
 
     /**
-     * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
+     * The feature id for the '<em><b>Reference Count Constraints</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE__ATTRIBUTES = TypePackage.TYPE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>References</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ENTITY_TYPE__REFERENCES = TypePackage.TYPE_FEATURE_COUNT + 1;
+    int ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS = TypePackage.TYPE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Super Entity Types</b></em>' reference list.
@@ -104,7 +95,16 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE__SUPER_ENTITY_TYPES = TypePackage.TYPE_FEATURE_COUNT + 2;
+    int ENTITY_TYPE__SUPER_ENTITY_TYPES = TypePackage.TYPE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>References</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENTITY_TYPE__REFERENCES = TypePackage.TYPE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Abstract</b></em>' attribute.
@@ -116,13 +116,13 @@ public interface DataPackage extends EPackage {
     int ENTITY_TYPE__ABSTRACT = TypePackage.TYPE_FEATURE_COUNT + 3;
 
     /**
-     * The feature id for the '<em><b>Reference Count Constraints</b></em>' containment reference list.
+     * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS = TypePackage.TYPE_FEATURE_COUNT + 4;
+    int ENTITY_TYPE__ATTRIBUTES = TypePackage.TYPE_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Entity Type</em>' class.
@@ -143,61 +143,6 @@ public interface DataPackage extends EPackage {
     int ENTITY_TYPE_OPERATION_COUNT = TypePackage.TYPE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.CardinalityImpl <em>Cardinality</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.data.impl.CardinalityImpl
-     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getCardinality()
-     * @generated
-     */
-    int CARDINALITY = 5;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CARDINALITY__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
-
-    /**
-     * The feature id for the '<em><b>Lower</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CARDINALITY__LOWER = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Upper</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CARDINALITY__UPPER = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
-
-    /**
-     * The number of structural features of the '<em>Cardinality</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CARDINALITY_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
-
-    /**
-     * The number of operations of the '<em>Cardinality</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CARDINALITY_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
-
-    /**
      * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl <em>Reference</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -214,25 +159,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE__NAME = CARDINALITY__NAME;
-
-    /**
-     * The feature id for the '<em><b>Lower</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REFERENCE__LOWER = CARDINALITY__LOWER;
-
-    /**
-     * The feature id for the '<em><b>Upper</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REFERENCE__UPPER = CARDINALITY__UPPER;
+    int REFERENCE__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
 
     /**
      * The feature id for the '<em><b>Target</b></em>' reference.
@@ -241,7 +168,16 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE__TARGET = CARDINALITY_FEATURE_COUNT + 0;
+    int REFERENCE__TARGET = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REFERENCE__CARDINALITY = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Reference</em>' class.
@@ -250,7 +186,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_FEATURE_COUNT = CARDINALITY_FEATURE_COUNT + 1;
+    int REFERENCE_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Reference</em>' class.
@@ -259,7 +195,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_OPERATION_COUNT = CARDINALITY_OPERATION_COUNT + 0;
+    int REFERENCE_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl <em>Attribute</em>}' class.
@@ -281,22 +217,13 @@ public interface DataPackage extends EPackage {
     int ATTRIBUTE__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
 
     /**
-     * The feature id for the '<em><b>Primitive</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ATTRIBUTE__PRIMITIVE = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Required</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ATTRIBUTE__REQUIRED = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int ATTRIBUTE__REQUIRED = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Identifier</b></em>' attribute.
@@ -305,7 +232,16 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE__IDENTIFIER = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int ATTRIBUTE__IDENTIFIER = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Data Type</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE__DATA_TYPE = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Attribute</em>' class.
@@ -345,24 +281,6 @@ public interface DataPackage extends EPackage {
     int CONTAINMENT__NAME = REFERENCE__NAME;
 
     /**
-     * The feature id for the '<em><b>Lower</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT__LOWER = REFERENCE__LOWER;
-
-    /**
-     * The feature id for the '<em><b>Upper</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT__UPPER = REFERENCE__UPPER;
-
-    /**
      * The feature id for the '<em><b>Target</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -370,6 +288,15 @@ public interface DataPackage extends EPackage {
      * @ordered
      */
     int CONTAINMENT__TARGET = REFERENCE__TARGET;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT__CARDINALITY = REFERENCE__CARDINALITY;
 
     /**
      * The number of structural features of the '<em>Containment</em>' class.
@@ -409,24 +336,6 @@ public interface DataPackage extends EPackage {
     int ENDPOINT__NAME = REFERENCE__NAME;
 
     /**
-     * The feature id for the '<em><b>Lower</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ENDPOINT__LOWER = REFERENCE__LOWER;
-
-    /**
-     * The feature id for the '<em><b>Upper</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ENDPOINT__UPPER = REFERENCE__UPPER;
-
-    /**
      * The feature id for the '<em><b>Target</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -434,6 +343,15 @@ public interface DataPackage extends EPackage {
      * @ordered
      */
     int ENDPOINT__TARGET = REFERENCE__TARGET;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENDPOINT__CARDINALITY = REFERENCE__CARDINALITY;
 
     /**
      * The feature id for the '<em><b>Partner</b></em>' reference.
@@ -470,34 +388,7 @@ public interface DataPackage extends EPackage {
      * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReferenceCountConstraint()
      * @generated
      */
-    int REFERENCE_COUNT_CONSTRAINT = 6;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REFERENCE_COUNT_CONSTRAINT__NAME = CARDINALITY__NAME;
-
-    /**
-     * The feature id for the '<em><b>Lower</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REFERENCE_COUNT_CONSTRAINT__LOWER = CARDINALITY__LOWER;
-
-    /**
-     * The feature id for the '<em><b>Upper</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REFERENCE_COUNT_CONSTRAINT__UPPER = CARDINALITY__UPPER;
+    int REFERENCE_COUNT_CONSTRAINT = 5;
 
     /**
      * The feature id for the '<em><b>References</b></em>' reference list.
@@ -506,7 +397,16 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT__REFERENCES = CARDINALITY_FEATURE_COUNT + 0;
+    int REFERENCE_COUNT_CONSTRAINT__REFERENCES = 0;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_COUNT_CONSTRAINT__CARDINALITY = 1;
 
     /**
      * The number of structural features of the '<em>Reference Count Constraint</em>' class.
@@ -515,7 +415,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT_FEATURE_COUNT = CARDINALITY_FEATURE_COUNT + 1;
+    int REFERENCE_COUNT_CONSTRAINT_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Reference Count Constraint</em>' class.
@@ -524,7 +424,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT_OPERATION_COUNT = CARDINALITY_OPERATION_COUNT + 0;
+    int REFERENCE_COUNT_CONSTRAINT_OPERATION_COUNT = 0;
 
 
     /**
@@ -538,26 +438,15 @@ public interface DataPackage extends EPackage {
     EClass getEntityType();
 
     /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getAttributes <em>Attributes</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints <em>Reference Count Constraints</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Attributes</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getAttributes()
+     * @return the meta object for the containment reference list '<em>Reference Count Constraints</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints()
      * @see #getEntityType()
      * @generated
      */
-    EReference getEntityType_Attributes();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferences <em>References</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>References</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getReferences()
-     * @see #getEntityType()
-     * @generated
-     */
-    EReference getEntityType_References();
+    EReference getEntityType_ReferenceCountConstraints();
 
     /**
      * Returns the meta object for the reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getSuperEntityTypes <em>Super Entity Types</em>}'.
@@ -571,6 +460,17 @@ public interface DataPackage extends EPackage {
     EReference getEntityType_SuperEntityTypes();
 
     /**
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferences <em>References</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>References</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getReferences()
+     * @see #getEntityType()
+     * @generated
+     */
+    EReference getEntityType_References();
+
+    /**
      * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.data.EntityType#isAbstract <em>Abstract</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -582,15 +482,15 @@ public interface DataPackage extends EPackage {
     EAttribute getEntityType_Abstract();
 
     /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints <em>Reference Count Constraints</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getAttributes <em>Attributes</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Reference Count Constraints</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints()
+     * @return the meta object for the containment reference list '<em>Attributes</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getAttributes()
      * @see #getEntityType()
      * @generated
      */
-    EReference getEntityType_ReferenceCountConstraints();
+    EReference getEntityType_Attributes();
 
     /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Reference <em>Reference</em>}'.
@@ -614,6 +514,17 @@ public interface DataPackage extends EPackage {
     EReference getReference_Target();
 
     /**
+     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.Reference#getCardinality <em>Cardinality</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Cardinality</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.Reference#getCardinality()
+     * @see #getReference()
+     * @generated
+     */
+    EReference getReference_Cardinality();
+
+    /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Attribute <em>Attribute</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -622,17 +533,6 @@ public interface DataPackage extends EPackage {
      * @generated
      */
     EClass getAttribute();
-
-    /**
-     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.data.Attribute#getPrimitive <em>Primitive</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Primitive</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Attribute#getPrimitive()
-     * @see #getAttribute()
-     * @generated
-     */
-    EReference getAttribute_Primitive();
 
     /**
      * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.data.Attribute#isRequired <em>Required</em>}'.
@@ -655,6 +555,17 @@ public interface DataPackage extends EPackage {
      * @generated
      */
     EAttribute getAttribute_Identifier();
+
+    /**
+     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.data.Attribute#getDataType <em>Data Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Data Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.Attribute#getDataType()
+     * @see #getAttribute()
+     * @generated
+     */
+    EReference getAttribute_DataType();
 
     /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Containment <em>Containment</em>}'.
@@ -688,38 +599,6 @@ public interface DataPackage extends EPackage {
     EReference getEndpoint_Partner();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Cardinality <em>Cardinality</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Cardinality</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Cardinality
-     * @generated
-     */
-    EClass getCardinality();
-
-    /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.data.Cardinality#getLower <em>Lower</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Lower</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Cardinality#getLower()
-     * @see #getCardinality()
-     * @generated
-     */
-    EAttribute getCardinality_Lower();
-
-    /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.data.Cardinality#getUpper <em>Upper</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Upper</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Cardinality#getUpper()
-     * @see #getCardinality()
-     * @generated
-     */
-    EAttribute getCardinality_Upper();
-
-    /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint <em>Reference Count Constraint</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -739,6 +618,17 @@ public interface DataPackage extends EPackage {
      * @generated
      */
     EReference getReferenceCountConstraint_References();
+
+    /**
+     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint#getCardinality <em>Cardinality</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Cardinality</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint#getCardinality()
+     * @see #getReferenceCountConstraint()
+     * @generated
+     */
+    EReference getReferenceCountConstraint_Cardinality();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -774,20 +664,12 @@ public interface DataPackage extends EPackage {
         EClass ENTITY_TYPE = eINSTANCE.getEntityType();
 
         /**
-         * The meta object literal for the '<em><b>Attributes</b></em>' containment reference list feature.
+         * The meta object literal for the '<em><b>Reference Count Constraints</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference ENTITY_TYPE__ATTRIBUTES = eINSTANCE.getEntityType_Attributes();
-
-        /**
-         * The meta object literal for the '<em><b>References</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ENTITY_TYPE__REFERENCES = eINSTANCE.getEntityType_References();
+        EReference ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS = eINSTANCE.getEntityType_ReferenceCountConstraints();
 
         /**
          * The meta object literal for the '<em><b>Super Entity Types</b></em>' reference list feature.
@@ -798,6 +680,14 @@ public interface DataPackage extends EPackage {
         EReference ENTITY_TYPE__SUPER_ENTITY_TYPES = eINSTANCE.getEntityType_SuperEntityTypes();
 
         /**
+         * The meta object literal for the '<em><b>References</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ENTITY_TYPE__REFERENCES = eINSTANCE.getEntityType_References();
+
+        /**
          * The meta object literal for the '<em><b>Abstract</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -806,12 +696,12 @@ public interface DataPackage extends EPackage {
         EAttribute ENTITY_TYPE__ABSTRACT = eINSTANCE.getEntityType_Abstract();
 
         /**
-         * The meta object literal for the '<em><b>Reference Count Constraints</b></em>' containment reference list feature.
+         * The meta object literal for the '<em><b>Attributes</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS = eINSTANCE.getEntityType_ReferenceCountConstraints();
+        EReference ENTITY_TYPE__ATTRIBUTES = eINSTANCE.getEntityType_Attributes();
 
         /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl <em>Reference</em>}' class.
@@ -832,6 +722,14 @@ public interface DataPackage extends EPackage {
         EReference REFERENCE__TARGET = eINSTANCE.getReference_Target();
 
         /**
+         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference REFERENCE__CARDINALITY = eINSTANCE.getReference_Cardinality();
+
+        /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl <em>Attribute</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -840,14 +738,6 @@ public interface DataPackage extends EPackage {
          * @generated
          */
         EClass ATTRIBUTE = eINSTANCE.getAttribute();
-
-        /**
-         * The meta object literal for the '<em><b>Primitive</b></em>' reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ATTRIBUTE__PRIMITIVE = eINSTANCE.getAttribute_Primitive();
 
         /**
          * The meta object literal for the '<em><b>Required</b></em>' attribute feature.
@@ -864,6 +754,14 @@ public interface DataPackage extends EPackage {
          * @generated
          */
         EAttribute ATTRIBUTE__IDENTIFIER = eINSTANCE.getAttribute_Identifier();
+
+        /**
+         * The meta object literal for the '<em><b>Data Type</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ATTRIBUTE__DATA_TYPE = eINSTANCE.getAttribute_DataType();
 
         /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl <em>Containment</em>}' class.
@@ -894,32 +792,6 @@ public interface DataPackage extends EPackage {
         EReference ENDPOINT__PARTNER = eINSTANCE.getEndpoint_Partner();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.CardinalityImpl <em>Cardinality</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.data.impl.CardinalityImpl
-         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getCardinality()
-         * @generated
-         */
-        EClass CARDINALITY = eINSTANCE.getCardinality();
-
-        /**
-         * The meta object literal for the '<em><b>Lower</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute CARDINALITY__LOWER = eINSTANCE.getCardinality_Lower();
-
-        /**
-         * The meta object literal for the '<em><b>Upper</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute CARDINALITY__UPPER = eINSTANCE.getCardinality_Upper();
-
-        /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceCountConstraintImpl <em>Reference Count Constraint</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -936,6 +808,14 @@ public interface DataPackage extends EPackage {
          * @generated
          */
         EReference REFERENCE_COUNT_CONSTRAINT__REFERENCES = eINSTANCE.getReferenceCountConstraint_References();
+
+        /**
+         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference REFERENCE_COUNT_CONSTRAINT__CARDINALITY = eINSTANCE.getReferenceCountConstraint_Cardinality();
 
     }
 

@@ -92,10 +92,6 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
                 return createEndpointAdapter();
             }
             @Override
-            public Adapter caseCardinality(Cardinality object) {
-                return createCardinalityAdapter();
-            }
-            @Override
             public Adapter caseReferenceCountConstraint(ReferenceCountConstraint object) {
                 return createReferenceCountConstraintAdapter();
             }
@@ -194,20 +190,6 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEndpointAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.Cardinality <em>Cardinality</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see hu.blackbelt.judo.meta.psm.data.Cardinality
-     * @generated
-     */
-    public Adapter createCardinalityAdapter() {
         return null;
     }
 

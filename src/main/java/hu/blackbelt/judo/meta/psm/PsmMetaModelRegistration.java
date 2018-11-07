@@ -1,5 +1,6 @@
 package hu.blackbelt.judo.meta.psm;
 
+import hu.blackbelt.judo.meta.psm.action.ActionPackage;
 import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
 import hu.blackbelt.judo.meta.psm.data.DataPackage;
 import hu.blackbelt.judo.meta.psm.facade.FacadePackage;
@@ -54,5 +55,6 @@ public class PsmMetaModelRegistration implements PsmMetaModel {
         resourceSet.getPackageRegistry().put(DataPackage.eINSTANCE.getNsURI(), DataPackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(FacadePackage.eINSTANCE.getNsURI(), FacadePackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(BehaviorPackage.eINSTANCE.getNsURI(), BehaviorPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(ActionPackage.eINSTANCE.getNsURI(), ActionPackage.eINSTANCE);
     }
 }

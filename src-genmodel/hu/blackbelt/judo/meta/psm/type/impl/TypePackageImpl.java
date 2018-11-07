@@ -2,6 +2,10 @@
  */
 package hu.blackbelt.judo.meta.psm.type.impl;
 
+import hu.blackbelt.judo.meta.psm.action.ActionPackage;
+
+import hu.blackbelt.judo.meta.psm.action.impl.ActionPackageImpl;
+
 import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
 
 import hu.blackbelt.judo.meta.psm.behavior.impl.BehaviorPackageImpl;
@@ -18,7 +22,11 @@ import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
 
 import hu.blackbelt.judo.meta.psm.namespace.impl.NamespacePackageImpl;
 
+import hu.blackbelt.judo.meta.psm.type.Cardinality;
+import hu.blackbelt.judo.meta.psm.type.ComplexType;
 import hu.blackbelt.judo.meta.psm.type.Custom;
+import hu.blackbelt.judo.meta.psm.type.DataType;
+import hu.blackbelt.judo.meta.psm.type.Element;
 import hu.blackbelt.judo.meta.psm.type.Enumeration;
 import hu.blackbelt.judo.meta.psm.type.Member;
 import hu.blackbelt.judo.meta.psm.type.Numeric;
@@ -105,6 +113,41 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass dataTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass xmlEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass complexTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass elementEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass cardinalityEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EDataType navigationExpressionEDataType = null;
 
     /**
@@ -113,6 +156,13 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
      * @generated
      */
     private EDataType scriptEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType regExpEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -163,22 +213,25 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
         // Obtain or create and register interdependencies
         NamespacePackageImpl theNamespacePackage = (NamespacePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(NamespacePackage.eNS_URI) instanceof NamespacePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(NamespacePackage.eNS_URI) : NamespacePackage.eINSTANCE);
         DataPackageImpl theDataPackage = (DataPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) instanceof DataPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) : DataPackage.eINSTANCE);
-        FacadePackageImpl theFacadePackage = (FacadePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) instanceof FacadePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) : FacadePackage.eINSTANCE);
         BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
+        FacadePackageImpl theFacadePackage = (FacadePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) instanceof FacadePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) : FacadePackage.eINSTANCE);
+        ActionPackageImpl theActionPackage = (ActionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) instanceof ActionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) : ActionPackage.eINSTANCE);
 
         // Create package meta-data objects
         theTypePackage.createPackageContents();
         theNamespacePackage.createPackageContents();
         theDataPackage.createPackageContents();
-        theFacadePackage.createPackageContents();
         theBehaviorPackage.createPackageContents();
+        theFacadePackage.createPackageContents();
+        theActionPackage.createPackageContents();
 
         // Initialize created meta-data
         theTypePackage.initializePackageContents();
         theNamespacePackage.initializePackageContents();
         theDataPackage.initializePackageContents();
-        theFacadePackage.initializePackageContents();
         theBehaviorPackage.initializePackageContents();
+        theFacadePackage.initializePackageContents();
+        theActionPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theTypePackage.freeze();
@@ -223,6 +276,15 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
      */
     public EAttribute getString_MaxLength() {
         return (EAttribute)stringEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getString_RegExp() {
+        return (EAttribute)stringEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -311,6 +373,132 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getDataType() {
+        return dataTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getXML() {
+        return xmlEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getXML_Namespace() {
+        return (EAttribute)xmlEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getXML_Element() {
+        return (EAttribute)xmlEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getComplexType() {
+        return complexTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getComplexType_SuperComplexTypes() {
+        return (EReference)complexTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getComplexType_Elements() {
+        return (EReference)complexTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getComplexType_Abstract() {
+        return (EAttribute)complexTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getElement() {
+        return elementEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getElement_Type() {
+        return (EReference)elementEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getElement_Cardinality() {
+        return (EReference)elementEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCardinality() {
+        return cardinalityEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCardinality_Lower() {
+        return (EAttribute)cardinalityEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getCardinality_Upper() {
+        return (EAttribute)cardinalityEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getNavigationExpression() {
         return navigationExpressionEDataType;
     }
@@ -322,6 +510,15 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
      */
     public EDataType getScript() {
         return scriptEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getRegExp() {
+        return regExpEDataType;
     }
 
     /**
@@ -358,6 +555,7 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 
         stringEClass = createEClass(STRING);
         createEAttribute(stringEClass, STRING__MAX_LENGTH);
+        createEAttribute(stringEClass, STRING__REG_EXP);
 
         numericEClass = createEClass(NUMERIC);
         createEAttribute(numericEClass, NUMERIC__PRECISION);
@@ -373,9 +571,29 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 
         typeEClass = createEClass(TYPE);
 
+        dataTypeEClass = createEClass(DATA_TYPE);
+
+        xmlEClass = createEClass(XML);
+        createEAttribute(xmlEClass, XML__NAMESPACE);
+        createEAttribute(xmlEClass, XML__ELEMENT);
+
+        complexTypeEClass = createEClass(COMPLEX_TYPE);
+        createEReference(complexTypeEClass, COMPLEX_TYPE__SUPER_COMPLEX_TYPES);
+        createEReference(complexTypeEClass, COMPLEX_TYPE__ELEMENTS);
+        createEAttribute(complexTypeEClass, COMPLEX_TYPE__ABSTRACT);
+
+        elementEClass = createEClass(ELEMENT);
+        createEReference(elementEClass, ELEMENT__TYPE);
+        createEReference(elementEClass, ELEMENT__CARDINALITY);
+
+        cardinalityEClass = createEClass(CARDINALITY);
+        createEAttribute(cardinalityEClass, CARDINALITY__LOWER);
+        createEAttribute(cardinalityEClass, CARDINALITY__UPPER);
+
         // Create data types
         navigationExpressionEDataType = createEDataType(NAVIGATION_EXPRESSION);
         scriptEDataType = createEDataType(SCRIPT);
+        regExpEDataType = createEDataType(REG_EXP);
     }
 
     /**
@@ -409,7 +627,7 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
         // Set bounds for type parameters
 
         // Add supertypes to classes
-        primitiveEClass.getESuperTypes().add(this.getType());
+        primitiveEClass.getESuperTypes().add(this.getDataType());
         customEClass.getESuperTypes().add(this.getPrimitive());
         stringEClass.getESuperTypes().add(this.getPrimitive());
         numericEClass.getESuperTypes().add(this.getPrimitive());
@@ -417,6 +635,9 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
         enumerationEClass.getESuperTypes().add(this.getPrimitive());
         memberEClass.getESuperTypes().add(theNamespacePackage.getNamedElement());
         typeEClass.getESuperTypes().add(theNamespacePackage.getNamedElement());
+        dataTypeEClass.getESuperTypes().add(this.getType());
+        xmlEClass.getESuperTypes().add(this.getPrimitive());
+        complexTypeEClass.getESuperTypes().add(this.getDataType());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(primitiveEClass, Primitive.class, "Primitive", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -425,6 +646,7 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 
         initEClass(stringEClass, hu.blackbelt.judo.meta.psm.type.String.class, "String", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getString_MaxLength(), ecorePackage.getEInt(), "maxLength", null, 1, 1, hu.blackbelt.judo.meta.psm.type.String.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getString_RegExp(), this.getRegExp(), "regExp", null, 0, 1, hu.blackbelt.judo.meta.psm.type.String.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(numericEClass, Numeric.class, "Numeric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getNumeric_Precision(), ecorePackage.getEInt(), "precision", null, 1, 1, Numeric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -440,9 +662,29 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 
         initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        initEClass(dataTypeEClass, DataType.class, "DataType", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(xmlEClass, hu.blackbelt.judo.meta.psm.type.XML.class, "XML", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getXML_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, hu.blackbelt.judo.meta.psm.type.XML.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getXML_Element(), ecorePackage.getEString(), "element", null, 0, 1, hu.blackbelt.judo.meta.psm.type.XML.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(complexTypeEClass, ComplexType.class, "ComplexType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getComplexType_SuperComplexTypes(), this.getComplexType(), null, "superComplexTypes", null, 0, -1, ComplexType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getComplexType_Elements(), this.getElement(), null, "elements", null, 0, -1, ComplexType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getComplexType_Abstract(), ecorePackage.getEBoolean(), "abstract", null, 1, 1, ComplexType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(elementEClass, Element.class, "Element", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getElement_Type(), this.getType(), null, "type", null, 1, 1, Element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getElement_Cardinality(), this.getCardinality(), null, "cardinality", null, 1, 1, Element.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(cardinalityEClass, Cardinality.class, "Cardinality", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getCardinality_Lower(), ecorePackage.getEInt(), "lower", "0", 1, 1, Cardinality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getCardinality_Upper(), ecorePackage.getEInt(), "upper", "1", 1, 1, Cardinality.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize data types
         initEDataType(navigationExpressionEDataType, String.class, "NavigationExpression", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(scriptEDataType, String.class, "Script", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(regExpEDataType, String.class, "RegExp", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

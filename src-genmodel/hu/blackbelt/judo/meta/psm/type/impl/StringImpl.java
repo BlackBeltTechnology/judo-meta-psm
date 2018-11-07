@@ -4,6 +4,8 @@ package hu.blackbelt.judo.meta.psm.type.impl;
 
 import hu.blackbelt.judo.meta.psm.type.TypePackage;
 
+import java.lang.String;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link hu.blackbelt.judo.meta.psm.type.impl.StringImpl#getMaxLength <em>Max Length</em>}</li>
+ *   <li>{@link hu.blackbelt.judo.meta.psm.type.impl.StringImpl#getRegExp <em>Reg Exp</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,6 +46,26 @@ public class StringImpl extends PrimitiveImpl implements hu.blackbelt.judo.meta.
      * @ordered
      */
     protected int maxLength = MAX_LENGTH_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getRegExp() <em>Reg Exp</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRegExp()
+     * @generated
+     * @ordered
+     */
+    protected static final String REG_EXP_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getRegExp() <em>Reg Exp</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getRegExp()
+     * @generated
+     * @ordered
+     */
+    protected String regExp = REG_EXP_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -89,11 +112,34 @@ public class StringImpl extends PrimitiveImpl implements hu.blackbelt.judo.meta.
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getRegExp() {
+        return regExp;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setRegExp(String newRegExp) {
+        String oldRegExp = regExp;
+        regExp = newRegExp;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, TypePackage.STRING__REG_EXP, oldRegExp, regExp));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TypePackage.STRING__MAX_LENGTH:
                 return getMaxLength();
+            case TypePackage.STRING__REG_EXP:
+                return getRegExp();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -108,6 +154,9 @@ public class StringImpl extends PrimitiveImpl implements hu.blackbelt.judo.meta.
         switch (featureID) {
             case TypePackage.STRING__MAX_LENGTH:
                 setMaxLength((Integer)newValue);
+                return;
+            case TypePackage.STRING__REG_EXP:
+                setRegExp((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -124,6 +173,9 @@ public class StringImpl extends PrimitiveImpl implements hu.blackbelt.judo.meta.
             case TypePackage.STRING__MAX_LENGTH:
                 setMaxLength(MAX_LENGTH_EDEFAULT);
                 return;
+            case TypePackage.STRING__REG_EXP:
+                setRegExp(REG_EXP_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -138,6 +190,8 @@ public class StringImpl extends PrimitiveImpl implements hu.blackbelt.judo.meta.
         switch (featureID) {
             case TypePackage.STRING__MAX_LENGTH:
                 return maxLength != MAX_LENGTH_EDEFAULT;
+            case TypePackage.STRING__REG_EXP:
+                return REG_EXP_EDEFAULT == null ? regExp != null : !REG_EXP_EDEFAULT.equals(regExp);
         }
         return super.eIsSet(featureID);
     }
@@ -154,6 +208,8 @@ public class StringImpl extends PrimitiveImpl implements hu.blackbelt.judo.meta.
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (maxLength: ");
         result.append(maxLength);
+        result.append(", regExp: ");
+        result.append(regExp);
         result.append(')');
         return result.toString();
     }

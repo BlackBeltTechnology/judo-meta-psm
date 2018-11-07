@@ -122,22 +122,13 @@ public interface NamespacePackage extends EPackage {
     int NAMESPACE__PACKAGES = NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Types</b></em>' containment reference list.
+     * The feature id for the '<em><b>Data Types</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int NAMESPACE__TYPES = NAMED_ELEMENT_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Entity Types</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int NAMESPACE__ENTITY_TYPES = NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int NAMESPACE__DATA_TYPES = NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Facades</b></em>' containment reference list.
@@ -146,7 +137,34 @@ public interface NamespacePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NAMESPACE__FACADES = NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int NAMESPACE__FACADES = NAMED_ELEMENT_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Entity Selectors</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int NAMESPACE__ENTITY_SELECTORS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Property Sets</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int NAMESPACE__PROPERTY_SETS = NAMED_ELEMENT_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Entity Types</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int NAMESPACE__ENTITY_TYPES = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>Namespace</em>' class.
@@ -155,7 +173,7 @@ public interface NamespacePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NAMESPACE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 4;
+    int NAMESPACE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Namespace</em>' class.
@@ -195,22 +213,13 @@ public interface NamespacePackage extends EPackage {
     int MODEL__PACKAGES = NAMESPACE__PACKAGES;
 
     /**
-     * The feature id for the '<em><b>Types</b></em>' containment reference list.
+     * The feature id for the '<em><b>Data Types</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int MODEL__TYPES = NAMESPACE__TYPES;
-
-    /**
-     * The feature id for the '<em><b>Entity Types</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int MODEL__ENTITY_TYPES = NAMESPACE__ENTITY_TYPES;
+    int MODEL__DATA_TYPES = NAMESPACE__DATA_TYPES;
 
     /**
      * The feature id for the '<em><b>Facades</b></em>' containment reference list.
@@ -220,6 +229,33 @@ public interface NamespacePackage extends EPackage {
      * @ordered
      */
     int MODEL__FACADES = NAMESPACE__FACADES;
+
+    /**
+     * The feature id for the '<em><b>Entity Selectors</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MODEL__ENTITY_SELECTORS = NAMESPACE__ENTITY_SELECTORS;
+
+    /**
+     * The feature id for the '<em><b>Property Sets</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MODEL__PROPERTY_SETS = NAMESPACE__PROPERTY_SETS;
+
+    /**
+     * The feature id for the '<em><b>Entity Types</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MODEL__ENTITY_TYPES = NAMESPACE__ENTITY_TYPES;
 
     /**
      * The number of structural features of the '<em>Model</em>' class.
@@ -268,22 +304,13 @@ public interface NamespacePackage extends EPackage {
     int PACKAGE__PACKAGES = NAMESPACE__PACKAGES;
 
     /**
-     * The feature id for the '<em><b>Types</b></em>' containment reference list.
+     * The feature id for the '<em><b>Data Types</b></em>' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PACKAGE__TYPES = NAMESPACE__TYPES;
-
-    /**
-     * The feature id for the '<em><b>Entity Types</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PACKAGE__ENTITY_TYPES = NAMESPACE__ENTITY_TYPES;
+    int PACKAGE__DATA_TYPES = NAMESPACE__DATA_TYPES;
 
     /**
      * The feature id for the '<em><b>Facades</b></em>' containment reference list.
@@ -293,6 +320,33 @@ public interface NamespacePackage extends EPackage {
      * @ordered
      */
     int PACKAGE__FACADES = NAMESPACE__FACADES;
+
+    /**
+     * The feature id for the '<em><b>Entity Selectors</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PACKAGE__ENTITY_SELECTORS = NAMESPACE__ENTITY_SELECTORS;
+
+    /**
+     * The feature id for the '<em><b>Property Sets</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PACKAGE__PROPERTY_SETS = NAMESPACE__PROPERTY_SETS;
+
+    /**
+     * The feature id for the '<em><b>Entity Types</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PACKAGE__ENTITY_TYPES = NAMESPACE__ENTITY_TYPES;
 
     /**
      * The number of structural features of the '<em>Package</em>' class.
@@ -356,26 +410,15 @@ public interface NamespacePackage extends EPackage {
     EReference getNamespace_Packages();
 
     /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getTypes <em>Types</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getDataTypes <em>Data Types</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Types</em>'.
-     * @see hu.blackbelt.judo.meta.psm.namespace.Namespace#getTypes()
+     * @return the meta object for the containment reference list '<em>Data Types</em>'.
+     * @see hu.blackbelt.judo.meta.psm.namespace.Namespace#getDataTypes()
      * @see #getNamespace()
      * @generated
      */
-    EReference getNamespace_Types();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getEntityTypes <em>Entity Types</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Entity Types</em>'.
-     * @see hu.blackbelt.judo.meta.psm.namespace.Namespace#getEntityTypes()
-     * @see #getNamespace()
-     * @generated
-     */
-    EReference getNamespace_EntityTypes();
+    EReference getNamespace_DataTypes();
 
     /**
      * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getFacades <em>Facades</em>}'.
@@ -387,6 +430,39 @@ public interface NamespacePackage extends EPackage {
      * @generated
      */
     EReference getNamespace_Facades();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getEntitySelectors <em>Entity Selectors</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Entity Selectors</em>'.
+     * @see hu.blackbelt.judo.meta.psm.namespace.Namespace#getEntitySelectors()
+     * @see #getNamespace()
+     * @generated
+     */
+    EReference getNamespace_EntitySelectors();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getPropertySets <em>Property Sets</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Property Sets</em>'.
+     * @see hu.blackbelt.judo.meta.psm.namespace.Namespace#getPropertySets()
+     * @see #getNamespace()
+     * @generated
+     */
+    EReference getNamespace_PropertySets();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.namespace.Namespace#getEntityTypes <em>Entity Types</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Entity Types</em>'.
+     * @see hu.blackbelt.judo.meta.psm.namespace.Namespace#getEntityTypes()
+     * @see #getNamespace()
+     * @generated
+     */
+    EReference getNamespace_EntityTypes();
 
     /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.namespace.Model <em>Model</em>}'.
@@ -468,20 +544,12 @@ public interface NamespacePackage extends EPackage {
         EReference NAMESPACE__PACKAGES = eINSTANCE.getNamespace_Packages();
 
         /**
-         * The meta object literal for the '<em><b>Types</b></em>' containment reference list feature.
+         * The meta object literal for the '<em><b>Data Types</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference NAMESPACE__TYPES = eINSTANCE.getNamespace_Types();
-
-        /**
-         * The meta object literal for the '<em><b>Entity Types</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference NAMESPACE__ENTITY_TYPES = eINSTANCE.getNamespace_EntityTypes();
+        EReference NAMESPACE__DATA_TYPES = eINSTANCE.getNamespace_DataTypes();
 
         /**
          * The meta object literal for the '<em><b>Facades</b></em>' containment reference list feature.
@@ -490,6 +558,30 @@ public interface NamespacePackage extends EPackage {
          * @generated
          */
         EReference NAMESPACE__FACADES = eINSTANCE.getNamespace_Facades();
+
+        /**
+         * The meta object literal for the '<em><b>Entity Selectors</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference NAMESPACE__ENTITY_SELECTORS = eINSTANCE.getNamespace_EntitySelectors();
+
+        /**
+         * The meta object literal for the '<em><b>Property Sets</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference NAMESPACE__PROPERTY_SETS = eINSTANCE.getNamespace_PropertySets();
+
+        /**
+         * The meta object literal for the '<em><b>Entity Types</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference NAMESPACE__ENTITY_TYPES = eINSTANCE.getNamespace_EntityTypes();
 
         /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.namespace.impl.ModelImpl <em>Model</em>}' class.

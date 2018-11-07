@@ -2,6 +2,10 @@
  */
 package hu.blackbelt.judo.meta.psm.namespace.impl;
 
+import hu.blackbelt.judo.meta.psm.action.ActionPackage;
+
+import hu.blackbelt.judo.meta.psm.action.impl.ActionPackageImpl;
+
 import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
 
 import hu.blackbelt.judo.meta.psm.behavior.impl.BehaviorPackageImpl;
@@ -115,22 +119,25 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
         // Obtain or create and register interdependencies
         TypePackageImpl theTypePackage = (TypePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI) instanceof TypePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI) : TypePackage.eINSTANCE);
         DataPackageImpl theDataPackage = (DataPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) instanceof DataPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) : DataPackage.eINSTANCE);
-        FacadePackageImpl theFacadePackage = (FacadePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) instanceof FacadePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) : FacadePackage.eINSTANCE);
         BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
+        FacadePackageImpl theFacadePackage = (FacadePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) instanceof FacadePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) : FacadePackage.eINSTANCE);
+        ActionPackageImpl theActionPackage = (ActionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) instanceof ActionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) : ActionPackage.eINSTANCE);
 
         // Create package meta-data objects
         theNamespacePackage.createPackageContents();
         theTypePackage.createPackageContents();
         theDataPackage.createPackageContents();
-        theFacadePackage.createPackageContents();
         theBehaviorPackage.createPackageContents();
+        theFacadePackage.createPackageContents();
+        theActionPackage.createPackageContents();
 
         // Initialize created meta-data
         theNamespacePackage.initializePackageContents();
         theTypePackage.initializePackageContents();
         theDataPackage.initializePackageContents();
-        theFacadePackage.initializePackageContents();
         theBehaviorPackage.initializePackageContents();
+        theFacadePackage.initializePackageContents();
+        theActionPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theNamespacePackage.freeze();
@@ -182,7 +189,7 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getNamespace_Types() {
+    public EReference getNamespace_DataTypes() {
         return (EReference)namespaceEClass.getEStructuralFeatures().get(1);
     }
 
@@ -191,7 +198,7 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getNamespace_EntityTypes() {
+    public EReference getNamespace_Facades() {
         return (EReference)namespaceEClass.getEStructuralFeatures().get(2);
     }
 
@@ -200,8 +207,26 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getNamespace_Facades() {
+    public EReference getNamespace_EntitySelectors() {
         return (EReference)namespaceEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getNamespace_PropertySets() {
+        return (EReference)namespaceEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getNamespace_EntityTypes() {
+        return (EReference)namespaceEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -255,9 +280,11 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
 
         namespaceEClass = createEClass(NAMESPACE);
         createEReference(namespaceEClass, NAMESPACE__PACKAGES);
-        createEReference(namespaceEClass, NAMESPACE__TYPES);
-        createEReference(namespaceEClass, NAMESPACE__ENTITY_TYPES);
+        createEReference(namespaceEClass, NAMESPACE__DATA_TYPES);
         createEReference(namespaceEClass, NAMESPACE__FACADES);
+        createEReference(namespaceEClass, NAMESPACE__ENTITY_SELECTORS);
+        createEReference(namespaceEClass, NAMESPACE__PROPERTY_SETS);
+        createEReference(namespaceEClass, NAMESPACE__ENTITY_TYPES);
 
         modelEClass = createEClass(MODEL);
 
@@ -289,8 +316,8 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
 
         // Obtain other dependent packages
         TypePackage theTypePackage = (TypePackage)EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI);
-        DataPackage theDataPackage = (DataPackage)EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI);
         FacadePackage theFacadePackage = (FacadePackage)EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI);
+        DataPackage theDataPackage = (DataPackage)EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI);
 
         // Create type parameters
 
@@ -307,9 +334,11 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
 
         initEClass(namespaceEClass, Namespace.class, "Namespace", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getNamespace_Packages(), this.getPackage(), null, "packages", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_Types(), theTypePackage.getType(), null, "types", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getNamespace_DataTypes(), theTypePackage.getDataType(), null, "dataTypes", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getNamespace_Facades(), theFacadePackage.getStandaloneFacade(), null, "facades", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getNamespace_EntitySelectors(), theFacadePackage.getEntitySelector(), null, "entitySelectors", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getNamespace_PropertySets(), theFacadePackage.getPropertySet(), null, "propertySets", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getNamespace_EntityTypes(), theDataPackage.getEntityType(), null, "entityTypes", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_Facades(), theFacadePackage.getFacade(), null, "facades", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

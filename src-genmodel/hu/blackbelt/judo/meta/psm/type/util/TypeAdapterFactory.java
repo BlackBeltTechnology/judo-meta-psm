@@ -4,13 +4,18 @@ package hu.blackbelt.judo.meta.psm.type.util;
 
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 
+import hu.blackbelt.judo.meta.psm.type.Cardinality;
+import hu.blackbelt.judo.meta.psm.type.ComplexType;
 import hu.blackbelt.judo.meta.psm.type.Custom;
+import hu.blackbelt.judo.meta.psm.type.DataType;
+import hu.blackbelt.judo.meta.psm.type.Element;
 import hu.blackbelt.judo.meta.psm.type.Enumeration;
 import hu.blackbelt.judo.meta.psm.type.Member;
 import hu.blackbelt.judo.meta.psm.type.Numeric;
 import hu.blackbelt.judo.meta.psm.type.Primitive;
 import hu.blackbelt.judo.meta.psm.type.Type;
 import hu.blackbelt.judo.meta.psm.type.TypePackage;
+import hu.blackbelt.judo.meta.psm.type.XML;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -106,6 +111,26 @@ public class TypeAdapterFactory extends AdapterFactoryImpl {
             @Override
             public Adapter caseType(Type object) {
                 return createTypeAdapter();
+            }
+            @Override
+            public Adapter caseDataType(DataType object) {
+                return createDataTypeAdapter();
+            }
+            @Override
+            public Adapter caseXML(XML object) {
+                return createXMLAdapter();
+            }
+            @Override
+            public Adapter caseComplexType(ComplexType object) {
+                return createComplexTypeAdapter();
+            }
+            @Override
+            public Adapter caseElement(Element object) {
+                return createElementAdapter();
+            }
+            @Override
+            public Adapter caseCardinality(Cardinality object) {
+                return createCardinalityAdapter();
             }
             @Override
             public Adapter caseNamedElement(NamedElement object) {
@@ -240,6 +265,76 @@ public class TypeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTypeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.type.DataType <em>Data Type</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.type.DataType
+     * @generated
+     */
+    public Adapter createDataTypeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.type.XML <em>XML</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.type.XML
+     * @generated
+     */
+    public Adapter createXMLAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.type.ComplexType <em>Complex Type</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.type.ComplexType
+     * @generated
+     */
+    public Adapter createComplexTypeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.type.Element <em>Element</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.type.Element
+     * @generated
+     */
+    public Adapter createElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.type.Cardinality <em>Cardinality</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.type.Cardinality
+     * @generated
+     */
+    public Adapter createCardinalityAdapter() {
         return null;
     }
 

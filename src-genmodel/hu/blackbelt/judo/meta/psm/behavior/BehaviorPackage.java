@@ -37,7 +37,7 @@ public interface BehaviorPackage extends EPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    String eNS_URI = "null";
+    String eNS_URI = "http://blackbelt.hu/judo/meta/psm/behavior";
 
     /**
      * The package namespace name.
@@ -45,7 +45,7 @@ public interface BehaviorPackage extends EPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    String eNS_PREFIX = "null";
+    String eNS_PREFIX = "behavior";
 
     /**
      * The singleton instance of the package.

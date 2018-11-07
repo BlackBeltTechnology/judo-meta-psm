@@ -76,6 +76,42 @@ public interface TypeFactory extends EFactory {
     Member createMember();
 
     /**
+     * Returns a new object of class '<em>XML</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>XML</em>'.
+     * @generated
+     */
+    XML createXML();
+
+    /**
+     * Returns a new object of class '<em>Complex Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Complex Type</em>'.
+     * @generated
+     */
+    ComplexType createComplexType();
+
+    /**
+     * Returns a new object of class '<em>Element</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Element</em>'.
+     * @generated
+     */
+    Element createElement();
+
+    /**
+     * Returns a new object of class '<em>Cardinality</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Cardinality</em>'.
+     * @generated
+     */
+    Cardinality createCardinality();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

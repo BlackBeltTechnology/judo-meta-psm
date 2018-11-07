@@ -2,12 +2,16 @@
  */
 package hu.blackbelt.judo.meta.psm.type.impl;
 
+import hu.blackbelt.judo.meta.psm.type.Cardinality;
+import hu.blackbelt.judo.meta.psm.type.ComplexType;
 import hu.blackbelt.judo.meta.psm.type.Custom;
+import hu.blackbelt.judo.meta.psm.type.Element;
 import hu.blackbelt.judo.meta.psm.type.Enumeration;
 import hu.blackbelt.judo.meta.psm.type.Member;
 import hu.blackbelt.judo.meta.psm.type.Numeric;
 import hu.blackbelt.judo.meta.psm.type.TypeFactory;
 import hu.blackbelt.judo.meta.psm.type.TypePackage;
+import hu.blackbelt.judo.meta.psm.type.XML;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -68,6 +72,10 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
             case TypePackage.BOOLEAN: return createBoolean();
             case TypePackage.ENUMERATION: return createEnumeration();
             case TypePackage.MEMBER: return createMember();
+            case TypePackage.XML: return createXML();
+            case TypePackage.COMPLEX_TYPE: return createComplexType();
+            case TypePackage.ELEMENT: return createElement();
+            case TypePackage.CARDINALITY: return createCardinality();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -85,6 +93,8 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
                 return createNavigationExpressionFromString(eDataType, initialValue);
             case TypePackage.SCRIPT:
                 return createScriptFromString(eDataType, initialValue);
+            case TypePackage.REG_EXP:
+                return createRegExpFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -102,6 +112,8 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
                 return convertNavigationExpressionToString(eDataType, instanceValue);
             case TypePackage.SCRIPT:
                 return convertScriptToString(eDataType, instanceValue);
+            case TypePackage.REG_EXP:
+                return convertRegExpToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -172,6 +184,46 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
+    public XML createXML() {
+        XMLImpl xml = new XMLImpl();
+        return xml;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ComplexType createComplexType() {
+        ComplexTypeImpl complexType = new ComplexTypeImpl();
+        return complexType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Element createElement() {
+        ElementImpl element = new ElementImpl();
+        return element;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Cardinality createCardinality() {
+        CardinalityImpl cardinality = new CardinalityImpl();
+        return cardinality;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public String createNavigationExpressionFromString(EDataType eDataType, String initialValue) {
         return (String)super.createFromString(eDataType, initialValue);
     }
@@ -200,6 +252,24 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * @generated
      */
     public String convertScriptToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String createRegExpFromString(EDataType eDataType, String initialValue) {
+        return (String)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertRegExpToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

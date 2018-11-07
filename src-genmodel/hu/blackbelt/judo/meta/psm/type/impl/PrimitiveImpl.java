@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class PrimitiveImpl extends TypeImpl implements Primitive {
+public abstract class PrimitiveImpl extends DataTypeImpl implements Primitive {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

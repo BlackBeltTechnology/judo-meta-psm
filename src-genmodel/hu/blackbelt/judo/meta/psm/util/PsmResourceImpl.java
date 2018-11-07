@@ -4,7 +4,7 @@ package hu.blackbelt.judo.meta.psm.util;
 
 import org.eclipse.emf.common.util.URI;
 
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
  * @see hu.blackbelt.judo.meta.psm.util.PsmResourceFactoryImpl
  * @generated
  */
-public class PsmResourceImpl extends XMIResourceImpl {
+public class PsmResourceImpl extends XMLResourceImpl {
     /**
      * Creates an instance of the resource.
      * <!-- begin-user-doc -->

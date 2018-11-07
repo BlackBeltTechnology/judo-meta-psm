@@ -4,7 +4,7 @@ package hu.blackbelt.judo.meta.psm.facade;
 
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 
-import hu.blackbelt.judo.meta.psm.type.Type;
+import hu.blackbelt.judo.meta.psm.type.DataType;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,209 +15,92 @@ import hu.blackbelt.judo.meta.psm.type.Type;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getPath <em>Path</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getFunction <em>Function</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getOrderIndex <em>Order Index</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getOrderDirection <em>Order Direction</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#isFilterable <em>Filterable</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#isViewable <em>Viewable</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getType <em>Type</em>}</li>
+ *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getDataType <em>Data Type</em>}</li>
+ *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getReadDefinition <em>Read Definition</em>}</li>
+ *   <li>{@link hu.blackbelt.judo.meta.psm.facade.Property#getWriteDefinition <em>Write Definition</em>}</li>
  * </ul>
  *
  * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Property extends NamedElement {
     /**
-     * Returns the value of the '<em><b>Path</b></em>' attribute.
+     * Returns the value of the '<em><b>Data Type</b></em>' reference.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Path</em>' attribute isn't clear,
+     * If the meaning of the '<em>Data Type</em>' reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Path</em>' attribute.
-     * @see #setPath(String)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_Path()
-     * @model dataType="hu.blackbelt.judo.meta.psm.type.NavigationExpression" required="true"
+     * @return the value of the '<em>Data Type</em>' reference.
+     * @see #setDataType(DataType)
+     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_DataType()
+     * @model required="true" derived="true"
      * @generated
      */
-    String getPath();
+    DataType getDataType();
 
     /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getPath <em>Path</em>}' attribute.
+     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getDataType <em>Data Type</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Path</em>' attribute.
-     * @see #getPath()
+     * @param value the new value of the '<em>Data Type</em>' reference.
+     * @see #getDataType()
      * @generated
      */
-    void setPath(String value);
+    void setDataType(DataType value);
 
     /**
-     * Returns the value of the '<em><b>Function</b></em>' attribute.
-     * The literals are from the enumeration {@link hu.blackbelt.judo.meta.psm.facade.Function}.
+     * Returns the value of the '<em><b>Read Definition</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Function</em>' attribute isn't clear,
+     * If the meaning of the '<em>Read Definition</em>' containment reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Function</em>' attribute.
-     * @see hu.blackbelt.judo.meta.psm.facade.Function
-     * @see #setFunction(Function)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_Function()
-     * @model required="true"
+     * @return the value of the '<em>Read Definition</em>' containment reference.
+     * @see #setReadDefinition(ReadProperty)
+     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_ReadDefinition()
+     * @model containment="true"
      * @generated
      */
-    Function getFunction();
+    ReadProperty getReadDefinition();
 
     /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getFunction <em>Function</em>}' attribute.
+     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getReadDefinition <em>Read Definition</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Function</em>' attribute.
-     * @see hu.blackbelt.judo.meta.psm.facade.Function
-     * @see #getFunction()
+     * @param value the new value of the '<em>Read Definition</em>' containment reference.
+     * @see #getReadDefinition()
      * @generated
      */
-    void setFunction(Function value);
+    void setReadDefinition(ReadProperty value);
 
     /**
-     * Returns the value of the '<em><b>Order Index</b></em>' attribute.
+     * Returns the value of the '<em><b>Write Definition</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Order Index</em>' attribute isn't clear,
+     * If the meaning of the '<em>Write Definition</em>' containment reference isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Order Index</em>' attribute.
-     * @see #setOrderIndex(int)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_OrderIndex()
-     * @model
+     * @return the value of the '<em>Write Definition</em>' containment reference.
+     * @see #setWriteDefinition(WriteProperty)
+     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_WriteDefinition()
+     * @model containment="true"
      * @generated
      */
-    int getOrderIndex();
+    WriteProperty getWriteDefinition();
 
     /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getOrderIndex <em>Order Index</em>}' attribute.
+     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getWriteDefinition <em>Write Definition</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Order Index</em>' attribute.
-     * @see #getOrderIndex()
+     * @param value the new value of the '<em>Write Definition</em>' containment reference.
+     * @see #getWriteDefinition()
      * @generated
      */
-    void setOrderIndex(int value);
-
-    /**
-     * Returns the value of the '<em><b>Order Direction</b></em>' attribute.
-     * The default value is <code>"ASC"</code>.
-     * The literals are from the enumeration {@link hu.blackbelt.judo.meta.psm.facade.OrderDirection}.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Order Direction</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Order Direction</em>' attribute.
-     * @see hu.blackbelt.judo.meta.psm.facade.OrderDirection
-     * @see #setOrderDirection(OrderDirection)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_OrderDirection()
-     * @model default="ASC"
-     * @generated
-     */
-    OrderDirection getOrderDirection();
-
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getOrderDirection <em>Order Direction</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Order Direction</em>' attribute.
-     * @see hu.blackbelt.judo.meta.psm.facade.OrderDirection
-     * @see #getOrderDirection()
-     * @generated
-     */
-    void setOrderDirection(OrderDirection value);
-
-    /**
-     * Returns the value of the '<em><b>Filterable</b></em>' attribute.
-     * The default value is <code>"true"</code>.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Filterable</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Filterable</em>' attribute.
-     * @see #setFilterable(boolean)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_Filterable()
-     * @model default="true" required="true"
-     * @generated
-     */
-    boolean isFilterable();
-
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#isFilterable <em>Filterable</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Filterable</em>' attribute.
-     * @see #isFilterable()
-     * @generated
-     */
-    void setFilterable(boolean value);
-
-    /**
-     * Returns the value of the '<em><b>Viewable</b></em>' attribute.
-     * The default value is <code>"true"</code>.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Viewable</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Viewable</em>' attribute.
-     * @see #setViewable(boolean)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_Viewable()
-     * @model default="true" required="true"
-     * @generated
-     */
-    boolean isViewable();
-
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#isViewable <em>Viewable</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Viewable</em>' attribute.
-     * @see #isViewable()
-     * @generated
-     */
-    void setViewable(boolean value);
-
-    /**
-     * Returns the value of the '<em><b>Type</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Type</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Type</em>' reference.
-     * @see #setType(Type)
-     * @see hu.blackbelt.judo.meta.psm.facade.FacadePackage#getProperty_Type()
-     * @model required="true"
-     * @generated
-     */
-    Type getType();
-
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.facade.Property#getType <em>Type</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Type</em>' reference.
-     * @see #getType()
-     * @generated
-     */
-    void setType(Type value);
+    void setWriteDefinition(WriteProperty value);
 
 } // Property
