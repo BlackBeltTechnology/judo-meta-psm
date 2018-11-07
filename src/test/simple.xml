@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
+    <metaModels>
+        <metaModel>model/judoPSM.ecore</metaModel>
+    </metaModels>
+    <models>
+        <model>
+            <artifact>model/test.model</artifact>
+            <name>TEST</name>
+            <aliases>
+                <alias>JUDOPSM</alias>
+            </aliases>
+            <metaModelUris>
+                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+            </metaModelUris>
+        </model>
+    </models>
+    <eolPrograms>
+        <Evl>
+            <source>src/main/validations/judopsm.evl</source>
+        </Evl>
+        <!--Assert>
+            <modelsEquals>
+                <model>A</model>
+                <expectedModel>B</expectedModel>
+                <message>fdhfdh</message>
+            </modelsEquals>
+        </Asserts-->
+    </eolPrograms>
+</configuration>

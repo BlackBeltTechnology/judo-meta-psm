@@ -5,7 +5,7 @@ context JUDOPSM!Namespace {
 		check {
 			var notUniqueNames = Set{};
 			var names = Set{};
-			for (p in self.packages.includingAll(self.types).includingAll(self.entityTypes).includingAll(self.facades)) {
+			for (p in self.packages.includingAll(self.dataTypes).includingAll(self.entityTypes).includingAll(self.facades)) {
 				if (names.includes(p.name)) {
 					notUniqueNames.add(p.name);
 				}
@@ -13,6 +13,6 @@ context JUDOPSM!Namespace {
 			}
 			return notUniqueNames.isEmpty();
 		}
-		message: "NamespaceIsNotUnique|Names " + notUniqueNames + " are not unique in namespace " + self.name
+		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name
 	}
 }

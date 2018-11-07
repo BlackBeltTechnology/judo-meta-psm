@@ -3,12 +3,12 @@ context JUDOPSM!Numeric {
     // scale > precision
 	constraint PrecisionIsGreaterThanScale {
 		check: self.scale > self.precision
-		message: "PrecisionIsGreaterThanScale|Precision (" + self.precision + ") must be less than scale (" + self.scale + "): " + self.name
+		message: "Precision (" + self.precision + ") must be less than scale (" + self.scale + "): " + self.name
 	}
 
 	// precision >= 0
 	constraint InvalidPrecision {
 		check: self.precision >= 0
-		message: "InvalidPrecision|Precision must be at least 0: " + self.name
+		message: "Precision must be at least 0: " + self.name
 	}
 }

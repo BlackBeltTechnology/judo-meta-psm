@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:facade="http://blackbelt.hu/judo/meta/psm/facade" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_WZpXEIRPEeipmMyz9cMCRA" name="TEST PSM model">
+<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_WZpXEIRPEeipmMyz9cMCRA" name="TEST PSM model">
   <packages xmi:id="_WZp-IIRPEeipmMyz9cMCRA" name="sandbox.model">
     <entityTypes xmi:id="A0-EntityType" name="A0"/>
     <entityTypes xmi:id="A1-EntityType" name="A1"/>
     <entityTypes xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
-      <attributes xmi:id="_mD22ULvrEeiOuYiCo6IbXQ" name="x" primitive="_U4jZoLaVEeiphaohSbmpfA" required="true" identifier="true"/>
-      <references xsi:type="data:Endpoint" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" target="B-EntityType" lower="1" partner="_6cnfMLvrEeiOuYiCo6IbXQ"/>
-      <references xsi:type="data:Endpoint" xmi:id="_Ke7FMLvsEeiOuYiCo6IbXQ" name="c" target="C-EntityType"/>
+      <references xsi:type="data:Endpoint" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" target="B-EntityType" partner="_6cnfMLvrEeiOuYiCo6IbXQ">
+        <cardinality lower="1"/>
+      </references>
+      <references xsi:type="data:Endpoint" xmi:id="_Ke7FMLvsEeiOuYiCo6IbXQ" name="c" target="C-EntityType">
+        <cardinality/>
+      </references>
+      <attributes xmi:id="_mD22ULvrEeiOuYiCo6IbXQ" name="x" required="true" identifier="true" dataType="_U4jZoLaVEeiphaohSbmpfA"/>
     </entityTypes>
     <entityTypes xmi:id="B-EntityType" name="B">
-      <references xsi:type="data:Endpoint" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" lower="1" partner="_0lc3gLvrEeiOuYiCo6IbXQ"/>
+      <references xsi:type="data:Endpoint" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" partner="_0lc3gLvrEeiOuYiCo6IbXQ">
+        <cardinality lower="1"/>
+      </references>
     </entityTypes>
     <entityTypes xmi:id="C-EntityType" name="C">
-      <references xsi:type="data:Endpoint" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" upper="-1"/>
+      <references xsi:type="data:Endpoint" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
+        <cardinality upper="-1"/>
+      </references>
     </entityTypes>
     <entityTypes xmi:id="_lGrKcLvtEeiOuYiCo6IbXQ" name="S1">
-      <references xsi:type="data:Endpoint" xmi:id="_pR08QLvtEeiOuYiCo6IbXQ" name="a" target="A-EntityType"/>
-      <references xsi:type="data:Containment" xmi:id="_sGtesLvtEeiOuYiCo6IbXQ" name="s2" target="_mhVKkLvtEeiOuYiCo6IbXQ"/>
+      <references xsi:type="data:Endpoint" xmi:id="_pR08QLvtEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
+        <cardinality/>
+      </references>
+      <references xsi:type="data:Containment" xmi:id="_sGtesLvtEeiOuYiCo6IbXQ" name="s2" target="_mhVKkLvtEeiOuYiCo6IbXQ">
+        <cardinality/>
+      </references>
     </entityTypes>
     <entityTypes xmi:id="_mhVKkLvtEeiOuYiCo6IbXQ" name="S2">
-      <references xsi:type="data:Endpoint" xmi:id="_uPr9YLvtEeiOuYiCo6IbXQ" name="b" target="B-EntityType"/>
+      <references xsi:type="data:Endpoint" xmi:id="_uPr9YLvtEeiOuYiCo6IbXQ" name="b" target="B-EntityType">
+        <cardinality/>
+      </references>
     </entityTypes>
   </packages>
-  <packages xmi:id="_lINUkLaUEeiphaohSbmpfA" name="sandbox.facade">
-    <facades xsi:type="facade:View" xmi:id="_JW1mwLaREeiphaohSbmpfA" name="A" entityType="A-EntityType">
-      <properties xmi:id="_3fCCQLaREeiphaohSbmpfA" name="x" path="self.b.a.x" type="_U4jZoLaVEeiphaohSbmpfA"/>
-    </facades>
-  </packages>
-  <types xsi:type="type:String" xmi:id="_U4jZoLaVEeiphaohSbmpfA" name="String" maxLength="255"/>
-  <types xsi:type="type:String" xmi:id="_U4jZoLaVEeiphaohSbmpfB" name="Text" maxLength="255"/>
+  <dataTypes xsi:type="type:String" xmi:id="_U4jZoLaVEeiphaohSbmpfA" name="String" maxLength="255"/>
+  <dataTypes xsi:type="type:String" xmi:id="_U4jZoLaVEeiphaohSbmpfB" name="Text" maxLength="255"/>
 </namespace:Model>

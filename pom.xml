@@ -154,6 +154,13 @@
                     <groupId>hu.blackbelt.epsilon</groupId>
                     <artifactId>epsilon-maven-plugin</artifactId>
                     <version>${epsilon.maven.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo</groupId>
+                            <artifactId>judo-model-scripting</artifactId>
+                            <version>${judo.model.scripting.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
 
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
@@ -243,7 +250,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.1.1</epsilon.maven.plugin.version>
+        <epsilon.maven.plugin.version>1.1.2_feature_2_verify_EVL_rules-31</epsilon.maven.plugin.version>
         <judo.model.scripting.version>1.0.0_develop-4</judo.model.scripting.version>
 
         <src.dir>src/main</src.dir>
@@ -260,88 +267,16 @@
                     <plugin>
                         <groupId>hu.blackbelt.epsilon</groupId>
                         <artifactId>epsilon-maven-plugin</artifactId>
-                        <dependencies>
-                            <dependency>
-                                <groupId>hu.blackbelt.judo</groupId>
-                                <artifactId>judo-model-scripting</artifactId>
-                                <version>${judo.model.scripting.version}</version>
-                            </dependency>
-                        </dependencies>
                         <executions>
                             <execution>
-                                <id>validate-meta-psm</id>
-                                <phase>generate-resources</phase>
+                                <id>VALIDATE</id>
                                 <goals>
-                                    <goal>execute</goal>
+                                    <goal>executeConfiguration</goal>
                                 </goals>
                                 <configuration>
-                                    <metaModels>
-                                        <metaModel>model/judoPSM.ecore</metaModel>
-                                    </metaModels>
-
-                                    <models>
-                                        <!--model>
-                                            <artifact>model/judoPSM.model</artifact>
-                                            <name>SKELETON</name>
-                                            <aliases>
-                                                <alias>JUDOPSM</alias>
-                                            </aliases>
-                                            <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                            </metaModelUris>
-                                            <expand>true</expand>
-                                        </model-->
-                                        <model>
-                                            <artifact>model/test.model</artifact>
-                                            <name>TEST</name>
-                                            <aliases>
-                                                <alias>JUDOPSM</alias>
-                                            </aliases>
-                                            <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                            </metaModelUris>
-                                            <expand>true</expand>
-                                        </model>
-                                        <!--model>
-                                            <artifact>${basedir}/src/test/003-EnumerationMemberNameIsNotUnique/t003.model</artifact>
-                                            <name>A1</name>
-                                            <aliases>
-                                                <alias>JUDOPSM</alias>
-                                            </aliases>
-                                            <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                            </metaModelUris>
-                                            <expand>true</expand>
-                                        </model-->
-                                        <!--model>
-                                            <artifact>${basedir}/src/test/001-ModelIsNotUnique/t001_a2.model</artifact>
-                                            <name>A2</name>
-                                            <aliases>
-                                                <alias>JUDOPSM</alias>
-                                            </aliases>
-                                            <metaModelUris>
-                                                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                                                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
-                                            </metaModelUris>
-                                            <expand>true</expand>
-                                        </model-->
-                                    </models>
-                                    <eolPrograms>
-                                        <Evl>
-                                            <source>src/main/validations/judopsm.evl</source>
-                                        </Evl>
-                                    </eolPrograms>
+                                    <configurationArtifacts>
+                                        <configurationArtifact>src/test/**/*.xml</configurationArtifact>
+                                    </configurationArtifacts>
                                 </configuration>
                             </execution>
                         </executions>

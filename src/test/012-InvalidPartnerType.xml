@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
+    <metaModels>
+        <metaModel>model/judoPSM.ecore</metaModel>
+    </metaModels>
+    <models>
+        <model>
+            <artifact>src/test/t012.model</artifact>
+            <name>M</name>
+            <aliases>
+                <alias>JUDOPSM</alias>
+            </aliases>
+            <metaModelUris>
+                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
+            </metaModelUris>
+            <expand>true</expand>
+        </model>
+    </models>
+    <eolPrograms>
+        <Evl>
+            <source>src/main/validations/judopsm.evl</source>
+            <expectedErrors>
+                <expectedError>InvalidPartnerType|Invalid partner type: E2.e1 for E1.e3</expectedError>
+                <expectedError>InvalidPartnerType|Invalid partner type: E1.e3 for E2.e1</expectedError>
+            </expectedErrors>
+        </Evl>
+    </eolPrograms>
+</configuration>
