@@ -150,12 +150,11 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//facade/EntitySelector/entityType"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//facade/Facade">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/propertySet"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/updateOperation"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/createOperation"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/deleteOperation"/>
+      <genClasses ecoreClass="judoPSM.ecore#//facade/EntityFacade">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/EntityFacade/updateOperation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/EntityFacade/createOperation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/EntityFacade/deleteOperation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//facade/EntityFacade/actions"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/StandaloneFacade">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -231,6 +230,14 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/DetachFunctionListNavigation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/DetachFunctionListNavigation/detachFunction"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//facade/Action">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Action/unbounded"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/Action/actionScript"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//facade/Facade">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//facade/Facade/propertySet"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Action" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
