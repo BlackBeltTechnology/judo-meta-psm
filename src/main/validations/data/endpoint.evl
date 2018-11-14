@@ -16,7 +16,7 @@ context JUDOPSM!Endpoint {
     
     // lower property must be less or equal to upper property
     constraint LowerMustBeLessOrEqualToUpper {
-    	check: self.cardinality.upper == -1 or self.cardinality.lower <= self.cardinality.upper
+        check: self.cardinality.lower <> -1 and (self.cardinality.upper == -1 or self.cardinality.lower <= self.cardinality.upper)
     	message: "Lower (" + self.cardinality.lower + ") must be less or equal to upper (" + self.cardinality.upper + ") of attribute: " + self.displayName()
     }
     
