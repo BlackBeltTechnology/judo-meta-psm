@@ -30,6 +30,7 @@
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/NavigationExpression"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/Script"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/RegExp"/>
+      <genDataTypes ecoreDataType="judoPSM.ecore#//type/LogicalExpr"/>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/Custom"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/String">
@@ -78,11 +79,13 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/references"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/EntityType/abstract"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/attributes"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/invariantConstraints"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Reference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/Reference/target"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/Reference/cardinality"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Reference/cascadeDelete"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Attribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Attribute/required"/>
@@ -103,12 +106,7 @@
     </nestedGenPackages>
     <nestedGenPackages prefix="Behavior" basePackage="hu.blackbelt.judo.meta.psm"
         resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
-        fileExtensions="behavior" ecorePackage="judoPSM.ecore#//behavior">
-      <genClasses ecoreClass="judoPSM.ecore#//behavior/CascadeReferences">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//behavior/CascadeReferences/references"/>
-      </genClasses>
-    </nestedGenPackages>
+        fileExtensions="behavior" ecorePackage="judoPSM.ecore#//behavior"/>
     <nestedGenPackages prefix="Facade" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
         disposableProviderFactory="true" extensibleProviderFactory="true" fileExtensions="facade"
         ecorePackage="judoPSM.ecore#//facade">
@@ -202,7 +200,9 @@
       <genClasses ecoreClass="judoPSM.ecore#//facade/CustomUpdateOperation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/CustomUpdateOperation/updateOperation"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//facade/BindSingleNavigation"/>
+      <genClasses ecoreClass="judoPSM.ecore#//facade/BindSingleNavigation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/BindSingleNavigation/rangeExpr"/>
+      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/BindSingleReference">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/BindSingleReference/bindExpr"/>
       </genClasses>
@@ -217,7 +217,9 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/TraverseFilterableListNavigation/filterable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/TraverseFilterableListNavigation/traverseExpr"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//facade/AttachListNavigation"/>
+      <genClasses ecoreClass="judoPSM.ecore#//facade/AttachListNavigation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/AttachListNavigation/rangeExpr"/>
+      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//facade/DetachListNavigation"/>
       <genClasses ecoreClass="judoPSM.ecore#//facade/AttachListReference">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//facade/AttachListReference/attachExpr"/>
@@ -270,6 +272,11 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//action/ListEntityParameter/onGetDefault"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//action/DeleteOperation"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="NewPackage7" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//constraint">
+      <genClasses ecoreClass="judoPSM.ecore#//constraint/InvariantConstraint">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//constraint/InvariantConstraint/expression"/>
+      </genClasses>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>

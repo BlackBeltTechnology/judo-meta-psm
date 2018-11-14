@@ -76,6 +76,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EDataType" name="RegExp" instanceClassName="java.lang.String"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="LogicalExpr" instanceClassName="java.lang.String"/>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
@@ -89,12 +90,18 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//data/Attribute" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="invariantConstraints"
+          upperBound="-1" eType="#//constraint/InvariantConstraint" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//namespace/NamedElement">
+      <eAnnotations/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
@@ -109,19 +116,14 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceCountConstraint">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="references" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="references" lowerBound="2"
           upperBound="-1" eType="#//data/Reference"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="behavior" nsURI="http://blackbelt.hu/judo/meta/psm/behavior"
-      nsPrefix="behavior">
-    <eClassifiers xsi:type="ecore:EClass" name="CascadeReferences">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
-          eType="#//data/Reference"/>
-    </eClassifiers>
-  </eSubpackages>
+      nsPrefix="behavior"/>
   <eSubpackages name="facade" nsURI="http://blackbelt.hu/judo/meta/psm/facade" nsPrefix="facade">
     <eClassifiers xsi:type="ecore:EClass" name="PropertySet" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
@@ -240,7 +242,11 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="updateOperation" lowerBound="1"
           eType="#//type/Script"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BindSingleNavigation" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BindSingleNavigation" abstract="true"
+        eSuperTypes="#//facade/EntityFacade">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="rangeExpr" lowerBound="1"
+          eType="#//facade/EntitySetExpr"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BindSingleReference" eSuperTypes="#//facade/BindSingleNavigation">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="bindExpr" lowerBound="1"
           eType="#//facade/SingleReferenceExpr"/>
@@ -263,7 +269,11 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseExpr" lowerBound="1"
           eType="#//facade/EntitySetExpr"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="AttachListNavigation" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AttachListNavigation" abstract="true"
+        eSuperTypes="#//facade/EntityFacade">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="rangeExpr" lowerBound="1"
+          eType="#//facade/EntitySetExpr"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="DetachListNavigation" abstract="true"/>
     <eClassifiers xsi:type="ecore:EClass" name="AttachListReference" eSuperTypes="#//facade/AttachListNavigation">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="attachExpr" lowerBound="1"
@@ -325,5 +335,12 @@
       <eLiterals name="OUT" value="1"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="DeleteOperation"/>
+  </eSubpackages>
+  <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"
+      nsPrefix="constraint">
+    <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" lowerBound="1"
+          eType="#//type/LogicalExpr"/>
+    </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
