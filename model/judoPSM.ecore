@@ -92,6 +92,8 @@
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="invariantConstraints"
           upperBound="-1" eType="#//constraint/InvariantConstraint" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="derivedCompartment" eType="#//data/derived/DerivedCompartment"
+          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eAnnotations/>
@@ -121,6 +123,33 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
     </eClassifiers>
+    <eSubpackages name="derived">
+      <eClassifiers xsi:type="ecore:EClass" name="DerivedAttribute" eSuperTypes="#//namespace/NamedElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
+            eType="#//type/DataType" derived="true"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="readExpr" lowerBound="1"
+            eType="#//facade/SingleDataExpr"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="DerivedCompartment" eSuperTypes="#//namespace/NamedElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="derivedAttributes"
+            upperBound="-1" eType="#//data/derived/DerivedAttribute" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="derivedReferences"
+            upperBound="-1" eType="#//data/derived/DerivedReference" containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="DerivedSingleReference" eSuperTypes="#//data/derived/DerivedReference">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseExpr" lowerBound="1"
+            eType="#//facade/EntityExpr"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="DerivedReference" abstract="true"
+          eSuperTypes="#//namespace/NamedElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+            eType="#//data/EntityType" derived="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="DerivedListReference" eSuperTypes="#//data/derived/DerivedReference">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseExpr" lowerBound="1"
+            eType="#//facade/EntitySetExpr"/>
+      </eClassifiers>
+    </eSubpackages>
   </eSubpackages>
   <eSubpackages name="behavior" nsURI="http://blackbelt.hu/judo/meta/psm/behavior"
       nsPrefix="behavior"/>
@@ -133,7 +162,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Property" abstract="true" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="Property" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/DataType" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="readDefinition" eType="#//facade/ReadProperty"
@@ -341,6 +370,26 @@
     <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" lowerBound="1"
           eType="#//type/LogicalExpr"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="ui">
+    <eClassifiers xsi:type="ecore:EClass" name="Field" eSuperTypes="#//ui/Widget"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Widget" eSuperTypes="#//ui/Component"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Container" abstract="true" eSuperTypes="#//ui/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="widget" upperBound="-1"
+          eType="#//ui/Widget" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" eType="#//ui/Layout"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Frame" eSuperTypes="#//ui/Container"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Panel" eSuperTypes="#//ui/Container #//ui/Widget">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="popup" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Label" eSuperTypes="#//ui/Widget"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//ui/Widget"/>
+    <eClassifiers xsi:type="ecore:EEnum" name="Layout">
+      <eLiterals name="HORIZONTAL"/>
+      <eLiterals name="VERTICAL" value="1"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

@@ -4,7 +4,7 @@
     editorDirectory="/JudoPSM.editor/src-gen" modelPluginID="judo-meta-psm" modelName="JudoPSM"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testsDirectory=""
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    operationReflection="true" importOrganizing="true">
+    usedGenPackages="#//psm/data/derived" operationReflection="true" importOrganizing="true">
   <foreignModel>judoPSM.ecore</foreignModel>
   <genPackages prefix="Psm" basePackage="hu.blackbelt.judo.meta" resource="XML" disposableProviderFactory="true"
       dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#/">
@@ -80,6 +80,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/EntityType/abstract"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/attributes"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/invariantConstraints"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/derivedCompartment"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Reference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -103,6 +104,27 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceCountConstraint/references"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceCountConstraint/cardinality"/>
       </genClasses>
+      <nestedGenPackages prefix="NewPackage1" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//data/derived">
+        <genClasses ecoreClass="judoPSM.ecore#//data/derived/DerivedAttribute">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference judoPSM.ecore#//data/derived/DerivedAttribute/dataType"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/derived/DerivedAttribute/readExpr"/>
+        </genClasses>
+        <genClasses ecoreClass="judoPSM.ecore#//data/derived/DerivedCompartment">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/derived/DerivedCompartment/derivedAttributes"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/derived/DerivedCompartment/derivedReferences"/>
+        </genClasses>
+        <genClasses ecoreClass="judoPSM.ecore#//data/derived/DerivedSingleReference">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/derived/DerivedSingleReference/traverseExpr"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="judoPSM.ecore#//data/derived/DerivedReference">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference judoPSM.ecore#//data/derived/DerivedReference/target"/>
+        </genClasses>
+        <genClasses ecoreClass="judoPSM.ecore#//data/derived/DerivedListReference">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/derived/DerivedListReference/traverseExpr"/>
+        </genClasses>
+      </nestedGenPackages>
     </nestedGenPackages>
     <nestedGenPackages prefix="Behavior" basePackage="hu.blackbelt.judo.meta.psm"
         resource="XMI" disposableProviderFactory="true" extensibleProviderFactory="true"
@@ -277,6 +299,25 @@
       <genClasses ecoreClass="judoPSM.ecore#//constraint/InvariantConstraint">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//constraint/InvariantConstraint/expression"/>
       </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="NewPackage8" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//ui">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//ui/Layout">
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//ui/Layout/HORIZONTAL"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//ui/Layout/VERTICAL"/>
+      </genEnums>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Field"/>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Widget"/>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Component"/>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Container">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//ui/Container/widget"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//ui/Container/layout"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Frame"/>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Panel">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//ui/Panel/popup"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Label"/>
+      <genClasses ecoreClass="judoPSM.ecore#//ui/Button"/>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>
