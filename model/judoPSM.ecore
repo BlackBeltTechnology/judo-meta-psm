@@ -128,46 +128,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//data/EntityType"/>
     </eClassifiers>
-    <eSubpackages name="derived" nsURI="http://blackbelt.hu/judo/meta/psm/data/derived"
-        nsPrefix="derived">
-      <eClassifiers xsi:type="ecore:EClass" name="Property" abstract="true" eSuperTypes="#//data/AttributeFeature">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
-            eType="#//data/EntityType"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="SingleNavigation" abstract="true"
-          eSuperTypes="#//data/derived/Navigation"/>
-      <eClassifiers xsi:type="ecore:EClass" name="Navigation" abstract="true" eSuperTypes="#//data/ReferenceFeature">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
-            eType="#//data/EntityType"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CollectionNavigation" abstract="true"
-          eSuperTypes="#//data/derived/Navigation"/>
-      <eClassifiers xsi:type="ecore:EClass" name="AttributeProperty" eSuperTypes="#//data/derived/Property">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" lowerBound="1"
-            eType="#//expression/AttributeReference"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="AccessorProperty" eSuperTypes="#//data/derived/Property">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="getter" eType="#//expression/SingleValueExpr"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="setter" eType="#//operation/Operation"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CollectionReferenceNavigation" eSuperTypes="#//data/derived/CollectionNavigation">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="collection" lowerBound="1"
-            eType="#//expression/CollectionNavigationFromObjectExpression"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="SingleReferenceNavigation" eSuperTypes="#//data/derived/SingleNavigation">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="single" lowerBound="1"
-            eType="#//expression/ObjectNavigationExpression"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="SingleAccessorNavigation" eSuperTypes="#//data/derived/SingleNavigation">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverse" eType="#//expression/ObjectExpression"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="bind" eType="#//operation/Operation"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CollectionAccessorNavigation" eSuperTypes="#//data/derived/CollectionNavigation">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="getter" eType="#//expression/CollectionExpression"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="attach" eType="#//operation/Operation"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="detach" eType="#//operation/Operation"/>
-      </eClassifiers>
-    </eSubpackages>
   </eSubpackages>
   <eSubpackages name="behavior" nsURI="http://blackbelt.hu/judo/meta/psm/behavior"
       nsPrefix="behavior"/>
@@ -578,6 +538,46 @@
           eType="#//type/Type"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="derived" nsURI="http://blackbelt.hu/judo/meta/psm/data/derived"
+      nsPrefix="derived">
+    <eClassifiers xsi:type="ecore:EClass" name="Navigation" abstract="true" eSuperTypes="#//data/ReferenceFeature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
+          eType="#//data/EntityType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Property" abstract="true" eSuperTypes="#//data/AttributeFeature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
+          eType="#//data/EntityType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SingleNavigation" abstract="true"
+        eSuperTypes="#//derived/Navigation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AccessorProperty" eSuperTypes="#//derived/Property">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="getter" eType="#//expression/SingleValueExpr"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setter" eType="#//operation/Operation"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SingleReferenceNavigation" eSuperTypes="#//derived/SingleNavigation">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="single" lowerBound="1"
+          eType="#//expression/ObjectNavigationExpression"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AttributeProperty" eSuperTypes="#//derived/Property">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" lowerBound="1"
+          eType="#//expression/AttributeReference"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CollectionReferenceNavigation" eSuperTypes="#//derived/CollectionNavigation">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="collection" lowerBound="1"
+          eType="#//expression/CollectionNavigationFromObjectExpression"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SingleAccessorNavigation" eSuperTypes="#//derived/SingleNavigation">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverse" eType="#//expression/ObjectExpression"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="bind" eType="#//operation/Operation"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CollectionNavigation" abstract="true"
+        eSuperTypes="#//derived/Navigation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="CollectionAccessorNavigation" eSuperTypes="#//derived/CollectionNavigation">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="getter" eType="#//expression/CollectionExpression"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="attach" eType="#//operation/Operation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="detach" eType="#//operation/Operation"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
