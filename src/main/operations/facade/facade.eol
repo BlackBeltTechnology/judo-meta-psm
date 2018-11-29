@@ -1,4 +1,0 @@
-@cached
-operation JUDOPSM!Facade getPackage() : JUDOPSM!Namespace {
-	return JUDOPSM!Namespace.all.selectOne(p | p.facades.includes(self));
-}

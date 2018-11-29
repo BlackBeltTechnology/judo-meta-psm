@@ -1,4 +1,0 @@
-@cached
-operation JUDOPSM!Link getFacade() : JUDOPSM!Facade {
-	return JUDOPSM!Facade.all.selectOne(et | et.links.includes(self));
-}
