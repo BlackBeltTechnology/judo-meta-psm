@@ -452,16 +452,49 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="controller" lowerBound="1"
           eType="#//facade/DataElement"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="element" lowerBound="1"
-          eType="#//facade/Element"/>
+          eType="#//ui2/Component"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EnabledProperty" eSuperTypes="#//ui2/Control">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Group">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-          eType="#//facade/Element"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Group" eSuperTypes="#//ui2/Component">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" lowerBound="1"
+          eType="#//ui2/LayoutType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+          eType="#//ui2/Component" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="LayoutType">
+      <eLiterals name="HORIZONTAL"/>
+      <eLiterals name="VERTICAL" value="1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Widget" eSuperTypes="#//ui2/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataElement" lowerBound="1"
+          eType="#//facade/DataElement"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Button" eSuperTypes="#//ui2/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="action" lowerBound="1"
+          eType="#//facade/Action"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Form">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="action" lowerBound="1"
+          eType="#//facade/Action"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Submit"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Frame">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="facade" lowerBound="1"
+          eType="#//facade/Facade"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+          eType="#//ui2/Component" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Cancel"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Panel" eSuperTypes="#//ui2/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceElement" lowerBound="1"
+          eType="#//facade/ReferenceElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="frame" lowerBound="1"
+          eType="#//ui2/Frame"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
