@@ -56,8 +56,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
     <eClassifiers xsi:type="ecore:EClass" name="XML" eSuperTypes="#//type/Primitive">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Cardinality">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
@@ -77,7 +77,6 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//data/ReferenceFeature">
-      <eAnnotations/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
@@ -151,8 +150,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//schema/Schema"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="derived" nsURI="http://blackbelt.hu/judo/meta/psm/data/derived"
-      nsPrefix="derived">
+  <eSubpackages name="derived" nsURI="http://blackbelt.hu/judo/meta/psm/derived" nsPrefix="derived">
     <eClassifiers xsi:type="ecore:EClass" name="DataProperty" eSuperTypes="#//derived/DataHolder">
       <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
           eType="#//data/EntityType"/>
@@ -174,8 +172,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="setterExpression" eType="#//expression/ReferenceSelector"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="facade" nsURI="http://blackbelt.hu/judo/meta/psm/data/facade"
-      nsPrefix="facade">
+  <eSubpackages name="facade" nsURI="http://blackbelt.hu/judo/meta/psm/facade" nsPrefix="facade">
     <eClassifiers xsi:type="ecore:EClass" name="EntryPoint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="staticNavigation" eType="#//derived/StaticNavigation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
@@ -247,7 +244,7 @@
           eType="#//schema/SchemaReference"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="schema">
+  <eSubpackages name="schema" nsURI="http://blackbelt.hu/judo/meta/psm/schema" nsPrefix="schema">
     <eClassifiers xsi:type="ecore:EClass" name="Schema" eSuperTypes="#//type/DataType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
           eType="#//schema/SchemaReference" containment="true"/>
@@ -272,7 +269,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="view">
+  <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">
     <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="controls" upperBound="-1"
           eType="#//view/Control" containment="true"/>
