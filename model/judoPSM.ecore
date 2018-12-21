@@ -348,6 +348,8 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="schemaEndpoint" lowerBound="1"
           eType="#//schema/SchemaEndpoint"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="rangeBox" eType="#//view/Box"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLoad" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MenuItem">
       <eStructuralFeatures xsi:type="ecore:EReference" name="entrypoint" eType="#//facade/EntryPoint"/>
