@@ -34,9 +34,9 @@
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/RegExp"/>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/Custom"/>
-      <genClasses ecoreClass="judoPSM.ecore#//type/String">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/String/maxLength"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/String/regExp"/>
+      <genClasses ecoreClass="judoPSM.ecore#//type/xString">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/xString/maxLength"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/xString/regExp"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/Numeric">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Numeric/precision"/>
@@ -285,7 +285,6 @@
       <genClasses ecoreClass="judoPSM.ecore#//view/VisibleControl"/>
       <genClasses ecoreClass="judoPSM.ecore#//view/EnabledControl"/>
       <genClasses ecoreClass="judoPSM.ecore#//view/Group">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//view/Group/components"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Group/layout"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//view/Widget">
@@ -293,29 +292,23 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/Widget/schemaAttribute"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//view/Widget/emittedEvents"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//view/Panel">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//view/Panel/components"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Panel/reloadedBy"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Panel/panelType"/>
+      <genClasses ecoreClass="judoPSM.ecore#//view/ContainerComponent">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/ContainerComponent/panelType"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//view/View">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/View/facade"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/View/reloadedBy"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//view/Form">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Form/facade"/>
-      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//view/Form"/>
       <genClasses ecoreClass="judoPSM.ecore#//view/Action">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/Action/exposedOperation"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Action/embeddedForm"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/Action/parameterForm"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Action/resultView"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Action/embeddedResult"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Action/result"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Action/parameterBox"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//view/FormButton"/>
       <genClasses ecoreClass="judoPSM.ecore#//view/Submit"/>
@@ -323,33 +316,40 @@
       <genClasses ecoreClass="judoPSM.ecore#//view/Event">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Event/eventType"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//view/Frame">
+      <genClasses ecoreClass="judoPSM.ecore#//view/SchemaPanel">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Frame/schemaContainment"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Frame/popup"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/SchemaPanel/schemaContainment"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/SchemaPanel/popup"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//view/Navigation">
+      <genClasses ecoreClass="judoPSM.ecore#//view/Link">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Navigation/targetView"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Navigation/embeddedView"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Link/view"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Navigation/rangeView"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Link/range"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Navigation/schemaEndpoint"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//view/Navigation/embeddedRangeView"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Link/schemaEndpoint"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Navigation/targetPanel"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Navigation/rangePanel"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Link/rangeBox"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//view/MenuItem">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/MenuItem/entrypoint"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//view/HostPanel"/>
+      <genClasses ecoreClass="judoPSM.ecore#//view/Box"/>
       <genClasses ecoreClass="judoPSM.ecore#//view/UserInterface">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/UserInterface/root"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//view/Container">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//view/Container/components"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//view/Frame">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Frame/facade"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//view/Navigation">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//view/Navigation/targetBox"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>
