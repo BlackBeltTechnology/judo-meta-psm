@@ -202,6 +202,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//operation/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//operation/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="read" eType="#//operation/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="refresh" eType="#//operation/BoundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Rule"/>
     <eClassifiers xsi:type="ecore:EClass" name="AttributeRule" eSuperTypes="#//schema/Rule">
