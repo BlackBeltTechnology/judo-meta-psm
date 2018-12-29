@@ -20,6 +20,8 @@
           eType="#//operation/Operation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="interfaces" upperBound="-1"
           eType="#//interface/Interface" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="views" upperBound="-1"
+          eType="#//view/View" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace"/>
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace"/>
@@ -202,7 +204,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//operation/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//operation/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="read" eType="#//operation/BoundOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="refresh" eType="#//operation/BoundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Rule"/>
     <eClassifiers xsi:type="ecore:EClass" name="AttributeRule" eSuperTypes="#//schema/Rule">
@@ -217,95 +218,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="schemaReference" lowerBound="1"
           eType="#//schema/SchemaReference"/>
     </eClassifiers>
-  </eSubpackages>
-  <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">
-    <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Control" abstract="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="controller" lowerBound="1"
-          eType="#//schema/SchemaAttribute"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
-          eType="#//view/Component"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="VisibleControl" eSuperTypes="#//view/Control"/>
-    <eClassifiers xsi:type="ecore:EClass" name="EnabledControl" eSuperTypes="#//view/Control"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Group" eSuperTypes="#//view/Container #//view/Component">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" lowerBound="1"
-          eType="#//view/LayoutType"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Widget" eSuperTypes="#//view/Component">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaAttribute" lowerBound="1"
-          eType="#//schema/SchemaAttribute"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="emittedEvents" upperBound="-1"
-          eType="#//view/Event" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="LayoutType">
-      <eLiterals name="HORIZONTAL"/>
-      <eLiterals name="VERTICAL" value="1"/>
-      <eLiterals name="TAB" value="2"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="View" abstract="true" eSuperTypes="#//view/Container">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="schema" lowerBound="1"
-          eType="#//schema/Schema"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="reloadedBy" upperBound="-1"
-          eType="#//view/Event"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="panelType" lowerBound="1"
-          eType="#//view/PanelType"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//view/Navigation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperation" lowerBound="1"
-          eType="#//interface/ExposedOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="parameterForm" eType="#//view/Form"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//view/SchemaView"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="parameterBox" eType="#//view/Box"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="FormButton" abstract="true" eSuperTypes="#//view/Component"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Submit" eSuperTypes="#//view/FormButton"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Cancel" eSuperTypes="#//view/FormButton"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Event">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="eventType" lowerBound="1"
-          eType="#//view/EventType"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="EventType">
-      <eLiterals name="SYSTEM_CHANGED"/>
-      <eLiterals name="USER_CHANGED" value="1"/>
-      <eLiterals name="ENABLED" value="2"/>
-      <eLiterals name="DISABLED" value="3"/>
-      <eLiterals name="SHOWN" value="4"/>
-      <eLiterals name="HIDE" value="5"/>
-      <eLiterals name="LOADED" value="6"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="PanelType">
-      <eLiterals name="LIST"/>
-      <eLiterals name="GRID" value="1"/>
-      <eLiterals name="TILE" value="2"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//view/Navigation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1"
-          eType="#//view/SchemaView"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//view/RangeView"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaReference" lowerBound="1"
-          eType="#//schema/SchemaReference"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeBox" eType="#//view/Box"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MenuItem"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Box" eSuperTypes="#//view/Component">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="popup" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UserInterface" eSuperTypes="#//interface/Interface">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="root" lowerBound="1"
-          eType="#//view/SchemaView"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Container" abstract="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
-          eType="#//view/Component" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Navigation" abstract="true" eSuperTypes="#//view/Component">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="targetBox" eType="#//view/Box"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SchemaView" eSuperTypes="#//view/View"/>
-    <eClassifiers xsi:type="ecore:EClass" name="RangeView" eSuperTypes="#//view/View"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Form" eSuperTypes="#//view/View"/>
   </eSubpackages>
   <eSubpackages name="interface" nsURI="http://blackbelt.hu/judo/meta/psm/interface"
       nsPrefix="interface">
@@ -324,6 +236,88 @@
           eType="#//derived/StaticNavigation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="schemaMap" lowerBound="1"
           eType="#//schema/MappedSchema"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">
+    <eClassifiers xsi:type="ecore:EClass" name="Container" abstract="true" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+          eType="#//view/Component" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" lowerBound="1"
+          eType="#//view/LayoutType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Widget" eSuperTypes="#//view/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaAttribute" lowerBound="1"
+          eType="#//schema/SchemaAttribute"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="emittedEvents" upperBound="-1"
+          eType="#//view/Event" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="View" eSuperTypes="#//view/Container">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="schema" lowerBound="1"
+          eType="#//schema/Schema"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewType" lowerBound="1"
+          eType="#//view/ViewType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="reloadedBy" upperBound="-1"
+          eType="#//view/Event"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="controls" upperBound="-1"
+          eType="#//view/Control" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Group" eSuperTypes="#//view/Container #//view/Component"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Box" eSuperTypes="#//view/Component">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="popup" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Navigation" abstract="true" eSuperTypes="#//view/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="navigationView" lowerBound="1"
+          eType="#//view/View"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaReference" lowerBound="1"
+          eType="#//schema/SchemaReference"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeView" eType="#//view/View"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//view/Navigation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//view/Box"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Embedded" eSuperTypes="#//view/Navigation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//view/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//view/Box"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
+          eType="#//interface/ExposedOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="resultView" eType="#//view/View"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="faultView" eType="#//view/View"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="close" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Control" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="controller" lowerBound="1"
+          eType="#//schema/SchemaAttribute"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+          eType="#//view/Component"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="VisibleControl" eSuperTypes="#//view/Control"/>
+    <eClassifiers xsi:type="ecore:EClass" name="EnabledControl" eSuperTypes="#//view/Control"/>
+    <eClassifiers xsi:type="ecore:EEnum" name="EventType">
+      <eLiterals name="SYSTEM_CHANGED"/>
+      <eLiterals name="USER_CHANGED" value="1"/>
+      <eLiterals name="ENABLED" value="2"/>
+      <eLiterals name="DISABLED" value="3"/>
+      <eLiterals name="SHOWN" value="4"/>
+      <eLiterals name="HIDE" value="5"/>
+      <eLiterals name="LOADED" value="6"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="ViewType">
+      <eLiterals name="LIST"/>
+      <eLiterals name="GRID" value="1"/>
+      <eLiterals name="TILE" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="LayoutType">
+      <eLiterals name="HORIZONTAL"/>
+      <eLiterals name="VERTICAL" value="1"/>
+      <eLiterals name="TAB" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Close" eSuperTypes="#//view/Component"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Event">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="eventType" lowerBound="1"
+          eType="#//view/EventType"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
