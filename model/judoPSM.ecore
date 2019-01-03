@@ -177,6 +177,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//schema/SchemaAttribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//schema/SchemaAttribute"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="read" eType="#//operation/BoundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SchemaReference" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
@@ -203,7 +204,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//operation/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//operation/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//operation/UnboundOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="read" eType="#//operation/BoundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Rule"/>
     <eClassifiers xsi:type="ecore:EClass" name="AttributeRule" eSuperTypes="#//schema/Rule">
@@ -234,7 +234,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Entry" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="staticNavigation" lowerBound="1"
           eType="#//derived/StaticNavigation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaMap" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="mappedSchema" lowerBound="1"
           eType="#//schema/MappedSchema"/>
     </eClassifiers>
   </eSubpackages>
@@ -244,8 +244,11 @@
           eType="#//view/Component" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" lowerBound="1"
           eType="#//view/LayoutType"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Widget" eSuperTypes="#//view/Component">
       <eStructuralFeatures xsi:type="ecore:EReference" name="schemaAttribute" lowerBound="1"
           eType="#//schema/SchemaAttribute"/>
@@ -276,6 +279,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//view/Navigation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//view/Box"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Embedded" eSuperTypes="#//view/Navigation"/>
     <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//view/Component">
@@ -318,6 +322,28 @@
     <eClassifiers xsi:type="ecore:EClass" name="Event">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="eventType" lowerBound="1"
           eType="#//view/EventType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MenuComponent" abstract="true" eSuperTypes="#//view/Component">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subMenus" upperBound="-1"
+          eType="#//view/Menu" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="menuItems" upperBound="-1"
+          eType="#//view/MenuItem" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MenuBar" eSuperTypes="#//view/MenuComponent"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Menu" eSuperTypes="#//view/MenuComponent"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MenuItem" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="view" lowerBound="1"
+          eType="#//view/View"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+          eType="#//view/Box"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EntryMenuItem" eSuperTypes="#//view/MenuItem">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="entry" lowerBound="1"
+          eType="#//interface/Entry"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ActionMenuItem" eSuperTypes="#//view/MenuItem">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperation" lowerBound="1"
+          eType="#//interface/ExposedOperation"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
