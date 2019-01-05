@@ -171,6 +171,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SchemaEndpoint" eSuperTypes="#//service/SchemaReference">
       <eStructuralFeatures xsi:type="ecore:EReference" name="schema" lowerBound="1"
           eType="#//service/MappedSchema"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="initExpression" eType="#//expression/ReferenceExpression"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="SchemaContainment" eSuperTypes="#//service/SchemaReference">
       <eStructuralFeatures xsi:type="ecore:EReference" name="schema" lowerBound="1"
@@ -179,6 +180,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="SchemaAttribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="initExpression" eType="#//expression/DataExpression"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedSchema" eSuperTypes="#//service/Schema">
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
