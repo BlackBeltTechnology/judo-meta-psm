@@ -220,6 +220,10 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//service/Schema"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="fault" eType="#//service/Schema"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/Schema"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="external" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="virtual" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="interface" nsURI="http://blackbelt.hu/judo/meta/psm/interface"
