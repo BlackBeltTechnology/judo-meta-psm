@@ -14,7 +14,7 @@
           eType="#//type/Type" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="staticNavigations" upperBound="-1"
           eType="#//derived/StaticNavigation" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="staticProperties" upperBound="-1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="staticData" upperBound="-1"
           eType="#//derived/StaticData" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/Operation" containment="true"/>
@@ -22,6 +22,8 @@
           eType="#//interface/Interface" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="views" upperBound="-1"
           eType="#//view/View" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="userInterfaces" upperBound="-1"
+          eType="#//view/UserInterface" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace"/>
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace"/>
@@ -65,50 +67,55 @@
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceCountConstraints"
-          upperBound="-1" eType="#//data/ReferenceCountConstraint" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relationCountConstraints"
+          upperBound="-1" eType="#//data/RelationCountConstraint" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="superEntityTypes" upperBound="-1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+          eType="#//service/Operation" transient="true" derived="true" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+          eType="#//data/Attribute" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
+          eType="#//data/Relation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="navigationProperties"
+          upperBound="-1" eType="#//derived/NavigationProperty" transient="true" derived="true"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataProperties" upperBound="-1"
+          eType="#//derived/DataProperty" transient="true" derived="true" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//data/ReferenceFeature">
+    <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/Reference">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
-          eType="#//data/EntityType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="targetEntityType" lowerBound="1"
-          eType="#//data/EntityType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//data/AttributeFeature">
+    <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//data/Variable">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
-          eType="#//data/EntityType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Reference">
+    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Relation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ReferenceCountConstraint">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="references" lowerBound="2"
-          upperBound="-1" eType="#//data/Reference"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RelationCountConstraint">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" lowerBound="2"
+          upperBound="-1" eType="#//data/Relation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ReferenceFeature" abstract="true">
+    <eClassifiers xsi:type="ecore:EClass" name="Reference" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-          eType="#//data/EntityType" transient="true" derived="true"/>
+          eType="#//data/EntityType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="AttributeFeature" abstract="true">
+    <eClassifiers xsi:type="ecore:EClass" name="Variable" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/DataType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Reference"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Relation"/>
   </eSubpackages>
   <eSubpackages name="behavior" nsURI="http://blackbelt.hu/judo/meta/psm/behavior"
       nsPrefix="behavior"/>
@@ -133,22 +140,24 @@
     <eClassifiers xsi:type="ecore:EDataType" name="Script" instanceClassName="java.lang.String"/>
   </eSubpackages>
   <eSubpackages name="derived" nsURI="http://blackbelt.hu/judo/meta/psm/derived" nsPrefix="derived">
-    <eClassifiers xsi:type="ecore:EClass" name="DataProperty" eSuperTypes="#//derived/DataHolder">
+    <eClassifiers xsi:type="ecore:EClass" name="DataProperty" eSuperTypes="#//derived/VariableAccessor">
       <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
           eType="#//data/EntityType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="NavigationProperty" eSuperTypes="#//derived/Navigation">
+    <eClassifiers xsi:type="ecore:EClass" name="NavigationProperty" eSuperTypes="#//derived/ReferenceAccessor">
       <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1"
           eType="#//data/EntityType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="StaticNavigation" eSuperTypes="#//derived/Navigation"/>
-    <eClassifiers xsi:type="ecore:EClass" name="DataHolder" abstract="true" eSuperTypes="#//data/AttributeFeature">
+    <eClassifiers xsi:type="ecore:EClass" name="StaticNavigation" eSuperTypes="#//derived/ReferenceAccessor"/>
+    <eClassifiers xsi:type="ecore:EClass" name="VariableAccessor" abstract="true"
+        eSuperTypes="#//data/Variable">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="getterExpression" lowerBound="1"
           eType="#//expression/DataExpression"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="setterExpression" eType="#//expression/AttributeSelector"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="StaticData" eSuperTypes="#//derived/DataHolder"/>
-    <eClassifiers xsi:type="ecore:EClass" name="Navigation" abstract="true" eSuperTypes="#//data/ReferenceFeature">
+    <eClassifiers xsi:type="ecore:EClass" name="StaticData" eSuperTypes="#//derived/VariableAccessor"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ReferenceAccessor" abstract="true"
+        eSuperTypes="#//data/Reference">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="getterExpression" lowerBound="1"
           eType="#//expression/ReferenceExpression"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="setterExpression" eType="#//expression/ReferenceSelector"/>
@@ -157,23 +166,23 @@
   </eSubpackages>
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
     <eClassifiers xsi:type="ecore:EClass" name="Schema" eSuperTypes="#//type/DataType">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
-          eType="#//service/SchemaReference" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
+          eType="#//service/SchemaRelation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//service/SchemaAttribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//service/SchemaAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="initialize" eType="#//service/Operation"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SchemaReference" abstract="true" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="SchemaRelation" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SchemaEndpoint" eSuperTypes="#//service/SchemaReference">
+    <eClassifiers xsi:type="ecore:EClass" name="SchemaEndpoint" eSuperTypes="#//service/SchemaRelation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="schema" lowerBound="1"
           eType="#//service/MappedSchema"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="initExpression" eType="#//expression/ReferenceExpression"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SchemaContainment" eSuperTypes="#//service/SchemaReference">
+    <eClassifiers xsi:type="ecore:EClass" name="SchemaContainment" eSuperTypes="#//service/SchemaRelation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="schema" lowerBound="1"
           eType="#//service/Schema"/>
     </eClassifiers>
@@ -187,24 +196,24 @@
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributeRules" upperBound="-1"
           eType="#//service/AttributeRule" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceRules" upperBound="-1"
-          eType="#//service/ReferenceRule" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relationRules" upperBound="-1"
+          eType="#//service/RelationRule" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/Operation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="read" eType="#//service/Operation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/Operation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/Operation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="AttributeRule">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="attributeFeature" lowerBound="1"
-          eType="#//data/AttributeFeature"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
+          eType="#//data/Variable"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="schemaAttribute" lowerBound="1"
           eType="#//service/SchemaAttribute"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ReferenceRule">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceFeature" lowerBound="1"
-          eType="#//data/ReferenceFeature"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaReference" lowerBound="1"
-          eType="#//service/SchemaReference"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RelationRule">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="reference" lowerBound="1"
+          eType="#//data/Reference"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaRelation" lowerBound="1"
+          eType="#//service/SchemaRelation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
@@ -218,6 +227,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="ExposedOperation" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
           eType="#//service/Operation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="triggeredBy" upperBound="-1"
+          eType="#//view/Event"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Interface" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperations" upperBound="-1"
@@ -254,8 +265,6 @@
           eType="#//service/Schema"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewType" lowerBound="1"
           eType="#//view/ViewType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="reloadedBy" upperBound="-1"
-          eType="#//view/Event"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="controls" upperBound="-1"
           eType="#//view/Control" containment="true"/>
     </eClassifiers>
@@ -267,8 +276,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="Navigation" abstract="true" eSuperTypes="#//view/Component">
       <eStructuralFeatures xsi:type="ecore:EReference" name="navigationView" lowerBound="1"
           eType="#//view/View"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaReference" lowerBound="1"
-          eType="#//service/SchemaReference"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="schemaRelation" lowerBound="1"
+          eType="#//service/SchemaRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="rangeView" eType="#//view/View"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//view/Navigation">
@@ -339,9 +348,11 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperation" lowerBound="1"
           eType="#//interface/ExposedOperation"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UserInterface" eSuperTypes="#//interface/Interface">
+    <eClassifiers xsi:type="ecore:EClass" name="UserInterface" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mainView" lowerBound="1"
           eType="#//view/View"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="entry" lowerBound="1"
+          eType="#//interface/Entry" containment="true"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
