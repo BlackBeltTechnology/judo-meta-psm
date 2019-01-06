@@ -74,7 +74,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
-          eType="#//service/Operation" transient="true" derived="true" containment="true"/>
+          eType="#//service/BoundOperation" transient="true" derived="true" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
@@ -165,7 +165,7 @@
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
-    <eClassifiers xsi:type="ecore:EClass" name="Schema" eSuperTypes="#//type/DataType">
+    <eClassifiers xsi:type="ecore:EClass" name="Schema" abstract="true" eSuperTypes="#//type/DataType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//service/SchemaRelation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
@@ -215,24 +215,29 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="schemaRelation" lowerBound="1"
           eType="#//service/SchemaRelation"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//service/Schema"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="fault" eType="#//service/Schema"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/Schema"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="external" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnmappedSchema" eSuperTypes="#//service/Schema"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//service/Operation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="input" lowerBound="1"
+          eType="#//service/MappedSchema"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="virtual" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//service/Operation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/UnmappedSchema"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="interface" nsURI="http://blackbelt.hu/judo/meta/psm/interface"
       nsPrefix="interface">
     <eClassifiers xsi:type="ecore:EClass" name="ExposedOperation" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
-          eType="#//service/Operation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="triggeredBy" upperBound="-1"
-          eType="#//view/Event"/>
+          eType="#//service/UnboundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Interface" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperations" upperBound="-1"
@@ -292,7 +297,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//view/Component">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//view/Box"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
-          eType="#//interface/ExposedOperation"/>
+          eType="#//service/Operation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="resultView" eType="#//view/View"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="faultView" eType="#//view/View"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="close" lowerBound="1"
@@ -329,6 +334,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Event">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="eventType" lowerBound="1"
           eType="#//view/EventType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="triggered" eType="#//service/Operation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MenuComponent" abstract="true" eSuperTypes="#//view/Component">
       <eStructuralFeatures xsi:type="ecore:EReference" name="subMenus" upperBound="-1"
