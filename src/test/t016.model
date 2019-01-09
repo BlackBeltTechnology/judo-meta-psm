@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_DP6fMJoeEeiyrNaxr-HdNQ" name="M">
-  <dataTypes xsi:type="type:String" xmi:id="_hqVaQJoeEeiyrNaxr-HdNQ" name="String" maxLength="255"/>
-  <dataTypes xsi:type="type:Numeric" xmi:id="_jCGecJoeEeiyrNaxr-HdNQ" name="Integer" scale="18"/>
-  <entityTypes xmi:id="_fryC4JoeEeiyrNaxr-HdNQ" name="E">
+<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_DP6fMJoeEeiyrNaxr-HdNQ" name="M">
+  <types xsi:type="type:String" xmi:id="_hqVaQJoeEeiyrNaxr-HdNQ" name="String" maxLength="255"/>
+  <types xsi:type="type:Numeric" xmi:id="_jCGecJoeEeiyrNaxr-HdNQ" name="Integer" scale="18"/>
+  <types xsi:type="data:EntityType" xmi:id="_fryC4JoeEeiyrNaxr-HdNQ" name="E">
     <attributes xmi:id="_9naSML2WEeiOuYiCo6IbXQ" name="a" dataType="_hqVaQJoeEeiyrNaxr-HdNQ"/>
     <attributes xmi:id="_-QnAML2WEeiOuYiCo6IbXQ" name="a" dataType="_jCGecJoeEeiyrNaxr-HdNQ"/>
-  </entityTypes>
+  </types>
 </namespace:Model>

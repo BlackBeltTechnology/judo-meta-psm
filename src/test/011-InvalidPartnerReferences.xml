@@ -10,20 +10,19 @@
             <aliases>
                 <alias>JUDOPSM</alias>
             </aliases>
+            <expand>true</expand>
             <metaModelUris>
                 <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
                 <param>http://blackbelt.hu/judo/meta/psm/type</param>
                 <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
             </metaModelUris>
-            <expand>true</expand>
         </model>
     </models>
     <eolPrograms>
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>InvalidPartnerReferences|Opposite partner reference of E1.e2 must be E1.e1</expectedError>
+                <expectedError>InvalidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

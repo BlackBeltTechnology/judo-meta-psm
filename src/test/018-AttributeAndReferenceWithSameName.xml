@@ -10,20 +10,19 @@
             <aliases>
                 <alias>JUDOPSM</alias>
             </aliases>
+            <expand>true</expand>
             <metaModelUris>
                 <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
                 <param>http://blackbelt.hu/judo/meta/psm/type</param>
                 <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                <param>http://blackbelt.hu/judo/meta/psm/facade</param>
             </metaModelUris>
-            <expand>true</expand>
         </model>
     </models>
     <eolPrograms>
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>AttributeAndReferenceWithSameName|Entity E has attributes and references with the same name</expectedError>
+                <expectedError>AttributeAndRelationWithSameName|Entity E has attributes and relations with the same name</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

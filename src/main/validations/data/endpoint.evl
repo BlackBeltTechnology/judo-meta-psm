@@ -2,8 +2,8 @@ import "../../operations/data/_importData.eol";
 
 context JUDOPSM!Endpoint {
 
-    // reserved reference names: id
-    constraint ReservedReferenceName {
+    // reserved relation names: id
+    constraint ReservedRelationName {
     	check: self.name <> "id"
     	message: "Name " + self.displayName() +" is reserved"
     }
@@ -23,7 +23,7 @@ context JUDOPSM!Endpoint {
     // partner of an endpoint must be a different one
     constraint SelfPartner {
     	check: not self.partner.isDefined() or self.partner <> self
-    	message: "Self partner reference found: " + self.displayName()
+    	message: "Self partner relation found: " + self.displayName()
     }
 }
 
@@ -34,14 +34,14 @@ context JUDOPSM!Endpoint {
     // opposite partner must be defined if a partner if endpoint is already defined
     constraint OppositePartnerIsNotDefined {
     	check: self.partner.partner.isDefined()
-    	message: "Missing opposite partner reference for " + self.displayName()
+    	message: "Missing opposite partner relation for " + self.displayName()
     }
 
-    // if partners are specified on both sides of a relation then endpoints must reference to each other
-    constraint InvalidPartnerReferences {
+    // if partners are specified on both sides of a relation then endpoints must relation to each other
+    constraint InvalidPartnerRelations {
     	guard: self.satisfiesAll("OppositePartnerIsNotDefined")
     	check: self.partner.partner = self
-    	message: "Opposite partner reference of " + self.partner.displayName() + " must be " + self.displayName()
+    	message: "Opposite partner relation of " + self.partner.displayName() + " must be " + self.displayName()
     }
 
     // target and partner types must be aligned
@@ -52,7 +52,7 @@ context JUDOPSM!Endpoint {
 
     // 1-1 single required relationship is not supported
 	critique OneToOneRelationNotSupported {
-    	guard: self.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerReferences", "InvalidPartnerType")
+    	guard: self.satisfiesAll("InvalidPartnerRelations", "InvalidPartnerType") and self.partner.satisfiesAll("InvalidPartnerRelations", "InvalidPartnerType")
 		check: not(self.isRequired() and not self.isCollection() and self.partner.isRequired() and not self.partner.isCollection())
 		message: "1-1 relations required on both sides are not supported: " + self.displayName() + " - " + self.partner.displayName()
 	}

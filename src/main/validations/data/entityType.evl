@@ -4,7 +4,7 @@ context JUDOPSM!EntityType {
 
     // recursive inheritance is not supported 
 	constraint RecursiveInheritance {
-		check: not self.hasCircularReference()
+		check: not self.hasCircularRelation()
 		message: "Entity type " + self.name + " is recursive"
 	}
 
@@ -14,15 +14,15 @@ context JUDOPSM!EntityType {
 		message: "Multiple attributes are added to entity " + self.name + " with the same name"
 	}
 
-	// entity has multiple references with the same name
-	constraint ReferenceAddedMultipleTimes {
-		check: self.references.select(e | self.references.excluding(e).select(e2 | e2.name == e.name).size() > 0).size() == 0
-		message: "Multiple references are added to entity " + self.name + " with the same name"
+	// entity has multiple relations with the same name
+	constraint RelationAddedMultipleTimes {
+		check: self.relations.select(e | self.relations.excluding(e).select(e2 | e2.name == e.name).size() > 0).size() == 0
+		message: "Multiple relations are added to entity " + self.name + " with the same name"
 	}
 
-	// entity has attribute(s) and reference(s) with the same name
-	constraint AttributeAndReferenceWithSameName {
-		check: self.references.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
-		message: "Entity " + self.name + " has attributes and references with the same name"
+	// entity has attribute(s) and relations(s) with the same name
+	constraint AttributeAndRelationWithSameName {
+		check: self.relations.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
+		message: "Entity " + self.name + " has attributes and relations with the same name"
 	}
 }

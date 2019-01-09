@@ -1,0 +1,19 @@
+@cached
+operation JUDOPSM!Relation displayName() : String {
+	return self.getEntityType().name + "." + self.name;
+}
+
+@cached
+operation JUDOPSM!Relation getEntityType() : JUDOPSM!EntityType {
+	return JUDOPSM!EntityType.all.selectOne(et | et.relations.includes(self));
+}
+
+@cached
+operation JUDOPSM!Relation isRequired() : Boolean {
+	return self.cardinality.lower > 0;
+}
+
+@cached
+operation JUDOPSM!Relation isCollection() : Boolean {
+	return self.cardinality.upper > 1 or self.cardinality.upper == -1;
+}

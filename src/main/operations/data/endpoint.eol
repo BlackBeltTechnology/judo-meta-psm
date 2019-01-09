@@ -1,4 +1,4 @@
 @cached
 operation JUDOPSM!Endpoint getOpposites() : JUDOPSM!Endpoint {
-	return self.target.references.select(e | e.target = self.getEntityType());
+	return self.target.relations.select(e | e.target = self.getEntityType());
 }
