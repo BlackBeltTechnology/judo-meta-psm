@@ -368,8 +368,8 @@
           eType="#//view/ObjectView"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="authorisation">
-    <eClassifiers xsi:type="ecore:EClass" name="PasswordAuthenticatedUser" eSuperTypes="#//authorisation/AuthenticatedUser">
+  <eSubpackages name="authentication">
+    <eClassifiers xsi:type="ecore:EClass" name="PasswordAuthenticatedUser" eSuperTypes="#//authentication/AuthenticatedUser">
       <eStructuralFeatures xsi:type="ecore:EReference" name="password" lowerBound="1"
           eType="#//data/Attribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="login" lowerBound="1"
