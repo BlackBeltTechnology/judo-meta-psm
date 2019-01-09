@@ -29,6 +29,8 @@
     <nestedGenPackages prefix="Type" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//type">
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/RegExp"/>
+      <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlNamespace"/>
+      <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlElement"/>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/Custom"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/String">

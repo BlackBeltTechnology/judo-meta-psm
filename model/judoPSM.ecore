@@ -52,8 +52,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamedElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
     <eClassifiers xsi:type="ecore:EClass" name="XML" eSuperTypes="#//type/Primitive">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="#//type/XmlNamespace"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="element" eType="#//type/XmlElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Cardinality">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
@@ -63,6 +63,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EDataType" name="RegExp" instanceClassName="java.lang.String"/>
     <eClassifiers xsi:type="ecore:EClass" name="Password" eSuperTypes="#//type/Primitive"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="XmlNamespace" instanceClassName="java.lang.String"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="XmlElement" instanceClassName="java.lang.String"/>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
@@ -229,8 +231,8 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/TransferObject"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/interface"
-      nsPrefix="interface">
+  <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
+      nsPrefix="accesspoint">
     <eClassifiers xsi:type="ecore:EClass" name="ExposedService" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
           eType="#//service/Operation"/>
@@ -369,7 +371,8 @@
           eType="#//view/ObjectView"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="authentication">
+  <eSubpackages name="authentication" nsURI="http://blackbelt.hu/judo/meta/psm/authentication"
+      nsPrefix="authentication">
     <eClassifiers xsi:type="ecore:EClass" name="PasswordAuthenticatedUser" eSuperTypes="#//authentication/AuthenticatedUser">
       <eStructuralFeatures xsi:type="ecore:EReference" name="password" lowerBound="1"
           eType="#//data/Attribute"/>
