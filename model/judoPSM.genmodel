@@ -199,7 +199,10 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="NewPackage13" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//accesspoint">
-      <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedService"/>
+      <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedService">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedService/operation"/>
+      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/AccessPoint">
         <genFeatures children="true" createChild="true" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedServices"/>
@@ -327,6 +330,18 @@
       <genClasses ecoreClass="judoPSM.ecore#//view/UnboundActionLink">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/UnboundActionLink/actionView"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="NewPackage12" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//authorisation">
+      <genClasses ecoreClass="judoPSM.ecore#//authorisation/PasswordAuthenticatedUser">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//authorisation/PasswordAuthenticatedUser/password"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//authorisation/PasswordAuthenticatedUser/login"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//authorisation/AuthenticatedUser">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//authorisation/AuthenticatedUser/user"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

@@ -230,7 +230,10 @@
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/interface"
       nsPrefix="interface">
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedService" eSuperTypes="#//namespace/NamedElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedService" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
+          eType="#//service/Operation"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="AccessPoint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
           eType="#//accesspoint/ExposedService" containment="true"/>
@@ -350,7 +353,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ActionMenuItem" eSuperTypes="#//view/MenuItem">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedService" lowerBound="1"
-          eType="#//accesspoint/ExposedService"/>
+          eType="#//service/Operation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UserInterface" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mainView" lowerBound="1"
@@ -363,6 +366,18 @@
     <eClassifiers xsi:type="ecore:EClass" name="UnboundActionLink" eSuperTypes="#//view/Component">
       <eStructuralFeatures xsi:type="ecore:EReference" name="actionView" lowerBound="1"
           eType="#//view/ObjectView"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="authorisation">
+    <eClassifiers xsi:type="ecore:EClass" name="PasswordAuthenticatedUser" eSuperTypes="#//authorisation/AuthenticatedUser">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="password" lowerBound="1"
+          eType="#//data/Attribute"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="login" lowerBound="1"
+          eType="#//data/Attribute"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AuthenticatedUser" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="user" lowerBound="1"
+          eType="#//data/EntityType"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
