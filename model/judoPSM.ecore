@@ -75,7 +75,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
-          eType="#//service/Operation" transient="true" derived="true" containment="true"/>
+          eType="#//service/BoundOperation" transient="true" derived="true" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
