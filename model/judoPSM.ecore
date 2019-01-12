@@ -22,6 +22,8 @@
           eType="#//view/ObjectView" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="userInterfaces" upperBound="-1"
           eType="#//view/UserInterface" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="authorizationResources"
+          upperBound="-1" eType="#//authorization/AuthorizationResource" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace"/>
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace"/>
@@ -257,6 +259,8 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="layout" lowerBound="1"
           eType="#//view/LayoutType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="alignment" lowerBound="1"
+          eType="#//view/AlignmentType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Component" abstract="true" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -370,6 +374,13 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="actionView" lowerBound="1"
           eType="#//view/ObjectView"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="AlignmentType">
+      <eLiterals name="TOP"/>
+      <eLiterals name="BOTTOM" value="1"/>
+      <eLiterals name="LEFT" value="2"/>
+      <eLiterals name="RIGHT" value="3"/>
+      <eLiterals name="CENTER" value="4"/>
+    </eClassifiers>
   </eSubpackages>
   <eSubpackages name="authentication" nsURI="http://blackbelt.hu/judo/meta/psm/authentication"
       nsPrefix="authentication">
@@ -382,6 +393,16 @@
     <eClassifiers xsi:type="ecore:EClass" name="AuthenticatedUser" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="user" lowerBound="1"
           eType="#//data/EntityType"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="authorization">
+    <eClassifiers xsi:type="ecore:EClass" name="AuthorizationResource" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceTypedElements"
+          upperBound="-1" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+          eType="#//service/Operation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="includedAuthorizationResources"
+          upperBound="-1" eType="#//authorization/AuthorizationResource"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>
