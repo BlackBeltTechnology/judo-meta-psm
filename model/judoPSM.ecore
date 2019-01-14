@@ -116,8 +116,9 @@
   <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"
       nsPrefix="constraint">
     <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" lowerBound="1"
-          eType="#//expression/BooleanExpression"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
+          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/collection#//DataExpression"
+          containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="constrained" lowerBound="1"
           eType="#//data/EntityType"/>
     </eClassifiers>
