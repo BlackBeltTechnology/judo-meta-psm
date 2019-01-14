@@ -31,7 +31,7 @@ public class PsmModelInfo {
     VersionRange metaVersion;
 
     public Dictionary<String, Object> toDictionary() {
-        Dictionary<String, Object> ret = new Hashtable();
+        Dictionary<String, Object> ret = new Hashtable<>();
         ret.put(FILE, file);
         ret.put(NAME, name);
         ret.put(VERSION, version);

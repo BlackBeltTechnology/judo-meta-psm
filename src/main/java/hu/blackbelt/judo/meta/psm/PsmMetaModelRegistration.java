@@ -7,8 +7,6 @@ import hu.blackbelt.judo.meta.psm.facade.FacadePackage;
 import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
 import hu.blackbelt.judo.meta.psm.type.TypePackage;
 import hu.blackbelt.judo.meta.psm.util.PsmResourceFactoryImpl;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.osgi.framework.ServiceRegistration;

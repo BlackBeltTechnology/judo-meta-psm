@@ -139,17 +139,22 @@
     <eClassifiers xsi:type="ecore:EClass" name="StaticNavigation" eSuperTypes="#//derived/ReferenceAccessor #//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="PrimitiveAccessor" abstract="true"
         eSuperTypes="#//data/PrimitiveTypedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="getterExpression" lowerBound="1"
-          eType="#//expression/DataExpression"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="setterExpression" eType="#//expression/AttributeSelector"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getterExpression" lowerBound="1"
+          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/collection#//DataExpression"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/collection#//AttributeSelector"
+          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="StaticData" eSuperTypes="#//derived/PrimitiveAccessor #//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceAccessor" abstract="true"
         eSuperTypes="#//data/ReferenceTypedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="getterExpression" lowerBound="1"
-          eType="#//expression/ReferenceExpression"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="setterExpression" eType="#//expression/ReferenceSelector"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="rangeExpression" eType="#//expression/ReferenceExpression"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getterExpression" lowerBound="1"
+          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/collection#//ReferenceExpression"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/collection#//ReferenceSelector"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/collection#//ReferenceExpression"
+          containment="true"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
