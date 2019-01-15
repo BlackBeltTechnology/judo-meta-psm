@@ -121,7 +121,7 @@ operation JUDOPSM!EntityType getSuperTypes() : Sequence {
 
 @cached
 operation JUDOPSM!Primitive isNumeric() : Boolean {
-    return self.isKindOf(JUDOPSM!Numeric);
+    return self.isKindOf(JUDOPSM!NumericType);
 }
 
 @cached
@@ -136,20 +136,20 @@ operation JUDOPSM!Primitive isDecimal() : Boolean {
 
 @cached
 operation JUDOPSM!Primitive isBoolean() : Boolean {
-    return self.isKindOf(JUDOPSM!Boolean);
+    return self.isKindOf(JUDOPSM!BooleanType);
 }
 
 @cached
 operation JUDOPSM!Primitive isString() : Boolean {
-    return self.isKindOf(JUDOPSM!String);
+    return self.isKindOf(JUDOPSM!StringType);
 }
 
 @cached
 operation JUDOPSM!Primitive isEnumeration() : Boolean {
-    return self.isKindOf(JUDOPSM!Enumeration);
+    return self.isKindOf(JUDOPSM!EnumerationType);
 }
 
-operation JUDOPSM!Enumeration contains(memberName : String) : Boolean {
+operation JUDOPSM!EnumerationType contains(memberName : String) : Boolean {
     return self.members.selectOne(m | m.name = memberName).isDefined();
 }
 
