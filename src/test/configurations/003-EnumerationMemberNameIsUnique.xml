@@ -6,8 +6,8 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t020.model</artifact>
-            <name>A1</name>
+            <artifact>src/test/models/t003.model</artifact>
+            <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
                 <alias>EXPR</alias>
@@ -38,7 +38,7 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>MaxLengthIsTooLarge|MaxLength must be less than/equals to 4000: String</expectedError>
+                <expectedError>EnumerationMemberNameIsUnique|Enum member names are not unique: E</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

@@ -3,7 +3,7 @@ import "../../operations/data/_importData.eol";
 context JUDOPSM!Attribute {
 
     // reserved attribute names: id    
-    constraint ReservedAttributeName {
+    constraint AttributeNameIsNotReserved {
     	check: self.name <> "id"
     	message: "Name " + self.displayName() + " is reserved"
     }

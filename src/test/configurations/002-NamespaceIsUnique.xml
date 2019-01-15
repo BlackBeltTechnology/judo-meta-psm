@@ -6,8 +6,8 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/test.model</artifact>
-            <name>TEST</name>
+            <artifact>src/test/models/t002.model</artifact>
+            <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
                 <alias>EXPR</alias>
@@ -37,11 +37,9 @@
     <eolPrograms>
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
-            <expectedErrors/>
-            <expectedWarnings>
-                <expectedWarning>OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: A.b - B.a</expectedWarning>
-                <expectedWarning>OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: B.a - A.b</expectedWarning>
-            </expectedWarnings>
+            <expectedErrors>
+                <expectedError>NamespaceIsUnique|Names Set {P, String} are not unique in namespace M</expectedError>
+            </expectedErrors>
         </Evl>
     </eolPrograms>
 </configuration>

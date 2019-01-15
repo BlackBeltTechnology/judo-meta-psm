@@ -1,7 +1,7 @@
 context JUDOPSM!Namespace {
 
 	// data type, entity type, facade and package names must be unique in a package
-	constraint NamespaceIsNotUnique {
+	constraint NamespaceIsUnique {
 		check {
 			var notUniqueNames = new Set;
 			var names = new Set;

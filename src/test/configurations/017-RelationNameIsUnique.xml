@@ -6,7 +6,7 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t012.model</artifact>
+            <artifact>src/test/models/t017.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -38,8 +38,7 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>InvalidPartnerType|Invalid partner type: E2.e1 for E1.e3</expectedError>
-                <expectedError>InvalidPartnerType|Invalid partner type: E1.e3 for E2.e1</expectedError>
+                <expectedError>RelationNameIsUnique|Multiple relations are added to entity E with the same name</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

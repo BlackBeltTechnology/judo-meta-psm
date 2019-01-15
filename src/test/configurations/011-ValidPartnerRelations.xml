@@ -6,7 +6,7 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t015.model</artifact>
+            <artifact>src/test/models/t011.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -38,7 +38,7 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>SelfPartner|Self partner relation found: E1.e1</expectedError>
+                <expectedError>ValidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

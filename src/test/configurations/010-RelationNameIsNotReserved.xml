@@ -6,7 +6,7 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t013.model</artifact>
+            <artifact>src/test/models/t010.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -37,10 +37,9 @@
     <eolPrograms>
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
-            <expectedWarnings>
-                <expectedWarning>OneToOneRelationNotSupported|1-1 relations required on both sides are not supported: E1.e2 - E2.e1</expectedWarning>
-                <expectedWarning>OneToOneRelationNotSupported|1-1 relations required on both sides are not supported: E2.e1 - E1.e2</expectedWarning>
-            </expectedWarnings>
+            <expectedErrors>
+                <expectedError>RelationNameIsNotReserved|Name E1.id is reserved</expectedError>
+            </expectedErrors>
         </Evl>
     </eolPrograms>
 </configuration>

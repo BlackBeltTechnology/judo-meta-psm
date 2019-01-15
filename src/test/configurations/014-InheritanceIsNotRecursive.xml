@@ -6,7 +6,7 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t010.model</artifact>
+            <artifact>src/test/models/t014.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -38,7 +38,9 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>ReservedRelationName|Name E1.id is reserved</expectedError>
+                <expectedError>InheritanceIsNotRecursive|Entity type E1 is recursive</expectedError>
+                <expectedError>InheritanceIsNotRecursive|Entity type E2 is recursive</expectedError>
+                <expectedError>InheritanceIsNotRecursive|Entity type E3 is recursive</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

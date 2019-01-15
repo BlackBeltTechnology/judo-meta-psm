@@ -6,7 +6,7 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t014.model</artifact>
+            <artifact>src/test/models/t018.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -38,9 +38,7 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>RecursiveInheritance|Entity type E1 is recursive</expectedError>
-                <expectedError>RecursiveInheritance|Entity type E2 is recursive</expectedError>
-                <expectedError>RecursiveInheritance|Entity type E3 is recursive</expectedError>
+                <expectedError>NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

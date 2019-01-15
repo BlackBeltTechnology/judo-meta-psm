@@ -6,8 +6,36 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t011.model</artifact>
-            <name>M</name>
+            <artifact>src/test/models/t001_a1.model</artifact>
+            <name>M1</name>
+            <aliases>
+                <alias>JUDOPSM</alias>
+                <alias>EXPR</alias>
+            </aliases>
+            <storeOnDisposal>false</storeOnDisposal>
+            <cached>false</cached>
+            <expand>true</expand>
+            <metaModelUris>
+                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
+
+                <param>http://blackbelt.hu/judo/meta/expression</param>
+                <param>http://blackbelt.hu/judo/meta/expression/constant</param>
+                <param>http://blackbelt.hu/judo/meta/expression/variable</param>
+                <param>http://blackbelt.hu/judo/meta/expression/operator</param>
+                <param>http://blackbelt.hu/judo/meta/expression/numeric</param>
+                <param>http://blackbelt.hu/judo/meta/expression/logical</param>
+                <param>http://blackbelt.hu/judo/meta/expression/string</param>
+                <param>http://blackbelt.hu/judo/meta/expression/enumeration</param>
+                <param>http://blackbelt.hu/judo/meta/expression/object</param>
+                <param>http://blackbelt.hu/judo/meta/expression/collection</param>
+            </metaModelUris>
+        </model>
+        <model>
+            <artifact>src/test/models/t001_a3.model</artifact>
+            <name>M2</name>
             <aliases>
                 <alias>JUDOPSM</alias>
                 <alias>EXPR</alias>
@@ -38,7 +66,7 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>InvalidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1</expectedError>
+                <expectedError>StandaloneModelLoadedOnly|Standalone models are supported only</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>
