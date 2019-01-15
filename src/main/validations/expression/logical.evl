@@ -1,0 +1,116 @@
+context EXPR!StringComparison {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!EnumerationComparison {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!NegationExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!KleeneExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!InstanceOfExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    constraint ElementTypeIsCompatible {
+        guard: self.satisfiesAll("Resolved") and self.objectExpression.satisfiesAll("Resolved") and self.elementName.satisfiesAll("ObjectTypeIsValid")
+        
+        check: self.elementName.getObjectType().getSuperTypes().contains(self.objectExpression.getObjectType())
+        message: "Element type (" + self.elementName.toString() + ") is not compatible with " + self.objectExpression.getObjectType().getName() 
+    }
+}
+
+context EXPR!TypeOfExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    constraint ElementTypeIsCompatible {
+        guard: self.satisfiesAll("Resolved") and self.objectExpression.satisfiesAll("Resolved") and self.elementName.satisfiesAll("ObjectTypeIsValid")
+        
+        check: self.elementName.getObjectType().getSuperTypes().contains(self.objectExpression.getObjectType())
+        message: "Element type (" + self.elementName.toString() + ") is not " + self.objectExpression.getObjectType().getName() 
+    }
+}
+
+context EXPR!UndefinedAttributeComparison {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!UndefinedNavigationComparison {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!LogicalAttribute {
+    constraint AttributeTypeIsBoolean {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.getAttributeType().isBoolean()
+        message: "Attribute type of " + self.attributeName + " of object type " + self.objectExpression.getObjectType().getName() + " is not boolean"
+    }
+}
+
+context EXPR!ContainsExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    constraint TypesAreCompatible {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.collectionExpression.getObjectType() == self.objectExpression.getObjectType()
+            or self.collectionExpression.getObjectType().getSuperTypes().contains(self.objectExpression.getObjectType())
+            or self.objectExpression.getObjectType().getSuperTypes().contains(self.collectionExpression.getObjectType())
+        message: "Types of collection and object are not compatible"  
+    }
+}
+
+context EXPR!IntegerComparison {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!DecimalComparison {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    critique IntegerComparisonIsRecommended {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: not (self.left.isKindOf(EXPR!IntegerExpression) 
+            and self.right.isKindOf(EXPR!IntegerExpression))
+        message: "Both arguments are integer so integer comparison is recommended in: " + self.toString()
+    }
+}

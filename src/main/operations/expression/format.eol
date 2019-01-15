@@ -1,0 +1,344 @@
+@cached
+operation EXPR!ObjectNavigationExpression toString() : String {
+    return self.objectExpression.toString() + "->" + self.referenceName;
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression toString() : String {
+    return self.objectExpression.toString() + "=>" + self.referenceName;
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression toString() : String {
+    return self.collectionExpression.toString() + "=>" + self.referenceName;
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression toString() : String {
+    return self.collectionExpression.toString() + "->" + self.referenceName;
+}
+
+@cached
+operation EXPR!SortExpression toString() : String {
+    if (self.orderBy.size() == 0) {
+        return self.collectionExpression.toString();
+    } else {
+        return self.collectionExpression.toString() + "[" + self.getVariableName() + " order by " + self.orderBy.closure(i | i.toString()).concat(", ") + "]";
+    }
+}
+
+@cached
+operation EXPR!OrderByItem toString() : String {
+    var postfix;
+    if (self.descending) {
+        postfix = "DESC";
+    } else {
+        postfix = "ASC";
+    }
+    return self.expression.toString() + " " + postfix;
+}
+
+@cached
+operation EXPR!IntegerVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!DecimalVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!LogicalVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!StringVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!EnumerationVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!ObjectVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!CollectionVariableReference toString() : String {
+    return self.variable.name;
+}
+
+@cached
+operation EXPR!ObjectFilterExpression toString() : String {
+    return self.objectExpression.toString() + "[" + self.getVariableName() + " | " + self.condition.toString() + "]";
+}
+
+@cached
+operation EXPR!ObjectSelectorExpression toString() : String {
+    return "(" + self.operator.toString() + " " + self.collectionExpression.toString() + ")";
+}
+
+@cached
+operation EXPR!AttributeSelector toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!IntegerAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!DecimalAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!LogicalAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!StringAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!EnumerationAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!ElementName toString() : String {
+    return self.namespace + "::" + self.name;    
+}
+
+@cached
+operation EXPR!ImmutableCollection toString() : String {
+    return self.elementName.toString();
+}
+
+@cached
+operation EXPR!CollectionFilterExpression toString() : String {
+    return self.collectionExpression.toString() + "[" + self.getVariableName() + "| " + self.condition.toString() + "]";
+}
+
+@cached
+operation EXPR!Integer toString() : String {
+    return self.value.toString();
+}
+
+@cached
+operation EXPR!Decimal toString() : String {
+    return self.value.toString();
+}
+
+@cached
+operation EXPR!Boolean toString() : String {
+    return self.value.toString();
+}
+
+@cached
+operation EXPR!String toString() : String {
+    return "'" + self.value + "'";
+}
+
+@cached
+operation EXPR!Literal toString() : String {
+    return "'" + self.value + "'";
+}
+
+@cached
+operation EXPR!IntegerAritmeticExpression toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!RoundExpression toString() : String {
+    return "round(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!DecimalAritmeticExpression toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!CountExpression toString() : String {
+    return "COUNT(" + self.collectionExpression.toString() + ")";
+}
+
+@cached
+operation EXPR!IntegerAggregatedExpression toString() : String {
+    return self.operator + "(" + self.getVariableName() + " on " + self.collectionExpression.toString() + ": " + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!DecimalAggregatedExpression toString() : String {
+    return self.operator + "(" + self.getVariableName() + " on " + self.collectionExpression.toString() + ": " + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!IntegerOppositeExpression toString() : String {
+    return "- " + self.expression.toString();
+}
+
+@cached
+operation EXPR!DecimalOppositeExpression toString() : String {
+    return "- " + self.expression.toString();
+}
+
+@cached
+operation EXPR!IntegerComparison toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!DecimalComparison toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!StringComparison toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!EnumerationComparison toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!ObjectComparison toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!NegationExpression toString() : String {
+    return "NOT" + self.expression.toString();
+}
+
+@cached
+operation EXPR!KleeneExpression toString() : String {
+    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+}
+
+@cached
+operation EXPR!InstanceOfExpression toString() : String {
+    return self.objectExpression.toString() + " is " + self.elementName.toString();
+}
+
+@cached
+operation EXPR!TypeOfExpression toString() : String {
+    return self.objectExpression.toString() + " is " + self.elementName.toString();
+}
+
+@cached
+operation EXPR!UndefinedAttributeComparison toString() : String {
+    return self.objectExpression.toString() + "." + self.attributeName + " IS NULL";
+}
+
+@cached
+operation EXPR!UndefinedNavigationComparison toString() : String {
+    return self.objectExpression.toString() + " IS NULL";
+}
+
+@cached
+operation EXPR!ContainsExpression toString() : String {
+    return self.collectionExpression.toString() + " contains " + self.objectExpression.toString();
+}
+
+@cached
+operation EXPR!MemberOfExpression toString() : String {
+    return self.objectExpression.toString() + " in " + self.collectionExpression.toString();
+}
+
+@cached
+operation EXPR!Concatenate toString() : String {
+    return "concat(" + self.left.toString() + ", " + self.objectExpression.toString() + ")";
+}
+
+@cached
+operation EXPR!LowerCase toString() : String {
+    return "lower(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!UpperCase toString() : String {
+    return "upper(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!Length toString() : String {
+    return "length(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!SubString toString() : String {
+    return "substring(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!Position toString() : String {
+    return "position(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!Replace toString() : String {
+    return "replace(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!Trim toString() : String {
+    return "trim(" + self.expression.toString() + ")";
+}
+
+@cached
+operation EXPR!SwitchCase toString() : String {
+    return " when " + self.condition.toString() + " then " + self.expression.toString();
+}
+
+@cached
+operation EXPR!IntegerSwitchExpression toString() : String {
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+}
+
+@cached
+operation EXPR!DecimalSwitchExpression toString() : String {
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+}
+
+@cached
+operation EXPR!StringSwitchExpression toString() : String {
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+}
+
+@cached
+operation EXPR!EnumerationSwitchExpression toString() : String {
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+}
+
+@cached
+operation EXPR!CastObject toString() : String {
+    return self.objectExpression.toString() + "[as " + self.elementName.toString() + "]";
+}
+
+@cached
+operation EXPR!CastCollection toString() : String {
+    return self.collectionExpression.toString() + "[as " + self.elementName.toString() + "]"; 
+}
+
+@cached
+operation EXPR!ConcatenateCollection toString() : String {
+    return "concat(" + self.getVariableName() + " on " + self.collectionExpression.toString() + ": " + self.expression.toString() + " using separator " + self.separator.toString() + ")"; 
+}
+
+@cached
+operation EXPR!Instance toString() : String {
+    return self.elementName.toString() + " instance";
+}

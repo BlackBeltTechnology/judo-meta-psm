@@ -1,4 +1,4 @@
 @cached
 operation JUDOPSM!Type getPackage() : JUDOPSM!Namespace {
-	return JUDOPSM!Namespace.all.selectOne(p | p.types.includes(self));
+	return JUDOPSM!Namespace.all.selectOne(p | p.elements.includes(self));
 }

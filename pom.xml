@@ -156,9 +156,9 @@
                     <version>${epsilon.maven.plugin.version}</version>
                     <dependencies>
                         <dependency>
-                            <groupId>hu.blackbelt.judo</groupId>
-                            <artifactId>judo-model-scripting</artifactId>
-                            <version>${judo.model.scripting.version}</version>
+                            <groupId>hu.blackbelt.judo.meta</groupId>
+                            <artifactId>judo-meta-expression</artifactId>
+                            <version>${judo.expression.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -253,8 +253,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.1.2_feature_2_verify_EVL_rules-31</epsilon.maven.plugin.version>
-        <judo.model.scripting.version>1.0.0_develop-4</judo.model.scripting.version>
+        <epsilon.maven.plugin.version>1.1.2_feature__5_UpdateEpsilon_1_5_1-36</epsilon.maven.plugin.version>
+        <judo.expression.version>1.0.0-develop-43</judo.expression.version>
 
         <src.dir>src/main</src.dir>
     </properties>

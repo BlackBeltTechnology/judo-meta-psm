@@ -1,0 +1,71 @@
+@cached
+operation EXPR!CountExpression getInputExpression() : EXPR!CollectionExpression {
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!IntegerAritmeticExpression getLambdaExpressions() : Collection {
+    return Set{self.left, self.right};
+}
+
+@cached
+operation EXPR!DecimalAritmeticExpression getLambdaExpressions() : Collection {
+    return Set{self.left, self.right};
+}
+
+@cached
+operation EXPR!IntegerOppositeExpression getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!DecimalOppositeExpression getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!RoundExpression getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!IntegerAggregatedExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!DecimalAggregatedExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!IntegerAggregatedExpression getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!DecimalAggregatedExpression getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!IntegerSwitchExpression getLambdaExpressions() : Collection {
+    var operands = new Set;
+    operands.addAll(self.cases.collect(c | c.condition));
+    operands.addAll(self.cases.collect(c | c.expression));
+    if (self.defaultExpression.isDefined()) {
+        operands.add(self.defaultExpression);
+    }
+    return operands;
+}
+
+@cached
+operation EXPR!DecimalSwitchExpression getLambdaExpressions() : Collection {
+    var operands = new Set;
+    operands.addAll(self.cases.collect(c | c.condition));
+    operands.addAll(self.cases.collect(c | c.expression));
+    if (self.defaultExpression.isDefined()) {
+        operands.add(self.defaultExpression);
+    }
+    return operands;
+}

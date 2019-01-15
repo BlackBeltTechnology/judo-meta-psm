@@ -1,0 +1,15 @@
+@cached
+operation EXPR!EnumerationAttribute getEnumeration() {
+    return self.getAttributeType();
+}
+
+@cached
+operation EXPR!EnumerationVariableReference getEnumeration() {
+    return self.variable.getElementName().getEnumerationType();
+}
+
+@cached
+operation EXPR!Literal getEnumeration() {
+    // enumeration is unknown
+    return null;
+}

@@ -3,9 +3,10 @@ context JUDOPSM!Namespace {
 	// data type, entity type, facade and package names must be unique in a package
 	constraint NamespaceIsNotUnique {
 		check {
-			var notUniqueNames = Set{};
-			var names = Set{};
-			for (p in self.packages.includingAll(self.types)) {
+			var notUniqueNames = new Set;
+			var names = new Set;
+			
+			for (p in self.elements.includingAll(self.packages)) {
 				if (names.includes(p.name)) {
 					notUniqueNames.add(p.name);
 				}

@@ -1,0 +1,60 @@
+@cached
+operation EXPR!Concatenate getLambdaExpressions() : Collection {
+    return Set{self.left, self.right};
+}
+
+@cached
+operation EXPR!LowerCase getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!UpperCase getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!Length getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!SubString getLambdaExpressions() : Collection {
+    return Set{self.expression, self.position, self.length};
+}
+
+@cached
+operation EXPR!Position getLambdaExpressions() : Collection {
+    return Set{self.container, self.containment};
+}
+
+@cached
+operation EXPR!Replace getLambdaExpressions() : Collection {
+    return Set{self.expression, self.pattern, self.replacement};
+}
+
+@cached
+operation EXPR!Trim getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!ConcatenateCollection getInputExpression() : EXPR!CollectionExpression {
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!ConcatenateCollection getLambdaExpressions() : Collection {
+    return Set{self.expression};
+}
+
+@cached
+operation EXPR!StringSwitchExpression getLambdaExpressions() : Collection {
+    var operands = new Set;
+    operands.addAll(self.cases.collect(c | c.condition));
+    operands.addAll(self.cases.collect(c | c.expression));
+    if (self.defaultExpression.isDefined()) {
+        operands.add(self.defaultExpression);
+    }
+    return operands;
+}

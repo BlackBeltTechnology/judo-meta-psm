@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmi:id="_fHJn4JmGEeiyrNaxr-HdNQ" name="M">
-  <types xsi:type="data:EntityType" xmi:id="_hJRQoJmGEeiyrNaxr-HdNQ" name="E1">
+  <elements xsi:type="data:EntityType" xmi:id="_hJRQoJmGEeiyrNaxr-HdNQ" name="E1">
     <relations xsi:type="data:Endpoint" xmi:id="_dISfAL2XEeiOuYiCo6IbXQ" name="e" target="_GkQfwMIpEeiBdsJcLYLa1w">
       <cardinality/>
     </relations>
-  </types>
-  <types xsi:type="data:EntityType" xmi:id="_GkQfwMIpEeiBdsJcLYLa1w" name="E2">
+  </elements>
+  <elements xsi:type="data:EntityType" xmi:id="_GkQfwMIpEeiBdsJcLYLa1w" name="E2">
     <relations xsi:type="data:Endpoint" xmi:id="_dnbSEL2XEeiOuYiCo6IbXQ" name="f" target="_hJRQoJmGEeiyrNaxr-HdNQ" partner="_dISfAL2XEeiOuYiCo6IbXQ">
       <cardinality/>
     </relations>
-  </types>
+  </elements>
 </namespace:Model>

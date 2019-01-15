@@ -1,0 +1,196 @@
+@cached
+operation EXPR!ImmutableCollection getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+@cached
+operation EXPR!CollectionFilterExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression getReference() {
+    var objectType = self.objectExpression.getObjectType();
+    if (objectType.isDefined()) {
+        return objectType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression getReference() {
+    var collectionType = self.collectionExpression.getObjectType();
+    if (collectionType.isDefined()) {
+        return collectionType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression getReference() {
+    var collectionType = self.collectionExpression.getObjectType();
+    if (collectionType.isDefined()) {
+        return collectionType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression isCollection() : Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression isCollection() :Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression isCollection() : Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionVariableReference getObjectType() {
+    return self.variable.getObjectType();
+}
+
+@cached
+operation EXPR!SortExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!CastCollection getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+/*@cached
+operation EXPR!IntegerAggregatedExpression getAttributeType() {
+    var collectionType = self.collectionExpression.getObjectType();
+    
+    if (collectionType.isDefined()) {
+        return collectionType.getAttributeType(self.attributeName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!DecimalAggregatedExpression getAttributeType() {
+    var collectionType = self.collectionExpression.getObjectType();
+    
+    if (collectionType.isDefined()) {
+        return collectionType.getAttributeType(self.attributeName);
+    } else {
+        return null;
+    }
+} */
+
+/*operation EXPR!CollectionFilterExpression getVariables() : Collection {
+    var variables = self.getOperands().getVariables().clone();
+    variables.add(self);
+    return variables;
+} */
+
+@cached
+operation EXPR!CollectionFilterExpression getInputExpression() : EXPR!CollectionExpression {
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!CollectionFilterExpression getLambdaExpressions() : Collection {
+    return Set{self.condition};
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression getInputExpression() : EXPR!ObjectExpression {
+    return self.objectExpression;
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression getInputExpression() : EXPR!CollectionExpression {
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression getInputExpression() : EXPR!CollectionExpression{
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!SortExpression getInputExpression() : EXPR!CollectionExpression{
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!SortExpression getLambdaExpressions() : Collection {
+    if (self.orderBy.isDefined()) {
+        return self.orderBy.collect(o | o.expression).clone();
+    } else {
+        return new Set;
+    }
+}
+
+@cached
+operation EXPR!SubCollectionExpression getInputExpression() : EXPR!CollectionExpression {
+    return self.collectionExpression;
+}
+
+@cached
+operation EXPR!SubCollectionExpression getLambdaExpressions() : Collection {
+    return Set{self.position, self.length};
+}
+
+@cached
+operation EXPR!CastCollection getInputExpression() : EXPR!CollectionExpression {
+    return self.collectionExpression;
+}

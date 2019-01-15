@@ -1,0 +1,158 @@
+context EXPR!CountExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    } 
+}
+
+context EXPR!RoundExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!IntegerAritmeticExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!DecimalAritmeticExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    critique IntegerAritmeticExpressionIsRecommended {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: not (self.left.isKindOf(EXPR!IntegerExpression) 
+            and self.right.isKindOf(EXPR!IntegerExpression)
+            and (self.operator == EXPR!DecimalOperator#add or self.operator == EXPR!DecimalOperator#substract or self.operator == EXPR!DecimalOperator#multiply))
+        message: "Both arguments are integer so integer aritmetic expression is recommended in: " + self.toString()
+    }
+}
+
+context EXPR!IntegerOppositeExpression {
+    constraint Resolved {
+        guard: self.expression.satisfiesAll("Resolved")
+        
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!DecimalOppositeExpression {
+    constraint Resolved {
+        guard: self.expression.satisfiesAll("Resolved")
+        
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!IntegerAttribute {
+    constraint AttributeTypeIsInteger {
+        guard: self.satisfiesAll("Resolved")
+    
+        check: self.getAttributeType().isInteger()
+        message: "Attribute type of " + self.attributeName + " of object type " + self.objectExpression.getObjectType().getName() + " is not integer"
+    }
+}
+
+context EXPR!DecimalAttribute {
+    constraint AttributeTypeIsDecimal {
+        guard: self.satisfiesAll("Resolved")
+    
+        check: self.getAttributeType().isDecimal()
+        message: "Attribute type of " + self.attributeName + " of object type " + self.objectExpression.getObjectType().getName() + " is not decimal"
+    }
+}
+
+context EXPR!IntegerAggregatedExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Attribute named " + self.attributeName + " of object type " + self.collectionExpression.getObjectType().getName() + " not found"
+    }
+    
+    /*constraint AttributeTypeIsInteger {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.getAttributeType().isInteger()
+        message: "Attribute named " + self.attributeName + " of object type " + self.collectionExpression.getObjectType().getName() + " is not integer"
+    }*/
+}
+
+context EXPR!DecimalAggregatedExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Attribute named " + self.attributeName + " of object type " + self.collectionExpression.getObjectType().getName() + " not found"
+    }
+
+    /*constraint AttributeTypeIsNumber {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.getAttributeType().isNumeric()
+        message: "Attribute named " + self.attributeName + " of object type " + self.collectionExpression.getObjectType().getName() + " is not number"
+    }
+    
+    critique AttributeTypeIsDecimalOrOperationIsNotSupportedOnIntegers {
+        guard: self.satisfiesAll("Resolved", "AttributeTypeIsNumber")
+        
+        check: not (self.getAttributeType().isInteger() and (self.operator == EXPR!DecimalAggregator#sum or self.operator == EXPR!DecimalAggregator#min or self.operator == EXPR!DecimalAggregator#max))
+        message: "Attribute named " + self.attributeName + " of object type " + self.collectionExpression.getObjectType().getName() + " is integer so integer aggregation is recommended in: " + self.toString()
+    } */
+}
+
+context EXPR!IntegerSwitchExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    constraint TypeOfDefaultCaseIsInteger {
+        guard: self.defaultExpression.isDefined() and self.defaultExpression.satisfiesAll("Resolved")
+        
+        check: self.defaultExpression.isKindOf(EXPR!IntegerExpression)
+        message: "Type of default case expression is not integer: " + self.defaultExpression.toString()
+    }
+}
+
+context EXPR!DecimalSwitchExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    constraint TypeOfDefaultCaseIsNumeric {
+        guard: self.defaultExpression.isDefined() and self.defaultExpression.satisfiesAll("Resolved")
+        
+        check: self.defaultExpression.isKindOf(EXPR!NumericExpression)
+        message: "Type of default case expression is not numeric: " + self.defaultExpression.toString()
+    }
+}
+
+context EXPR!SwitchCase {
+    constraint TypeOfSwitchCaseIsInteger {
+        guard: self.getSwitchExpression().satisfiesAll("Resolved") and self.getSwitchExpression().isKindOf(EXPR!IntegerExpression)
+        
+        check: self.expression.isKindOf(EXPR!IntegerExpression)
+        message: "Type of switch case expression is not integer: " + self.expression.toString()
+    }
+    
+    constraint TypeOfSwitchCaseIsNumeric {
+        guard: self.getSwitchExpression().satisfiesAll("Resolved") and self.getSwitchExpression().isKindOf(EXPR!DecimalExpression)
+        
+        check: self.expression.isKindOf(EXPR!NumericExpression)
+        message: "Type of switch case expression is not numeric: " + self.expression.toString()
+    }
+}
+
+// TODO: IntegerAggregatedExpression -> fork is not allowed (by expression argument)
+// TODO: DecimalAggregatedExpression -> fork is not allowed (by expression argument)

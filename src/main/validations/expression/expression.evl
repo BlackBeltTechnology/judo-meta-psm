@@ -1,0 +1,16 @@
+context EXPR!ElementName {
+
+    // namespace of ElementName must exists 
+    constraint NamespaceIsValid {
+        check: self.getNamespace().isDefined()
+        message: "Namespace is not defined: " + self.namespace
+    }
+    
+    // object type with name defined by ElementName must exists in the namespace
+    constraint ObjectTypeIsValid {
+        guard: self.satisfiesAll("NamespaceIsValid")
+        
+        check: self.getObjectType().isDefined()
+        message: "Object named " + self.name + " not found in namespace " + self.namespace 
+    }
+}

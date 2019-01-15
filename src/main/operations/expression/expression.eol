@@ -1,0 +1,41 @@
+@cached
+operation EXPR!SwitchCase getSwitchExpression() {
+    return EXPR!SwitchExpression.all.selectOne(e | e.cases.contains(self));
+}
+
+@cached
+operation EXPR!Expression getVariableName() : String {
+    if (self.isKindOf(EXPR!Variable)) {
+        return self.name;
+    } else {
+        var operandVariable = self.getOperands().selectOne(o | o.getVariableName().isDefined());
+        if (operandVariable.isDefined()) {
+            return operandVariable.getVariableName();
+        }
+    }
+    return null;
+}
+
+@cached
+operation EXPR!Expression getInputExpression() : EXPR!Expression {
+    return null;
+}
+
+@cached
+operation EXPR!Expression getLambdaExpressions() : Collection {
+    return new Set;
+}
+
+@cached
+operation EXPR!Expression getOperands() : Collection {
+    var operands = self.getLambdaExpressions().clone();
+    var inputExpression = self.getInputExpression();
+    if (inputExpression.isDefined()) {
+        operands.add(inputExpression);
+    }
+    return operands;
+}
+
+operation getStandaloneExpressions() : Collection {
+    return EXPR!Expression.all.select(e | EXPR!Expression.all.excluding(e).selectOne(e2 | e2.getOperands().contains(e)).isUndefined());
+}

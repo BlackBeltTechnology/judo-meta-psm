@@ -2,6 +2,7 @@
 <configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
     <metaModels>
         <metaModel>model/judoPSM.ecore</metaModel>
+        <metaModel>mvn:hu.blackbelt.judo.meta:judo-meta-expression:ecore:expression:1.0.0-develop-43</metaModel>
     </metaModels>
     <models>
         <model>
@@ -9,12 +10,27 @@
             <name>M1</name>
             <aliases>
                 <alias>JUDOPSM</alias>
+                <alias>EXPR</alias>
             </aliases>
             <expand>true</expand>
+            <storeOnDisposal>false</storeOnDisposal>
+            <cached>false</cached>
             <metaModelUris>
                 <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
                 <param>http://blackbelt.hu/judo/meta/psm/type</param>
                 <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
+
+                <param>http://blackbelt.hu/judo/meta/expression</param>
+                <param>http://blackbelt.hu/judo/meta/expression/constant</param>
+                <param>http://blackbelt.hu/judo/meta/expression/variable</param>
+                <param>http://blackbelt.hu/judo/meta/expression/operator</param>
+                <param>http://blackbelt.hu/judo/meta/expression/numeric</param>
+                <param>http://blackbelt.hu/judo/meta/expression/logical</param>
+                <param>http://blackbelt.hu/judo/meta/expression/string</param>
+                <param>http://blackbelt.hu/judo/meta/expression/enumeration</param>
+                <param>http://blackbelt.hu/judo/meta/expression/object</param>
+                <param>http://blackbelt.hu/judo/meta/expression/collection</param>
             </metaModelUris>
         </model>
         <model>
@@ -22,11 +38,24 @@
             <name>M2</name>
             <aliases>
                 <alias>JUDOPSM</alias>
+                <alias>EXPR</alias>
             </aliases>
             <metaModelUris>
                 <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
                 <param>http://blackbelt.hu/judo/meta/psm/type</param>
                 <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
+
+                <param>http://blackbelt.hu/judo/meta/expression</param>
+                <param>http://blackbelt.hu/judo/meta/expression/constant</param>
+                <param>http://blackbelt.hu/judo/meta/expression/variable</param>
+                <param>http://blackbelt.hu/judo/meta/expression/operator</param>
+                <param>http://blackbelt.hu/judo/meta/expression/numeric</param>
+                <param>http://blackbelt.hu/judo/meta/expression/logical</param>
+                <param>http://blackbelt.hu/judo/meta/expression/string</param>
+                <param>http://blackbelt.hu/judo/meta/expression/enumeration</param>
+                <param>http://blackbelt.hu/judo/meta/expression/object</param>
+                <param>http://blackbelt.hu/judo/meta/expression/collection</param>
             </metaModelUris>
             <expand>true</expand>
         </model>

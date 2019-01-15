@@ -1,0 +1,6 @@
+/*context EXPR!Constant {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of constant is not defined: " + self.toString()
+    }
+}*/
