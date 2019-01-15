@@ -2,11 +2,11 @@
 <configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
     <metaModels>
         <metaModel>model/judoPSM.ecore</metaModel>
-        <metaModel>mvn:hu.blackbelt.judo.meta:judo-meta-expression:ecore:expression:1.0.0-develop-43</metaModel>
+        <metaModel>mvn:hu.blackbelt.judo.meta:judo-meta-expression:ecore:expression:${judo.expression.version}</metaModel>
     </metaModels>
     <models>
         <model>
-            <artifact>model/test.model</artifact>
+            <artifact>src/test/models/test.model</artifact>
             <name>TEST</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -14,6 +14,7 @@
             </aliases>
             <storeOnDisposal>false</storeOnDisposal>
             <cached>false</cached>
+            <expand>true</expand>
             <metaModelUris>
                 <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
                 <param>http://blackbelt.hu/judo/meta/psm/type</param>
@@ -32,27 +33,6 @@
                 <param>http://blackbelt.hu/judo/meta/expression/collection</param>
             </metaModelUris>
         </model>
-        <!-- model>
-            <artifact>target/test-expression.model</artifact>
-            <name>TEST_EXPRESSION</name>
-            <aliases>
-                <alias>EXPR</alias>
-            </aliases>
-            <storeOnDisposal>true</storeOnDisposal>
-            <readOnLoad>false</readOnLoad>
-            <metaModelUris>
-                <param>http://blackbelt.hu/judo/meta/expression</param>
-                <param>http://blackbelt.hu/judo/meta/expression/constant</param>
-                <param>http://blackbelt.hu/judo/meta/expression/variable</param>
-                <param>http://blackbelt.hu/judo/meta/expression/operator</param>
-                <param>http://blackbelt.hu/judo/meta/expression/numeric</param>
-                <param>http://blackbelt.hu/judo/meta/expression/logical</param>
-                <param>http://blackbelt.hu/judo/meta/expression/string</param>
-                <param>http://blackbelt.hu/judo/meta/expression/enumeration</param>
-                <param>http://blackbelt.hu/judo/meta/expression/object</param>
-                <param>http://blackbelt.hu/judo/meta/expression/collection</param>
-            </metaModelUris>
-        </model-->
     </models>
     <eolPrograms>
         <Evl>

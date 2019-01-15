@@ -138,6 +138,29 @@
                     <additionalparam>${javadoc.opts}</additionalparam>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-test-resources</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/test-configurations</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/configurations</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -254,7 +277,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <epsilon.maven.plugin.version>1.1.2_feature__5_UpdateEpsilon_1_5_1-36</epsilon.maven.plugin.version>
-        <judo.expression.version>1.0.0-develop-43</judo.expression.version>
+        <judo.expression.version>1.0.0-develop-44</judo.expression.version>
 
         <src.dir>src/main</src.dir>
     </properties>
@@ -273,12 +296,13 @@
                         <executions>
                             <execution>
                                 <id>VALIDATE</id>
+                                <phase>test</phase>
                                 <goals>
                                     <goal>executeConfiguration</goal>
                                 </goals>
                                 <configuration>
                                     <configurationArtifacts>
-                                        <configurationArtifact>src/test/**/*.xml</configurationArtifact>
+                                        <configurationArtifact>target/test-configurations/**/*.xml</configurationArtifact>
                                     </configurationArtifacts>
                                 </configuration>
                             </execution>

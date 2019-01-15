@@ -1,7 +1,7 @@
 context JUDOPSM!Model {
 
 	// model name must be unique
-	constraint ModelIsNotUnique {
+	constraint ModelNameIsUnique {
 		check: not JUDOPSM!Model.all().select(m | m <> self).collect(m | m.name).includes(self.name)
 		message: "Model name is not unique: " + self.name
 	}
