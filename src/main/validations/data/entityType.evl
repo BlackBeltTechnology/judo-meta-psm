@@ -38,3 +38,21 @@ context JUDOPSM!EntityType {
         message: "Relation count constraints are not supported yet"
     }
 }
+
+context JUDOPSM!Relation {
+
+    // relations must be attached to entities
+    constraint RelationBelongsToEntity {
+        check: JUDOPSM!EntityType.all.select(et | et.relations.contains(self)).size() == 1
+        message: "Orphan relation: " + self.name
+    }
+}
+
+context JUDOPSM!Attribute {
+
+    // attributes must be attached to entities
+    constraint AttributeBelongsToEntity {
+        check: JUDOPSM!EntityType.all.select(et | et.attributes.contains(self)).size() == 1
+        message: "Orphan attribute: " + self.name
+    }
+}
