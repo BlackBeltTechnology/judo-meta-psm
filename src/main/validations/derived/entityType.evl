@@ -22,6 +22,50 @@ context JUDOPSM!DataProperty {
         check: JUDOPSM!EntityType.all.select(et | et.dataProperties.contains(self)).size() == 1
         message: "Orphan data property: " + self.name
     }
+    
+    // type of expression is string
+    constraint ExpressionTypeIsString {
+        guard: self.dataType.isKindOf(JUDOPSM!StringType)
+        
+        check: self.getterExpression.isKindOf(EXPR!StringExpression)
+        message: "Getter expression of derived attribute " + self.displayName() + " is not string: " + self.getterExpression.toString()
+    }
+    
+    // type of expression is boolean
+    constraint ExpressionTypeIsBoolean {
+        guard: self.dataType.isKindOf(JUDOPSM!BooleanType)
+        
+        check: self.getterExpression.isKindOf(EXPR!LogicalExpression)
+        message: "Getter expression of derived attribute " + self.displayName() + " is not boolean: " + self.getterExpression.toString()
+    }
+    
+    // type of expression is integer
+    constraint ExpressionTypeIsInteger {
+        guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision == 0
+        
+        check: self.getterExpression.isKindOf(EXPR!IntegerExpression)
+        message: "Getter expression of derived attribute " + self.displayName() + " is not integer: " + self.getterExpression.toString()
+    }
+    
+    // type of expression is decimal
+    constraint ExpressionTypeIsDecimal {
+        guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision > 0
+        
+        check: self.getterExpression.isKindOf(EXPR!DecimalExpression)
+        message: "Getter expression of derived attribute " + self.displayName() + " is not decimal: " + self.getterExpression.toString()
+    }
+    
+    // type of expression is enumeration
+    constraint ExpressionTypeIsEnumeration {
+        guard: self.dataType.isKindOf(JUDOPSM!EnumerationType)
+        
+        check: self.getterExpression.isKindOf(EXPR!EnumerationExpression)
+        message: "Getter expression of derived attribute " + self.displayName() + " is not enumeration: " + self.getterExpression.toString()
+    }
+    
+    // setter type of data property is valid
+    //constraint DataPropertySetterTypeIsValid {
+    //}
 }
 
 context JUDOPSM!NavigationProperty {

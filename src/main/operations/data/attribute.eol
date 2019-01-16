@@ -12,8 +12,3 @@ operation JUDOPSM!Attribute getEntityType() : JUDOPSM!EntityType {
 operation JUDOPSM!Attribute isPrimitive() : Boolean {
 	return self.dataType.isKindOf(JUDOPSM!Primitive);
 }
-
-@cached
-operation JUDOPSM!Attribute isComplex() : Boolean {
-	return self.dataType.isKindOf(JUDOPSM!ComplexType);
-}
