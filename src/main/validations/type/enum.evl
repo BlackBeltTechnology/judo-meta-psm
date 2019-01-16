@@ -14,3 +14,12 @@ context JUDOPSM!EnumerationType {
         message: "Enum member numbers are not unique: " + self.name
     }
 }
+
+context JUDOPSM!EnumerationMember {
+
+    // enumeration member is not standalone
+    constraint EnumerationMemberHasEnumerationType {
+        check: JUDOPSM!EnumerationType.all.select(et | et.members.contains(self)).size() == 1
+        message: "Enumeration member " + self.name + " must have exactly 1 enumeration"
+    }
+}

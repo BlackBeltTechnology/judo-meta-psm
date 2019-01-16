@@ -19,7 +19,7 @@ operation JUDOPSM!EntityType hasCircularRelation(visited : Collection) : Boolean
 }
 
 @cached
-operation JUDOPSM!EntityType getPackage() : JUDOPSM!Namespace {
+operation JUDOPSM!EntityType getNamespace() : JUDOPSM!Namespace {
 	return JUDOPSM!Namespace.all.selectOne(p | p.elements.includes(self));
 }
 
