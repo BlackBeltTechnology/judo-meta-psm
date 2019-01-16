@@ -66,9 +66,11 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>StandaloneModelLoadedOnly|Standalone models are supported only</expectedError>
                 <expectedError>ModelNameIsUnique|Model name is not unique: A</expectedError>
             </expectedErrors>
+            <expectedWarnings>
+                <expectedWarning>StandaloneModelLoadedOnly|Standalone models are supported only</expectedWarning>
+            </expectedWarnings>
         </Evl>
     </eolPrograms>
 </configuration>

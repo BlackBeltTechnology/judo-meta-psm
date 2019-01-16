@@ -65,9 +65,9 @@
     <eolPrograms>
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
-            <expectedErrors>
-                <expectedError>StandaloneModelLoadedOnly|Standalone models are supported only</expectedError>
-            </expectedErrors>
+            <expectedWarnings>
+                <expectedWarning>StandaloneModelLoadedOnly|Standalone models are supported only</expectedWarning>
+            </expectedWarnings>
         </Evl>
     </eolPrograms>
 </configuration>
