@@ -59,6 +59,8 @@
     <eClassifiers xsi:type="ecore:EClass" name="PasswordType" eSuperTypes="#//type/Primitive"/>
     <eClassifiers xsi:type="ecore:EDataType" name="XmlNamespace" instanceClassName="java.lang.String"/>
     <eClassifiers xsi:type="ecore:EDataType" name="XmlElement" instanceClassName="java.lang.String"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DateType" eSuperTypes="#//type/Primitive"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TimestampType" eSuperTypes="#//type/Primitive"/>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
