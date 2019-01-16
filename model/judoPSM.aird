@@ -34,6 +34,7 @@
     <semanticResources>../src/test/models/t025.model</semanticResources>
     <semanticResources>../src/test/models/t026.model</semanticResources>
     <semanticResources>../src/test/models/t027.model</semanticResources>
+    <semanticResources>../src/test/models/t028.model</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_TgaUsHt-EeieTtcXREXX1A">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_TgwS8Ht-EeieTtcXREXX1A" name="judoPSM" repPath="#_sOMtIMDXEeitabT-4jrddQ">
@@ -810,12 +811,13 @@
           <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
           <color xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
         </computedStyleDescriptions>
-        <computedStyleDescriptions xmi:type="style:EdgeStyleDescription" xmi:id="_OzoGwRgREemYKLassfSQTg" sourceArrow="FillDiamond" routingStyle="manhattan">
+        <computedStyleDescriptions xmi:type="style:EdgeStyleDescription" xmi:id="_QbHgUBmCEemlcrqtQk4dUg" sourceArrow="FillDiamond" routingStyle="manhattan">
           <strokeColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-          <centerLabelStyleDescription xmi:type="style:CenterLabelStyleDescription" xmi:id="_OzoGwhgREemYKLassfSQTg" showIcon="false" labelExpression="service:render">
+          <centerLabelStyleDescription xmi:type="style:CenterLabelStyleDescription" xmi:id="_QbHgURmCEemlcrqtQk4dUg" showIcon="false" labelExpression="service:render">
+            <labelFormat>bold</labelFormat>
             <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
           </centerLabelStyleDescription>
-          <endLabelStyleDescription xmi:type="style:EndLabelStyleDescription" xmi:id="_OzoGwxgREemYKLassfSQTg" labelSize="6" showIcon="false" labelExpression="service:eKeysLabel">
+          <endLabelStyleDescription xmi:type="style:EndLabelStyleDescription" xmi:id="_QbHgUhmCEemlcrqtQk4dUg" labelSize="6" showIcon="false" labelExpression="service:eKeysLabel">
             <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
           </endLabelStyleDescription>
         </computedStyleDescriptions>
@@ -1502,16 +1504,16 @@
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_5bpRUMsIEeid7IbgVrSRoA" name="xmlNamespace : XmlNamespace" tooltipText="">
         <target xmi:type="ecore:EAttribute" href="judoPSM.ecore#//type/XMLType/xmlNamespace"/>
         <semanticElements xmi:type="ecore:EAttribute" href="judoPSM.ecore#//type/XMLType/xmlNamespace"/>
-        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_7xbc8MsIEeid7IbgVrSRoA" labelAlignment="LEFT">
-          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']/@style"/>
+        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_wyZJoBmCEemlcrqtQk4dUg" labelAlignment="LEFT" description="_vOGuUXt_EeieTtcXREXX1A">
+          <labelFormat>bold</labelFormat>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
       </ownedElements>
       <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_Q_DJ4MsMEeid7IbgVrSRoA" name="xmlElement : XmlElement" tooltipText="">
         <target xmi:type="ecore:EAttribute" href="judoPSM.ecore#//type/XMLType/xmlElement"/>
         <semanticElements xmi:type="ecore:EAttribute" href="judoPSM.ecore#//type/XMLType/xmlElement"/>
-        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_UV_3kMsMEeid7IbgVrSRoA" labelAlignment="LEFT">
-          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']/@style"/>
+        <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_xMXI0BmCEemlcrqtQk4dUg" labelAlignment="LEFT" description="_vOGuUXt_EeieTtcXREXX1A">
+          <labelFormat>bold</labelFormat>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
       </ownedElements>
@@ -1804,16 +1806,14 @@
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EDataType']/@subNodeMappings[name='EC_DataType_InstanceClassName']"/>
       </ownedElements>
     </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_OzoGwBgREemYKLassfSQTg" name="[0..*] members" sourceNode="_eHwNMHuGEeieTtcXREXX1A" targetNode="_hicLYHuGEeieTtcXREXX1A">
+    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_OzoGwBgREemYKLassfSQTg" name="[1..*] members" sourceNode="_eHwNMHuGEeieTtcXREXX1A" targetNode="_hicLYHuGEeieTtcXREXX1A">
       <target xmi:type="ecore:EReference" href="judoPSM.ecore#//type/EnumerationType/members"/>
       <semanticElements xmi:type="ecore:EReference" href="judoPSM.ecore#//type/EnumerationType/members"/>
-      <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_Ozot0BgREemYKLassfSQTg" description="_OzoGwRgREemYKLassfSQTg" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_Ozot0RgREemYKLassfSQTg" showIcon="false">
-          <customFeatures>labelSize</customFeatures>
+      <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_QbIHYBmCEemlcrqtQk4dUg" description="_QbHgUBmCEemlcrqtQk4dUg" sourceArrow="FillDiamond" routingStyle="manhattan" strokeColor="0,0,0">
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_QbIHYRmCEemlcrqtQk4dUg" showIcon="false">
+          <labelFormat>bold</labelFormat>
         </centerLabelStyle>
-        <endLabelStyle xmi:type="diagram:EndLabelStyle" xmi:id="_Ozot0hgREemYKLassfSQTg" showIcon="false" labelColor="39,76,114">
-          <customFeatures>labelSize</customFeatures>
-        </endLabelStyle>
+        <endLabelStyle xmi:type="diagram:EndLabelStyle" xmi:id="_QbIHYhmCEemlcrqtQk4dUg" labelSize="6" showIcon="false" labelColor="39,76,114"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
     </ownedDiagramElements>

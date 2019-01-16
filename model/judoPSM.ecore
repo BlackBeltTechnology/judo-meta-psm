@@ -34,8 +34,8 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BooleanType" eSuperTypes="#//type/Primitive"/>
     <eClassifiers xsi:type="ecore:EClass" name="EnumerationType" eSuperTypes="#//type/Primitive">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1"
-          eType="#//type/EnumerationMember" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="members" lowerBound="1"
+          upperBound="-1" eType="#//type/EnumerationMember" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EnumerationMember" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordinal" lowerBound="1"
@@ -44,8 +44,10 @@
     <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
     <eClassifiers xsi:type="ecore:EClass" name="XMLType" eSuperTypes="#//type/Primitive">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" eType="#//type/XmlNamespace"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlElement" eType="#//type/XmlElement"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" lowerBound="1"
+          eType="#//type/XmlNamespace"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlElement" lowerBound="1"
+          eType="#//type/XmlElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Cardinality">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="lower" lowerBound="1"
