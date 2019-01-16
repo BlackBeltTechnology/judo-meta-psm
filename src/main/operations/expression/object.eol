@@ -1,4 +1,9 @@
 @cached
+operation EXPR!Instance getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+@cached
 operation EXPR!ObjectSelectorExpression getObjectType() {
     return self.collectionExpression.getObjectType();
 }

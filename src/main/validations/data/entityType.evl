@@ -8,19 +8,19 @@ context JUDOPSM!EntityType {
 		message: "Entity type " + self.name + " is recursive"
 	}
 
-	// entity has multiple attributes with the same name	
+	// entity has no multiple attributes with the same name	
 	constraint AttributeNameIsUnique {
 		check: self.attributes.select(a | self.attributes.excluding(a).select(a2 | a2.name == a.name).size() > 0).size() == 0
 		message: "Multiple attributes are added to entity " + self.name + " with the same name"
 	}
 
-	// entity has multiple relations with the same name
+	// entity has nomultiple relations with the same name
 	constraint RelationNameIsUnique {
 		check: self.relations.select(e | self.relations.excluding(e).select(e2 | e2.name == e.name).size() > 0).size() == 0
 		message: "Multiple relations are added to entity " + self.name + " with the same name"
 	}
 
-	// entity has attribute(s) and relations(s) with the same name
+	// entity has no attribute(s) and relations(s) with the same name
 	constraint NoAttributeAndRelationAreWithTheSameName {
 		check: self.relations.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
 		message: "Entity " + self.name + " has attributes and relations with the same name"
