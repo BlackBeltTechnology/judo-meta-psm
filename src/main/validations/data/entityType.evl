@@ -25,4 +25,16 @@ context JUDOPSM!EntityType {
 		check: self.relations.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
 		message: "Entity " + self.name + " has attributes and relations with the same name"
 	}
+	
+	// name of relation count constraints must be unique
+    constraint RelationCountConstraintHasUniqueName {
+        check: self.relationCountConstraints.select(rcc1 | self.relationCountConstraints.excluding(rcc1).select(rcc2 | rcc2.name = rcc1.name).size() > 0).size() = 0
+        message: "Relation count constraints are not unique: " + self.name
+    }
+	
+	// relation count constraints are not supported yet
+    constraint RelationCountConstraintsAreNotSupportedYet {
+        check: self.relationCountConstraints.size() == 0
+        message: "Relation count constraints are not supported yet"
+    }
 }

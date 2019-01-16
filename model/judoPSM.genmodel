@@ -133,6 +133,7 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/TransferRelation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelation/cardinality"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelation/initExpression"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/TransferObjectReference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -144,6 +145,7 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/TransferAttribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferAttribute/required"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/initExpression"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
