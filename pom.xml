@@ -54,6 +54,43 @@
 
     <build>
         <plugins>
+
+            <plugin>
+                <groupId>hu.blackbelt</groupId>
+                <artifactId>unpack-artifact-maven-plugin</artifactId>
+                <version>1.0.0_develop-6</version>
+                <executions>
+                    <execution>
+                        <id>copy-expression-scripts</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+
+                        <configuration>
+                            <outDirectory>${basedir}/src/main</outDirectory>
+                            <artifacts>
+                                <artifact>
+                                    <groupId>hu.blackbelt.judo.meta</groupId>
+                                    <artifactId>judo-meta-expression</artifactId>
+                                    <version>${judo.expression.version}</version>
+                                    <resources>
+                                        <resource>
+                                            <source>judo/expression/validations/expression</source>
+                                            <destination>validations/expression</destination>
+                                        </resource>
+                                        <resource>
+                                            <source>judo/expression/operations/expression</source>
+                                            <destination>operations/expression</destination>
+                                        </resource>
+                                    </resources>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -138,6 +175,7 @@
                     <additionalparam>${javadoc.opts}</additionalparam>
                 </configuration>
             </plugin>
+
 
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
