@@ -149,6 +149,11 @@ operation JUDOPSM!Primitive isEnumeration() : Boolean {
     return self.isKindOf(JUDOPSM!EnumerationType);
 }
 
+@cached
+operation JUDOPSM!Primitive isCustom() : Boolean {
+    return not self.isNumeric() and not self.isBoolean() and not self.isString() and not self.isEnumeration();
+}
+
 operation JUDOPSM!EnumerationType contains(memberName : String) : Boolean {
     return self.members.selectOne(m | m.name = memberName).isDefined();
 }

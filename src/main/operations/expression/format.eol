@@ -358,3 +358,18 @@ operation EXPR!ConcatenateCollection toString() : String {
 operation EXPR!Instance toString() : String {
     return self.elementName.toString() + " instance";
 }
+
+@cached
+operation EXPR!CustomData toString() : String {
+    return "custom";
+}
+
+@cached
+operation EXPR!CustomAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!CustomVariableReference toString() : String {
+    return self.variable.name;
+}

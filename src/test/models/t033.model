@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:const="http://blackbelt.hu/judo/meta/expression/constant" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:enum="http://blackbelt.hu/judo/meta/expression/enumeration" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:l="http://blackbelt.hu/judo/meta/expression/logical" xmlns:n="http://blackbelt.hu/judo/meta/expression/numeric" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:str="http://blackbelt.hu/judo/meta/expression/string" xmlns:type="http://blackbelt.hu/judo/meta/psm/type">
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:const="http://blackbelt.hu/judo/meta/expression/constant" xmlns:cust="http://blackbelt.hu/judo/meta/expression/custom" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:enum="http://blackbelt.hu/judo/meta/expression/enumeration" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:l="http://blackbelt.hu/judo/meta/expression/logical" xmlns:n="http://blackbelt.hu/judo/meta/expression/numeric" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:o="http://blackbelt.hu/judo/meta/expression/object" xmlns:str="http://blackbelt.hu/judo/meta/expression/string" xmlns:type="http://blackbelt.hu/judo/meta/psm/type">
   <namespace:Model xmi:id="_kcdTQBl4EemlcrqtQk4dUg" name="M">
     <elements xsi:type="data:EntityType" xmi:id="_OEP5kJogEeiyrNaxr-HdNQ" name="E">
       <attributes xmi:id="_lSF6wBl4EemlcrqtQk4dUg" name="name" dataType="_VXLy4BmcEemlcrqtQk4dUg"/>
@@ -9,6 +9,9 @@
       <attributes xmi:id="_iP5McBolEemlcrqtQk4dUg" name="email" dataType="_hGIvEBolEemlcrqtQk4dUg"/>
       <attributes xmi:id="_kMIPoBolEemlcrqtQk4dUg" name="radius" dataType="_a21UMBolEemlcrqtQk4dUg"/>
       <attributes xmi:id="_sHrw8BolEemlcrqtQk4dUg" name="country" dataType="_mfDUgBolEemlcrqtQk4dUg"/>
+      <relations xsi:type="data:Containment" xmi:id="_YDdi8BpMEemilpTnHr2nsQ" name="f" target="_MgvGoBpMEemilpTnHr2nsQ">
+        <cardinality xmi:id="_v2X-gBpMEemilpTnHr2nsQ" lower="1"/>
+      </relations>
       <dataProperties xmi:id="_KjbXIBolEemlcrqtQk4dUg" name="lowerName" dataType="_VXLy4BmcEemlcrqtQk4dUh">
         <getterExpression xsi:type="str:LowerCase" xmi:id="_b09XEBoqEemBk_7NVlpPvQ">
           <expression xsi:type="str:StringAttribute" xmi:id="_b09XERoqEemBk_7NVlpPvQ" attributeName="name">
@@ -24,7 +27,7 @@
           <right xsi:type="const:Integer" xmi:id="_tUNcMBoqEemBk_7NVlpPvQ" value="1"/>
         </getterExpression>
       </dataProperties>
-      <dataProperties xmi:id="_2K8zYBoqEemBk_7NVlpPvQ" name="area" dataType="_VXLy4BmcEemlcrqtQk4dUh">
+      <dataProperties xmi:id="_2K8zYBoqEemBk_7NVlpPvQ" name="area" dataType="_Y0uSgBolEemlcrqtQk4dUg">
         <getterExpression xsi:type="n:DecimalAritmeticExpression" xmi:id="_-NMykBoqEemBk_7NVlpPvQ" operator="*">
           <left xsi:type="n:DecimalAritmeticExpression" xmi:id="__26iYBoqEemBk_7NVlpPvQ" operator="*">
             <left xsi:type="n:DecimalAttribute" xmi:id="_CvtUcBorEemBk_7NVlpPvQ" attributeName="radius">
@@ -62,8 +65,22 @@
               </left>
               <right xsi:type="const:Literal" xmi:id="_i35uABotEemBk_7NVlpPvQ" value="SK"/>
             </condition>
-            <expression xsi:type="const:Literal" xmi:id="_pvAIsBotEemBk_7NVlpPvQ" value="west"/>
+            <expression xsi:type="const:Literal" xmi:id="_pvAIsBotEemBk_7NVlpPvQ" value="north"/>
           </cases>
+        </getterExpression>
+      </dataProperties>
+      <dataProperties xmi:id="_byv4IBpMEemilpTnHr2nsQ" name="begin" dataType="_VXLy4BmcEemlcrqtQk4dUg">
+        <getterExpression xsi:type="cust:CustomAttribute" xmi:id="_iQGWEBpMEemilpTnHr2nsQ" attributeName="beginTimestamp">
+          <objectExpression xsi:type="o:ObjectNavigationExpression" xmi:id="_kqfU4BpMEemilpTnHr2nsQ" referenceName="f">
+            <objectExpression xsi:type="const:Instance" xmi:id="_le3_MBpMEemilpTnHr2nsQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+          </objectExpression>
+        </getterExpression>
+      </dataProperties>
+      <dataProperties xmi:id="_BTxyEBpkEemucrqRoCHYIQ" name="place" dataType="_hGIvEBolEemlcrqtQk4dUg">
+        <getterExpression xsi:type="cust:CustomAttribute" xmi:id="_D1Ml8BpkEemucrqRoCHYIQ" attributeName="location">
+          <objectExpression xsi:type="o:ObjectNavigationExpression" xmi:id="_EczYgBpkEemucrqRoCHYIQ" referenceName="f">
+            <objectExpression xsi:type="const:Instance" xmi:id="_E2wwoBpkEemucrqRoCHYIQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+          </objectExpression>
         </getterExpression>
       </dataProperties>
     </elements>
@@ -84,6 +101,13 @@
       <members xmi:id="_9ytZgBorEemBk_7NVlpPvQ" name="south" ordinal="2"/>
       <members xmi:id="_-HqV0BorEemBk_7NVlpPvQ" name="west" ordinal="3"/>
     </elements>
+    <elements xsi:type="data:EntityType" xmi:id="_MgvGoBpMEemilpTnHr2nsQ" name="F">
+      <attributes xmi:id="_OGLacBpMEemilpTnHr2nsQ" name="beginTimestamp" dataType="_Thz8sBpMEemilpTnHr2nsQ"/>
+      <attributes xmi:id="_RT2QUBpMEemilpTnHr2nsQ" name="endTimestamp" dataType="_Thz8sBpMEemilpTnHr2nsQ"/>
+      <attributes xmi:id="_3SQp0BpjEemucrqRoCHYIQ" name="location" dataType="_5l45UBpjEemucrqRoCHYIQ"/>
+    </elements>
+    <elements xsi:type="type:TimestampType" xmi:id="_Thz8sBpMEemilpTnHr2nsQ" name="Timestamp"/>
+    <elements xsi:type="type:CustomType" xmi:id="_5l45UBpjEemucrqRoCHYIQ" name="Location"/>
   </namespace:Model>
   <expr:ElementName xmi:id="_UM5xEBmcEemlcrqtQk4dUg" name="E" namespace="M"/>
   <expr:ElementName xmi:id="_NER6kBo2Eem3_KR63rlRLw" name="Country" namespace="M"/>

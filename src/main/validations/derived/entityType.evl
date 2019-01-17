@@ -23,44 +23,60 @@ context JUDOPSM!DataProperty {
         message: "Orphan data property: " + self.name
     }
     
-    // type of expression is string
-    constraint ExpressionTypeIsString {
+    // type of getter expression is string
+    constraint DataPropertyGetterTypeIsString {
         guard: self.dataType.isKindOf(JUDOPSM!StringType)
         
         check: self.getterExpression.isKindOf(EXPR!StringExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not string: " + self.getterExpression.toString()
     }
     
-    // type of expression is boolean
-    constraint ExpressionTypeIsBoolean {
+    // type of getter expression is boolean
+    constraint DataPropertyGetterTypeIsBoolean {
         guard: self.dataType.isKindOf(JUDOPSM!BooleanType)
         
         check: self.getterExpression.isKindOf(EXPR!LogicalExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not boolean: " + self.getterExpression.toString()
     }
     
-    // type of expression is integer
-    constraint ExpressionTypeIsInteger {
+    // type of getter expression is integer
+    constraint DataPropertyGetterTypeIsInteger {
         guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision == 0
         
         check: self.getterExpression.isKindOf(EXPR!IntegerExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not integer: " + self.getterExpression.toString()
     }
     
-    // type of expression is decimal
-    constraint ExpressionTypeIsDecimal {
+    // type of getter expression is decimal
+    constraint DataPropertyGetterTypeIsDecimal {
         guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision > 0
         
         check: self.getterExpression.isKindOf(EXPR!DecimalExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not decimal: " + self.getterExpression.toString()
     }
     
-    // type of expression is enumeration
-    constraint ExpressionTypeIsEnumeration {
+    // type of getter expression is enumeration
+    constraint DataPropertyGetterTypeIsEnumeration {
         guard: self.dataType.isKindOf(JUDOPSM!EnumerationType)
         
         check: self.getterExpression.isKindOf(EXPR!EnumerationExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not enumeration: " + self.getterExpression.toString()
+    }
+    
+    // getter expression is an attribute selector and matching to PSM model type
+    constraint DataPropertyGetterTypeIsValid {
+        guard: self.getterExpression.isKindOf(EXPR!AttributeSelector)
+        
+        check: self.dataType.type() == self.getterExpression.getAttributeType().type()
+        message: "Getter expression of derived attribute " + self.displayName() + " is not valid"
+    }
+    
+    // getter expression is an attribute selector and custom type is referencing the same PSM type (instance)  
+    constraint CustomDataPropertyGetterTypeIsValid {
+        guard: self.dataType.isTypeOf(JUDOPSM!CustomType) and self.getterExpression.isKindOf(EXPR!AttributeSelector)
+        
+        check: self.dataType == self.getterExpression.getAttributeType()
+        message: "Getter expression of derived attribute " + self.displayName() + " has invalid custom data type: " + self.getterExpression.toString()
     }
     
     // setter type of data property is valid

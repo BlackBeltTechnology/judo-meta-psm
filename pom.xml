@@ -58,7 +58,7 @@
             <plugin>
                 <groupId>hu.blackbelt</groupId>
                 <artifactId>unpack-artifact-maven-plugin</artifactId>
-                <version>1.0.0_develop-6</version>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
                         <id>copy-expression-scripts</id>
@@ -254,6 +254,28 @@
                                         <ignore></ignore>
                                     </action>
                                 </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            hu.blackbelt
+                                        </groupId>
+                                        <artifactId>
+                                            unpack-artifact-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.0,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>execute</goal>
+                                            <goal>
+                                                unpack
+                                            </goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
@@ -315,7 +337,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <epsilon.maven.plugin.version>1.1.2_feature__5_UpdateEpsilon_1_5_1-36</epsilon.maven.plugin.version>
-        <judo.expression.version>1.0.0-develop-49</judo.expression.version>
+        <judo.expression.version>1.0.0-develop-50</judo.expression.version>
 
         <src.dir>src/main</src.dir>
     </properties>
@@ -340,7 +362,7 @@
                                 </goals>
                                 <configuration>
                                     <configurationArtifacts>
-                                        <configurationArtifact>target/test-configurations/**/033*.xml</configurationArtifact>
+                                        <configurationArtifact>target/test-configurations/**/*.xml</configurationArtifact>
                                     </configurationArtifacts>
                                 </configuration>
                             </execution>

@@ -39,3 +39,10 @@ context EXPR!Instance {
         message: "Unsupported expression: " + self.toString()
     }
 }
+
+context EXPR!CustomData {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of custom (primitive) constant is not defined: " + self.toString()
+    }
+}
