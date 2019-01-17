@@ -1,18 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:const="http://blackbelt.hu/judo/meta/expression/constant" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:str="http://blackbelt.hu/judo/meta/expression/string" xmlns:type="http://blackbelt.hu/judo/meta/psm/type">
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:const="http://blackbelt.hu/judo/meta/expression/constant" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:enum="http://blackbelt.hu/judo/meta/expression/enumeration" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:l="http://blackbelt.hu/judo/meta/expression/logical" xmlns:n="http://blackbelt.hu/judo/meta/expression/numeric" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:str="http://blackbelt.hu/judo/meta/expression/string" xmlns:type="http://blackbelt.hu/judo/meta/psm/type">
   <namespace:Model xmi:id="_kcdTQBl4EemlcrqtQk4dUg" name="M">
     <elements xsi:type="data:EntityType" xmi:id="_OEP5kJogEeiyrNaxr-HdNQ" name="E">
-      <attributes xmi:id="_lSF6wBl4EemlcrqtQk4dUg" name="a" dataType="_VXLy4BmcEemlcrqtQk4dUg"/>
-      <dataProperties name="p" dataType="_VXLy4BmcEemlcrqtQk4dUh">
-	<getterExpression xsi:type="str:LowerCase">
-          <expression xsi:type="str:StringAttribute" attributeName="a">
-	    <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+      <attributes xmi:id="_lSF6wBl4EemlcrqtQk4dUg" name="name" dataType="_VXLy4BmcEemlcrqtQk4dUg"/>
+      <attributes xmi:id="_T0jkQBolEemlcrqtQk4dUg" name="external" dataType="_VXLy4BmcEemlcrqtQk4dUh"/>
+      <attributes xmi:id="_Vh1lcBolEemlcrqtQk4dUg" name="birthDate" dataType="_RS4RsBolEemlcrqtQk4dUg"/>
+      <attributes xmi:id="_XQA-gBolEemlcrqtQk4dUg" name="roomNumber" dataType="_Y0uSgBolEemlcrqtQk4dUg"/>
+      <attributes xmi:id="_iP5McBolEemlcrqtQk4dUg" name="email" dataType="_hGIvEBolEemlcrqtQk4dUg"/>
+      <attributes xmi:id="_kMIPoBolEemlcrqtQk4dUg" name="radius" dataType="_a21UMBolEemlcrqtQk4dUg"/>
+      <attributes xmi:id="_sHrw8BolEemlcrqtQk4dUg" name="country" dataType="_mfDUgBolEemlcrqtQk4dUg"/>
+      <dataProperties xmi:id="_KjbXIBolEemlcrqtQk4dUg" name="lowerName" dataType="_VXLy4BmcEemlcrqtQk4dUh">
+        <getterExpression xsi:type="str:LowerCase" xmi:id="_b09XEBoqEemBk_7NVlpPvQ">
+          <expression xsi:type="str:StringAttribute" xmi:id="_b09XERoqEemBk_7NVlpPvQ" attributeName="name">
+            <objectExpression xsi:type="const:Instance" xmi:id="_b09XEhoqEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
           </expression>
+        </getterExpression>
+      </dataProperties>
+      <dataProperties xmi:id="_iHo2EBoqEemBk_7NVlpPvQ" name="neighbourRoom" dataType="_a21UMBolEemlcrqtQk4dUg">
+        <getterExpression xsi:type="n:IntegerAritmeticExpression" xmi:id="_pLNmgBoqEemBk_7NVlpPvQ">
+          <left xsi:type="n:IntegerAttribute" xmi:id="_qOfBYBoqEemBk_7NVlpPvQ" attributeName="roomNumber">
+            <objectExpression xsi:type="const:Instance" xmi:id="_ribVgBoqEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+          </left>
+          <right xsi:type="const:Integer" xmi:id="_tUNcMBoqEemBk_7NVlpPvQ" value="1"/>
+        </getterExpression>
+      </dataProperties>
+      <dataProperties xmi:id="_2K8zYBoqEemBk_7NVlpPvQ" name="area" dataType="_VXLy4BmcEemlcrqtQk4dUh">
+        <getterExpression xsi:type="n:DecimalAritmeticExpression" xmi:id="_-NMykBoqEemBk_7NVlpPvQ" operator="*">
+          <left xsi:type="n:DecimalAritmeticExpression" xmi:id="__26iYBoqEemBk_7NVlpPvQ" operator="*">
+            <left xsi:type="n:DecimalAttribute" xmi:id="_CvtUcBorEemBk_7NVlpPvQ" attributeName="radius">
+              <objectExpression xsi:type="const:Instance" xmi:id="_EzvowBorEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+            </left>
+            <right xsi:type="n:DecimalAttribute" xmi:id="_Br2DsBorEemBk_7NVlpPvQ" attributeName="radius">
+              <objectExpression xsi:type="const:Instance" xmi:id="_FYnQYBorEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+            </right>
+          </left>
+          <right xsi:type="const:Decimal" xmi:id="_IlrpUBorEemBk_7NVlpPvQ" value="3.1415"/>
+        </getterExpression>
+      </dataProperties>
+      <dataProperties xmi:id="_oHRAwBorEemBk_7NVlpPvQ" name="internal" dataType="_a21UMBolEemlcrqtQk4dUg">
+        <getterExpression xsi:type="l:NegationExpression" xmi:id="_vDOGQBorEemBk_7NVlpPvQ">
+          <expression xsi:type="l:LogicalAttribute" xmi:id="_0rIxABorEemBk_7NVlpPvQ" attributeName="external">
+            <objectExpression xsi:type="const:Instance" xmi:id="_2JLcUBorEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+          </expression>
+        </getterExpression>
+      </dataProperties>
+      <dataProperties xmi:id="_4wYSoBosEemBk_7NVlpPvQ" name="direction" dataType="_a21UMBolEemlcrqtQk4dUg">
+        <getterExpression xsi:type="enum:EnumerationSwitchExpression" xmi:id="_B7un4BotEemBk_7NVlpPvQ" elementName="_NER6kBo2Eem3_KR63rlRLw">
+          <cases xmi:id="_FM5dsBotEemBk_7NVlpPvQ">
+            <condition xsi:type="l:EnumerationComparison" xmi:id="_GgPU4BotEemBk_7NVlpPvQ" operator="==">
+              <left xsi:type="enum:EnumerationAttribute" xmi:id="_IUJigBotEemBk_7NVlpPvQ" attributeName="country">
+                <objectExpression xsi:type="const:Instance" xmi:id="_Jv2rgBotEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+              </left>
+              <right xsi:type="const:Literal" xmi:id="_LF7toBotEemBk_7NVlpPvQ" value="RO"/>
+            </condition>
+            <expression xsi:type="const:Literal" xmi:id="_UMpagBotEemBk_7NVlpPvQ" value="east"/>
+          </cases>
+          <cases xmi:id="_bdM3ABotEemBk_7NVlpPvQ">
+            <condition xsi:type="l:EnumerationComparison" xmi:id="_mWpFwBotEemBk_7NVlpPvQ" operator="==">
+              <left xsi:type="enum:EnumerationAttribute" xmi:id="_dX6QMBotEemBk_7NVlpPvQ" attributeName="country">
+                <objectExpression xsi:type="const:Instance" xmi:id="_gGjnwBotEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+              </left>
+              <right xsi:type="const:Literal" xmi:id="_i35uABotEemBk_7NVlpPvQ" value="SK"/>
+            </condition>
+            <expression xsi:type="const:Literal" xmi:id="_pvAIsBotEemBk_7NVlpPvQ" value="west"/>
+          </cases>
         </getterExpression>
       </dataProperties>
     </elements>
     <elements xsi:type="type:StringType" xmi:id="_VXLy4BmcEemlcrqtQk4dUg" name="String" maxLength="255"/>
     <elements xsi:type="type:BooleanType" xmi:id="_VXLy4BmcEemlcrqtQk4dUh" name="Boolean"/>
+    <elements xsi:type="type:DateType" xmi:id="_RS4RsBolEemlcrqtQk4dUg" name="Date"/>
+    <elements xsi:type="type:NumericType" xmi:id="_Y0uSgBolEemlcrqtQk4dUg" name="Integer" scale="10"/>
+    <elements xsi:type="type:NumericType" xmi:id="_a21UMBolEemlcrqtQk4dUg" name="Decimal" precision="2" scale="16"/>
+    <elements xsi:type="type:CustomType" xmi:id="_hGIvEBolEemlcrqtQk4dUg" name="Email"/>
+    <elements xsi:type="type:EnumerationType" xmi:id="_mfDUgBolEemlcrqtQk4dUg" name="Country">
+      <members xmi:id="_nww0ABolEemlcrqtQk4dUg" name="HU"/>
+      <members xmi:id="_oHdcwBolEemlcrqtQk4dUg" name="RO" ordinal="1"/>
+      <members xmi:id="_oXakUBolEemlcrqtQk4dUg" name="SK" ordinal="2"/>
+    </elements>
+    <elements xsi:type="type:EnumerationType" xmi:id="_7QTHIBorEemBk_7NVlpPvQ" name="Direction">
+      <members xmi:id="_9Hn1IBorEemBk_7NVlpPvQ" name="north"/>
+      <members xmi:id="_9dW0kBorEemBk_7NVlpPvQ" name="east" ordinal="1"/>
+      <members xmi:id="_9ytZgBorEemBk_7NVlpPvQ" name="south" ordinal="2"/>
+      <members xmi:id="_-HqV0BorEemBk_7NVlpPvQ" name="west" ordinal="3"/>
+    </elements>
   </namespace:Model>
   <expr:ElementName xmi:id="_UM5xEBmcEemlcrqtQk4dUg" name="E" namespace="M"/>
+  <expr:ElementName xmi:id="_NER6kBo2Eem3_KR63rlRLw" name="Country" namespace="M"/>
 </xmi:XMI>

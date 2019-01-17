@@ -38,7 +38,11 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>ExpressionTypeIsBoolean|Getter expression of derived attribute E.p is not boolean: lower(M::E instance.a)</expectedError>
+                <expectedError>ExpressionTypeIsBoolean|Getter expression of derived attribute E.lowerName is not boolean: lower(M::E instance.name)</expectedError>
+                <expectedError>ExpressionTypeIsDecimal|Getter expression of derived attribute E.neighbourRoom is not decimal: (M::E instance.roomNumber + 1)</expectedError>
+                <expectedError>ExpressionTypeIsBoolean|Getter expression of derived attribute E.area is not boolean: M::E instance.radius * M::E instance.radius * 3.1415</expectedError>
+                <expectedError>ExpressionTypeIsDecimal|Getter expression of derived attribute E.internal is not decimal: NOT(M::E instance.external)</expectedError>
+                <expectedError>ExpressionTypeIsDecimal|Getter expression of derived attribute E.direction is not decimal: (case when M::E instance.country == 'RO' then 'east'  when M::E instance.country == 'SK' then 'west')</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>

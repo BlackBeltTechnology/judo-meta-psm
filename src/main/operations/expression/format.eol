@@ -155,7 +155,7 @@ operation EXPR!Literal toString() : String {
 
 @cached
 operation EXPR!IntegerAritmeticExpression toString() : String {
-    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+    return "(" + self.left.toString() + " " + self.operator + " " + self.right.toString() + ")";
 }
 
 @cached
@@ -220,12 +220,12 @@ operation EXPR!ObjectComparison toString() : String {
 
 @cached
 operation EXPR!NegationExpression toString() : String {
-    return "NOT" + self.expression.toString();
+    return "NOT(" + self.expression.toString() + ")";
 }
 
 @cached
 operation EXPR!KleeneExpression toString() : String {
-    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+    return "(" + self.left.toString() + " " + self.operator + " " + self.right.toString() + ")";
 }
 
 @cached
@@ -305,22 +305,38 @@ operation EXPR!SwitchCase toString() : String {
 
 @cached
 operation EXPR!IntegerSwitchExpression toString() : String {
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+    var defaultExpr = "";
+    if (self.defaultExpression.isDefined()) {
+        defaultExpr = " default " + self.defaultExpression.toString();
+    }
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
 }
 
 @cached
 operation EXPR!DecimalSwitchExpression toString() : String {
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+    var defaultExpr = "";
+    if (self.defaultExpression.isDefined()) {
+        defaultExpr = " default " + self.defaultExpression.toString();
+    }
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
 }
 
 @cached
 operation EXPR!StringSwitchExpression toString() : String {
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+    var defaultExpr = "";
+    if (self.defaultExpression.isDefined()) {
+        defaultExpr = " default " + self.defaultExpression.toString();
+    }
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
 }
 
 @cached
 operation EXPR!EnumerationSwitchExpression toString() : String {
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + " default " + self.defaultExpression.toString() + ")"; 
+    var defaultExpr = "";
+    if (self.defaultExpression.isDefined()) {
+        defaultExpr = " default " + self.defaultExpression.toString();
+    }
+    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
 }
 
 @cached

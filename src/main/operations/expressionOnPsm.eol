@@ -18,7 +18,7 @@ operation EXPR!ElementName getNamespace() : JUDOPSM!Namespace {
 }
 
 @cached
-operation EXPR!ElementName getObjectType() : JUDOPSM!EntityType {
+operation EXPR!ElementName getObjectType() : JUDOPSM!Type {
     return self.getNamespace().elements.selectOne(et | et.name = self.name);
 }
 
