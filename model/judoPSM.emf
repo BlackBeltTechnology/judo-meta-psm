@@ -1,0 +1,426 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm", prefix="psm")
+package psm;
+
+import "http://blackbelt.hu/judo/meta/expression/custom";
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/namespace", prefix="namespace")
+package namespace {
+  abstract class NamedElement {
+    attr String[1] name;
+  }
+
+  abstract class Namespace extends NamedElement {
+    val NamespaceElement[*] elements;
+    val Package[*] packages;
+  }
+
+  class Model extends Namespace {
+  }
+
+  class Package extends Namespace {
+  }
+
+  abstract class NamespaceElement extends NamedElement {
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/type", prefix="type")
+package type {
+  abstract class Primitive extends DataType {
+  }
+
+  class CustomType extends Primitive {
+  }
+
+  class StringType extends Primitive {
+    attr int[1] maxLength;
+    attr RegExp regExp;
+  }
+
+  class NumericType extends Primitive {
+    attr int[1] precision;
+    attr int[1] scale;
+  }
+
+  class BooleanType extends Primitive {
+  }
+
+  class EnumerationType extends Primitive {
+    val EnumerationMember[+] members;
+  }
+
+  class EnumerationMember extends namespace.NamedElement {
+    attr int[1] ordinal;
+  }
+
+  abstract class Type extends namespace.NamespaceElement {
+  }
+
+  abstract class DataType extends Type {
+  }
+
+  class XMLType extends Primitive {
+    attr XmlNamespace[1] xmlNamespace;
+    attr XmlElement[1] xmlElement;
+  }
+
+  class Cardinality {
+    attr int[1] lower = 0;
+    attr int[1] upper = 1;
+  }
+
+  datatype RegExp : java.lang.String;
+
+  class PasswordType extends Primitive {
+  }
+
+  datatype XmlNamespace : java.lang.String;
+
+  datatype XmlElement : java.lang.String;
+
+  class DateType extends Primitive {
+  }
+
+  class TimestampType extends Primitive {
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/data", prefix="data")
+package data {
+  class EntityType extends type.Type {
+    ref EntityType[*] superEntityTypes;
+    attr boolean[1] ~abstract;
+    val Attribute[*] attributes;
+    val Relation[*] relations;
+    val RelationCountConstraint[*] relationCountConstraints;
+    val ~derived.DataProperty[*] dataProperties;
+    val ~derived.NavigationProperty[*] navigationProperties;
+    val service.BoundOperation[*] operations;
+  }
+
+  abstract class Relation extends ReferenceTypedElement {
+    attr boolean[1] cascadeDelete = false;
+  }
+
+  class Attribute extends PrimitiveTypedElement {
+    attr boolean[1] required;
+    attr boolean[1] identifier;
+  }
+
+  class Endpoint extends Relation {
+    ref Endpoint partner;
+  }
+
+  class RelationCountConstraint extends namespace.NamedElement {
+    ref Relation[2..*] relations;
+    val type.Cardinality[1] cardinality;
+  }
+
+  abstract class ReferenceTypedElement extends namespace.NamedElement {
+    ref EntityType[1] target;
+    val type.Cardinality[1] cardinality;
+  }
+
+  abstract class PrimitiveTypedElement extends namespace.NamedElement {
+    ref type.Primitive[1] dataType;
+  }
+
+  class Containment extends Relation {
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/behavior", prefix="behavior")
+package behavior {
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/constraint", prefix="constraint")
+package constraint {
+  class InvariantConstraint extends namespace.NamedElement {
+    val expression.LogicalExpression[1] expression;
+    ref data.EntityType[1] constrained;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/script", prefix="script")
+package script {
+  datatype Script : java.lang.String;
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/derived", prefix="derived")
+package ~derived {
+  class DataProperty extends PrimitiveAccessor {
+  }
+
+  class NavigationProperty extends ReferenceAccessor {
+  }
+
+  class StaticNavigation extends ReferenceAccessor, namespace.NamespaceElement {
+  }
+
+  abstract class PrimitiveAccessor extends data.PrimitiveTypedElement {
+    val expression.DataExpression[1] getterExpression;
+    val expression.AttributeSelector setterExpression;
+  }
+
+  class StaticData extends PrimitiveAccessor, namespace.NamespaceElement {
+  }
+
+  abstract class ReferenceAccessor extends data.ReferenceTypedElement {
+    val expression.ReferenceExpression[1] getterExpression;
+    val expression.ReferenceSelector setterExpression;
+    val expression.ReferenceExpression rangeExpression;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/service", prefix="service")
+package service {
+  abstract class TransferObjectType extends type.DataType {
+    ref TransferAttribute representation;
+    val TransferRelation[*] relations;
+    val TransferAttribute[*] attributes;
+  }
+
+  abstract class TransferRelation extends namespace.NamedElement {
+    val type.Cardinality[1] cardinality;
+    val expression.ReferenceExpression initExpression;
+  }
+
+  class TransferObjectReference extends TransferRelation {
+    ref MappedTransferObjectType[1] referenced;
+  }
+
+  class TransferObjectContainment extends TransferRelation {
+    ref TransferObjectType[1] containment;
+  }
+
+  class TransferAttribute extends namespace.NamedElement, data.PrimitiveTypedElement {
+    attr boolean[1] required;
+    val expression.DataExpression initExpression;
+  }
+
+  class MappedTransferObjectType extends TransferObjectType {
+    ref data.EntityType[1] entityType;
+    val TransferRelationBinding[*] transferRelationBindings;
+    val TransferAttributeBinding[*] transferAttributeBindings;
+  }
+
+  class TransferAttributeBinding {
+    ref data.PrimitiveTypedElement[1] primitiveTypedElement;
+    ref TransferAttribute[1] transferAttribute;
+  }
+
+  class TransferRelationBinding {
+    ref data.ReferenceTypedElement[1] referenceTypedElement;
+    ref TransferRelation[1] transferRelation;
+  }
+
+  abstract class Operation extends namespace.NamedElement {
+    attr script.Script body;
+    ref TransferObjectType output;
+    ref TransferObjectType[*] faults;
+    attr boolean[1] undefined;
+  }
+
+  class UnmappedTransferObjectType extends TransferObjectType {
+  }
+
+  class BoundOperation extends Operation {
+    ref MappedTransferObjectType[1] input;
+  }
+
+  class UnboundOperation extends Operation, namespace.NamespaceElement {
+    ref TransferObjectType input;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/accesspoint", prefix="accesspoint")
+package accesspoint {
+  class ExposedService extends namespace.NamedElement {
+    ref service.UnboundOperation[1] operation;
+  }
+
+  class AccessPoint extends namespace.NamespaceElement {
+    val ExposedService[*] exposedServices;
+    val ExposedGraph[*] exposedGraphs;
+  }
+
+  class ExposedGraph extends namespace.NamedElement {
+    ref ~derived.StaticNavigation[1] selector;
+    ref service.MappedTransferObjectType[1] entryTransferObject;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/view", prefix="view")
+package view {
+  class Container extends namespace.NamedElement {
+    val Component[*] components;
+    attr LayoutType[1] layout;
+    attr String title;
+    attr AlignmentType[1] alignment;
+  }
+
+  abstract class Component extends namespace.NamedElement {
+    attr String label;
+    transient derived ref ObjectView[1] parentView;
+  }
+
+  class Widget extends Component {
+    ref service.TransferAttribute[1] transferAttribute;
+    val Event[*] emittedEvents;
+  }
+
+  class ObjectView extends Container, namespace.NamespaceElement {
+    ref service.TransferObjectType[1] transferObject;
+    attr ViewType[1] viewType;
+    val Control[*] controls;
+  }
+
+  class Groupbox extends Container, Component {
+  }
+
+  class Placeholder extends Component {
+    attr boolean[1] popup;
+  }
+
+  abstract class Navigation extends Component {
+    ref ObjectView[1] navigationView;
+    ref ObjectView rangeView;
+    ref service.TransferRelation[1] transferRelation;
+  }
+
+  class Link extends Navigation {
+    ref Placeholder target;
+    attr String text;
+  }
+
+  class Embedded extends Navigation {
+  }
+
+  class Action extends Component {
+    ref Placeholder target;
+    ref service.Operation[1] operation;
+    ref ObjectView resultView;
+    ref ObjectView[*] faultViews;
+  }
+
+  abstract class Control {
+    ref service.TransferAttribute[1] controller;
+    ref Component[*] components;
+  }
+
+  class VisibleControl extends Control {
+  }
+
+  class EnabledControl extends Control {
+  }
+
+  enum EventType {
+    SYSTEM_CHANGED = 0;
+    USER_CHANGED = 1;
+    ENABLED = 2;
+    DISABLED = 3;
+    SHOWN = 4;
+    HIDE = 5;
+    LOADED = 6;
+  }
+
+  enum ViewType {
+    LIST = 0;
+    GRID = 1;
+    TILE = 2;
+  }
+
+  enum LayoutType {
+    HORIZONTAL = 0;
+    VERTICAL = 1;
+    TAB = 2;
+  }
+
+  abstract class ViewControl extends Component {
+  }
+
+  class Event {
+    attr EventType[1] eventType;
+    ref Action[1] triggered;
+  }
+
+  abstract class MenuComponent extends Component {
+    val Menu[*] subMenus;
+    val MenuItem[*] menuItems;
+  }
+
+  class MenuBar extends MenuComponent {
+  }
+
+  class Menu extends MenuComponent {
+  }
+
+  abstract class MenuItem {
+    ref ObjectView[1] view;
+    ref Placeholder[1] target;
+  }
+
+  class EntryMenuItem extends MenuItem {
+    ref ~derived.StaticNavigation[1] selector;
+  }
+
+  class ActionMenuItem extends MenuItem {
+    ref service.Operation[1] exposedService;
+  }
+
+  class UserInterface extends namespace.NamespaceElement {
+    ref ObjectView[1] mainView;
+    val ~derived.StaticNavigation selector;
+  }
+
+  class Renderer {
+  }
+
+  class Back extends ViewControl {
+  }
+
+  class UnboundActionLink extends Component {
+    ref ObjectView[1] actionView;
+  }
+
+  enum AlignmentType {
+    TOP = 0;
+    BOTTOM = 1;
+    LEFT = 2;
+    RIGHT = 3;
+    CENTER = 4;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/authentication", prefix="authentication")
+package authentication {
+  class PasswordAuthenticatedUser extends AuthenticatedUser {
+    ref data.Attribute[1] password;
+    ref data.Attribute[1] login;
+  }
+
+  abstract class AuthenticatedUser {
+    ref data.EntityType[1] user;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/authorization", prefix="authorization")
+package authorization {
+  class AuthorizationResource extends namespace.NamespaceElement {
+    ref data.ReferenceTypedElement[*] referenceTypedElements;
+    ref service.Operation[*] operations;
+    ref AuthorizationResource[*] includedAuthorizationResources;
+  }
+
+}
+

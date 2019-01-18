@@ -2,31 +2,96 @@
  */
 package hu.blackbelt.judo.meta.psm.namespace.impl;
 
-import hu.blackbelt.judo.meta.psm.action.ActionPackage;
+import hu.blackbelt.judo.meta.psm.accesspoint.AccesspointPackage;
 
-import hu.blackbelt.judo.meta.psm.action.impl.ActionPackageImpl;
+import hu.blackbelt.judo.meta.psm.accesspoint.impl.AccesspointPackageImpl;
 
-import hu.blackbelt.judo.meta.psm.behavior.BehaviorPackage;
+import hu.blackbelt.judo.meta.psm.authentication.AuthenticationPackage;
 
-import hu.blackbelt.judo.meta.psm.behavior.impl.BehaviorPackageImpl;
+import hu.blackbelt.judo.meta.psm.authentication.impl.AuthenticationPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.authorization.AuthorizationPackage;
+
+import hu.blackbelt.judo.meta.psm.authorization.impl.AuthorizationPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.constraint.ConstraintPackage;
+
+import hu.blackbelt.judo.meta.psm.constraint.impl.ConstraintPackageImpl;
 
 import hu.blackbelt.judo.meta.psm.data.DataPackage;
 
 import hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl;
 
-import hu.blackbelt.judo.meta.psm.facade.FacadePackage;
+import hu.blackbelt.judo.meta.psm.derived.DerivedPackage;
 
-import hu.blackbelt.judo.meta.psm.facade.impl.FacadePackageImpl;
+import hu.blackbelt.judo.meta.psm.derived.impl.DerivedPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.ExpressionPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.collection.CollectionPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.collection.impl.CollectionPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.constant.ConstantPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.constant.impl.ConstantPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.custom.CustomPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.custom.impl.CustomPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.enumeration.EnumerationPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.enumeration.impl.EnumerationPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.impl.ExpressionPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.logical.LogicalPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.logical.impl.LogicalPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.numeric.NumericPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.numeric.impl.NumericPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.object.ObjectPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.object.impl.ObjectPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.operator.OperatorPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.operator.impl.OperatorPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.string.StringPackage;
+
+import hu.blackbelt.judo.meta.psm.expression.string.impl.StringPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.expression.variable.VariablePackage;
+
+import hu.blackbelt.judo.meta.psm.expression.variable.impl.VariablePackageImpl;
 
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceFactory;
 import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
+
+import hu.blackbelt.judo.meta.psm.script.ScriptPackage;
+
+import hu.blackbelt.judo.meta.psm.script.impl.ScriptPackageImpl;
+
+import hu.blackbelt.judo.meta.psm.service.ServicePackage;
+
+import hu.blackbelt.judo.meta.psm.service.impl.ServicePackageImpl;
 
 import hu.blackbelt.judo.meta.psm.type.TypePackage;
 
 import hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl;
+
+import hu.blackbelt.judo.meta.psm.view.ViewPackage;
+
+import hu.blackbelt.judo.meta.psm.view.impl.ViewPackageImpl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -69,6 +134,13 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      * @generated
      */
     private EClass packageEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass namespaceElementEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -119,25 +191,73 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
         // Obtain or create and register interdependencies
         TypePackageImpl theTypePackage = (TypePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI) instanceof TypePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI) : TypePackage.eINSTANCE);
         DataPackageImpl theDataPackage = (DataPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) instanceof DataPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI) : DataPackage.eINSTANCE);
-        BehaviorPackageImpl theBehaviorPackage = (BehaviorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) instanceof BehaviorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(BehaviorPackage.eNS_URI) : BehaviorPackage.eINSTANCE);
-        FacadePackageImpl theFacadePackage = (FacadePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) instanceof FacadePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI) : FacadePackage.eINSTANCE);
-        ActionPackageImpl theActionPackage = (ActionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) instanceof ActionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ActionPackage.eNS_URI) : ActionPackage.eINSTANCE);
+        ConstraintPackageImpl theConstraintPackage = (ConstraintPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ConstraintPackage.eNS_URI) instanceof ConstraintPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ConstraintPackage.eNS_URI) : ConstraintPackage.eINSTANCE);
+        ScriptPackageImpl theScriptPackage = (ScriptPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ScriptPackage.eNS_URI) instanceof ScriptPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ScriptPackage.eNS_URI) : ScriptPackage.eINSTANCE);
+        DerivedPackageImpl theDerivedPackage = (DerivedPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DerivedPackage.eNS_URI) instanceof DerivedPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DerivedPackage.eNS_URI) : DerivedPackage.eINSTANCE);
+        ServicePackageImpl theServicePackage = (ServicePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ServicePackage.eNS_URI) instanceof ServicePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ServicePackage.eNS_URI) : ServicePackage.eINSTANCE);
+        AccesspointPackageImpl theAccesspointPackage = (AccesspointPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AccesspointPackage.eNS_URI) instanceof AccesspointPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AccesspointPackage.eNS_URI) : AccesspointPackage.eINSTANCE);
+        ViewPackageImpl theViewPackage = (ViewPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI) instanceof ViewPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI) : ViewPackage.eINSTANCE);
+        AuthenticationPackageImpl theAuthenticationPackage = (AuthenticationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AuthenticationPackage.eNS_URI) instanceof AuthenticationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AuthenticationPackage.eNS_URI) : AuthenticationPackage.eINSTANCE);
+        AuthorizationPackageImpl theAuthorizationPackage = (AuthorizationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AuthorizationPackage.eNS_URI) instanceof AuthorizationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AuthorizationPackage.eNS_URI) : AuthorizationPackage.eINSTANCE);
+        ExpressionPackageImpl theExpressionPackage = (ExpressionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ExpressionPackage.eNS_URI) instanceof ExpressionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ExpressionPackage.eNS_URI) : ExpressionPackage.eINSTANCE);
+        ConstantPackageImpl theConstantPackage = (ConstantPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ConstantPackage.eNS_URI) instanceof ConstantPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ConstantPackage.eNS_URI) : ConstantPackage.eINSTANCE);
+        VariablePackageImpl theVariablePackage = (VariablePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(VariablePackage.eNS_URI) instanceof VariablePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(VariablePackage.eNS_URI) : VariablePackage.eINSTANCE);
+        OperatorPackageImpl theOperatorPackage = (OperatorPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(OperatorPackage.eNS_URI) instanceof OperatorPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(OperatorPackage.eNS_URI) : OperatorPackage.eINSTANCE);
+        NumericPackageImpl theNumericPackage = (NumericPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(NumericPackage.eNS_URI) instanceof NumericPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(NumericPackage.eNS_URI) : NumericPackage.eINSTANCE);
+        LogicalPackageImpl theLogicalPackage = (LogicalPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(LogicalPackage.eNS_URI) instanceof LogicalPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(LogicalPackage.eNS_URI) : LogicalPackage.eINSTANCE);
+        StringPackageImpl theStringPackage = (StringPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(StringPackage.eNS_URI) instanceof StringPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(StringPackage.eNS_URI) : StringPackage.eINSTANCE);
+        EnumerationPackageImpl theEnumerationPackage = (EnumerationPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EnumerationPackage.eNS_URI) instanceof EnumerationPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EnumerationPackage.eNS_URI) : EnumerationPackage.eINSTANCE);
+        ObjectPackageImpl theObjectPackage = (ObjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) instanceof ObjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ObjectPackage.eNS_URI) : ObjectPackage.eINSTANCE);
+        CollectionPackageImpl theCollectionPackage = (CollectionPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CollectionPackage.eNS_URI) instanceof CollectionPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CollectionPackage.eNS_URI) : CollectionPackage.eINSTANCE);
+        CustomPackageImpl theCustomPackage = (CustomPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CustomPackage.eNS_URI) instanceof CustomPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CustomPackage.eNS_URI) : CustomPackage.eINSTANCE);
 
         // Create package meta-data objects
         theNamespacePackage.createPackageContents();
         theTypePackage.createPackageContents();
         theDataPackage.createPackageContents();
-        theBehaviorPackage.createPackageContents();
-        theFacadePackage.createPackageContents();
-        theActionPackage.createPackageContents();
+        theConstraintPackage.createPackageContents();
+        theScriptPackage.createPackageContents();
+        theDerivedPackage.createPackageContents();
+        theServicePackage.createPackageContents();
+        theAccesspointPackage.createPackageContents();
+        theViewPackage.createPackageContents();
+        theAuthenticationPackage.createPackageContents();
+        theAuthorizationPackage.createPackageContents();
+        theExpressionPackage.createPackageContents();
+        theConstantPackage.createPackageContents();
+        theVariablePackage.createPackageContents();
+        theOperatorPackage.createPackageContents();
+        theNumericPackage.createPackageContents();
+        theLogicalPackage.createPackageContents();
+        theStringPackage.createPackageContents();
+        theEnumerationPackage.createPackageContents();
+        theObjectPackage.createPackageContents();
+        theCollectionPackage.createPackageContents();
+        theCustomPackage.createPackageContents();
 
         // Initialize created meta-data
         theNamespacePackage.initializePackageContents();
         theTypePackage.initializePackageContents();
         theDataPackage.initializePackageContents();
-        theBehaviorPackage.initializePackageContents();
-        theFacadePackage.initializePackageContents();
-        theActionPackage.initializePackageContents();
+        theConstraintPackage.initializePackageContents();
+        theScriptPackage.initializePackageContents();
+        theDerivedPackage.initializePackageContents();
+        theServicePackage.initializePackageContents();
+        theAccesspointPackage.initializePackageContents();
+        theViewPackage.initializePackageContents();
+        theAuthenticationPackage.initializePackageContents();
+        theAuthorizationPackage.initializePackageContents();
+        theExpressionPackage.initializePackageContents();
+        theConstantPackage.initializePackageContents();
+        theVariablePackage.initializePackageContents();
+        theOperatorPackage.initializePackageContents();
+        theNumericPackage.initializePackageContents();
+        theLogicalPackage.initializePackageContents();
+        theStringPackage.initializePackageContents();
+        theEnumerationPackage.initializePackageContents();
+        theObjectPackage.initializePackageContents();
+        theCollectionPackage.initializePackageContents();
+        theCustomPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theNamespacePackage.freeze();
@@ -180,7 +300,7 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getNamespace_Packages() {
+    public EReference getNamespace_Elements() {
         return (EReference)namespaceEClass.getEStructuralFeatures().get(0);
     }
 
@@ -189,44 +309,8 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getNamespace_DataTypes() {
+    public EReference getNamespace_Packages() {
         return (EReference)namespaceEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getNamespace_Facades() {
-        return (EReference)namespaceEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getNamespace_EntitySelectors() {
-        return (EReference)namespaceEClass.getEStructuralFeatures().get(3);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getNamespace_PropertySets() {
-        return (EReference)namespaceEClass.getEStructuralFeatures().get(4);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EReference getNamespace_EntityTypes() {
-        return (EReference)namespaceEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -245,6 +329,15 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
      */
     public EClass getPackage() {
         return packageEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getNamespaceElement() {
+        return namespaceElementEClass;
     }
 
     /**
@@ -279,16 +372,14 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
         createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
 
         namespaceEClass = createEClass(NAMESPACE);
+        createEReference(namespaceEClass, NAMESPACE__ELEMENTS);
         createEReference(namespaceEClass, NAMESPACE__PACKAGES);
-        createEReference(namespaceEClass, NAMESPACE__DATA_TYPES);
-        createEReference(namespaceEClass, NAMESPACE__FACADES);
-        createEReference(namespaceEClass, NAMESPACE__ENTITY_SELECTORS);
-        createEReference(namespaceEClass, NAMESPACE__PROPERTY_SETS);
-        createEReference(namespaceEClass, NAMESPACE__ENTITY_TYPES);
 
         modelEClass = createEClass(MODEL);
 
         packageEClass = createEClass(PACKAGE);
+
+        namespaceElementEClass = createEClass(NAMESPACE_ELEMENT);
     }
 
     /**
@@ -314,11 +405,6 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
         setNsPrefix(eNS_PREFIX);
         setNsURI(eNS_URI);
 
-        // Obtain other dependent packages
-        TypePackage theTypePackage = (TypePackage)EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI);
-        FacadePackage theFacadePackage = (FacadePackage)EPackage.Registry.INSTANCE.getEPackage(FacadePackage.eNS_URI);
-        DataPackage theDataPackage = (DataPackage)EPackage.Registry.INSTANCE.getEPackage(DataPackage.eNS_URI);
-
         // Create type parameters
 
         // Set bounds for type parameters
@@ -327,22 +413,21 @@ public class NamespacePackageImpl extends EPackageImpl implements NamespacePacka
         namespaceEClass.getESuperTypes().add(this.getNamedElement());
         modelEClass.getESuperTypes().add(this.getNamespace());
         packageEClass.getESuperTypes().add(this.getNamespace());
+        namespaceElementEClass.getESuperTypes().add(this.getNamedElement());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getNamedElement_Name(), ecorePackage.getEString(), "name", null, 1, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(namespaceEClass, Namespace.class, "Namespace", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getNamespace_Elements(), this.getNamespaceElement(), null, "elements", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getNamespace_Packages(), this.getPackage(), null, "packages", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_DataTypes(), theTypePackage.getDataType(), null, "dataTypes", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_Facades(), theFacadePackage.getStandaloneFacade(), null, "facades", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_EntitySelectors(), theFacadePackage.getEntitySelector(), null, "entitySelectors", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_PropertySets(), theFacadePackage.getPropertySet(), null, "propertySets", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getNamespace_EntityTypes(), theDataPackage.getEntityType(), null, "entityTypes", null, 0, -1, Namespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(packageEClass, hu.blackbelt.judo.meta.psm.namespace.Package.class, "Package", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(namespaceElementEClass, NamespaceElement.class, "NamespaceElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

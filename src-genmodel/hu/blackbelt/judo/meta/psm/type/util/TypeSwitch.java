@@ -3,19 +3,9 @@
 package hu.blackbelt.judo.meta.psm.type.util;
 
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 
-import hu.blackbelt.judo.meta.psm.type.Cardinality;
-import hu.blackbelt.judo.meta.psm.type.ComplexType;
-import hu.blackbelt.judo.meta.psm.type.Custom;
-import hu.blackbelt.judo.meta.psm.type.DataType;
-import hu.blackbelt.judo.meta.psm.type.Element;
-import hu.blackbelt.judo.meta.psm.type.Enumeration;
-import hu.blackbelt.judo.meta.psm.type.Member;
-import hu.blackbelt.judo.meta.psm.type.Numeric;
-import hu.blackbelt.judo.meta.psm.type.Primitive;
-import hu.blackbelt.judo.meta.psm.type.Type;
-import hu.blackbelt.judo.meta.psm.type.TypePackage;
-import hu.blackbelt.judo.meta.psm.type.XML;
+import hu.blackbelt.judo.meta.psm.type.*;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -84,70 +74,77 @@ public class TypeSwitch<T> extends Switch<T> {
                 T result = casePrimitive(primitive);
                 if (result == null) result = caseDataType(primitive);
                 if (result == null) result = caseType(primitive);
+                if (result == null) result = caseNamespaceElement(primitive);
                 if (result == null) result = caseNamedElement(primitive);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.CUSTOM: {
-                Custom custom = (Custom)theEObject;
-                T result = caseCustom(custom);
-                if (result == null) result = casePrimitive(custom);
-                if (result == null) result = caseDataType(custom);
-                if (result == null) result = caseType(custom);
-                if (result == null) result = caseNamedElement(custom);
+            case TypePackage.CUSTOM_TYPE: {
+                CustomType customType = (CustomType)theEObject;
+                T result = caseCustomType(customType);
+                if (result == null) result = casePrimitive(customType);
+                if (result == null) result = caseDataType(customType);
+                if (result == null) result = caseType(customType);
+                if (result == null) result = caseNamespaceElement(customType);
+                if (result == null) result = caseNamedElement(customType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.STRING: {
-                hu.blackbelt.judo.meta.psm.type.String string = (hu.blackbelt.judo.meta.psm.type.String)theEObject;
-                T result = caseString(string);
-                if (result == null) result = casePrimitive(string);
-                if (result == null) result = caseDataType(string);
-                if (result == null) result = caseType(string);
-                if (result == null) result = caseNamedElement(string);
+            case TypePackage.STRING_TYPE: {
+                StringType stringType = (StringType)theEObject;
+                T result = caseStringType(stringType);
+                if (result == null) result = casePrimitive(stringType);
+                if (result == null) result = caseDataType(stringType);
+                if (result == null) result = caseType(stringType);
+                if (result == null) result = caseNamespaceElement(stringType);
+                if (result == null) result = caseNamedElement(stringType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.NUMERIC: {
-                Numeric numeric = (Numeric)theEObject;
-                T result = caseNumeric(numeric);
-                if (result == null) result = casePrimitive(numeric);
-                if (result == null) result = caseDataType(numeric);
-                if (result == null) result = caseType(numeric);
-                if (result == null) result = caseNamedElement(numeric);
+            case TypePackage.NUMERIC_TYPE: {
+                NumericType numericType = (NumericType)theEObject;
+                T result = caseNumericType(numericType);
+                if (result == null) result = casePrimitive(numericType);
+                if (result == null) result = caseDataType(numericType);
+                if (result == null) result = caseType(numericType);
+                if (result == null) result = caseNamespaceElement(numericType);
+                if (result == null) result = caseNamedElement(numericType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.BOOLEAN: {
-                hu.blackbelt.judo.meta.psm.type.Boolean boolean_ = (hu.blackbelt.judo.meta.psm.type.Boolean)theEObject;
-                T result = caseBoolean(boolean_);
-                if (result == null) result = casePrimitive(boolean_);
-                if (result == null) result = caseDataType(boolean_);
-                if (result == null) result = caseType(boolean_);
-                if (result == null) result = caseNamedElement(boolean_);
+            case TypePackage.BOOLEAN_TYPE: {
+                BooleanType booleanType = (BooleanType)theEObject;
+                T result = caseBooleanType(booleanType);
+                if (result == null) result = casePrimitive(booleanType);
+                if (result == null) result = caseDataType(booleanType);
+                if (result == null) result = caseType(booleanType);
+                if (result == null) result = caseNamespaceElement(booleanType);
+                if (result == null) result = caseNamedElement(booleanType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.ENUMERATION: {
-                Enumeration enumeration = (Enumeration)theEObject;
-                T result = caseEnumeration(enumeration);
-                if (result == null) result = casePrimitive(enumeration);
-                if (result == null) result = caseDataType(enumeration);
-                if (result == null) result = caseType(enumeration);
-                if (result == null) result = caseNamedElement(enumeration);
+            case TypePackage.ENUMERATION_TYPE: {
+                EnumerationType enumerationType = (EnumerationType)theEObject;
+                T result = caseEnumerationType(enumerationType);
+                if (result == null) result = casePrimitive(enumerationType);
+                if (result == null) result = caseDataType(enumerationType);
+                if (result == null) result = caseType(enumerationType);
+                if (result == null) result = caseNamespaceElement(enumerationType);
+                if (result == null) result = caseNamedElement(enumerationType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.MEMBER: {
-                Member member = (Member)theEObject;
-                T result = caseMember(member);
-                if (result == null) result = caseNamedElement(member);
+            case TypePackage.ENUMERATION_MEMBER: {
+                EnumerationMember enumerationMember = (EnumerationMember)theEObject;
+                T result = caseEnumerationMember(enumerationMember);
+                if (result == null) result = caseNamedElement(enumerationMember);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case TypePackage.TYPE: {
                 Type type = (Type)theEObject;
                 T result = caseType(type);
+                if (result == null) result = caseNamespaceElement(type);
                 if (result == null) result = caseNamedElement(type);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -156,38 +153,58 @@ public class TypeSwitch<T> extends Switch<T> {
                 DataType dataType = (DataType)theEObject;
                 T result = caseDataType(dataType);
                 if (result == null) result = caseType(dataType);
+                if (result == null) result = caseNamespaceElement(dataType);
                 if (result == null) result = caseNamedElement(dataType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case TypePackage.XML: {
-                XML xml = (XML)theEObject;
-                T result = caseXML(xml);
-                if (result == null) result = casePrimitive(xml);
-                if (result == null) result = caseDataType(xml);
-                if (result == null) result = caseType(xml);
-                if (result == null) result = caseNamedElement(xml);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TypePackage.COMPLEX_TYPE: {
-                ComplexType complexType = (ComplexType)theEObject;
-                T result = caseComplexType(complexType);
-                if (result == null) result = caseDataType(complexType);
-                if (result == null) result = caseType(complexType);
-                if (result == null) result = caseNamedElement(complexType);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case TypePackage.ELEMENT: {
-                Element element = (Element)theEObject;
-                T result = caseElement(element);
+            case TypePackage.XML_TYPE: {
+                XMLType xmlType = (XMLType)theEObject;
+                T result = caseXMLType(xmlType);
+                if (result == null) result = casePrimitive(xmlType);
+                if (result == null) result = caseDataType(xmlType);
+                if (result == null) result = caseType(xmlType);
+                if (result == null) result = caseNamespaceElement(xmlType);
+                if (result == null) result = caseNamedElement(xmlType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case TypePackage.CARDINALITY: {
                 Cardinality cardinality = (Cardinality)theEObject;
                 T result = caseCardinality(cardinality);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TypePackage.PASSWORD_TYPE: {
+                PasswordType passwordType = (PasswordType)theEObject;
+                T result = casePasswordType(passwordType);
+                if (result == null) result = casePrimitive(passwordType);
+                if (result == null) result = caseDataType(passwordType);
+                if (result == null) result = caseType(passwordType);
+                if (result == null) result = caseNamespaceElement(passwordType);
+                if (result == null) result = caseNamedElement(passwordType);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TypePackage.DATE_TYPE: {
+                DateType dateType = (DateType)theEObject;
+                T result = caseDateType(dateType);
+                if (result == null) result = casePrimitive(dateType);
+                if (result == null) result = caseDataType(dateType);
+                if (result == null) result = caseType(dateType);
+                if (result == null) result = caseNamespaceElement(dateType);
+                if (result == null) result = caseNamedElement(dateType);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case TypePackage.TIMESTAMP_TYPE: {
+                TimestampType timestampType = (TimestampType)theEObject;
+                T result = caseTimestampType(timestampType);
+                if (result == null) result = casePrimitive(timestampType);
+                if (result == null) result = caseDataType(timestampType);
+                if (result == null) result = caseType(timestampType);
+                if (result == null) result = caseNamespaceElement(timestampType);
+                if (result == null) result = caseNamedElement(timestampType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -211,92 +228,92 @@ public class TypeSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Custom</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Custom Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Custom</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Custom Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseCustom(Custom object) {
+    public T caseCustomType(CustomType object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>String</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>String Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>String</em>'.
+     * @return the result of interpreting the object as an instance of '<em>String Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseString(hu.blackbelt.judo.meta.psm.type.String object) {
+    public T caseStringType(StringType object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Numeric</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Numeric Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Numeric</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Numeric Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseNumeric(Numeric object) {
+    public T caseNumericType(NumericType object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Boolean</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Boolean Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Boolean</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Boolean Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseBoolean(hu.blackbelt.judo.meta.psm.type.Boolean object) {
+    public T caseBooleanType(BooleanType object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Enumeration</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Enumeration Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Enumeration</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Enumeration Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseEnumeration(Enumeration object) {
+    public T caseEnumerationType(EnumerationType object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Member</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Enumeration Member</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Member</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Enumeration Member</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseMember(Member object) {
+    public T caseEnumerationMember(EnumerationMember object) {
         return null;
     }
 
@@ -331,47 +348,17 @@ public class TypeSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>XML</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>XML Type</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>XML</em>'.
+     * @return the result of interpreting the object as an instance of '<em>XML Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseXML(XML object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Complex Type</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Complex Type</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseComplexType(ComplexType object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Element</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseElement(Element object) {
+    public T caseXMLType(XMLType object) {
         return null;
     }
 
@@ -391,6 +378,51 @@ public class TypeSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Password Type</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Password Type</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePasswordType(PasswordType object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Date Type</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Date Type</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDateType(DateType object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Timestamp Type</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Timestamp Type</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTimestampType(TimestampType object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -402,6 +434,21 @@ public class TypeSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNamedElement(NamedElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNamespaceElement(NamespaceElement object) {
         return null;
     }
 

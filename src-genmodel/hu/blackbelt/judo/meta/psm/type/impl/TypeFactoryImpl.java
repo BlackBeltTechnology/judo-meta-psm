@@ -2,16 +2,7 @@
  */
 package hu.blackbelt.judo.meta.psm.type.impl;
 
-import hu.blackbelt.judo.meta.psm.type.Cardinality;
-import hu.blackbelt.judo.meta.psm.type.ComplexType;
-import hu.blackbelt.judo.meta.psm.type.Custom;
-import hu.blackbelt.judo.meta.psm.type.Element;
-import hu.blackbelt.judo.meta.psm.type.Enumeration;
-import hu.blackbelt.judo.meta.psm.type.Member;
-import hu.blackbelt.judo.meta.psm.type.Numeric;
-import hu.blackbelt.judo.meta.psm.type.TypeFactory;
-import hu.blackbelt.judo.meta.psm.type.TypePackage;
-import hu.blackbelt.judo.meta.psm.type.XML;
+import hu.blackbelt.judo.meta.psm.type.*;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -66,16 +57,17 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case TypePackage.CUSTOM: return createCustom();
-            case TypePackage.STRING: return createString();
-            case TypePackage.NUMERIC: return createNumeric();
-            case TypePackage.BOOLEAN: return createBoolean();
-            case TypePackage.ENUMERATION: return createEnumeration();
-            case TypePackage.MEMBER: return createMember();
-            case TypePackage.XML: return createXML();
-            case TypePackage.COMPLEX_TYPE: return createComplexType();
-            case TypePackage.ELEMENT: return createElement();
+            case TypePackage.CUSTOM_TYPE: return createCustomType();
+            case TypePackage.STRING_TYPE: return createStringType();
+            case TypePackage.NUMERIC_TYPE: return createNumericType();
+            case TypePackage.BOOLEAN_TYPE: return createBooleanType();
+            case TypePackage.ENUMERATION_TYPE: return createEnumerationType();
+            case TypePackage.ENUMERATION_MEMBER: return createEnumerationMember();
+            case TypePackage.XML_TYPE: return createXMLType();
             case TypePackage.CARDINALITY: return createCardinality();
+            case TypePackage.PASSWORD_TYPE: return createPasswordType();
+            case TypePackage.DATE_TYPE: return createDateType();
+            case TypePackage.TIMESTAMP_TYPE: return createTimestampType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -89,12 +81,12 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
-            case TypePackage.NAVIGATION_EXPRESSION:
-                return createNavigationExpressionFromString(eDataType, initialValue);
-            case TypePackage.SCRIPT:
-                return createScriptFromString(eDataType, initialValue);
             case TypePackage.REG_EXP:
                 return createRegExpFromString(eDataType, initialValue);
+            case TypePackage.XML_NAMESPACE:
+                return createXmlNamespaceFromString(eDataType, initialValue);
+            case TypePackage.XML_ELEMENT:
+                return createXmlElementFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -108,12 +100,12 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
-            case TypePackage.NAVIGATION_EXPRESSION:
-                return convertNavigationExpressionToString(eDataType, instanceValue);
-            case TypePackage.SCRIPT:
-                return convertScriptToString(eDataType, instanceValue);
             case TypePackage.REG_EXP:
                 return convertRegExpToString(eDataType, instanceValue);
+            case TypePackage.XML_NAMESPACE:
+                return convertXmlNamespaceToString(eDataType, instanceValue);
+            case TypePackage.XML_ELEMENT:
+                return convertXmlElementToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -124,9 +116,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public Custom createCustom() {
-        CustomImpl custom = new CustomImpl();
-        return custom;
+    public CustomType createCustomType() {
+        CustomTypeImpl customType = new CustomTypeImpl();
+        return customType;
     }
 
     /**
@@ -134,9 +126,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public hu.blackbelt.judo.meta.psm.type.String createString() {
-        StringImpl string = new StringImpl();
-        return string;
+    public StringType createStringType() {
+        StringTypeImpl stringType = new StringTypeImpl();
+        return stringType;
     }
 
     /**
@@ -144,9 +136,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public Numeric createNumeric() {
-        NumericImpl numeric = new NumericImpl();
-        return numeric;
+    public NumericType createNumericType() {
+        NumericTypeImpl numericType = new NumericTypeImpl();
+        return numericType;
     }
 
     /**
@@ -154,9 +146,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public hu.blackbelt.judo.meta.psm.type.Boolean createBoolean() {
-        BooleanImpl boolean_ = new BooleanImpl();
-        return boolean_;
+    public BooleanType createBooleanType() {
+        BooleanTypeImpl booleanType = new BooleanTypeImpl();
+        return booleanType;
     }
 
     /**
@@ -164,9 +156,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public Enumeration createEnumeration() {
-        EnumerationImpl enumeration = new EnumerationImpl();
-        return enumeration;
+    public EnumerationType createEnumerationType() {
+        EnumerationTypeImpl enumerationType = new EnumerationTypeImpl();
+        return enumerationType;
     }
 
     /**
@@ -174,9 +166,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public Member createMember() {
-        MemberImpl member = new MemberImpl();
-        return member;
+    public EnumerationMember createEnumerationMember() {
+        EnumerationMemberImpl enumerationMember = new EnumerationMemberImpl();
+        return enumerationMember;
     }
 
     /**
@@ -184,29 +176,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public XML createXML() {
-        XMLImpl xml = new XMLImpl();
-        return xml;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public ComplexType createComplexType() {
-        ComplexTypeImpl complexType = new ComplexTypeImpl();
-        return complexType;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Element createElement() {
-        ElementImpl element = new ElementImpl();
-        return element;
+    public XMLType createXMLType() {
+        XMLTypeImpl xmlType = new XMLTypeImpl();
+        return xmlType;
     }
 
     /**
@@ -224,8 +196,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String createNavigationExpressionFromString(EDataType eDataType, String initialValue) {
-        return (String)super.createFromString(eDataType, initialValue);
+    public PasswordType createPasswordType() {
+        PasswordTypeImpl passwordType = new PasswordTypeImpl();
+        return passwordType;
     }
 
     /**
@@ -233,8 +206,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String convertNavigationExpressionToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
+    public DateType createDateType() {
+        DateTypeImpl dateType = new DateTypeImpl();
+        return dateType;
     }
 
     /**
@@ -242,17 +216,9 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String createScriptFromString(EDataType eDataType, String initialValue) {
-        return (String)super.createFromString(eDataType, initialValue);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String convertScriptToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
+    public TimestampType createTimestampType() {
+        TimestampTypeImpl timestampType = new TimestampTypeImpl();
+        return timestampType;
     }
 
     /**
@@ -270,6 +236,42 @@ public class TypeFactoryImpl extends EFactoryImpl implements TypeFactory {
      * @generated
      */
     public String convertRegExpToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String createXmlNamespaceFromString(EDataType eDataType, String initialValue) {
+        return (String)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertXmlNamespaceToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String createXmlElementFromString(EDataType eDataType, String initialValue) {
+        return (String)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertXmlElementToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

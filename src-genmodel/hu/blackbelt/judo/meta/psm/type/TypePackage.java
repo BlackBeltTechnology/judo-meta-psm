@@ -4,8 +4,6 @@ package hu.blackbelt.judo.meta.psm.type;
 
 import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
 
-import java.lang.String;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -78,7 +76,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TYPE__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
+    int TYPE__NAME = NamespacePackage.NAMESPACE_ELEMENT__NAME;
 
     /**
      * The number of structural features of the '<em>Type</em>' class.
@@ -87,7 +85,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TYPE_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
+    int TYPE_FEATURE_COUNT = NamespacePackage.NAMESPACE_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Type</em>' class.
@@ -96,7 +94,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TYPE_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
+    int TYPE_OPERATION_COUNT = NamespacePackage.NAMESPACE_ELEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.DataTypeImpl <em>Data Type</em>}' class.
@@ -173,14 +171,14 @@ public interface TypePackage extends EPackage {
     int PRIMITIVE_OPERATION_COUNT = DATA_TYPE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.CustomImpl <em>Custom</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.CustomTypeImpl <em>Custom Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.CustomImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getCustom()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.CustomTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getCustomType()
      * @generated
      */
-    int CUSTOM = 1;
+    int CUSTOM_TYPE = 1;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -189,35 +187,35 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CUSTOM__NAME = PRIMITIVE__NAME;
+    int CUSTOM_TYPE__NAME = PRIMITIVE__NAME;
 
     /**
-     * The number of structural features of the '<em>Custom</em>' class.
+     * The number of structural features of the '<em>Custom Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CUSTOM_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
+    int CUSTOM_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Custom</em>' class.
+     * The number of operations of the '<em>Custom Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CUSTOM_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+    int CUSTOM_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.StringImpl <em>String</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.StringTypeImpl <em>String Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.StringImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getString()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.StringTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getStringType()
      * @generated
      */
-    int STRING = 2;
+    int STRING_TYPE = 2;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -226,7 +224,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STRING__NAME = PRIMITIVE__NAME;
+    int STRING_TYPE__NAME = PRIMITIVE__NAME;
 
     /**
      * The feature id for the '<em><b>Max Length</b></em>' attribute.
@@ -235,7 +233,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STRING__MAX_LENGTH = PRIMITIVE_FEATURE_COUNT + 0;
+    int STRING_TYPE__MAX_LENGTH = PRIMITIVE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Reg Exp</b></em>' attribute.
@@ -244,35 +242,35 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int STRING__REG_EXP = PRIMITIVE_FEATURE_COUNT + 1;
+    int STRING_TYPE__REG_EXP = PRIMITIVE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>String</em>' class.
+     * The number of structural features of the '<em>String Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int STRING_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 2;
+    int STRING_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 2;
 
     /**
-     * The number of operations of the '<em>String</em>' class.
+     * The number of operations of the '<em>String Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int STRING_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+    int STRING_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.NumericImpl <em>Numeric</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.NumericTypeImpl <em>Numeric Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.NumericImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getNumeric()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.NumericTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getNumericType()
      * @generated
      */
-    int NUMERIC = 3;
+    int NUMERIC_TYPE = 3;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -281,7 +279,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NUMERIC__NAME = PRIMITIVE__NAME;
+    int NUMERIC_TYPE__NAME = PRIMITIVE__NAME;
 
     /**
      * The feature id for the '<em><b>Precision</b></em>' attribute.
@@ -290,7 +288,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NUMERIC__PRECISION = PRIMITIVE_FEATURE_COUNT + 0;
+    int NUMERIC_TYPE__PRECISION = PRIMITIVE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Scale</b></em>' attribute.
@@ -299,35 +297,35 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NUMERIC__SCALE = PRIMITIVE_FEATURE_COUNT + 1;
+    int NUMERIC_TYPE__SCALE = PRIMITIVE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Numeric</em>' class.
+     * The number of structural features of the '<em>Numeric Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int NUMERIC_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 2;
+    int NUMERIC_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 2;
 
     /**
-     * The number of operations of the '<em>Numeric</em>' class.
+     * The number of operations of the '<em>Numeric Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int NUMERIC_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+    int NUMERIC_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.BooleanImpl <em>Boolean</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.BooleanTypeImpl <em>Boolean Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.BooleanImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getBoolean()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.BooleanTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getBooleanType()
      * @generated
      */
-    int BOOLEAN = 4;
+    int BOOLEAN_TYPE = 4;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -336,35 +334,35 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int BOOLEAN__NAME = PRIMITIVE__NAME;
+    int BOOLEAN_TYPE__NAME = PRIMITIVE__NAME;
 
     /**
-     * The number of structural features of the '<em>Boolean</em>' class.
+     * The number of structural features of the '<em>Boolean Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int BOOLEAN_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
+    int BOOLEAN_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Boolean</em>' class.
+     * The number of operations of the '<em>Boolean Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int BOOLEAN_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+    int BOOLEAN_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.EnumerationImpl <em>Enumeration</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.EnumerationTypeImpl <em>Enumeration Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.EnumerationImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getEnumeration()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.EnumerationTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getEnumerationType()
      * @generated
      */
-    int ENUMERATION = 5;
+    int ENUMERATION_TYPE = 5;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -373,7 +371,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENUMERATION__NAME = PRIMITIVE__NAME;
+    int ENUMERATION_TYPE__NAME = PRIMITIVE__NAME;
 
     /**
      * The feature id for the '<em><b>Members</b></em>' containment reference list.
@@ -382,35 +380,35 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENUMERATION__MEMBERS = PRIMITIVE_FEATURE_COUNT + 0;
+    int ENUMERATION_TYPE__MEMBERS = PRIMITIVE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Enumeration</em>' class.
+     * The number of structural features of the '<em>Enumeration Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ENUMERATION_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 1;
+    int ENUMERATION_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 1;
 
     /**
-     * The number of operations of the '<em>Enumeration</em>' class.
+     * The number of operations of the '<em>Enumeration Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ENUMERATION_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+    int ENUMERATION_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.MemberImpl <em>Member</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.EnumerationMemberImpl <em>Enumeration Member</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.MemberImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getMember()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.EnumerationMemberImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getEnumerationMember()
      * @generated
      */
-    int MEMBER = 6;
+    int ENUMERATION_MEMBER = 6;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -419,7 +417,7 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MEMBER__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
+    int ENUMERATION_MEMBER__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
 
     /**
      * The feature id for the '<em><b>Ordinal</b></em>' attribute.
@@ -428,35 +426,35 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MEMBER__ORDINAL = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
+    int ENUMERATION_MEMBER__ORDINAL = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Member</em>' class.
+     * The number of structural features of the '<em>Enumeration Member</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int MEMBER_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int ENUMERATION_MEMBER_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
-     * The number of operations of the '<em>Member</em>' class.
+     * The number of operations of the '<em>Enumeration Member</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int MEMBER_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
+    int ENUMERATION_MEMBER_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.XMLImpl <em>XML</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.XMLTypeImpl <em>XML Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.XMLImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXML()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.XMLTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXMLType()
      * @generated
      */
-    int XML = 9;
+    int XML_TYPE = 9;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -465,153 +463,43 @@ public interface TypePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int XML__NAME = PRIMITIVE__NAME;
+    int XML_TYPE__NAME = PRIMITIVE__NAME;
 
     /**
-     * The feature id for the '<em><b>Namespace</b></em>' attribute.
+     * The feature id for the '<em><b>Xml Namespace</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int XML__NAMESPACE = PRIMITIVE_FEATURE_COUNT + 0;
+    int XML_TYPE__XML_NAMESPACE = PRIMITIVE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Element</b></em>' attribute.
+     * The feature id for the '<em><b>Xml Element</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int XML__ELEMENT = PRIMITIVE_FEATURE_COUNT + 1;
+    int XML_TYPE__XML_ELEMENT = PRIMITIVE_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>XML</em>' class.
+     * The number of structural features of the '<em>XML Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int XML_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 2;
+    int XML_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 2;
 
     /**
-     * The number of operations of the '<em>XML</em>' class.
+     * The number of operations of the '<em>XML Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int XML_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.ComplexTypeImpl <em>Complex Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.ComplexTypeImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getComplexType()
-     * @generated
-     */
-    int COMPLEX_TYPE = 10;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPLEX_TYPE__NAME = DATA_TYPE__NAME;
-
-    /**
-     * The feature id for the '<em><b>Super Complex Types</b></em>' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPLEX_TYPE__SUPER_COMPLEX_TYPES = DATA_TYPE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Elements</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPLEX_TYPE__ELEMENTS = DATA_TYPE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Abstract</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPLEX_TYPE__ABSTRACT = DATA_TYPE_FEATURE_COUNT + 2;
-
-    /**
-     * The number of structural features of the '<em>Complex Type</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPLEX_TYPE_FEATURE_COUNT = DATA_TYPE_FEATURE_COUNT + 3;
-
-    /**
-     * The number of operations of the '<em>Complex Type</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int COMPLEX_TYPE_OPERATION_COUNT = DATA_TYPE_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.ElementImpl <em>Element</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.type.impl.ElementImpl
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getElement()
-     * @generated
-     */
-    int ELEMENT = 11;
-
-    /**
-     * The feature id for the '<em><b>Type</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ELEMENT__TYPE = 0;
-
-    /**
-     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ELEMENT__CARDINALITY = 1;
-
-    /**
-     * The number of structural features of the '<em>Element</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ELEMENT_FEATURE_COUNT = 2;
-
-    /**
-     * The number of operations of the '<em>Element</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ELEMENT_OPERATION_COUNT = 0;
+    int XML_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.CardinalityImpl <em>Cardinality</em>}' class.
@@ -621,7 +509,7 @@ public interface TypePackage extends EPackage {
      * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getCardinality()
      * @generated
      */
-    int CARDINALITY = 12;
+    int CARDINALITY = 10;
 
     /**
      * The feature id for the '<em><b>Lower</b></em>' attribute.
@@ -660,24 +548,115 @@ public interface TypePackage extends EPackage {
     int CARDINALITY_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '<em>Navigation Expression</em>' data type.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.PasswordTypeImpl <em>Password Type</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see java.lang.String
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getNavigationExpression()
+     * @see hu.blackbelt.judo.meta.psm.type.impl.PasswordTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getPasswordType()
      * @generated
      */
-    int NAVIGATION_EXPRESSION = 13;
+    int PASSWORD_TYPE = 11;
 
     /**
-     * The meta object id for the '<em>Script</em>' data type.
+     * The feature id for the '<em><b>Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see java.lang.String
-     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getScript()
+     * @generated
+     * @ordered
+     */
+    int PASSWORD_TYPE__NAME = PRIMITIVE__NAME;
+
+    /**
+     * The number of structural features of the '<em>Password Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PASSWORD_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Password Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PASSWORD_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.DateTypeImpl <em>Date Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see hu.blackbelt.judo.meta.psm.type.impl.DateTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getDateType()
      * @generated
      */
-    int SCRIPT = 14;
+    int DATE_TYPE = 12;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATE_TYPE__NAME = PRIMITIVE__NAME;
+
+    /**
+     * The number of structural features of the '<em>Date Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATE_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Date Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DATE_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.type.impl.TimestampTypeImpl <em>Timestamp Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TimestampTypeImpl
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getTimestampType()
+     * @generated
+     */
+    int TIMESTAMP_TYPE = 13;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TIMESTAMP_TYPE__NAME = PRIMITIVE__NAME;
+
+    /**
+     * The number of structural features of the '<em>Timestamp Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TIMESTAMP_TYPE_FEATURE_COUNT = PRIMITIVE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Timestamp Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TIMESTAMP_TYPE_OPERATION_COUNT = PRIMITIVE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '<em>Reg Exp</em>' data type.
@@ -687,7 +666,27 @@ public interface TypePackage extends EPackage {
      * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getRegExp()
      * @generated
      */
-    int REG_EXP = 15;
+    int REG_EXP = 14;
+
+    /**
+     * The meta object id for the '<em>Xml Namespace</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.lang.String
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXmlNamespace()
+     * @generated
+     */
+    int XML_NAMESPACE = 15;
+
+    /**
+     * The meta object id for the '<em>Xml Element</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.lang.String
+     * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXmlElement()
+     * @generated
+     */
+    int XML_ELEMENT = 16;
 
 
     /**
@@ -701,130 +700,130 @@ public interface TypePackage extends EPackage {
     EClass getPrimitive();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Custom <em>Custom</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.CustomType <em>Custom Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Custom</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Custom
+     * @return the meta object for class '<em>Custom Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.CustomType
      * @generated
      */
-    EClass getCustom();
+    EClass getCustomType();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.String <em>String</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.StringType <em>String Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>String</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.String
+     * @return the meta object for class '<em>String Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.StringType
      * @generated
      */
-    EClass getString();
+    EClass getStringType();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.String#getMaxLength <em>Max Length</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.StringType#getMaxLength <em>Max Length</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Max Length</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.String#getMaxLength()
-     * @see #getString()
+     * @see hu.blackbelt.judo.meta.psm.type.StringType#getMaxLength()
+     * @see #getStringType()
      * @generated
      */
-    EAttribute getString_MaxLength();
+    EAttribute getStringType_MaxLength();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.String#getRegExp <em>Reg Exp</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.StringType#getRegExp <em>Reg Exp</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Reg Exp</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.String#getRegExp()
-     * @see #getString()
+     * @see hu.blackbelt.judo.meta.psm.type.StringType#getRegExp()
+     * @see #getStringType()
      * @generated
      */
-    EAttribute getString_RegExp();
+    EAttribute getStringType_RegExp();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Numeric <em>Numeric</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.NumericType <em>Numeric Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Numeric</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Numeric
+     * @return the meta object for class '<em>Numeric Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.NumericType
      * @generated
      */
-    EClass getNumeric();
+    EClass getNumericType();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.Numeric#getPrecision <em>Precision</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.NumericType#getPrecision <em>Precision</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Precision</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Numeric#getPrecision()
-     * @see #getNumeric()
+     * @see hu.blackbelt.judo.meta.psm.type.NumericType#getPrecision()
+     * @see #getNumericType()
      * @generated
      */
-    EAttribute getNumeric_Precision();
+    EAttribute getNumericType_Precision();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.Numeric#getScale <em>Scale</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.NumericType#getScale <em>Scale</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Scale</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Numeric#getScale()
-     * @see #getNumeric()
+     * @see hu.blackbelt.judo.meta.psm.type.NumericType#getScale()
+     * @see #getNumericType()
      * @generated
      */
-    EAttribute getNumeric_Scale();
+    EAttribute getNumericType_Scale();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Boolean <em>Boolean</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.BooleanType <em>Boolean Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Boolean</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Boolean
+     * @return the meta object for class '<em>Boolean Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.BooleanType
      * @generated
      */
-    EClass getBoolean();
+    EClass getBooleanType();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Enumeration <em>Enumeration</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.EnumerationType <em>Enumeration Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Enumeration</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Enumeration
+     * @return the meta object for class '<em>Enumeration Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.EnumerationType
      * @generated
      */
-    EClass getEnumeration();
+    EClass getEnumerationType();
 
     /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.type.Enumeration#getMembers <em>Members</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.type.EnumerationType#getMembers <em>Members</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference list '<em>Members</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Enumeration#getMembers()
-     * @see #getEnumeration()
+     * @see hu.blackbelt.judo.meta.psm.type.EnumerationType#getMembers()
+     * @see #getEnumerationType()
      * @generated
      */
-    EReference getEnumeration_Members();
+    EReference getEnumerationType_Members();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Member <em>Member</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.EnumerationMember <em>Enumeration Member</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Member</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Member
+     * @return the meta object for class '<em>Enumeration Member</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.EnumerationMember
      * @generated
      */
-    EClass getMember();
+    EClass getEnumerationMember();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.Member#getOrdinal <em>Ordinal</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.EnumerationMember#getOrdinal <em>Ordinal</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Ordinal</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Member#getOrdinal()
-     * @see #getMember()
+     * @see hu.blackbelt.judo.meta.psm.type.EnumerationMember#getOrdinal()
+     * @see #getEnumerationMember()
      * @generated
      */
-    EAttribute getMember_Ordinal();
+    EAttribute getEnumerationMember_Ordinal();
 
     /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Type <em>Type</em>}'.
@@ -847,111 +846,36 @@ public interface TypePackage extends EPackage {
     EClass getDataType();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.XML <em>XML</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.XMLType <em>XML Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>XML</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.XML
+     * @return the meta object for class '<em>XML Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.XMLType
      * @generated
      */
-    EClass getXML();
+    EClass getXMLType();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.XML#getNamespace <em>Namespace</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.XMLType#getXmlNamespace <em>Xml Namespace</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Namespace</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.XML#getNamespace()
-     * @see #getXML()
+     * @return the meta object for the attribute '<em>Xml Namespace</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.XMLType#getXmlNamespace()
+     * @see #getXMLType()
      * @generated
      */
-    EAttribute getXML_Namespace();
+    EAttribute getXMLType_XmlNamespace();
 
     /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.XML#getElement <em>Element</em>}'.
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.XMLType#getXmlElement <em>Xml Element</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Element</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.XML#getElement()
-     * @see #getXML()
+     * @return the meta object for the attribute '<em>Xml Element</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.XMLType#getXmlElement()
+     * @see #getXMLType()
      * @generated
      */
-    EAttribute getXML_Element();
-
-    /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.ComplexType <em>Complex Type</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Complex Type</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.ComplexType
-     * @generated
-     */
-    EClass getComplexType();
-
-    /**
-     * Returns the meta object for the reference list '{@link hu.blackbelt.judo.meta.psm.type.ComplexType#getSuperComplexTypes <em>Super Complex Types</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>Super Complex Types</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.ComplexType#getSuperComplexTypes()
-     * @see #getComplexType()
-     * @generated
-     */
-    EReference getComplexType_SuperComplexTypes();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.type.ComplexType#getElements <em>Elements</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Elements</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.ComplexType#getElements()
-     * @see #getComplexType()
-     * @generated
-     */
-    EReference getComplexType_Elements();
-
-    /**
-     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.type.ComplexType#isAbstract <em>Abstract</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Abstract</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.ComplexType#isAbstract()
-     * @see #getComplexType()
-     * @generated
-     */
-    EAttribute getComplexType_Abstract();
-
-    /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Element <em>Element</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Element</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Element
-     * @generated
-     */
-    EClass getElement();
-
-    /**
-     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.type.Element#getType <em>Type</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Type</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Element#getType()
-     * @see #getElement()
-     * @generated
-     */
-    EReference getElement_Type();
-
-    /**
-     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.type.Element#getCardinality <em>Cardinality</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Cardinality</em>'.
-     * @see hu.blackbelt.judo.meta.psm.type.Element#getCardinality()
-     * @see #getElement()
-     * @generated
-     */
-    EReference getElement_Cardinality();
+    EAttribute getXMLType_XmlElement();
 
     /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.Cardinality <em>Cardinality</em>}'.
@@ -986,26 +910,34 @@ public interface TypePackage extends EPackage {
     EAttribute getCardinality_Upper();
 
     /**
-     * Returns the meta object for data type '{@link java.lang.String <em>Navigation Expression</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.PasswordType <em>Password Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Navigation Expression</em>'.
-     * @see java.lang.String
-     * @model instanceClass="java.lang.String"
+     * @return the meta object for class '<em>Password Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.PasswordType
      * @generated
      */
-    EDataType getNavigationExpression();
+    EClass getPasswordType();
 
     /**
-     * Returns the meta object for data type '{@link java.lang.String <em>Script</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.DateType <em>Date Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Script</em>'.
-     * @see java.lang.String
-     * @model instanceClass="java.lang.String"
+     * @return the meta object for class '<em>Date Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.DateType
      * @generated
      */
-    EDataType getScript();
+    EClass getDateType();
+
+    /**
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.TimestampType <em>Timestamp Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Timestamp Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.type.TimestampType
+     * @generated
+     */
+    EClass getTimestampType();
 
     /**
      * Returns the meta object for data type '{@link java.lang.String <em>Reg Exp</em>}'.
@@ -1017,6 +949,28 @@ public interface TypePackage extends EPackage {
      * @generated
      */
     EDataType getRegExp();
+
+    /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Xml Namespace</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Xml Namespace</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     * @generated
+     */
+    EDataType getXmlNamespace();
+
+    /**
+     * Returns the meta object for data type '{@link java.lang.String <em>Xml Element</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Xml Element</em>'.
+     * @see java.lang.String
+     * @model instanceClass="java.lang.String"
+     * @generated
+     */
+    EDataType getXmlElement();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -1052,24 +1006,24 @@ public interface TypePackage extends EPackage {
         EClass PRIMITIVE = eINSTANCE.getPrimitive();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.CustomImpl <em>Custom</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.CustomTypeImpl <em>Custom Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.CustomImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getCustom()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.CustomTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getCustomType()
          * @generated
          */
-        EClass CUSTOM = eINSTANCE.getCustom();
+        EClass CUSTOM_TYPE = eINSTANCE.getCustomType();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.StringImpl <em>String</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.StringTypeImpl <em>String Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.StringImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getString()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.StringTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getStringType()
          * @generated
          */
-        EClass STRING = eINSTANCE.getString();
+        EClass STRING_TYPE = eINSTANCE.getStringType();
 
         /**
          * The meta object literal for the '<em><b>Max Length</b></em>' attribute feature.
@@ -1077,7 +1031,7 @@ public interface TypePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute STRING__MAX_LENGTH = eINSTANCE.getString_MaxLength();
+        EAttribute STRING_TYPE__MAX_LENGTH = eINSTANCE.getStringType_MaxLength();
 
         /**
          * The meta object literal for the '<em><b>Reg Exp</b></em>' attribute feature.
@@ -1085,17 +1039,17 @@ public interface TypePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute STRING__REG_EXP = eINSTANCE.getString_RegExp();
+        EAttribute STRING_TYPE__REG_EXP = eINSTANCE.getStringType_RegExp();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.NumericImpl <em>Numeric</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.NumericTypeImpl <em>Numeric Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.NumericImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getNumeric()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.NumericTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getNumericType()
          * @generated
          */
-        EClass NUMERIC = eINSTANCE.getNumeric();
+        EClass NUMERIC_TYPE = eINSTANCE.getNumericType();
 
         /**
          * The meta object literal for the '<em><b>Precision</b></em>' attribute feature.
@@ -1103,7 +1057,7 @@ public interface TypePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute NUMERIC__PRECISION = eINSTANCE.getNumeric_Precision();
+        EAttribute NUMERIC_TYPE__PRECISION = eINSTANCE.getNumericType_Precision();
 
         /**
          * The meta object literal for the '<em><b>Scale</b></em>' attribute feature.
@@ -1111,27 +1065,27 @@ public interface TypePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute NUMERIC__SCALE = eINSTANCE.getNumeric_Scale();
+        EAttribute NUMERIC_TYPE__SCALE = eINSTANCE.getNumericType_Scale();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.BooleanImpl <em>Boolean</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.BooleanTypeImpl <em>Boolean Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.BooleanImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getBoolean()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.BooleanTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getBooleanType()
          * @generated
          */
-        EClass BOOLEAN = eINSTANCE.getBoolean();
+        EClass BOOLEAN_TYPE = eINSTANCE.getBooleanType();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.EnumerationImpl <em>Enumeration</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.EnumerationTypeImpl <em>Enumeration Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.EnumerationImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getEnumeration()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.EnumerationTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getEnumerationType()
          * @generated
          */
-        EClass ENUMERATION = eINSTANCE.getEnumeration();
+        EClass ENUMERATION_TYPE = eINSTANCE.getEnumerationType();
 
         /**
          * The meta object literal for the '<em><b>Members</b></em>' containment reference list feature.
@@ -1139,17 +1093,17 @@ public interface TypePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference ENUMERATION__MEMBERS = eINSTANCE.getEnumeration_Members();
+        EReference ENUMERATION_TYPE__MEMBERS = eINSTANCE.getEnumerationType_Members();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.MemberImpl <em>Member</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.EnumerationMemberImpl <em>Enumeration Member</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.MemberImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getMember()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.EnumerationMemberImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getEnumerationMember()
          * @generated
          */
-        EClass MEMBER = eINSTANCE.getMember();
+        EClass ENUMERATION_MEMBER = eINSTANCE.getEnumerationMember();
 
         /**
          * The meta object literal for the '<em><b>Ordinal</b></em>' attribute feature.
@@ -1157,7 +1111,7 @@ public interface TypePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute MEMBER__ORDINAL = eINSTANCE.getMember_Ordinal();
+        EAttribute ENUMERATION_MEMBER__ORDINAL = eINSTANCE.getEnumerationMember_Ordinal();
 
         /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.TypeImpl <em>Type</em>}' class.
@@ -1180,90 +1134,30 @@ public interface TypePackage extends EPackage {
         EClass DATA_TYPE = eINSTANCE.getDataType();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.XMLImpl <em>XML</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.XMLTypeImpl <em>XML Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.XMLImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXML()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.XMLTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXMLType()
          * @generated
          */
-        EClass XML = eINSTANCE.getXML();
+        EClass XML_TYPE = eINSTANCE.getXMLType();
 
         /**
-         * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Xml Namespace</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute XML__NAMESPACE = eINSTANCE.getXML_Namespace();
+        EAttribute XML_TYPE__XML_NAMESPACE = eINSTANCE.getXMLType_XmlNamespace();
 
         /**
-         * The meta object literal for the '<em><b>Element</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Xml Element</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute XML__ELEMENT = eINSTANCE.getXML_Element();
-
-        /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.ComplexTypeImpl <em>Complex Type</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.ComplexTypeImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getComplexType()
-         * @generated
-         */
-        EClass COMPLEX_TYPE = eINSTANCE.getComplexType();
-
-        /**
-         * The meta object literal for the '<em><b>Super Complex Types</b></em>' reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference COMPLEX_TYPE__SUPER_COMPLEX_TYPES = eINSTANCE.getComplexType_SuperComplexTypes();
-
-        /**
-         * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference COMPLEX_TYPE__ELEMENTS = eINSTANCE.getComplexType_Elements();
-
-        /**
-         * The meta object literal for the '<em><b>Abstract</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute COMPLEX_TYPE__ABSTRACT = eINSTANCE.getComplexType_Abstract();
-
-        /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.ElementImpl <em>Element</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.type.impl.ElementImpl
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getElement()
-         * @generated
-         */
-        EClass ELEMENT = eINSTANCE.getElement();
-
-        /**
-         * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ELEMENT__TYPE = eINSTANCE.getElement_Type();
-
-        /**
-         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ELEMENT__CARDINALITY = eINSTANCE.getElement_Cardinality();
+        EAttribute XML_TYPE__XML_ELEMENT = eINSTANCE.getXMLType_XmlElement();
 
         /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.CardinalityImpl <em>Cardinality</em>}' class.
@@ -1292,24 +1186,34 @@ public interface TypePackage extends EPackage {
         EAttribute CARDINALITY__UPPER = eINSTANCE.getCardinality_Upper();
 
         /**
-         * The meta object literal for the '<em>Navigation Expression</em>' data type.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.PasswordTypeImpl <em>Password Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see java.lang.String
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getNavigationExpression()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.PasswordTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getPasswordType()
          * @generated
          */
-        EDataType NAVIGATION_EXPRESSION = eINSTANCE.getNavigationExpression();
+        EClass PASSWORD_TYPE = eINSTANCE.getPasswordType();
 
         /**
-         * The meta object literal for the '<em>Script</em>' data type.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.DateTypeImpl <em>Date Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see java.lang.String
-         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getScript()
+         * @see hu.blackbelt.judo.meta.psm.type.impl.DateTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getDateType()
          * @generated
          */
-        EDataType SCRIPT = eINSTANCE.getScript();
+        EClass DATE_TYPE = eINSTANCE.getDateType();
+
+        /**
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.TimestampTypeImpl <em>Timestamp Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TimestampTypeImpl
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getTimestampType()
+         * @generated
+         */
+        EClass TIMESTAMP_TYPE = eINSTANCE.getTimestampType();
 
         /**
          * The meta object literal for the '<em>Reg Exp</em>' data type.
@@ -1320,6 +1224,26 @@ public interface TypePackage extends EPackage {
          * @generated
          */
         EDataType REG_EXP = eINSTANCE.getRegExp();
+
+        /**
+         * The meta object literal for the '<em>Xml Namespace</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.lang.String
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXmlNamespace()
+         * @generated
+         */
+        EDataType XML_NAMESPACE = eINSTANCE.getXmlNamespace();
+
+        /**
+         * The meta object literal for the '<em>Xml Element</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.lang.String
+         * @see hu.blackbelt.judo.meta.psm.type.impl.TypePackageImpl#getXmlElement()
+         * @generated
+         */
+        EDataType XML_ELEMENT = eINSTANCE.getXmlElement();
 
     }
 

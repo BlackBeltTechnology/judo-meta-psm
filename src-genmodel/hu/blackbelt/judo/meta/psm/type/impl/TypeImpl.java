@@ -2,7 +2,7 @@
  */
 package hu.blackbelt.judo.meta.psm.type.impl;
 
-import hu.blackbelt.judo.meta.psm.namespace.impl.NamedElementImpl;
+import hu.blackbelt.judo.meta.psm.namespace.impl.NamespaceElementImpl;
 
 import hu.blackbelt.judo.meta.psm.type.Type;
 import hu.blackbelt.judo.meta.psm.type.TypePackage;
@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class TypeImpl extends NamedElementImpl implements Type {
+public abstract class TypeImpl extends NamespaceElementImpl implements Type {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

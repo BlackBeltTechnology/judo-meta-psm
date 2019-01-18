@@ -5,14 +5,9 @@ package hu.blackbelt.judo.meta.psm.data.impl;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.DataPackage;
 
-import hu.blackbelt.judo.meta.psm.namespace.impl.NamedElementImpl;
-
-import hu.blackbelt.judo.meta.psm.type.DataType;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
@@ -26,12 +21,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl#isRequired <em>Required</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl#isIdentifier <em>Identifier</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl#getDataType <em>Data Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class AttributeImpl extends NamedElementImpl implements Attribute {
+public class AttributeImpl extends PrimitiveTypedElementImpl implements Attribute {
     /**
      * The default value of the '{@link #isRequired() <em>Required</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -71,16 +65,6 @@ public class AttributeImpl extends NamedElementImpl implements Attribute {
      * @ordered
      */
     protected boolean identifier = IDENTIFIER_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getDataType() <em>Data Type</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getDataType()
-     * @generated
-     * @ordered
-     */
-    protected DataType dataType;
 
     /**
      * <!-- begin-user-doc -->
@@ -148,44 +132,6 @@ public class AttributeImpl extends NamedElementImpl implements Attribute {
      * <!-- end-user-doc -->
      * @generated
      */
-    public DataType getDataType() {
-        if (dataType != null && dataType.eIsProxy()) {
-            InternalEObject oldDataType = (InternalEObject)dataType;
-            dataType = (DataType)eResolveProxy(oldDataType);
-            if (dataType != oldDataType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, DataPackage.ATTRIBUTE__DATA_TYPE, oldDataType, dataType));
-            }
-        }
-        return dataType;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public DataType basicGetDataType() {
-        return dataType;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setDataType(DataType newDataType) {
-        DataType oldDataType = dataType;
-        dataType = newDataType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, DataPackage.ATTRIBUTE__DATA_TYPE, oldDataType, dataType));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -193,9 +139,6 @@ public class AttributeImpl extends NamedElementImpl implements Attribute {
                 return isRequired();
             case DataPackage.ATTRIBUTE__IDENTIFIER:
                 return isIdentifier();
-            case DataPackage.ATTRIBUTE__DATA_TYPE:
-                if (resolve) return getDataType();
-                return basicGetDataType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -213,9 +156,6 @@ public class AttributeImpl extends NamedElementImpl implements Attribute {
                 return;
             case DataPackage.ATTRIBUTE__IDENTIFIER:
                 setIdentifier((Boolean)newValue);
-                return;
-            case DataPackage.ATTRIBUTE__DATA_TYPE:
-                setDataType((DataType)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -235,9 +175,6 @@ public class AttributeImpl extends NamedElementImpl implements Attribute {
             case DataPackage.ATTRIBUTE__IDENTIFIER:
                 setIdentifier(IDENTIFIER_EDEFAULT);
                 return;
-            case DataPackage.ATTRIBUTE__DATA_TYPE:
-                setDataType((DataType)null);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -254,8 +191,6 @@ public class AttributeImpl extends NamedElementImpl implements Attribute {
                 return required != REQUIRED_EDEFAULT;
             case DataPackage.ATTRIBUTE__IDENTIFIER:
                 return identifier != IDENTIFIER_EDEFAULT;
-            case DataPackage.ATTRIBUTE__DATA_TYPE:
-                return dataType != null;
         }
         return super.eIsSet(featureID);
     }

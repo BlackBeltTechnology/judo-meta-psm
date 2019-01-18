@@ -19,7 +19,7 @@ package hu.blackbelt.judo.meta.psm.data;
  * @model
  * @generated
  */
-public interface Endpoint extends Reference {
+public interface Endpoint extends Relation {
     /**
      * Returns the value of the '<em><b>Partner</b></em>' reference.
      * <!-- begin-user-doc -->

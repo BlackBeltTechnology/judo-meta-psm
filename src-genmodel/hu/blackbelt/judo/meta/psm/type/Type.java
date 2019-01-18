@@ -2,7 +2,7 @@
  */
 package hu.blackbelt.judo.meta.psm.type;
 
-import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,5 +14,5 @@ import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
  * @model abstract="true"
  * @generated
  */
-public interface Type extends NamedElement {
+public interface Type extends NamespaceElement {
 } // Type

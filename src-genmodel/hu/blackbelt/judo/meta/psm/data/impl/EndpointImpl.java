@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class EndpointImpl extends ReferenceImpl implements Endpoint {
+public class EndpointImpl extends RelationImpl implements Endpoint {
     /**
      * The cached value of the '{@link #getPartner() <em>Partner</em>}' reference.
      * <!-- begin-user-doc -->

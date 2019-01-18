@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ContainmentImpl extends ReferenceImpl implements Containment {
+public class ContainmentImpl extends RelationImpl implements Containment {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
