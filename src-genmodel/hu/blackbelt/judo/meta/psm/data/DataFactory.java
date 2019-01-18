@@ -40,15 +40,6 @@ public interface DataFactory extends EFactory {
     Attribute createAttribute();
 
     /**
-     * Returns a new object of class '<em>Containment</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Containment</em>'.
-     * @generated
-     */
-    Containment createContainment();
-
-    /**
      * Returns a new object of class '<em>Endpoint</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -58,13 +49,22 @@ public interface DataFactory extends EFactory {
     Endpoint createEndpoint();
 
     /**
-     * Returns a new object of class '<em>Reference Count Constraint</em>'.
+     * Returns a new object of class '<em>Relation Count Constraint</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Reference Count Constraint</em>'.
+     * @return a new object of class '<em>Relation Count Constraint</em>'.
      * @generated
      */
-    ReferenceCountConstraint createReferenceCountConstraint();
+    RelationCountConstraint createRelationCountConstraint();
+
+    /**
+     * Returns a new object of class '<em>Containment</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Containment</em>'.
+     * @generated
+     */
+    Containment createContainment();
 
     /**
      * Returns the package supported by this factory.

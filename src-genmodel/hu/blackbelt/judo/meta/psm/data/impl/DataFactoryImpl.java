@@ -58,9 +58,9 @@ public class DataFactoryImpl extends EFactoryImpl implements DataFactory {
         switch (eClass.getClassifierID()) {
             case DataPackage.ENTITY_TYPE: return createEntityType();
             case DataPackage.ATTRIBUTE: return createAttribute();
-            case DataPackage.CONTAINMENT: return createContainment();
             case DataPackage.ENDPOINT: return createEndpoint();
-            case DataPackage.REFERENCE_COUNT_CONSTRAINT: return createReferenceCountConstraint();
+            case DataPackage.RELATION_COUNT_CONSTRAINT: return createRelationCountConstraint();
+            case DataPackage.CONTAINMENT: return createContainment();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -91,16 +91,6 @@ public class DataFactoryImpl extends EFactoryImpl implements DataFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public Containment createContainment() {
-        ContainmentImpl containment = new ContainmentImpl();
-        return containment;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public Endpoint createEndpoint() {
         EndpointImpl endpoint = new EndpointImpl();
         return endpoint;
@@ -111,9 +101,19 @@ public class DataFactoryImpl extends EFactoryImpl implements DataFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public ReferenceCountConstraint createReferenceCountConstraint() {
-        ReferenceCountConstraintImpl referenceCountConstraint = new ReferenceCountConstraintImpl();
-        return referenceCountConstraint;
+    public RelationCountConstraint createRelationCountConstraint() {
+        RelationCountConstraintImpl relationCountConstraint = new RelationCountConstraintImpl();
+        return relationCountConstraint;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Containment createContainment() {
+        ContainmentImpl containment = new ContainmentImpl();
+        return containment;
     }
 
     /**

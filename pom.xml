@@ -329,15 +329,20 @@
             <artifactId>lombok</artifactId>
             <version>1.18.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.3.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <epsilon.maven.plugin.version>1.1.2_feature__5_UpdateEpsilon_1_5_1-36</epsilon.maven.plugin.version>
-        <judo.expression.version>1.0.0-develop-50</judo.expression.version>
+        <epsilon.maven.plugin.version>1.1.2</epsilon.maven.plugin.version>
+        <judo.expression.version>1.0.0-develop-51</judo.expression.version>
 
         <src.dir>src/main</src.dir>
     </properties>

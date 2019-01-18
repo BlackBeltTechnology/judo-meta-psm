@@ -22,85 +22,67 @@ public interface TypeFactory extends EFactory {
     TypeFactory eINSTANCE = hu.blackbelt.judo.meta.psm.type.impl.TypeFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>Custom</em>'.
+     * Returns a new object of class '<em>Custom Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Custom</em>'.
+     * @return a new object of class '<em>Custom Type</em>'.
      * @generated
      */
-    Custom createCustom();
+    CustomType createCustomType();
 
     /**
-     * Returns a new object of class '<em>String</em>'.
+     * Returns a new object of class '<em>String Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>String</em>'.
+     * @return a new object of class '<em>String Type</em>'.
      * @generated
      */
-    String createString();
+    StringType createStringType();
 
     /**
-     * Returns a new object of class '<em>Numeric</em>'.
+     * Returns a new object of class '<em>Numeric Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Numeric</em>'.
+     * @return a new object of class '<em>Numeric Type</em>'.
      * @generated
      */
-    Numeric createNumeric();
+    NumericType createNumericType();
 
     /**
-     * Returns a new object of class '<em>Boolean</em>'.
+     * Returns a new object of class '<em>Boolean Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Boolean</em>'.
+     * @return a new object of class '<em>Boolean Type</em>'.
      * @generated
      */
-    Boolean createBoolean();
+    BooleanType createBooleanType();
 
     /**
-     * Returns a new object of class '<em>Enumeration</em>'.
+     * Returns a new object of class '<em>Enumeration Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Enumeration</em>'.
+     * @return a new object of class '<em>Enumeration Type</em>'.
      * @generated
      */
-    Enumeration createEnumeration();
+    EnumerationType createEnumerationType();
 
     /**
-     * Returns a new object of class '<em>Member</em>'.
+     * Returns a new object of class '<em>Enumeration Member</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Member</em>'.
+     * @return a new object of class '<em>Enumeration Member</em>'.
      * @generated
      */
-    Member createMember();
+    EnumerationMember createEnumerationMember();
 
     /**
-     * Returns a new object of class '<em>XML</em>'.
+     * Returns a new object of class '<em>XML Type</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>XML</em>'.
+     * @return a new object of class '<em>XML Type</em>'.
      * @generated
      */
-    XML createXML();
-
-    /**
-     * Returns a new object of class '<em>Complex Type</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Complex Type</em>'.
-     * @generated
-     */
-    ComplexType createComplexType();
-
-    /**
-     * Returns a new object of class '<em>Element</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Element</em>'.
-     * @generated
-     */
-    Element createElement();
+    XMLType createXMLType();
 
     /**
      * Returns a new object of class '<em>Cardinality</em>'.
@@ -110,6 +92,33 @@ public interface TypeFactory extends EFactory {
      * @generated
      */
     Cardinality createCardinality();
+
+    /**
+     * Returns a new object of class '<em>Password Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Password Type</em>'.
+     * @generated
+     */
+    PasswordType createPasswordType();
+
+    /**
+     * Returns a new object of class '<em>Date Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Date Type</em>'.
+     * @generated
+     */
+    DateType createDateType();
+
+    /**
+     * Returns a new object of class '<em>Timestamp Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Timestamp Type</em>'.
+     * @generated
+     */
+    TimestampType createTimestampType();
 
     /**
      * Returns the package supported by this factory.

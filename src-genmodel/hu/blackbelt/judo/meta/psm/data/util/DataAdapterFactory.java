@@ -5,6 +5,7 @@ package hu.blackbelt.judo.meta.psm.data.util;
 import hu.blackbelt.judo.meta.psm.data.*;
 
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 
 import hu.blackbelt.judo.meta.psm.type.Type;
 
@@ -76,28 +77,40 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
                 return createEntityTypeAdapter();
             }
             @Override
-            public Adapter caseReference(Reference object) {
-                return createReferenceAdapter();
+            public Adapter caseRelation(Relation object) {
+                return createRelationAdapter();
             }
             @Override
             public Adapter caseAttribute(Attribute object) {
                 return createAttributeAdapter();
             }
             @Override
-            public Adapter caseContainment(Containment object) {
-                return createContainmentAdapter();
-            }
-            @Override
             public Adapter caseEndpoint(Endpoint object) {
                 return createEndpointAdapter();
             }
             @Override
-            public Adapter caseReferenceCountConstraint(ReferenceCountConstraint object) {
-                return createReferenceCountConstraintAdapter();
+            public Adapter caseRelationCountConstraint(RelationCountConstraint object) {
+                return createRelationCountConstraintAdapter();
+            }
+            @Override
+            public Adapter caseReferenceTypedElement(ReferenceTypedElement object) {
+                return createReferenceTypedElementAdapter();
+            }
+            @Override
+            public Adapter casePrimitiveTypedElement(PrimitiveTypedElement object) {
+                return createPrimitiveTypedElementAdapter();
+            }
+            @Override
+            public Adapter caseContainment(Containment object) {
+                return createContainmentAdapter();
             }
             @Override
             public Adapter caseNamedElement(NamedElement object) {
                 return createNamedElementAdapter();
+            }
+            @Override
+            public Adapter caseNamespaceElement(NamespaceElement object) {
+                return createNamespaceElementAdapter();
             }
             @Override
             public Adapter caseType(Type object) {
@@ -138,16 +151,16 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.Reference <em>Reference</em>}'.
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.Relation <em>Relation</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see hu.blackbelt.judo.meta.psm.data.Reference
+     * @see hu.blackbelt.judo.meta.psm.data.Relation
      * @generated
      */
-    public Adapter createReferenceAdapter() {
+    public Adapter createRelationAdapter() {
         return null;
     }
 
@@ -166,20 +179,6 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.Containment <em>Containment</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see hu.blackbelt.judo.meta.psm.data.Containment
-     * @generated
-     */
-    public Adapter createContainmentAdapter() {
-        return null;
-    }
-
-    /**
      * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.Endpoint <em>Endpoint</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
@@ -194,16 +193,58 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint <em>Reference Count Constraint</em>}'.
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.RelationCountConstraint <em>Relation Count Constraint</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint
+     * @see hu.blackbelt.judo.meta.psm.data.RelationCountConstraint
      * @generated
      */
-    public Adapter createReferenceCountConstraintAdapter() {
+    public Adapter createRelationCountConstraintAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement <em>Reference Typed Element</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement
+     * @generated
+     */
+    public Adapter createReferenceTypedElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement <em>Primitive Typed Element</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement
+     * @generated
+     */
+    public Adapter createPrimitiveTypedElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.data.Containment <em>Containment</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.data.Containment
+     * @generated
+     */
+    public Adapter createContainmentAdapter() {
         return null;
     }
 
@@ -218,6 +259,20 @@ public class DataAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createNamedElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.namespace.NamespaceElement <em>Element</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.namespace.NamespaceElement
+     * @generated
+     */
+    public Adapter createNamespaceElementAdapter() {
         return null;
     }
 
