@@ -18,6 +18,9 @@
             <objectExpression xsi:type="const:Instance" xmi:id="_b09XEhoqEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
           </expression>
         </getterExpression>
+        <setterExpression xsi:type="str:StringAttribute" attributeName="name">
+          <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+        </setterExpression>
       </dataProperties>
       <dataProperties xmi:id="_iHo2EBoqEemBk_7NVlpPvQ" name="neighbourRoom" dataType="_a21UMBolEemlcrqtQk4dUg">
         <getterExpression xsi:type="n:IntegerAritmeticExpression" xmi:id="_pLNmgBoqEemBk_7NVlpPvQ">
@@ -26,6 +29,9 @@
           </left>
           <right xsi:type="const:Integer" xmi:id="_tUNcMBoqEemBk_7NVlpPvQ" value="1"/>
         </getterExpression>
+        <setterExpression xsi:type="n:IntegerAttribute" attributeName="roomNumber">
+          <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+        </setterExpression>
       </dataProperties>
       <dataProperties xmi:id="_2K8zYBoqEemBk_7NVlpPvQ" name="area" dataType="_Y0uSgBolEemlcrqtQk4dUg">
         <getterExpression xsi:type="n:DecimalAritmeticExpression" xmi:id="_-NMykBoqEemBk_7NVlpPvQ" operator="*">
@@ -39,6 +45,9 @@
           </left>
           <right xsi:type="const:Decimal" xmi:id="_IlrpUBorEemBk_7NVlpPvQ" value="3.1415"/>
         </getterExpression>
+        <setterExpression xsi:type="n:DecimalAttribute" attributeName="radius">
+          <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+        </setterExpression>
       </dataProperties>
       <dataProperties xmi:id="_oHRAwBorEemBk_7NVlpPvQ" name="internal" dataType="_a21UMBolEemlcrqtQk4dUg">
         <getterExpression xsi:type="l:NegationExpression" xmi:id="_vDOGQBorEemBk_7NVlpPvQ">
@@ -46,6 +55,9 @@
             <objectExpression xsi:type="const:Instance" xmi:id="_2JLcUBorEemBk_7NVlpPvQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
           </expression>
         </getterExpression>
+	<setterExpression xsi:type="l:LogicalAttribute" attributeName="external">
+          <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+        </setterExpression>
       </dataProperties>
       <dataProperties xmi:id="_4wYSoBosEemBk_7NVlpPvQ" name="direction" dataType="_a21UMBolEemlcrqtQk4dUg">
         <getterExpression xsi:type="enum:EnumerationSwitchExpression" xmi:id="_B7un4BotEemBk_7NVlpPvQ" elementName="_NER6kBo2Eem3_KR63rlRLw">
@@ -75,6 +87,11 @@
             <objectExpression xsi:type="const:Instance" xmi:id="_le3_MBpMEemilpTnHr2nsQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
           </objectExpression>
         </getterExpression>
+        <setterExpression xsi:type="cust:CustomAttribute" attributeName="beginTimestamp">
+          <objectExpression xsi:type="o:ObjectNavigationExpression" referenceName="f">
+            <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+          </objectExpression>
+        </setterExpression>
       </dataProperties>
       <dataProperties xmi:id="_BTxyEBpkEemucrqRoCHYIQ" name="place" dataType="_hGIvEBolEemlcrqtQk4dUg">
         <getterExpression xsi:type="cust:CustomAttribute" xmi:id="_D1Ml8BpkEemucrqRoCHYIQ" attributeName="location">
@@ -82,6 +99,11 @@
             <objectExpression xsi:type="const:Instance" xmi:id="_E2wwoBpkEemucrqRoCHYIQ" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
           </objectExpression>
         </getterExpression>
+        <setterExpression xsi:type="cust:CustomAttribute" attributeName="location">
+          <objectExpression xsi:type="o:ObjectNavigationExpression" referenceName="f">
+            <objectExpression xsi:type="const:Instance" elementName="_UM5xEBmcEemlcrqtQk4dUg"/>
+          </objectExpression>
+        </setterExpression>
       </dataProperties>
     </elements>
     <elements xsi:type="type:StringType" xmi:id="_VXLy4BmcEemlcrqtQk4dUg" name="String" maxLength="255"/>

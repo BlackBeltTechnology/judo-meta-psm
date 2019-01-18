@@ -45,8 +45,13 @@
                 <expectedError>DataPropertyGetterTypeIsDecimal|Getter expression of derived attribute E.internal is not decimal: NOT(M::E instance.external)</expectedError>
                 <expectedError>DataPropertyGetterTypeIsDecimal|Getter expression of derived attribute E.direction is not decimal: (case when M::E instance.country == 'RO' then 'east'  when M::E instance.country == 'SK' then 'north')</expectedError>
                 <expectedError>CustomDataPropertyGetterTypeIsValid|Getter expression of derived attribute E.place has invalid custom data type: M::E instance->f.location</expectedError>
-                <expectedError>DataPropertyGetterTypeIsValid|Getter expression of derived attribute E.begin is not valid</expectedError>
                 <expectedError>DataPropertyGetterTypeIsString|Getter expression of derived attribute E.begin is not string: M::E instance->f.beginTimestamp</expectedError>
+                <expectedError>DataPropertySetterTypeIsBoolean|Setter expression of derived attribute E.lowerName is not boolean: M::E instance.name</expectedError>
+                <expectedError>DataPropertySetterTypeIsDecimal|Setter expression of derived attribute E.neighbourRoom is not decimal: M::E instance.roomNumber</expectedError>
+                <expectedError>DataPropertySetterTypeIsInteger|Setter expression of derived attribute E.area is not integer: M::E instance.radius</expectedError>
+                <expectedError>DataPropertySetterTypeIsDecimal|Setter expression of derived attribute E.internal is not decimal: M::E instance.external</expectedError>
+                <expectedError>CustomDataPropertySetterTypeIsValid|Setter expression of derived attribute E.place has invalid custom data type: M::E instance->f.location</expectedError>
+                <expectedError>DataPropertySetterTypeIsString|Setter expression of derived attribute E.begin is not string: M::E instance->f.beginTimestamp</expectedError>
             </expectedErrors>
         </Evl>
     </eolPrograms>
