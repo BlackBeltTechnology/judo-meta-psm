@@ -5,6 +5,7 @@ package hu.blackbelt.judo.meta.psm.namespace.util;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
 
 import org.eclipse.emf.ecore.EObject;
@@ -98,6 +99,13 @@ public class NamespaceSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case NamespacePackage.NAMESPACE_ELEMENT: {
+                NamespaceElement namespaceElement = (NamespaceElement)theEObject;
+                T result = caseNamespaceElement(namespaceElement);
+                if (result == null) result = caseNamedElement(namespaceElement);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -159,6 +167,21 @@ public class NamespaceSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePackage(hu.blackbelt.judo.meta.psm.namespace.Package object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNamespaceElement(NamespaceElement object) {
         return null;
     }
 

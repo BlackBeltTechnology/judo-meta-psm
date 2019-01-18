@@ -5,6 +5,7 @@ package hu.blackbelt.judo.meta.psm.data.util;
 import hu.blackbelt.judo.meta.psm.data.*;
 
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 
 import hu.blackbelt.judo.meta.psm.type.Type;
 
@@ -74,43 +75,63 @@ public class DataSwitch<T> extends Switch<T> {
                 EntityType entityType = (EntityType)theEObject;
                 T result = caseEntityType(entityType);
                 if (result == null) result = caseType(entityType);
+                if (result == null) result = caseNamespaceElement(entityType);
                 if (result == null) result = caseNamedElement(entityType);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case DataPackage.REFERENCE: {
-                Reference reference = (Reference)theEObject;
-                T result = caseReference(reference);
-                if (result == null) result = caseNamedElement(reference);
+            case DataPackage.RELATION: {
+                Relation relation = (Relation)theEObject;
+                T result = caseRelation(relation);
+                if (result == null) result = caseReferenceTypedElement(relation);
+                if (result == null) result = caseNamedElement(relation);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case DataPackage.ATTRIBUTE: {
                 Attribute attribute = (Attribute)theEObject;
                 T result = caseAttribute(attribute);
+                if (result == null) result = casePrimitiveTypedElement(attribute);
                 if (result == null) result = caseNamedElement(attribute);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case DataPackage.CONTAINMENT: {
-                Containment containment = (Containment)theEObject;
-                T result = caseContainment(containment);
-                if (result == null) result = caseReference(containment);
-                if (result == null) result = caseNamedElement(containment);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case DataPackage.ENDPOINT: {
                 Endpoint endpoint = (Endpoint)theEObject;
                 T result = caseEndpoint(endpoint);
-                if (result == null) result = caseReference(endpoint);
+                if (result == null) result = caseRelation(endpoint);
+                if (result == null) result = caseReferenceTypedElement(endpoint);
                 if (result == null) result = caseNamedElement(endpoint);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case DataPackage.REFERENCE_COUNT_CONSTRAINT: {
-                ReferenceCountConstraint referenceCountConstraint = (ReferenceCountConstraint)theEObject;
-                T result = caseReferenceCountConstraint(referenceCountConstraint);
+            case DataPackage.RELATION_COUNT_CONSTRAINT: {
+                RelationCountConstraint relationCountConstraint = (RelationCountConstraint)theEObject;
+                T result = caseRelationCountConstraint(relationCountConstraint);
+                if (result == null) result = caseNamedElement(relationCountConstraint);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case DataPackage.REFERENCE_TYPED_ELEMENT: {
+                ReferenceTypedElement referenceTypedElement = (ReferenceTypedElement)theEObject;
+                T result = caseReferenceTypedElement(referenceTypedElement);
+                if (result == null) result = caseNamedElement(referenceTypedElement);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case DataPackage.PRIMITIVE_TYPED_ELEMENT: {
+                PrimitiveTypedElement primitiveTypedElement = (PrimitiveTypedElement)theEObject;
+                T result = casePrimitiveTypedElement(primitiveTypedElement);
+                if (result == null) result = caseNamedElement(primitiveTypedElement);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case DataPackage.CONTAINMENT: {
+                Containment containment = (Containment)theEObject;
+                T result = caseContainment(containment);
+                if (result == null) result = caseRelation(containment);
+                if (result == null) result = caseReferenceTypedElement(containment);
+                if (result == null) result = caseNamedElement(containment);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -134,17 +155,17 @@ public class DataSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Reference</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Relation</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Reference</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Relation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseReference(Reference object) {
+    public T caseRelation(Relation object) {
         return null;
     }
 
@@ -164,21 +185,6 @@ public class DataSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Containment</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Containment</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseContainment(Containment object) {
-        return null;
-    }
-
-    /**
      * Returns the result of interpreting the object as an instance of '<em>Endpoint</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -194,17 +200,62 @@ public class DataSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Reference Count Constraint</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Relation Count Constraint</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Reference Count Constraint</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Relation Count Constraint</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseReferenceCountConstraint(ReferenceCountConstraint object) {
+    public T caseRelationCountConstraint(RelationCountConstraint object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Reference Typed Element</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Reference Typed Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseReferenceTypedElement(ReferenceTypedElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Primitive Typed Element</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Primitive Typed Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePrimitiveTypedElement(PrimitiveTypedElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Containment</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Containment</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseContainment(Containment object) {
         return null;
     }
 
@@ -220,6 +271,21 @@ public class DataSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNamedElement(NamedElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNamespaceElement(NamespaceElement object) {
         return null;
     }
 

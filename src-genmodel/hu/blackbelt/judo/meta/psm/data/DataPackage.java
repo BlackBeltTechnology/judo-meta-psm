@@ -80,31 +80,13 @@ public interface DataPackage extends EPackage {
     int ENTITY_TYPE__NAME = TypePackage.TYPE__NAME;
 
     /**
-     * The feature id for the '<em><b>Reference Count Constraints</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS = TypePackage.TYPE_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Super Entity Types</b></em>' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE__SUPER_ENTITY_TYPES = TypePackage.TYPE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>References</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ENTITY_TYPE__REFERENCES = TypePackage.TYPE_FEATURE_COUNT + 2;
+    int ENTITY_TYPE__SUPER_ENTITY_TYPES = TypePackage.TYPE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Abstract</b></em>' attribute.
@@ -113,7 +95,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE__ABSTRACT = TypePackage.TYPE_FEATURE_COUNT + 3;
+    int ENTITY_TYPE__ABSTRACT = TypePackage.TYPE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -122,7 +104,52 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE__ATTRIBUTES = TypePackage.TYPE_FEATURE_COUNT + 4;
+    int ENTITY_TYPE__ATTRIBUTES = TypePackage.TYPE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Relations</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENTITY_TYPE__RELATIONS = TypePackage.TYPE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Relation Count Constraints</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENTITY_TYPE__RELATION_COUNT_CONSTRAINTS = TypePackage.TYPE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Data Properties</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENTITY_TYPE__DATA_PROPERTIES = TypePackage.TYPE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Navigation Properties</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENTITY_TYPE__NAVIGATION_PROPERTIES = TypePackage.TYPE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Operations</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENTITY_TYPE__OPERATIONS = TypePackage.TYPE_FEATURE_COUNT + 7;
 
     /**
      * The number of structural features of the '<em>Entity Type</em>' class.
@@ -131,7 +158,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENTITY_TYPE_FEATURE_COUNT = TypePackage.TYPE_FEATURE_COUNT + 5;
+    int ENTITY_TYPE_FEATURE_COUNT = TypePackage.TYPE_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Entity Type</em>' class.
@@ -143,14 +170,14 @@ public interface DataPackage extends EPackage {
     int ENTITY_TYPE_OPERATION_COUNT = TypePackage.TYPE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl <em>Reference</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceTypedElementImpl <em>Reference Typed Element</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl
-     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReference()
+     * @see hu.blackbelt.judo.meta.psm.data.impl.ReferenceTypedElementImpl
+     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReferenceTypedElement()
      * @generated
      */
-    int REFERENCE = 1;
+    int REFERENCE_TYPED_ELEMENT = 5;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -159,7 +186,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
+    int REFERENCE_TYPED_ELEMENT__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
 
     /**
      * The feature id for the '<em><b>Target</b></em>' reference.
@@ -168,7 +195,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE__TARGET = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
+    int REFERENCE_TYPED_ELEMENT__TARGET = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
@@ -177,25 +204,135 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE__CARDINALITY = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int REFERENCE_TYPED_ELEMENT__CARDINALITY = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Reference</em>' class.
+     * The number of structural features of the '<em>Reference Typed Element</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REFERENCE_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int REFERENCE_TYPED_ELEMENT_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
-     * The number of operations of the '<em>Reference</em>' class.
+     * The number of operations of the '<em>Reference Typed Element</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REFERENCE_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
+    int REFERENCE_TYPED_ELEMENT_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.RelationImpl <em>Relation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see hu.blackbelt.judo.meta.psm.data.impl.RelationImpl
+     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getRelation()
+     * @generated
+     */
+    int RELATION = 1;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION__NAME = REFERENCE_TYPED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Target</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION__TARGET = REFERENCE_TYPED_ELEMENT__TARGET;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION__CARDINALITY = REFERENCE_TYPED_ELEMENT__CARDINALITY;
+
+    /**
+     * The feature id for the '<em><b>Cascade Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION__CASCADE_DELETE = REFERENCE_TYPED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Relation</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION_FEATURE_COUNT = REFERENCE_TYPED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Relation</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION_OPERATION_COUNT = REFERENCE_TYPED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.PrimitiveTypedElementImpl <em>Primitive Typed Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see hu.blackbelt.judo.meta.psm.data.impl.PrimitiveTypedElementImpl
+     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getPrimitiveTypedElement()
+     * @generated
+     */
+    int PRIMITIVE_TYPED_ELEMENT = 6;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_TYPED_ELEMENT__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Data Type</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_TYPED_ELEMENT__DATA_TYPE = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Primitive Typed Element</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_TYPED_ELEMENT_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Primitive Typed Element</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_TYPED_ELEMENT_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl <em>Attribute</em>}' class.
@@ -214,25 +351,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
-
-    /**
-     * The feature id for the '<em><b>Required</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ATTRIBUTE__REQUIRED = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Identifier</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int ATTRIBUTE__IDENTIFIER = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
+    int ATTRIBUTE__NAME = PRIMITIVE_TYPED_ELEMENT__NAME;
 
     /**
      * The feature id for the '<em><b>Data Type</b></em>' reference.
@@ -241,7 +360,25 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE__DATA_TYPE = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
+    int ATTRIBUTE__DATA_TYPE = PRIMITIVE_TYPED_ELEMENT__DATA_TYPE;
+
+    /**
+     * The feature id for the '<em><b>Required</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE__REQUIRED = PRIMITIVE_TYPED_ELEMENT_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Identifier</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ATTRIBUTE__IDENTIFIER = PRIMITIVE_TYPED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Attribute</em>' class.
@@ -250,7 +387,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int ATTRIBUTE_FEATURE_COUNT = PRIMITIVE_TYPED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Attribute</em>' class.
@@ -259,62 +396,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ATTRIBUTE_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl <em>Containment</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl
-     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getContainment()
-     * @generated
-     */
-    int CONTAINMENT = 3;
-
-    /**
-     * The feature id for the '<em><b>Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT__NAME = REFERENCE__NAME;
-
-    /**
-     * The feature id for the '<em><b>Target</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT__TARGET = REFERENCE__TARGET;
-
-    /**
-     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT__CARDINALITY = REFERENCE__CARDINALITY;
-
-    /**
-     * The number of structural features of the '<em>Containment</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT_FEATURE_COUNT = REFERENCE_FEATURE_COUNT + 0;
-
-    /**
-     * The number of operations of the '<em>Containment</em>' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int CONTAINMENT_OPERATION_COUNT = REFERENCE_OPERATION_COUNT + 0;
+    int ATTRIBUTE_OPERATION_COUNT = PRIMITIVE_TYPED_ELEMENT_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.EndpointImpl <em>Endpoint</em>}' class.
@@ -324,7 +406,7 @@ public interface DataPackage extends EPackage {
      * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getEndpoint()
      * @generated
      */
-    int ENDPOINT = 4;
+    int ENDPOINT = 3;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -333,7 +415,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENDPOINT__NAME = REFERENCE__NAME;
+    int ENDPOINT__NAME = RELATION__NAME;
 
     /**
      * The feature id for the '<em><b>Target</b></em>' reference.
@@ -342,7 +424,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENDPOINT__TARGET = REFERENCE__TARGET;
+    int ENDPOINT__TARGET = RELATION__TARGET;
 
     /**
      * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
@@ -351,7 +433,16 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENDPOINT__CARDINALITY = REFERENCE__CARDINALITY;
+    int ENDPOINT__CARDINALITY = RELATION__CARDINALITY;
+
+    /**
+     * The feature id for the '<em><b>Cascade Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ENDPOINT__CASCADE_DELETE = RELATION__CASCADE_DELETE;
 
     /**
      * The feature id for the '<em><b>Partner</b></em>' reference.
@@ -360,7 +451,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENDPOINT__PARTNER = REFERENCE_FEATURE_COUNT + 0;
+    int ENDPOINT__PARTNER = RELATION_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Endpoint</em>' class.
@@ -369,7 +460,7 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENDPOINT_FEATURE_COUNT = REFERENCE_FEATURE_COUNT + 1;
+    int ENDPOINT_FEATURE_COUNT = RELATION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Endpoint</em>' class.
@@ -378,26 +469,35 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ENDPOINT_OPERATION_COUNT = REFERENCE_OPERATION_COUNT + 0;
+    int ENDPOINT_OPERATION_COUNT = RELATION_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceCountConstraintImpl <em>Reference Count Constraint</em>}' class.
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.RelationCountConstraintImpl <em>Relation Count Constraint</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see hu.blackbelt.judo.meta.psm.data.impl.ReferenceCountConstraintImpl
-     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReferenceCountConstraint()
+     * @see hu.blackbelt.judo.meta.psm.data.impl.RelationCountConstraintImpl
+     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getRelationCountConstraint()
      * @generated
      */
-    int REFERENCE_COUNT_CONSTRAINT = 5;
+    int RELATION_COUNT_CONSTRAINT = 4;
 
     /**
-     * The feature id for the '<em><b>References</b></em>' reference list.
+     * The feature id for the '<em><b>Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT__REFERENCES = 0;
+    int RELATION_COUNT_CONSTRAINT__NAME = NamespacePackage.NAMED_ELEMENT__NAME;
+
+    /**
+     * The feature id for the '<em><b>Relations</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RELATION_COUNT_CONSTRAINT__RELATIONS = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
@@ -406,25 +506,89 @@ public interface DataPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT__CARDINALITY = 1;
+    int RELATION_COUNT_CONSTRAINT__CARDINALITY = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Reference Count Constraint</em>' class.
+     * The number of structural features of the '<em>Relation Count Constraint</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT_FEATURE_COUNT = 2;
+    int RELATION_COUNT_CONSTRAINT_FEATURE_COUNT = NamespacePackage.NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
-     * The number of operations of the '<em>Reference Count Constraint</em>' class.
+     * The number of operations of the '<em>Relation Count Constraint</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REFERENCE_COUNT_CONSTRAINT_OPERATION_COUNT = 0;
+    int RELATION_COUNT_CONSTRAINT_OPERATION_COUNT = NamespacePackage.NAMED_ELEMENT_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl <em>Containment</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl
+     * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getContainment()
+     * @generated
+     */
+    int CONTAINMENT = 7;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT__NAME = RELATION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Target</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT__TARGET = RELATION__TARGET;
+
+    /**
+     * The feature id for the '<em><b>Cardinality</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT__CARDINALITY = RELATION__CARDINALITY;
+
+    /**
+     * The feature id for the '<em><b>Cascade Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT__CASCADE_DELETE = RELATION__CASCADE_DELETE;
+
+    /**
+     * The number of structural features of the '<em>Containment</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT_FEATURE_COUNT = RELATION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Containment</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int CONTAINMENT_OPERATION_COUNT = RELATION_OPERATION_COUNT + 0;
 
 
     /**
@@ -438,17 +602,6 @@ public interface DataPackage extends EPackage {
     EClass getEntityType();
 
     /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints <em>Reference Count Constraints</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Reference Count Constraints</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getReferenceCountConstraints()
-     * @see #getEntityType()
-     * @generated
-     */
-    EReference getEntityType_ReferenceCountConstraints();
-
-    /**
      * Returns the meta object for the reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getSuperEntityTypes <em>Super Entity Types</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -458,17 +611,6 @@ public interface DataPackage extends EPackage {
      * @generated
      */
     EReference getEntityType_SuperEntityTypes();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getReferences <em>References</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>References</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getReferences()
-     * @see #getEntityType()
-     * @generated
-     */
-    EReference getEntityType_References();
 
     /**
      * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.data.EntityType#isAbstract <em>Abstract</em>}'.
@@ -493,36 +635,80 @@ public interface DataPackage extends EPackage {
     EReference getEntityType_Attributes();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Reference <em>Reference</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getRelations <em>Relations</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Reference</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Reference
+     * @return the meta object for the containment reference list '<em>Relations</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getRelations()
+     * @see #getEntityType()
      * @generated
      */
-    EClass getReference();
+    EReference getEntityType_Relations();
 
     /**
-     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.data.Reference#getTarget <em>Target</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getRelationCountConstraints <em>Relation Count Constraints</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Target</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Reference#getTarget()
-     * @see #getReference()
+     * @return the meta object for the containment reference list '<em>Relation Count Constraints</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getRelationCountConstraints()
+     * @see #getEntityType()
      * @generated
      */
-    EReference getReference_Target();
+    EReference getEntityType_RelationCountConstraints();
 
     /**
-     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.Reference#getCardinality <em>Cardinality</em>}'.
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getDataProperties <em>Data Properties</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Cardinality</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Reference#getCardinality()
-     * @see #getReference()
+     * @return the meta object for the containment reference list '<em>Data Properties</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getDataProperties()
+     * @see #getEntityType()
      * @generated
      */
-    EReference getReference_Cardinality();
+    EReference getEntityType_DataProperties();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getNavigationProperties <em>Navigation Properties</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Navigation Properties</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getNavigationProperties()
+     * @see #getEntityType()
+     * @generated
+     */
+    EReference getEntityType_NavigationProperties();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getOperations <em>Operations</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Operations</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.EntityType#getOperations()
+     * @see #getEntityType()
+     * @generated
+     */
+    EReference getEntityType_Operations();
+
+    /**
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Relation <em>Relation</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Relation</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.Relation
+     * @generated
+     */
+    EClass getRelation();
+
+    /**
+     * Returns the meta object for the attribute '{@link hu.blackbelt.judo.meta.psm.data.Relation#isCascadeDelete <em>Cascade Delete</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Cascade Delete</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.Relation#isCascadeDelete()
+     * @see #getRelation()
+     * @generated
+     */
+    EAttribute getRelation_CascadeDelete();
 
     /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Attribute <em>Attribute</em>}'.
@@ -557,27 +743,6 @@ public interface DataPackage extends EPackage {
     EAttribute getAttribute_Identifier();
 
     /**
-     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.data.Attribute#getDataType <em>Data Type</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the reference '<em>Data Type</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Attribute#getDataType()
-     * @see #getAttribute()
-     * @generated
-     */
-    EReference getAttribute_DataType();
-
-    /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Containment <em>Containment</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Containment</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.Containment
-     * @generated
-     */
-    EClass getContainment();
-
-    /**
      * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Endpoint <em>Endpoint</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -599,36 +764,99 @@ public interface DataPackage extends EPackage {
     EReference getEndpoint_Partner();
 
     /**
-     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint <em>Reference Count Constraint</em>}'.
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.RelationCountConstraint <em>Relation Count Constraint</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Reference Count Constraint</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint
+     * @return the meta object for class '<em>Relation Count Constraint</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.RelationCountConstraint
      * @generated
      */
-    EClass getReferenceCountConstraint();
+    EClass getRelationCountConstraint();
 
     /**
-     * Returns the meta object for the reference list '{@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint#getReferences <em>References</em>}'.
+     * Returns the meta object for the reference list '{@link hu.blackbelt.judo.meta.psm.data.RelationCountConstraint#getRelations <em>Relations</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the reference list '<em>References</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint#getReferences()
-     * @see #getReferenceCountConstraint()
+     * @return the meta object for the reference list '<em>Relations</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.RelationCountConstraint#getRelations()
+     * @see #getRelationCountConstraint()
      * @generated
      */
-    EReference getReferenceCountConstraint_References();
+    EReference getRelationCountConstraint_Relations();
 
     /**
-     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint#getCardinality <em>Cardinality</em>}'.
+     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.RelationCountConstraint#getCardinality <em>Cardinality</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the containment reference '<em>Cardinality</em>'.
-     * @see hu.blackbelt.judo.meta.psm.data.ReferenceCountConstraint#getCardinality()
-     * @see #getReferenceCountConstraint()
+     * @see hu.blackbelt.judo.meta.psm.data.RelationCountConstraint#getCardinality()
+     * @see #getRelationCountConstraint()
      * @generated
      */
-    EReference getReferenceCountConstraint_Cardinality();
+    EReference getRelationCountConstraint_Cardinality();
+
+    /**
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement <em>Reference Typed Element</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Reference Typed Element</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement
+     * @generated
+     */
+    EClass getReferenceTypedElement();
+
+    /**
+     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement#getTarget <em>Target</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Target</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement#getTarget()
+     * @see #getReferenceTypedElement()
+     * @generated
+     */
+    EReference getReferenceTypedElement_Target();
+
+    /**
+     * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement#getCardinality <em>Cardinality</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Cardinality</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement#getCardinality()
+     * @see #getReferenceTypedElement()
+     * @generated
+     */
+    EReference getReferenceTypedElement_Cardinality();
+
+    /**
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement <em>Primitive Typed Element</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Primitive Typed Element</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement
+     * @generated
+     */
+    EClass getPrimitiveTypedElement();
+
+    /**
+     * Returns the meta object for the reference '{@link hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement#getDataType <em>Data Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Data Type</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement#getDataType()
+     * @see #getPrimitiveTypedElement()
+     * @generated
+     */
+    EReference getPrimitiveTypedElement_DataType();
+
+    /**
+     * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Containment <em>Containment</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Containment</em>'.
+     * @see hu.blackbelt.judo.meta.psm.data.Containment
+     * @generated
+     */
+    EClass getContainment();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -664,28 +892,12 @@ public interface DataPackage extends EPackage {
         EClass ENTITY_TYPE = eINSTANCE.getEntityType();
 
         /**
-         * The meta object literal for the '<em><b>Reference Count Constraints</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ENTITY_TYPE__REFERENCE_COUNT_CONSTRAINTS = eINSTANCE.getEntityType_ReferenceCountConstraints();
-
-        /**
          * The meta object literal for the '<em><b>Super Entity Types</b></em>' reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
         EReference ENTITY_TYPE__SUPER_ENTITY_TYPES = eINSTANCE.getEntityType_SuperEntityTypes();
-
-        /**
-         * The meta object literal for the '<em><b>References</b></em>' containment reference list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ENTITY_TYPE__REFERENCES = eINSTANCE.getEntityType_References();
 
         /**
          * The meta object literal for the '<em><b>Abstract</b></em>' attribute feature.
@@ -704,30 +916,62 @@ public interface DataPackage extends EPackage {
         EReference ENTITY_TYPE__ATTRIBUTES = eINSTANCE.getEntityType_Attributes();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl <em>Reference</em>}' class.
+         * The meta object literal for the '<em><b>Relations</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.data.impl.ReferenceImpl
-         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReference()
          * @generated
          */
-        EClass REFERENCE = eINSTANCE.getReference();
+        EReference ENTITY_TYPE__RELATIONS = eINSTANCE.getEntityType_Relations();
 
         /**
-         * The meta object literal for the '<em><b>Target</b></em>' reference feature.
+         * The meta object literal for the '<em><b>Relation Count Constraints</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference REFERENCE__TARGET = eINSTANCE.getReference_Target();
+        EReference ENTITY_TYPE__RELATION_COUNT_CONSTRAINTS = eINSTANCE.getEntityType_RelationCountConstraints();
 
         /**
-         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Data Properties</b></em>' containment reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference REFERENCE__CARDINALITY = eINSTANCE.getReference_Cardinality();
+        EReference ENTITY_TYPE__DATA_PROPERTIES = eINSTANCE.getEntityType_DataProperties();
+
+        /**
+         * The meta object literal for the '<em><b>Navigation Properties</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ENTITY_TYPE__NAVIGATION_PROPERTIES = eINSTANCE.getEntityType_NavigationProperties();
+
+        /**
+         * The meta object literal for the '<em><b>Operations</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference ENTITY_TYPE__OPERATIONS = eINSTANCE.getEntityType_Operations();
+
+        /**
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.RelationImpl <em>Relation</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see hu.blackbelt.judo.meta.psm.data.impl.RelationImpl
+         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getRelation()
+         * @generated
+         */
+        EClass RELATION = eINSTANCE.getRelation();
+
+        /**
+         * The meta object literal for the '<em><b>Cascade Delete</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute RELATION__CASCADE_DELETE = eINSTANCE.getRelation_CascadeDelete();
 
         /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.AttributeImpl <em>Attribute</em>}' class.
@@ -756,24 +1000,6 @@ public interface DataPackage extends EPackage {
         EAttribute ATTRIBUTE__IDENTIFIER = eINSTANCE.getAttribute_Identifier();
 
         /**
-         * The meta object literal for the '<em><b>Data Type</b></em>' reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference ATTRIBUTE__DATA_TYPE = eINSTANCE.getAttribute_DataType();
-
-        /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl <em>Containment</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl
-         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getContainment()
-         * @generated
-         */
-        EClass CONTAINMENT = eINSTANCE.getContainment();
-
-        /**
          * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.EndpointImpl <em>Endpoint</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -792,22 +1018,22 @@ public interface DataPackage extends EPackage {
         EReference ENDPOINT__PARTNER = eINSTANCE.getEndpoint_Partner();
 
         /**
-         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceCountConstraintImpl <em>Reference Count Constraint</em>}' class.
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.RelationCountConstraintImpl <em>Relation Count Constraint</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see hu.blackbelt.judo.meta.psm.data.impl.ReferenceCountConstraintImpl
-         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReferenceCountConstraint()
+         * @see hu.blackbelt.judo.meta.psm.data.impl.RelationCountConstraintImpl
+         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getRelationCountConstraint()
          * @generated
          */
-        EClass REFERENCE_COUNT_CONSTRAINT = eINSTANCE.getReferenceCountConstraint();
+        EClass RELATION_COUNT_CONSTRAINT = eINSTANCE.getRelationCountConstraint();
 
         /**
-         * The meta object literal for the '<em><b>References</b></em>' reference list feature.
+         * The meta object literal for the '<em><b>Relations</b></em>' reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference REFERENCE_COUNT_CONSTRAINT__REFERENCES = eINSTANCE.getReferenceCountConstraint_References();
+        EReference RELATION_COUNT_CONSTRAINT__RELATIONS = eINSTANCE.getRelationCountConstraint_Relations();
 
         /**
          * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
@@ -815,7 +1041,61 @@ public interface DataPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference REFERENCE_COUNT_CONSTRAINT__CARDINALITY = eINSTANCE.getReferenceCountConstraint_Cardinality();
+        EReference RELATION_COUNT_CONSTRAINT__CARDINALITY = eINSTANCE.getRelationCountConstraint_Cardinality();
+
+        /**
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ReferenceTypedElementImpl <em>Reference Typed Element</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see hu.blackbelt.judo.meta.psm.data.impl.ReferenceTypedElementImpl
+         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getReferenceTypedElement()
+         * @generated
+         */
+        EClass REFERENCE_TYPED_ELEMENT = eINSTANCE.getReferenceTypedElement();
+
+        /**
+         * The meta object literal for the '<em><b>Target</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference REFERENCE_TYPED_ELEMENT__TARGET = eINSTANCE.getReferenceTypedElement_Target();
+
+        /**
+         * The meta object literal for the '<em><b>Cardinality</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference REFERENCE_TYPED_ELEMENT__CARDINALITY = eINSTANCE.getReferenceTypedElement_Cardinality();
+
+        /**
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.PrimitiveTypedElementImpl <em>Primitive Typed Element</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see hu.blackbelt.judo.meta.psm.data.impl.PrimitiveTypedElementImpl
+         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getPrimitiveTypedElement()
+         * @generated
+         */
+        EClass PRIMITIVE_TYPED_ELEMENT = eINSTANCE.getPrimitiveTypedElement();
+
+        /**
+         * The meta object literal for the '<em><b>Data Type</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference PRIMITIVE_TYPED_ELEMENT__DATA_TYPE = eINSTANCE.getPrimitiveTypedElement_DataType();
+
+        /**
+         * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl <em>Containment</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see hu.blackbelt.judo.meta.psm.data.impl.ContainmentImpl
+         * @see hu.blackbelt.judo.meta.psm.data.impl.DataPackageImpl#getContainment()
+         * @generated
+         */
+        EClass CONTAINMENT = eINSTANCE.getContainment();
 
     }
 

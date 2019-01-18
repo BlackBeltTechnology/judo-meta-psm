@@ -13,5 +13,5 @@ package hu.blackbelt.judo.meta.psm.data;
  * @model
  * @generated
  */
-public interface Containment extends Reference {
+public interface Containment extends Relation {
 } // Containment

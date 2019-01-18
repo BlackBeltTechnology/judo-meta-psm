@@ -5,6 +5,7 @@ package hu.blackbelt.judo.meta.psm.namespace.util;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
+import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -87,6 +88,10 @@ public class NamespaceAdapterFactory extends AdapterFactoryImpl {
                 return createPackageAdapter();
             }
             @Override
+            public Adapter caseNamespaceElement(NamespaceElement object) {
+                return createNamespaceElementAdapter();
+            }
+            @Override
             public Adapter defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -159,6 +164,20 @@ public class NamespaceAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPackageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link hu.blackbelt.judo.meta.psm.namespace.NamespaceElement <em>Element</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see hu.blackbelt.judo.meta.psm.namespace.NamespaceElement
+     * @generated
+     */
+    public Adapter createNamespaceElementAdapter() {
         return null;
     }
 
