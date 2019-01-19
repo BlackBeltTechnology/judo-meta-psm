@@ -394,4 +394,44 @@
           upperBound="-1" eType="#//authorization/AuthorizationResource"/>
     </eClassifiers>
   </eSubpackages>
+  <eSubpackages name="measure" nsURI="http://blackbelt.hu/judo/meta/psm/measure" nsPrefix="measure">
+    <eClassifiers xsi:type="ecore:EClass" name="Measure" eSuperTypes="#//namespace/NamespaceElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="units" upperBound="-1"
+          eType="#//measure/Unit" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MeasuredType" eSuperTypes="#//type/NumericType">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="measure" lowerBound="1"
+          eType="#//measure/Measure"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="storeUnit" lowerBound="1"
+          eType="#//measure/Unit"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Unit" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="conversionRate" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MeasureOperation" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="result" lowerBound="1"
+          eType="#//measure/Measure"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnaryMeasureOperation" eSuperTypes="#//measure/MeasureOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//measure/Measure"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1"
+          eType="#//measure/UnaryMeasureOperationType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BinaryMeasureOperation" eSuperTypes="#//measure/MeasureOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="y" lowerBound="1" eType="#//measure/Measure"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//measure/Measure"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1"
+          eType="#//measure/BinaryMeasureOperationType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="UnaryMeasureOperationType">
+      <eLiterals name="RECIPROCAL"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="BinaryMeasureOperationType">
+      <eLiterals name="MULTIPLICATION"/>
+      <eLiterals name="DIVISION" value="1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SecondBasedDurationMeasure" eSuperTypes="#//measure/Measure"/>
+    <eClassifiers xsi:type="ecore:EClass" name="YearBasedDurationMeasure" eSuperTypes="#//measure/Measure"/>
+  </eSubpackages>
 </ecore:EPackage>
