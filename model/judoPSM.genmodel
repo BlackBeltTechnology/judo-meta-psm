@@ -377,7 +377,8 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasuredType/storeUnit"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/Unit">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/conversionRate"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/multiplicationRate"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/divisionRate"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureOperation">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
