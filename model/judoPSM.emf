@@ -437,13 +437,15 @@ package measure {
   }
 
   class Unit extends namespace.NamedElement {
-    attr double[1] rate = "1";
+    attr double[1] rateDividend = "1";
+    attr double[1] rateDivisor = "1";
     attr String sign;
   }
 
   class MeasureDefinition {
     val MeasureDefinitionTerm[+] terms;
-    attr double[1] rate = "1";
+    attr double[1] rateDividend = "1";
+    attr double[1] rateDivisor = "1";
   }
 
   class MeasureDefinitionTerm {
