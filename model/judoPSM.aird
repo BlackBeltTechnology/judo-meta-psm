@@ -29616,16 +29616,6 @@
             <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
           </endLabelStyleDescription>
         </computedStyleDescriptions>
-        <computedStyleDescriptions xmi:type="style:EdgeStyleDescription" xmi:id="_FGS1cB1ZEemwg4NgOjaKeA" routingStyle="manhattan">
-          <strokeColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
-          <centerLabelStyleDescription xmi:type="style:CenterLabelStyleDescription" xmi:id="_FGS1cR1ZEemwg4NgOjaKeA" showIcon="false" labelExpression="service:render">
-            <labelFormat>bold</labelFormat>
-            <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
-          </centerLabelStyleDescription>
-          <endLabelStyleDescription xmi:type="style:EndLabelStyleDescription" xmi:id="_FGS1ch1ZEemwg4NgOjaKeA" labelSize="6" showIcon="false" labelExpression="service:eKeysLabel">
-            <labelColor xmi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
-          </endLabelStyleDescription>
-        </computedStyleDescriptions>
       </data>
     </ownedAnnotationEntries>
     <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_R4FJMBvVEemM5s8CBp0UNg" source="GMF_DIAGRAMS">
@@ -29745,22 +29735,6 @@
           <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xj7P6hvVEemM5s8CBp0UNg" id="(1.0,0.5)"/>
           <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_xj7P6xvVEemM5s8CBp0UNg" id="(0.0,0.5)"/>
         </edges>
-        <edges xmi:type="notation:Edge" xmi:id="_LH29IBvWEemM5s8CBp0UNg" type="4001" element="_LHl3YBvWEemM5s8CBp0UNg" source="_d6-6YBvVEemM5s8CBp0UNg" target="_Xa7twBvVEemM5s8CBp0UNg">
-          <children xmi:type="notation:Node" xmi:id="_LH3kMBvWEemM5s8CBp0UNg" type="6001">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LH3kMRvWEemM5s8CBp0UNg" x="7" y="-54"/>
-          </children>
-          <children xmi:type="notation:Node" xmi:id="_LH3kMhvWEemM5s8CBp0UNg" type="6002">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LH3kMxvWEemM5s8CBp0UNg" x="110" y="10"/>
-          </children>
-          <children xmi:type="notation:Node" xmi:id="_LH3kNBvWEemM5s8CBp0UNg" type="6003">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LH3kNRvWEemM5s8CBp0UNg" x="16" y="10"/>
-          </children>
-          <styles xmi:type="notation:ConnectorStyle" xmi:id="_LH29IRvWEemM5s8CBp0UNg" routing="Rectilinear"/>
-          <styles xmi:type="notation:FontStyle" xmi:id="_LH29IhvWEemM5s8CBp0UNg" fontColor="7490599" fontName="Sans" fontHeight="8"/>
-          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_LH29IxvWEemM5s8CBp0UNg" points="[0, -36, -223, 87]$[219, -36, -4, 87]$[219, -123, -4, 0]"/>
-          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_LH3kNhvWEemM5s8CBp0UNg" id="(1.0,0.6122448979591837)"/>
-          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_LH3kNxvWEemM5s8CBp0UNg" id="(0.5,1.0)"/>
-        </edges>
         <edges xmi:type="notation:Edge" xmi:id="_QIOfsBvWEemM5s8CBp0UNg" type="4001" element="_QIBrYBvWEemM5s8CBp0UNg" source="_d6-6YBvVEemM5s8CBp0UNg" target="_k0oSwBvVEemM5s8CBp0UNg">
           <children xmi:type="notation:Node" xmi:id="_QIPGwBvWEemM5s8CBp0UNg" type="6001">
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QIPGwRvWEemM5s8CBp0UNg" x="139" y="-107"/>
@@ -29843,7 +29817,7 @@
         </edges>
       </data>
     </ownedAnnotationEntries>
-    <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_XamWkBvVEemM5s8CBp0UNg" name="Measure" tooltipText="" outgoingEdges="_xjvCoBvVEemM5s8CBp0UNg _n8_8cBvWEemM5s8CBp0UNg" incomingEdges="_LHl3YBvWEemM5s8CBp0UNg" width="12" height="10">
+    <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_XamWkBvVEemM5s8CBp0UNg" name="Measure" tooltipText="" outgoingEdges="_xjvCoBvVEemM5s8CBp0UNg _n8_8cBvWEemM5s8CBp0UNg" width="12" height="10">
       <target xmi:type="ecore:EClass" href="judoPSM.ecore#//measure/Measure"/>
       <semanticElements xmi:type="ecore:EClass" href="judoPSM.ecore#//measure/Measure"/>
       <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -29862,7 +29836,7 @@
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EReferenceNode']"/>
       </ownedElements>
     </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_d6smgBvVEemM5s8CBp0UNg" name="MeasuredType" tooltipText="" outgoingEdges="_g0p2MBvVEemM5s8CBp0UNg _LHl3YBvWEemM5s8CBp0UNg _QIBrYBvWEemM5s8CBp0UNg" width="12" height="10">
+    <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_d6smgBvVEemM5s8CBp0UNg" name="MeasuredType" tooltipText="" outgoingEdges="_g0p2MBvVEemM5s8CBp0UNg _QIBrYBvWEemM5s8CBp0UNg" width="12" height="10">
       <target xmi:type="ecore:EClass" href="judoPSM.ecore#//measure/MeasuredType"/>
       <semanticElements xmi:type="ecore:EClass" href="judoPSM.ecore#//measure/MeasuredType"/>
       <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -29960,17 +29934,6 @@
         <endLabelStyle xmi:type="diagram:EndLabelStyle" xmi:id="_xjvCphvVEemM5s8CBp0UNg" showIcon="false" labelColor="39,76,114">
           <customFeatures>labelSize</customFeatures>
         </endLabelStyle>
-      </ownedStyle>
-      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
-    </ownedDiagramElements>
-    <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_LHl3YBvWEemM5s8CBp0UNg" name="[1..1] /measure" sourceNode="_d6smgBvVEemM5s8CBp0UNg" targetNode="_XamWkBvVEemM5s8CBp0UNg">
-      <target xmi:type="ecore:EReference" href="judoPSM.ecore#//measure/MeasuredType/measure"/>
-      <semanticElements xmi:type="ecore:EReference" href="judoPSM.ecore#//measure/MeasuredType/measure"/>
-      <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_FGTcgB1ZEemwg4NgOjaKeA" description="_FGS1cB1ZEemwg4NgOjaKeA" routingStyle="manhattan" strokeColor="114,159,207">
-        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_FGTcgR1ZEemwg4NgOjaKeA" showIcon="false" labelColor="39,76,114">
-          <labelFormat>bold</labelFormat>
-        </centerLabelStyle>
-        <endLabelStyle xmi:type="diagram:EndLabelStyle" xmi:id="_FGTcgh1ZEemwg4NgOjaKeA" labelSize="6" showIcon="false" labelColor="39,76,114"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC_EReference']"/>
     </ownedDiagramElements>

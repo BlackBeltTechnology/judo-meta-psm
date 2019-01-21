@@ -402,8 +402,6 @@
           eType="#//measure/MeasureDefinition" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MeasuredType" eSuperTypes="#//type/NumericType">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="measure" lowerBound="1"
-          eType="#//measure/Measure" transient="true" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="storeUnit" lowerBound="1"
           eType="#//measure/Unit"/>
     </eClassifiers>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://blackbelt.hu/judo/meta/expression/collection" xmlns:const="http://blackbelt.hu/judo/meta/expression/constant" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:measure="http://blackbelt.hu/judo/meta/psm/measure" xmlns:n="http://blackbelt.hu/judo/meta/expression/numeric" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:o="http://blackbelt.hu/judo/meta/expression/object">
+  <namespace:Model xmi:id="__kMkYB2QEemwg4NgOjaKeA" name="M">
+    <elements xsi:type="data:EntityType" xmi:id="_BfSioB2SEemwg4NgOjaKeA" name="Person">
+      <attributes xmi:id="_C9-HIB2SEemwg4NgOjaKeA" name="weight" dataType="_GTqQkB2SEemwg4NgOjaKeA"/>
+    </elements>
+    <elements xsi:type="measure:MeasuredType" xmi:id="_GTqQkB2SEemwg4NgOjaKeA" name="MassStoredInKg" precision="4" scale="15">
+      <storeUnit href="../../../model/judoPSM.model#_C8XYsB1SEemwg4NgOjaKeA"/>
+    </elements>
+    <elements xsi:type="measure:MeasuredType" xmi:id="_TptPMB2TEemwg4NgOjaKeA" name="MassStoredInQ" precision="4" scale="15">
+      <storeUnit href="../../../model/judoPSM.model#_EqUvUB1SEemwg4NgOjaKeA"/>
+    </elements>
+    <elements xsi:type="data:EntityType" xmi:id="_Z8eNwB2TEemwg4NgOjaKeA" name="Car">
+      <attributes xmi:id="_zsiSgB2TEemwg4NgOjaKeA" name="weight" dataType="_TptPMB2TEemwg4NgOjaKeA"/>
+      <relations xsi:type="data:Endpoint" xmi:id="_rZzAQB2TEemwg4NgOjaKeA" name="passangers" target="_BfSioB2SEemwg4NgOjaKeA">
+        <cardinality xmi:id="_uYMEAB2TEemwg4NgOjaKeA" upper="4"/>
+      </relations>
+      <relations xsi:type="data:Endpoint" xmi:id="_vmwv8B2TEemwg4NgOjaKeA" name="driver" target="_BfSioB2SEemwg4NgOjaKeA">
+        <cardinality xmi:id="_wESZcB2TEemwg4NgOjaKeA" lower="1"/>
+      </relations>
+      <dataProperties xmi:id="_5PkdQB2TEemwg4NgOjaKeA" name="totalWeight" dataType="_GTqQkB2SEemwg4NgOjaKeA">
+        <getterExpression xsi:type="n:DecimalAritmeticExpression" xmi:id="_Dlr8gB2UEemwg4NgOjaKeA">
+          <left xsi:type="n:DecimalAttribute" xmi:id="_E0ggEB2UEemwg4NgOjaKeA" attributeName="weight">
+            <objectExpression xsi:type="const:Instance" xmi:id="_GAmfwB2UEemwg4NgOjaKeA" elementName="_IhIGUB2VEemwg4NgOjaKeA"/>
+          </left>
+          <right xsi:type="n:DecimalAggregatedExpression" xmi:id="_KcCJQB2UEemwg4NgOjaKeA" operator="sum">
+            <collectionExpression xsi:type="c:CollectionNavigationFromObjectExpression" xmi:id="_Nyhj8B2UEemwg4NgOjaKeA" name="p" referenceName="passangers">
+              <objectExpression xsi:type="const:Instance" xmi:id="_Q5RScB2UEemwg4NgOjaKeA" elementName="_IhIGUB2VEemwg4NgOjaKeA"/>
+            </collectionExpression>
+            <expression xsi:type="n:DecimalAttribute" xmi:id="_R-IBsB2UEemwg4NgOjaKeA" attributeName="weight">
+              <objectExpression xsi:type="o:ObjectVariableReference" xmi:id="_T6dykB2UEemwg4NgOjaKeA" variable="_Nyhj8B2UEemwg4NgOjaKeA"/>
+            </expression>
+          </right>
+        </getterExpression>
+      </dataProperties>
+    </elements>
+  </namespace:Model>
+  <expr:ElementName xmi:id="_IhIGUB2VEemwg4NgOjaKeA" name="Car" namespace="M"/>
+</xmi:XMI>
