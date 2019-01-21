@@ -398,42 +398,53 @@
     <eClassifiers xsi:type="ecore:EClass" name="Measure" eSuperTypes="#//namespace/NamespaceElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="units" upperBound="-1"
           eType="#//measure/Unit" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" upperBound="-1"
+          eType="#//measure/MeasureDefinition" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MeasuredType" eSuperTypes="#//type/NumericType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="measure" lowerBound="1"
-          eType="#//measure/Measure"/>
+          eType="#//measure/Measure" transient="true" derived="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="storeUnit" lowerBound="1"
           eType="#//measure/Unit"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Unit" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplicationRate" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="divisionRate" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          defaultValueLiteral="1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="sign" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="MeasureOperation" abstract="true">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="result" lowerBound="1"
+    <eClassifiers xsi:type="ecore:EClass" name="MeasureDefinition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="terms" lowerBound="1"
+          upperBound="-1" eType="#//measure/MeasureDefinitionTerm" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          defaultValueLiteral="1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MeasureDefinitionTerm">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="exponent" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="measure" lowerBound="1"
           eType="#//measure/Measure"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnaryMeasureOperation" eSuperTypes="#//measure/MeasureOperation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//measure/Measure"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1"
-          eType="#//measure/UnaryMeasureOperationType"/>
+    <eClassifiers xsi:type="ecore:EEnum" name="SecondBasedDuration">
+      <eLiterals name="millisecond"/>
+      <eLiterals name="second" value="1"/>
+      <eLiterals name="minute" value="2"/>
+      <eLiterals name="hour" value="3"/>
+      <eLiterals name="day" value="4"/>
+      <eLiterals name="week" value="5"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BinaryMeasureOperation" eSuperTypes="#//measure/MeasureOperation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="y" lowerBound="1" eType="#//measure/Measure"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="x" lowerBound="1" eType="#//measure/Measure"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1"
-          eType="#//measure/BinaryMeasureOperationType"/>
+    <eClassifiers xsi:type="ecore:EEnum" name="MonthBasedDuration">
+      <eLiterals name="month"/>
+      <eLiterals name="year" value="1"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="UnaryMeasureOperationType">
-      <eLiterals name="RECIPROCAL"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SecondBasedDurationUnit" eSuperTypes="#//measure/Unit">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="durationType" lowerBound="1"
+          eType="#//measure/SecondBasedDuration"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="BinaryMeasureOperationType">
-      <eLiterals name="MULTIPLICATION"/>
-      <eLiterals name="DIVISION" value="1"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MonthBasedDurationUnit" eSuperTypes="#//measure/Unit">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="durationType" lowerBound="1"
+          eType="#//measure/MonthBasedDuration"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SecondBasedDurationMeasure" eSuperTypes="#//measure/Measure"/>
-    <eClassifiers xsi:type="ecore:EClass" name="YearBasedDurationMeasure" eSuperTypes="#//measure/Measure"/>
   </eSubpackages>
 </ecore:EPackage>

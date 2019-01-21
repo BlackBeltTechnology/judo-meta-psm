@@ -359,16 +359,23 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//authorization/AuthorizationResource/includedAuthorizationResources"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="NewPackage13" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//measure">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/UnaryMeasureOperationType">
-        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/UnaryMeasureOperationType/RECIPROCAL"/>
+    <nestedGenPackages prefix="Measure" resource="XMI" disposableProviderFactory="true"
+        extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//measure">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/SecondBasedDuration">
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SecondBasedDuration/millisecond"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SecondBasedDuration/second"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SecondBasedDuration/minute"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SecondBasedDuration/hour"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SecondBasedDuration/day"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SecondBasedDuration/week"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/BinaryMeasureOperationType">
-        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/BinaryMeasureOperationType/MULTIPLICATION"/>
-        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/BinaryMeasureOperationType/DIVISION"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/MonthBasedDuration">
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/MonthBasedDuration/month"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/MonthBasedDuration/year"/>
       </genEnums>
       <genClasses ecoreClass="judoPSM.ecore#//measure/Measure">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/Measure/units"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/Measure/definitions"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/MeasuredType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -377,27 +384,24 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasuredType/storeUnit"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/Unit">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/multiplicationRate"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/divisionRate"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/rate"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/sign"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureOperation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasureOperation/result"/>
+      <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureDefinition">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasureDefinition/terms"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/MeasureDefinition/rate"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/UnaryMeasureOperation">
+      <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureDefinitionTerm">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/MeasureDefinitionTerm/exponent"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/UnaryMeasureOperation/x"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/UnaryMeasureOperation/type"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasureDefinitionTerm/measure"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/BinaryMeasureOperation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/BinaryMeasureOperation/y"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/BinaryMeasureOperation/x"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/BinaryMeasureOperation/type"/>
+      <genClasses ecoreClass="judoPSM.ecore#//measure/SecondBasedDurationUnit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/SecondBasedDurationUnit/durationType"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/SecondBasedDurationMeasure"/>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/YearBasedDurationMeasure"/>
+      <genClasses ecoreClass="judoPSM.ecore#//measure/MonthBasedDurationUnit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/MonthBasedDurationUnit/durationType"/>
+      </genClasses>
     </nestedGenPackages>
   </genPackages>
   <genPackages prefix="Expression" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
