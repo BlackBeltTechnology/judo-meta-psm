@@ -2,82 +2,82 @@
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:measure="http://blackbelt.hu/judo/meta/psm/measure" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_WZpXEIRPEeipmMyz9cMCRA" name="Template">
   <packages xmi:id="_g0GS4B1REemwg4NgOjaKeA" name="measures">
     <elements xsi:type="measure:Measure" xmi:id="_oNT8IB1REemwg4NgOjaKeA" name="Mass">
-      <units xmi:id="_2IFN4B1REemwg4NgOjaKeA" name="milligram" rateDividend="0.001" sign="mg"/>
-      <units xmi:id="__1ZnwB1REemwg4NgOjaKeA" name="gram" sign="g"/>
-      <units xmi:id="_BY6o8B1SEemwg4NgOjaKeA" name="dekagram" rateDividend="10.0" sign="dkg"/>
-      <units xmi:id="_C8XYsB1SEemwg4NgOjaKeA" name="kilogram" rateDividend="1000.0" sign="kg"/>
-      <units xmi:id="_EqUvUB1SEemwg4NgOjaKeA" name="quintal" rateDividend="100000.0" sign="q"/>
-      <units xmi:id="_HM9EIB1SEemwg4NgOjaKeA" name="tonne" rateDividend="1000000.0" sign="t"/>
+      <units xmi:id="_2IFN4B1REemwg4NgOjaKeA" name="milligram" rateDividend="0.001" symbol="mg"/>
+      <units xmi:id="__1ZnwB1REemwg4NgOjaKeA" name="gram" symbol="g"/>
+      <units xmi:id="_BY6o8B1SEemwg4NgOjaKeA" name="dekagram" rateDividend="10.0" symbol="dkg"/>
+      <units xmi:id="_C8XYsB1SEemwg4NgOjaKeA" name="kilogram" rateDividend="1000.0" symbol="kg"/>
+      <units xmi:id="_EqUvUB1SEemwg4NgOjaKeA" name="quintal" rateDividend="100000.0" symbol="q"/>
+      <units xmi:id="_HM9EIB1SEemwg4NgOjaKeA" name="tonne" rateDividend="1000000.0" symbol="t"/>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_qJUV0B1REemwg4NgOjaKeA" name="Time">
-      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_PCQ14B2GEemwg4NgOjaKeA" name="millisecond" rateDividend="0.001" sign="ms"/>
-      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_SlUs8B2GEemwg4NgOjaKeA" name="second" sign="s"/>
-      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_S5zvMB2GEemwg4NgOjaKeA" name="minute" rateDividend="60.0" sign="m" durationType="minute"/>
-      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_TRAHMB2GEemwg4NgOjaKeA" name="hour" rateDividend="3600.0" sign="h" durationType="hour"/>
-      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_TjC5cB2GEemwg4NgOjaKeA" name="day" rateDividend="86400.0" sign="" durationType="day"/>
-      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_ezprAB2GEemwg4NgOjaKeA" name="week" rateDividend="604800.0" sign="" durationType="week"/>
+      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_PCQ14B2GEemwg4NgOjaKeA" name="millisecond" rateDividend="0.001" symbol="ms"/>
+      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_SlUs8B2GEemwg4NgOjaKeA" name="second" symbol="s"/>
+      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_S5zvMB2GEemwg4NgOjaKeA" name="minute" rateDividend="60.0" symbol="m" durationType="minute"/>
+      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_TRAHMB2GEemwg4NgOjaKeA" name="hour" rateDividend="3600.0" symbol="h" durationType="hour"/>
+      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_TjC5cB2GEemwg4NgOjaKeA" name="day" rateDividend="86400.0" symbol="" durationType="day"/>
+      <units xsi:type="measure:SecondBasedDurationUnit" xmi:id="_ezprAB2GEemwg4NgOjaKeA" name="week" rateDividend="604800.0" symbol="" durationType="week"/>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_tTcIcB1REemwg4NgOjaKeA" name="MonthBasedTime">
       <units xsi:type="measure:MonthBasedDurationUnit" xmi:id="_yX3RgB2GEemwg4NgOjaKeA" name="month"/>
       <units xsi:type="measure:MonthBasedDurationUnit" xmi:id="_zDfocB2GEemwg4NgOjaKeA" name="year" rateDividend="12.0" durationType="year"/>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_vrNREB1REemwg4NgOjaKeA" name="Length">
-      <units xmi:id="_nzyzcB1SEemwg4NgOjaKeA" name="nanometre" rateDividend="1.0E-9" sign="nm"/>
-      <units xmi:id="_tSZxMB1SEemwg4NgOjaKeA" name="micrometre" rateDividend="1.0E-6" sign="μm"/>
-      <units xmi:id="_yhwK8B1SEemwg4NgOjaKeA" name="millimetre" rateDividend="0.001" sign="mm"/>
-      <units xmi:id="_2Z1PwB1SEemwg4NgOjaKeA" name="centimetre" rateDividend="0.01" sign="cm"/>
-      <units xmi:id="_4EKDkB1SEemwg4NgOjaKeA" name="decimetre" rateDividend="0.1" sign="dm"/>
-      <units xmi:id="_5oYPYB1SEemwg4NgOjaKeA" name="metre" sign="m"/>
-      <units xmi:id="_7eDXkB1SEemwg4NgOjaKeA" name="kilometre" rateDividend="1000.0" sign="km"/>
-      <units xmi:id="_yH5cgB1-Eemwg4NgOjaKeA" name="inch" rateDividend="0.0254" sign="&quot;"/>
-      <units xmi:id="_9Dr0oB1-Eemwg4NgOjaKeA" name="foot" rateDividend="0.3048" sign="ft"/>
-      <units xmi:id="__nz-QB1-Eemwg4NgOjaKeA" name="mile" rateDividend="1609.344" sign="mi"/>
+      <units xmi:id="_nzyzcB1SEemwg4NgOjaKeA" name="nanometre" rateDividend="1.0E-9" symbol="nm"/>
+      <units xmi:id="_tSZxMB1SEemwg4NgOjaKeA" name="micrometre" rateDividend="1.0E-6" symbol="μm"/>
+      <units xmi:id="_yhwK8B1SEemwg4NgOjaKeA" name="millimetre" rateDividend="0.001" symbol="mm"/>
+      <units xmi:id="_2Z1PwB1SEemwg4NgOjaKeA" name="centimetre" rateDividend="0.01" symbol="cm"/>
+      <units xmi:id="_4EKDkB1SEemwg4NgOjaKeA" name="decimetre" rateDividend="0.1" symbol="dm"/>
+      <units xmi:id="_5oYPYB1SEemwg4NgOjaKeA" name="metre" symbol="m"/>
+      <units xmi:id="_7eDXkB1SEemwg4NgOjaKeA" name="kilometre" rateDividend="1000.0" symbol="km"/>
+      <units xmi:id="_yH5cgB1-Eemwg4NgOjaKeA" name="inch" rateDividend="0.0254" symbol="&quot;"/>
+      <units xmi:id="_9Dr0oB1-Eemwg4NgOjaKeA" name="foot" rateDividend="0.3048" symbol="ft"/>
+      <units xmi:id="__nz-QB1-Eemwg4NgOjaKeA" name="mile" rateDividend="1609.344" symbol="mi"/>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_x2bLcB1REemwg4NgOjaKeA" name="Temperature">
-      <units xmi:id="_-9i9QB1SEemwg4NgOjaKeA" name="°C"/>
+      <units xmi:id="_-9i9QB1SEemwg4NgOjaKeA" name="celsius" symbol="°C"/>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_SGwCwB1TEemwg4NgOjaKeA" name="Area">
-      <units xmi:id="_TfYCkB1TEemwg4NgOjaKeA" name="square millimetre" rateDividend="1.0E-6" sign="mm²"/>
-      <units xmi:id="_bXi4sB1TEemwg4NgOjaKeA" name="square centimetre" rateDividend="1.0E-4" sign="cm²"/>
-      <units xmi:id="_cz3FsB1TEemwg4NgOjaKeA" name="square decimetre" rateDividend="0.01" sign="dm²"/>
-      <units xmi:id="_eD5KMB1TEemwg4NgOjaKeA" name="square metre" sign="m²"/>
-      <units xmi:id="_fIEkAB1TEemwg4NgOjaKeA" name="hectare" rateDividend="10000.0" sign="ha"/>
-      <units xmi:id="_f9o6EB1TEemwg4NgOjaKeA" name="square kilometre" rateDividend="1000000.0" sign="km²"/>
+      <units xmi:id="_TfYCkB1TEemwg4NgOjaKeA" name="square millimetre" rateDividend="1.0E-6" symbol="mm²"/>
+      <units xmi:id="_bXi4sB1TEemwg4NgOjaKeA" name="square centimetre" rateDividend="1.0E-4" symbol="cm²"/>
+      <units xmi:id="_cz3FsB1TEemwg4NgOjaKeA" name="square decimetre" rateDividend="0.01" symbol="dm²"/>
+      <units xmi:id="_eD5KMB1TEemwg4NgOjaKeA" name="square metre" symbol="m²"/>
+      <units xmi:id="_fIEkAB1TEemwg4NgOjaKeA" name="hectare" rateDividend="10000.0" symbol="ha"/>
+      <units xmi:id="_f9o6EB1TEemwg4NgOjaKeA" name="square kilometre" rateDividend="1000000.0" symbol="km²"/>
       <definitions xmi:id="_9gDEsB13Eemwg4NgOjaKeA">
         <terms xmi:id="_-aYmAB13Eemwg4NgOjaKeA" exponent="2" measure="_vrNREB1REemwg4NgOjaKeA"/>
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_vk8mIB1TEemwg4NgOjaKeA" name="Volume">
-      <units xmi:id="_wqf48B1TEemwg4NgOjaKeA" name="cubic millimetre" rateDividend="1.0E-6" sign="mm³"/>
-      <units xmi:id="_0vv3EB1TEemwg4NgOjaKeA" name="cubic centimetre" rateDividend="0.001" sign="cm³"/>
-      <units xmi:id="_1outgB1TEemwg4NgOjaKeA" name="cubic decimetre" sign="dm³"/>
-      <units xmi:id="_2zAIQB1TEemwg4NgOjaKeA" name="cubic metre" rateDividend="1000.0" sign="m³"/>
-      <units xmi:id="_97AswB1TEemwg4NgOjaKeA" name="millilitre" rateDividend="0.001" sign="ml"/>
-      <units xmi:id="_-4Dj0B1TEemwg4NgOjaKeA" name="centilitre" rateDividend="0.01" sign="cl"/>
-      <units xmi:id="_BJsPQB1UEemwg4NgOjaKeA" name="decilitre" rateDividend="0.1" sign="dl"/>
-      <units xmi:id="_CYY3AB1UEemwg4NgOjaKeA" name="litre" sign="l"/>
-      <units xmi:id="_HAfDgB1UEemwg4NgOjaKeA" name="hectolitre" rateDividend="100.0" sign="hl"/>
+      <units xmi:id="_wqf48B1TEemwg4NgOjaKeA" name="cubic millimetre" rateDividend="1.0E-6" symbol="mm³"/>
+      <units xmi:id="_0vv3EB1TEemwg4NgOjaKeA" name="cubic centimetre" rateDividend="0.001" symbol="cm³"/>
+      <units xmi:id="_1outgB1TEemwg4NgOjaKeA" name="cubic decimetre" symbol="dm³"/>
+      <units xmi:id="_2zAIQB1TEemwg4NgOjaKeA" name="cubic metre" rateDividend="1000.0" symbol="m³"/>
+      <units xmi:id="_97AswB1TEemwg4NgOjaKeA" name="millilitre" rateDividend="0.001" symbol="ml"/>
+      <units xmi:id="_-4Dj0B1TEemwg4NgOjaKeA" name="centilitre" rateDividend="0.01" symbol="cl"/>
+      <units xmi:id="_BJsPQB1UEemwg4NgOjaKeA" name="decilitre" rateDividend="0.1" symbol="dl"/>
+      <units xmi:id="_CYY3AB1UEemwg4NgOjaKeA" name="litre" symbol="l"/>
+      <units xmi:id="_HAfDgB1UEemwg4NgOjaKeA" name="hectolitre" rateDividend="100.0" symbol="hl"/>
       <definitions xmi:id="_CarysB14Eemwg4NgOjaKeA" rateDividend="0.001">
         <terms xmi:id="_DChOwB14Eemwg4NgOjaKeA" exponent="3" measure="_vrNREB1REemwg4NgOjaKeA"/>
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_xiATQB1UEemwg4NgOjaKeA" name="Velocity">
-      <units xmi:id="_zR6KoB1UEemwg4NgOjaKeA" name="kilometrePerHour" sign="km/h"/>
-      <units xmi:id="_0T0TkB1UEemwg4NgOjaKeA" name="metrePerSecond" rateDividend="3.6" sign="m/s"/>
+      <units xmi:id="_zR6KoB1UEemwg4NgOjaKeA" name="kilometrePerHour" symbol="km/h"/>
+      <units xmi:id="_0T0TkB1UEemwg4NgOjaKeA" name="metrePerSecond" rateDividend="3.6" symbol="m/s"/>
       <definitions xmi:id="_Tox2YB14Eemwg4NgOjaKeA" rateDividend="3.6">
         <terms xmi:id="_UgoEYB14Eemwg4NgOjaKeA" measure="_vrNREB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_VfPowB14Eemwg4NgOjaKeA" exponent="-1" measure="_qJUV0B1REemwg4NgOjaKeA"/>
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_M00kMB1VEemwg4NgOjaKeA" name="Acceleration">
-      <units xmi:id="_RelkoB1VEemwg4NgOjaKeA" name="metrePerSecondSquared" sign="m/s²"/>
+      <units xmi:id="_RelkoB1VEemwg4NgOjaKeA" name="metrePerSecondSquared" symbol="m/s²"/>
       <definitions xmi:id="_YRoQ0B14Eemwg4NgOjaKeA">
         <terms xmi:id="_YosF8B14Eemwg4NgOjaKeA" measure="_vrNREB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_ZDRJIB14Eemwg4NgOjaKeA" exponent="-2" measure="_qJUV0B1REemwg4NgOjaKeA"/>
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_ZFoOgB1VEemwg4NgOjaKeA" name="Momentum">
-      <units xmi:id="_GFfI8B1WEemwg4NgOjaKeA" name="kilogramMetrePerSecond " sign="kg*m/s"/>
+      <units xmi:id="_GFfI8B1WEemwg4NgOjaKeA" name="kilogramMetrePerSecond " symbol="kg*m/s"/>
       <definitions xmi:id="_dBYkgB14Eemwg4NgOjaKeA">
         <terms xmi:id="_dhBt4B14Eemwg4NgOjaKeA" measure="_oNT8IB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_eAMWIB14Eemwg4NgOjaKeA" measure="_vrNREB1REemwg4NgOjaKeA"/>
@@ -85,7 +85,7 @@
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_mq7mkB1VEemwg4NgOjaKeA" name="Force">
-      <units xmi:id="_oibTsB1VEemwg4NgOjaKeA" name="Newton" sign="N"/>
+      <units xmi:id="_oibTsB1VEemwg4NgOjaKeA" name="Newton" symbol="N"/>
       <definitions xmi:id="_jIY_AB14Eemwg4NgOjaKeA">
         <terms xmi:id="_jjXq0B14Eemwg4NgOjaKeA" measure="_oNT8IB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_j8J-QB14Eemwg4NgOjaKeA" measure="_vrNREB1REemwg4NgOjaKeA"/>
@@ -93,11 +93,11 @@
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_9__osB16Eemwg4NgOjaKeA" name="Work">
-      <units xmi:id="_CbRhMB17Eemwg4NgOjaKeA" name="joule" sign="J"/>
-      <units xmi:id="_3ab0gB17Eemwg4NgOjaKeA" name="kilojoule" rateDividend="1000.0" sign="kJ"/>
-      <units xmi:id="_7IsO8B17Eemwg4NgOjaKeA" name="megajoule" rateDividend="1000000.0" sign="MJ"/>
+      <units xmi:id="_CbRhMB17Eemwg4NgOjaKeA" name="joule" symbol="J"/>
+      <units xmi:id="_3ab0gB17Eemwg4NgOjaKeA" name="kilojoule" rateDividend="1000.0" symbol="kJ"/>
+      <units xmi:id="_7IsO8B17Eemwg4NgOjaKeA" name="megajoule" rateDividend="1000000.0" symbol="MJ"/>
       <units xmi:id="_hdUngB18Eemwg4NgOjaKeA" name="watthour" rateDividend="3600.0"/>
-      <units xmi:id="_lhQXAB18Eemwg4NgOjaKeA" name="kilowatthour" rateDividend="3600000.0" sign="kWh"/>
+      <units xmi:id="_lhQXAB18Eemwg4NgOjaKeA" name="kilowatthour" rateDividend="3600000.0" symbol="kWh"/>
       <definitions xmi:id="_a4TQwB17Eemwg4NgOjaKeA">
         <terms xmi:id="_d0iYYB17Eemwg4NgOjaKeA" measure="_oNT8IB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_eSjxIB17Eemwg4NgOjaKeA" exponent="2" measure="_vrNREB1REemwg4NgOjaKeA"/>
@@ -105,9 +105,9 @@
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_JySLAB17Eemwg4NgOjaKeA" name="Power">
-      <units xmi:id="_aIb6EB17Eemwg4NgOjaKeA" name="watt" sign="W"/>
-      <units xmi:id="_DGLC4B18Eemwg4NgOjaKeA" name="kilowatt" rateDividend="1000.0" sign="kW"/>
-      <units xmi:id="_D6JdgB18Eemwg4NgOjaKeA" name="megawatt" rateDividend="1000000.0" sign="MW"/>
+      <units xmi:id="_aIb6EB17Eemwg4NgOjaKeA" name="watt" symbol="W"/>
+      <units xmi:id="_DGLC4B18Eemwg4NgOjaKeA" name="kilowatt" rateDividend="1000.0" symbol="kW"/>
+      <units xmi:id="_D6JdgB18Eemwg4NgOjaKeA" name="megawatt" rateDividend="1000000.0" symbol="MW"/>
       <definitions xmi:id="_HEM-sB18Eemwg4NgOjaKeA">
         <terms xmi:id="_H0UNAB18Eemwg4NgOjaKeA" measure="_oNT8IB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_IiPC8B18Eemwg4NgOjaKeA" exponent="2" measure="_vrNREB1REemwg4NgOjaKeA"/>
@@ -115,17 +115,17 @@
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_LI-4MB17Eemwg4NgOjaKeA" name="Frequency">
-      <units xmi:id="_NGpewB17Eemwg4NgOjaKeA" name="hertz" sign="Hz"/>
-      <units xmi:id="_QHuDEB17Eemwg4NgOjaKeA" name="kilohertz" rateDividend="1000.0" sign="kHz"/>
-      <units xmi:id="_RefBsB17Eemwg4NgOjaKeA" name="megahertz" rateDividend="1000000.0" sign="Mhz"/>
-      <units xmi:id="_TAni0B17Eemwg4NgOjaKeA" name="gigahertz" rateDividend="1.0E9" sign="Ghz"/>
+      <units xmi:id="_NGpewB17Eemwg4NgOjaKeA" name="hertz" symbol="Hz"/>
+      <units xmi:id="_QHuDEB17Eemwg4NgOjaKeA" name="kilohertz" rateDividend="1000.0" symbol="kHz"/>
+      <units xmi:id="_RefBsB17Eemwg4NgOjaKeA" name="megahertz" rateDividend="1000000.0" symbol="Mhz"/>
+      <units xmi:id="_TAni0B17Eemwg4NgOjaKeA" name="gigahertz" rateDividend="1.0E9" symbol="Ghz"/>
       <definitions xmi:id="_VEISsB17Eemwg4NgOjaKeA">
         <terms xmi:id="_VrbjQB17Eemwg4NgOjaKeA" exponent="-1" measure="_qJUV0B1REemwg4NgOjaKeA"/>
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_4TREgB18Eemwg4NgOjaKeA" name="Pressure">
-      <units xmi:id="_8oFIoB18Eemwg4NgOjaKeA" name="pascal" sign="Pa"/>
-      <units xmi:id="__unbwB18Eemwg4NgOjaKeA" name="hectopascal" rateDividend="100.0" sign="hPa"/>
+      <units xmi:id="_8oFIoB18Eemwg4NgOjaKeA" name="pascal" symbol="Pa"/>
+      <units xmi:id="__unbwB18Eemwg4NgOjaKeA" name="hectopascal" rateDividend="100.0" symbol="hPa"/>
       <definitions xmi:id="_M4rCQB19Eemwg4NgOjaKeA">
         <terms xmi:id="_OmDKEB19Eemwg4NgOjaKeA" measure="_oNT8IB1REemwg4NgOjaKeA"/>
         <terms xmi:id="_QJy0wB19Eemwg4NgOjaKeA" exponent="-1" measure="_vrNREB1REemwg4NgOjaKeA"/>
@@ -133,8 +133,8 @@
       </definitions>
     </elements>
     <elements xsi:type="measure:Measure" xmi:id="_khxagB19Eemwg4NgOjaKeA" name="Density">
-      <units xmi:id="_lgklEB19Eemwg4NgOjaKeA" name="kilogram per cubic metre" sign="kg/m³"/>
-      <units xmi:id="_rOuasB19Eemwg4NgOjaKeA" name="gram per cubic centimetre" rateDividend="1000.0" sign="g/cm³"/>
+      <units xmi:id="_lgklEB19Eemwg4NgOjaKeA" name="kilogram per cubic metre" symbol="kg/m³"/>
+      <units xmi:id="_rOuasB19Eemwg4NgOjaKeA" name="gram per cubic centimetre" rateDividend="1000.0" symbol="g/cm³"/>
       <definitions xmi:id="_8zJTsB19Eemwg4NgOjaKeA">
         <terms xmi:id="_-LBsoB19Eemwg4NgOjaKeA" measure="_oNT8IB1REemwg4NgOjaKeA"/>
         <terms xmi:id="__kKp0B19Eemwg4NgOjaKeA" exponent="-3" measure="_vrNREB1REemwg4NgOjaKeA"/>
