@@ -2,13 +2,15 @@ import "../../operations/measure/_importMeasure.eol";
 
 context JUDOPSM!SystemUnit {
 
-    constraint SecondRateToMilliSecondIsValid {
+    // rate of second unit to smaller temporal unit(s) should be valid
+    constraint SecondRateIsValid {
         guard: self.systemUnitType = JUDOPSM!SystemUnitType#second
         
         check: self.getRates(JUDOPSM!SystemUnitType#millisecond).select(r | r.get('dividend') <> r.get('divisor') * 1000).size() == 0
         message: "Rate of second (" + self.name + ") temporal measure unit is invalid: " + self.getRates(JUDOPSM!SystemUnitType#millisecond)
     }
     
+    // rate of minute unit to smaller temporal unit(s) should be valid
     constraint MinuteRateIsValid {
         guard: self.systemUnitType = JUDOPSM!SystemUnitType#minute
         
@@ -19,6 +21,7 @@ context JUDOPSM!SystemUnit {
                      .includingAll(self.getRates(JUDOPSM!SystemUnitType#second))
     }
     
+    // rate of hour unit to smaller temporal unit(s) should be valid
     constraint HourRateIsValid {
         guard: self.systemUnitType = JUDOPSM!SystemUnitType#hour
         
@@ -31,6 +34,7 @@ context JUDOPSM!SystemUnit {
                      .includingAll(self.getRates(JUDOPSM!SystemUnitType#minute))
     }
     
+    // rate of day unit to smaller temporal unit(s) should be valid
     constraint DayRateIsValid {
         guard: self.systemUnitType = JUDOPSM!SystemUnitType#day
         
@@ -45,6 +49,7 @@ context JUDOPSM!SystemUnit {
                      .includingAll(self.getRates(JUDOPSM!SystemUnitType#hour))
     }
     
+    // rate of week unit to smaller temporal unit(s) should be valid
     constraint WeekRateIsValid {
         guard: self.systemUnitType = JUDOPSM!SystemUnitType#week
         
@@ -61,6 +66,7 @@ context JUDOPSM!SystemUnit {
                      .includingAll(self.getRates(JUDOPSM!SystemUnitType#day))
     }
     
+    // rate of year unit to smaller temporal unit(s) should be valid
     constraint YearRateIsValid {
         guard: self.systemUnitType = JUDOPSM!SystemUnitType#year
         

@@ -1,0 +1,8 @@
+context JUDOPSM!Measure {
+
+    // base unit of measure should be defined (recommended only, base unit is used for calculations)
+    critique BaseUnitShouldBeDefined {
+        check: self.units.select(u | u.rateDividend == u.rateDivisor).size() > 0
+        message: "No base unit is defined for measure: " + self.name
+    }
+}
