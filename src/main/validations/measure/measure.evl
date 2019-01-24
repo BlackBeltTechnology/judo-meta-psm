@@ -25,4 +25,10 @@ context JUDOPSM!Measure {
         }
         message: "Multiple measures are defined for the same dimension: " + self.name
     }
+    
+    // measure name should be unique
+    critique MeasureNameIsUnique {
+        check: not JUDOPSM!Measure.all.excluding(self).selectOne(m | m.name = self.name).isDefined()
+        message: "Measure name is not unique: " + self.name
+    }    
 }
