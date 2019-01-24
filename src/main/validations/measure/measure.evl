@@ -13,4 +13,16 @@ context JUDOPSM!Measure {
         check: not self.isKindOf(JUDOPSM!DerivedMeasure) or not self.hasCircularReference()
         message: "Derived measure definition " + self.name + " is recursive"
     }
+
+    // no multiple measures are defined for the same dimension
+    constraint DimensionsAreUnique {
+        check {
+            var dimensions = new Map;
+		    for (m in JUDOPSM!Measure.all.excluding(self)) {
+		        dimensions.put(m.getBaseMeasures(), m);
+		    }
+		    return not dimensions.containsKey(self.getBaseMeasures());
+        }
+        message: "Multiple measures are defined for the same dimension: " + self.name
+    }
 }

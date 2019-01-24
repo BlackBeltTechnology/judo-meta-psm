@@ -34,28 +34,38 @@ operation JUDOPSM!DerivedMeasure hasCircularReference(visited : Collection) : Bo
 }
 
 @cached
-operation JUDOPSM!Measure getBaseMeasures() : Bag {
+operation getDimensions() : Map {
+    var dimensions = new Map;
+    for (m in JUDOPSM!Measure.all) {
+        dimensions.put(m.getBaseMeasures(), m);
+    }
+    return dimensions;
+}
+
+@cached
+operation JUDOPSM!Measure getBaseMeasures() : Map {
     if (self.isKindOf(JUDOPSM!DerivedMeasure)) {
-        var baseMeasures = new Bag;
+        var baseMeasures = new Map;
         for (t in self.terms) {
-            var termBases = t.unit.getMeasure().getBaseMeasures().collect(e | Map{'measure' = e.get('measure'), 'exponent' = e.get('exponent') * t.exponent});
-            for (tb in termBases) {
-                var bm = baseMeasures.selectOne(b | b.get('measure') == tb.get('measure'));
-                if (bm.isDefined()) {
-                    var currentExponent = bm.get('exponent');
-                    var newExponent = currentExponent + tb.get('exponent');
+            var termBases = t.unit.getMeasure().getBaseMeasures();
+            for (m in termBases.keySet()) {
+                var exponent = termBases.get(m) * t.exponent;
+
+                var currentExponent = baseMeasures.get(m);
+                if (currentExponent.isDefined()) {
+                    var newExponent = currentExponent + exponent;
                     if (newExponent <> 0) {
-                        bm.put('exponent', newExponent);
+                        baseMeasures.put(m, newExponent);
                     } else {
-                        baseMeasures.remove(bm);
+                        baseMeasures.remove(m);
                     }
                 } else {
-                    baseMeasures.add(tb);
+                    baseMeasures.put(m, exponent);
                 }
             }
         }
         return baseMeasures;
     } else {
-        return Bag{Map{'measure' = self, 'exponent' = 1}};
+        return Map{self = 1};
     }
 }
