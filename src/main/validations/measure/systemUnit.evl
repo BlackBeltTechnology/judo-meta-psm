@@ -1,0 +1,71 @@
+import "../../operations/measure/_importMeasure.eol";
+
+context JUDOPSM!SystemUnit {
+
+    constraint SecondRateToMilliSecondIsValid {
+        guard: self.systemUnitType = JUDOPSM!SystemUnitType#second
+        
+        check: self.getRates(JUDOPSM!SystemUnitType#millisecond).select(r | r.get('dividend') <> r.get('divisor') * 1000).size() == 0
+        message: "Rate of second (" + self.name + ") temporal measure unit is invalid: " + self.getRates(JUDOPSM!SystemUnitType#millisecond)
+    }
+    
+    constraint MinuteRateIsValid {
+        guard: self.systemUnitType = JUDOPSM!SystemUnitType#minute
+        
+        check: self.getRates(JUDOPSM!SystemUnitType#millisecond).select(r | r.get('dividend') <> r.get('divisor') * 60000).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#second).select(r | r.get('dividend') <> r.get('divisor') * 60).size() == 0
+        message: "Rate of minute (" + self.name + ") temporal measure unit is invalid: " +
+                 self.getRates(JUDOPSM!SystemUnitType#millisecond)
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#second))
+    }
+    
+    constraint HourRateIsValid {
+        guard: self.systemUnitType = JUDOPSM!SystemUnitType#hour
+        
+        check: self.getRates(JUDOPSM!SystemUnitType#millisecond).select(r | r.get('dividend') <> r.get('divisor') * 3600000).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#second).select(r | r.get('dividend') <> r.get('divisor') * 3600).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#minute).select(r | r.get('dividend') <> r.get('divisor') * 60).size() == 0
+        message: "Rate of hour (" + self.name + ") temporal measure unit is invalid: " + 
+                 self.getRates(JUDOPSM!SystemUnitType#millisecond)
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#second))
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#minute))
+    }
+    
+    constraint DayRateIsValid {
+        guard: self.systemUnitType = JUDOPSM!SystemUnitType#day
+        
+        check: self.getRates(JUDOPSM!SystemUnitType#millisecond).select(r | r.get('dividend') <> r.get('divisor') * 86400000).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#second).select(r | r.get('dividend') <> r.get('divisor') * 86400).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#minute).select(r | r.get('dividend') <> r.get('divisor') * 1440).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#hour).select(r | r.get('dividend') <> r.get('divisor') * 24).size() == 0
+        message: "Rate of day (" + self.name + ") temporal measure unit is invalid: " + 
+                 self.getRates(JUDOPSM!SystemUnitType#millisecond)
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#second))
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#minute))
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#hour))
+    }
+    
+    constraint WeekRateIsValid {
+        guard: self.systemUnitType = JUDOPSM!SystemUnitType#week
+        
+        check: self.getRates(JUDOPSM!SystemUnitType#millisecond).select(r | r.get('dividend') <> r.get('divisor') * 604800000).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#second).select(r | r.get('dividend') <> r.get('divisor') * 604800).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#minute).select(r | r.get('dividend') <> r.get('divisor') * 10080).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#hour).select(r | r.get('dividend') <> r.get('divisor') * 168).size() == 0
+           and self.getRates(JUDOPSM!SystemUnitType#day).select(r | r.get('dividend') <> r.get('divisor') * 7).size() == 0
+        message: "Rate of week (" + self.name + ") temporal measure unit is invalid: " +
+                 self.getRates(JUDOPSM!SystemUnitType#millisecond)
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#second))
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#minute))
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#hour))
+                     .includingAll(self.getRates(JUDOPSM!SystemUnitType#day))
+    }
+    
+    constraint YearRateIsValid {
+        guard: self.systemUnitType = JUDOPSM!SystemUnitType#year
+        
+        check: self.getRates(JUDOPSM!SystemUnitType#month).select(r | r.get('dividend') <> r.get('divisor') * 12).size() == 0
+        message: "Rate of year (" + self.name + ") temporal measure unit is invalid: " +
+                 self.getRates(JUDOPSM!SystemUnitType#month)
+    }
+}
