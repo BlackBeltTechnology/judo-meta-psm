@@ -1,5 +1,1 @@
-operation JUDOPSM!SystemUnit getRates(systemUnitType) : Sequence {
-    return JUDOPSM!SystemUnit.all
-        .select(u | u.systemUnitType == systemUnitType)
-        .collect(u | Map{'unitName' = u.name, 'divisor' = u.rateDividend * self.rateDivisor, 'dividend' = self.rateDividend * u.rateDivisor});
-}
+import "measure.eol";

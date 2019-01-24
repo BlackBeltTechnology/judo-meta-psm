@@ -1,8 +1,16 @@
+import "../../operations/measure/_importMeasure.eol";
+
 context JUDOPSM!Measure {
 
     // base unit of measure should be defined (recommended only, base unit is used for calculations)
     critique BaseUnitShouldBeDefined {
-        check: self.units.select(u | u.rateDividend == u.rateDivisor).size() > 0
+        check: self.getBaseUnit().isDefined()
         message: "No base unit is defined for measure: " + self.name
+    }
+
+    // circular references in unit definitions is invalid
+    constraint NoCircularReferencesOfUnits {
+        check: not self.isKindOf(JUDOPSM!DerivedMeasure) or not self.hasCircularReference()
+        message: "Derived measure definition " + self.name + " is recursive"
     }
 }

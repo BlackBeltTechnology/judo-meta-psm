@@ -1,0 +1,61 @@
+operation JUDOPSM!SystemUnit getRates(systemUnitType) : Sequence {
+    return JUDOPSM!SystemUnit.all
+        .select(u | u.systemUnitType == systemUnitType)
+        .collect(u | Map{'unitName' = u.name, 'divisor' = u.rateDividend * self.rateDivisor, 'dividend' = self.rateDividend * u.rateDivisor});
+}
+
+@cached
+operation JUDOPSM!Unit getMeasure() : JUDOPSM!Measure {
+    return JUDOPSM!Measure.all.selectOne(m | m.units.contains(self));
+}
+
+@cached
+operation JUDOPSM!Measure getBaseUnit() : JUDOPSM!Unit {
+    return self.units.selectOne(u | u.rateDividend = u.rateDivisor);
+}
+
+@cached
+operation JUDOPSM!DerivedMeasure hasCircularReference() : Boolean {
+    return self.hasCircularReference(new Set);
+}
+
+operation JUDOPSM!DerivedMeasure hasCircularReference(visited : Collection) : Boolean {
+    if (visited.includes(self)) {
+        return true;
+    }
+
+    for (m in self.terms.collect(t | t.unit.getMeasure())) {
+        if (m.isDefined() and m.isKindOf(JUDOPSM!DerivedMeasure) and m.hasCircularReference(visited.including(self))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+@cached
+operation JUDOPSM!Measure getBaseMeasures() : Bag {
+    if (self.isKindOf(JUDOPSM!DerivedMeasure)) {
+        var baseMeasures = new Bag;
+        for (t in self.terms) {
+            var termBases = t.unit.getMeasure().getBaseMeasures().collect(e | Map{'measure' = e.get('measure'), 'exponent' = e.get('exponent') * t.exponent});
+            for (tb in termBases) {
+                var bm = baseMeasures.selectOne(b | b.get('measure') == tb.get('measure'));
+                if (bm.isDefined()) {
+                    var currentExponent = bm.get('exponent');
+                    var newExponent = currentExponent + tb.get('exponent');
+                    if (newExponent <> 0) {
+                        bm.put('exponent', newExponent);
+                    } else {
+                        baseMeasures.remove(bm);
+                    }
+                } else {
+                    baseMeasures.add(tb);
+                }
+            }
+        }
+        return baseMeasures;
+    } else {
+        return Bag{Map{'measure' = self, 'exponent' = 1}};
+    }
+}
