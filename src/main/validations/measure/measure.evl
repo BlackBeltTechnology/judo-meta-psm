@@ -28,7 +28,7 @@ context JUDOPSM!Measure {
     
     // measure name should be unique
     critique MeasureNameIsUnique {
-        check: not JUDOPSM!Measure.all.excluding(self).selectOne(m | m.name = self.name).isDefined()
+        check: not JUDOPSM!Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
         message: "Measure name is not unique: " + self.name
-    }    
+    }
 }

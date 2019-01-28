@@ -4,11 +4,6 @@ operation EXPR!EnumerationAttribute getEnumeration() {
 }
 
 @cached
-operation EXPR!EnumerationVariableReference getEnumeration() {
-    return self.variable.getElementName().getEnumerationType();
-}
-
-@cached
 operation EXPR!Literal getEnumeration() {
     // enumeration is unknown
     return null;

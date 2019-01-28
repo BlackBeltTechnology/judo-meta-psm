@@ -10,7 +10,14 @@ context EXPR!ElementName {
     constraint ObjectTypeIsValid {
         guard: self.satisfiesAll("NamespaceIsValid")
         
-        check: self.getObjectType().isDefined()
-        message: "Object named " + self.name + " not found in namespace " + self.namespace 
+        check: self.get().isDefined()
+        message: "Element named " + self.name + " not found in namespace " + self.namespace 
+    }
+}
+
+context EXPR!VariableReference {
+    constraint Resolved {
+        check: true // TODO - check variable scope
+        message: "Invalid variable reference: " + self.variable.name
     }
 }
