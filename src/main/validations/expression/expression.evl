@@ -1,7 +1,7 @@
 context EXPR!ElementName {
 
     // namespace of ElementName must exists 
-    constraint NamespaceIsValid {
+    critique NamespaceIsValid {
         check: self.getNamespace().isDefined()
         message: "Namespace is not defined: " + self.namespace
     }

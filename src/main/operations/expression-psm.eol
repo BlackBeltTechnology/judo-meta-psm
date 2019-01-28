@@ -32,11 +32,6 @@ operation EXPR!ElementName getEnumerationType() : JUDOPSM!EntityType {
     return self.getNamespace().elements.selectOne(t | t.name = self.name);
 }
 
-@cached
-operation EXPR!ElementName getMeasure() : JUDOPSM!Measure {
-    return self.getNamespace().elements.selectOne(m | m.name = self.name);
-}
-
 operation JUDOPSM!EntityType getReferenceType(name: String) : JUDOPSM!ReferenceTypedElement {
     var relation = self.relations.selectOne(r | r.name = name);
     var navigation = JUDOPSM!NavigationProperty.all.selectOne(n | n.name = name and n.owner = self);
@@ -145,11 +140,6 @@ operation JUDOPSM!Primitive isDecimal() : Boolean {
 }
 
 @cached
-operation JUDOPSM!Primitive isMeasured() : Boolean {
-    return self.isKindOf(JUDOPSM!MeasuredType);
-}
-
-@cached
 operation JUDOPSM!Primitive isBoolean() : Boolean {
     return self.isKindOf(JUDOPSM!BooleanType);
 }
@@ -176,103 +166,4 @@ operation JUDOPSM!EnumerationType contains(memberName : String) : Boolean {
 @cached
 operation JUDOPSM!NamedElement getName() : String {
     return self.name;
-}
-
-operation JUDOPSM!Measure getUnit(name : String) : JUDOPSM!Unit {
-    return self.units.selectOne(u | u.name = name or u.symbol = name);
-}
-
-@cached
-operation JUDOPSM!MeasuredType getUnit() : JUDOPSM!Unit {
-    return self.storeUnit;
-}
-
-@cached
-operation JUDOPSM!Unit toString() : String {
-    if (self.symbol.isDefined()) {
-        return self.symbol;
-    } else {
-        return self.name;
-    }
-}
-
-@cached
-operation JUDOPSM!Unit getMeasure() : JUDOPSM!Measure {
-    return JUDOPSM!Measure.all.selectOne(m | m.units.contains(self));
-}
-
-@cached
-operation getDimensions() : Map {
-    var dimensions = new Map;
-    for (m in JUDOPSM!Measure.all) {
-        dimensions.put(m.getBaseMeasures(), m);
-    }
-    return dimensions;
-}
-
-@cached
-operation JUDOPSM!Measure getBaseMeasures() : Map {
-    if (self.isKindOf(JUDOPSM!DerivedMeasure)) {
-        var baseMeasures = new Map;
-        for (t in self.terms) {
-            var termBases = t.unit.getMeasure().getBaseMeasures();
-            for (m in termBases.keySet()) {
-                var exponent = termBases.get(m) * t.exponent;
-
-                var currentExponent = baseMeasures.get(m);
-                if (currentExponent.isDefined()) {
-                    var newExponent = currentExponent + exponent;
-                    if (newExponent <> 0) {
-                        baseMeasures.put(m, newExponent);
-                    } else {
-                        baseMeasures.remove(m);
-                    }
-                } else {
-                    baseMeasures.put(m, exponent);
-                }
-            }
-        }
-        return baseMeasures;
-    } else {
-        return Map{self = 1};
-    }
-}
-
-@cached
-operation EXPR!NumericAttribute getMeasure() : JUDOPSM!Measure {
-    if (self.isMeasured()) {
-        return JUDOPSM!Measure.all.selectOne(m | m.units.contains(self.getUnit()));
-    } else {
-        return Map{};
-    }
-}
-
-@cached
-operation EXPR!MeasuredDecimal getUnit() {
-    if (self.measure.isDefined()) {
-        return self.measure.getMeasure().units.selectOne(u | u.name = self.unitName or u.symbol = self.unitName);
-    } else {
-        var units = JUDOPSM!Unit.all.select(u | u.name = self.unitName or u.symbol = self.unitName);
-        if (units.size() == 1) {
-            return units.get(0);
-        } else {
-            units.collect(u | u.getMeasure().name + ": " + u.name + " [" + u.symbol + "]").concat(", ").println("Multiple units found with name " + self.unitName + ": ");
-            return null;
-        }
-    }
-}
-
-@cached
-operation EXPR!MeasuredInteger getUnit() {
-    if (self.measure.isDefined()) {
-        return self.measure.getMeasure().units.selectOne(u | u.name = self.unitName or u.symbol = self.unitName);
-    } else {
-        var units = JUDOPSM!Unit.all.select(u | u.name = self.unitName or u.symbol = self.unitName);
-        if (units.size() == 1) {
-            return units.get(0);
-        } else {
-            units.collect(u | u.getMeasure().name + ": " + u.name + " [" + u.symbol + "]").concat(", ").println("Multiple units found with name " + self.unitName + ": ");
-            return null;
-        }
-    }
 }

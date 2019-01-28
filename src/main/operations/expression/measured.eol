@@ -1,6 +1,11 @@
 @cached
 operation EXPR!NumericAttribute isMeasured() : Boolean {
-    return self.getAttributeType().isMeasured();
+    var attributeType = self.getAttributeType();
+    if (attributeType.isDefined()) {
+        return attributeType.isMeasured();
+    } else {
+        return false;
+    }
 }
 
 @cached
@@ -15,7 +20,12 @@ operation EXPR!NumericAttribute getBaseMeasures() : Map {
 @cached
 operation EXPR!NumericAttribute getUnit() {
     if (self.isMeasured()) {
-        return self.getAttributeType().getUnit();
+        var attributeType = self.getAttributeType();
+        if (attributeType.isDefined()) {
+            return attributeType.getUnit();
+        } else {
+            return null;
+        }
     } else {
         return null;
     }
@@ -111,16 +121,6 @@ operation EXPR!Integer isMeasured() : Boolean {
 @cached
 operation EXPR!Decimal isMeasured() : Boolean {
     return false;
-}
-
-@cached
-operation EXPR!MeasuredInteger isMeasured() : Boolean {
-    return true;
-}
-
-@cached
-operation EXPR!MeasuredDecimal isMeasured() : Boolean {
-    return true;
 }
 
 @cached
