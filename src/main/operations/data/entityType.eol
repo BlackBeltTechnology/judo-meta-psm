@@ -8,7 +8,6 @@ operation JUDOPSM!EntityType hasCircularRelation(visited : Collection) : Boolean
         return true;
     }
 
-    var circularRelationFound = false;
     for (set in self.superEntityTypes) {
         if (set.hasCircularRelation(visited.including(self))) {
             return true;

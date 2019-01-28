@@ -39,31 +39,6 @@ operation EXPR!OrderByItem toString() : String {
 }
 
 @cached
-operation EXPR!IntegerVariableReference toString() : String {
-    return self.variable.name;
-}
-
-@cached
-operation EXPR!DecimalVariableReference toString() : String {
-    return self.variable.name;
-}
-
-@cached
-operation EXPR!LogicalVariableReference toString() : String {
-    return self.variable.name;
-}
-
-@cached
-operation EXPR!StringVariableReference toString() : String {
-    return self.variable.name;
-}
-
-@cached
-operation EXPR!EnumerationVariableReference toString() : String {
-    return self.variable.name;
-}
-
-@cached
 operation EXPR!ObjectVariableReference toString() : String {
     return self.variable.name;
 }
@@ -90,12 +65,28 @@ operation EXPR!AttributeSelector toString() {
 
 @cached
 operation EXPR!IntegerAttribute toString() {
-    return self.objectExpression.toString() + "." + self.attributeName;
+    if (self.isMeasured()) {
+        var unit = "";
+        if (self.getUnit().isDefined()) {
+            unit = " [" + self.getUnit().toString() + "]";
+        }
+        return self.objectExpression.toString() + "." + self.attributeName + unit;
+    } else {
+        return self.objectExpression.toString() + "." + self.attributeName;
+    }
 }
 
 @cached
 operation EXPR!DecimalAttribute toString() {
-    return self.objectExpression.toString() + "." + self.attributeName;
+    if (self.isMeasured()) {
+        var unit = "";
+        if (self.getUnit().isDefined()) {
+            unit = " [" + self.getUnit().toString() + "]";
+        }
+        return self.objectExpression.toString() + "." + self.attributeName + unit;
+    } else {
+        return self.objectExpression.toString() + "." + self.attributeName;
+    }
 }
 
 @cached
@@ -370,6 +361,11 @@ operation EXPR!CustomAttribute toString() {
 }
 
 @cached
-operation EXPR!CustomVariableReference toString() : String {
-    return self.variable.name;
+operation EXPR!MeasuredDecimal toString() {
+    return self.value.toString() + " [" + self.unitName + "]";
+}
+
+@cached
+operation EXPR!MeasuredInteger toString() {
+    return self.value.toString() + " [" + self.unitName + "]";
 }

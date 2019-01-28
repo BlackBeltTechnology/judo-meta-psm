@@ -1,7 +1,7 @@
 @cached
-operation EXPR!ElementName getNamespace() : JUDOPSM!Namespace {
+operation EXPR!ElementName getNamespace() : JUDOPSM!NamedElement {
     var ns : JUDOPSM!Namespace;
-        
+    
     for (nsName in self.namespace.split("\\s*\\::\\s*")) {
         if (ns.isDefined()) {
             ns = ns.packages.selectOne(p | p.name = nsName);
@@ -15,6 +15,11 @@ operation EXPR!ElementName getNamespace() : JUDOPSM!Namespace {
     }
     
     return ns;
+}
+
+@cached
+operation EXPR!ElementName get() : JUDOPSM!NamedElement {
+    return self.getNamespace().elements.selectOne(ne | ne.name = self.name);
 }
 
 @cached

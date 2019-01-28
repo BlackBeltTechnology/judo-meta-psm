@@ -424,3 +424,56 @@ package authorization {
 
 }
 
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/measure", prefix="measure")
+package measure {
+  class Measure extends namespace.NamespaceElement {
+    val Unit[*] units;
+    val MeasureDefinition[*] definitions;
+  }
+
+  class MeasuredType extends type.NumericType {
+    transient derived ref Measure[1] measure;
+    ref Unit[1] storeUnit;
+  }
+
+  class Unit extends namespace.NamedElement {
+    attr double[1] rateDividend = "1";
+    attr double[1] rateDivisor = "1";
+    attr String sign;
+  }
+
+  class MeasureDefinition {
+    val MeasureDefinitionTerm[+] terms;
+    attr double[1] rateDividend = "1";
+    attr double[1] rateDivisor = "1";
+  }
+
+  class MeasureDefinitionTerm {
+    attr int[1] exponent = 1;
+    ref Measure[1] measure;
+  }
+
+  enum SecondBasedDuration {
+    millisecond = 0;
+    second = 1;
+    minute = 2;
+    hour = 3;
+    day = 4;
+    week = 5;
+  }
+
+  enum MonthBasedDuration {
+    month = 0;
+    year = 1;
+  }
+
+  class SecondBasedDurationUnit extends Unit {
+    attr SecondBasedDuration[1] durationType;
+  }
+
+  class MonthBasedDurationUnit extends Unit {
+    attr MonthBasedDuration[1] durationType;
+  }
+
+}
+

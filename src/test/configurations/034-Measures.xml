@@ -6,7 +6,7 @@
     </metaModels>
     <models>
         <model>
-            <artifact>src/test/models/t032.model</artifact>
+            <artifact>src/test/models/t034.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -39,9 +39,9 @@
     <eolPrograms>
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
-            <expectedErrors>
-                <expectedError>NavigationPropertyBelongsToEntity|Orphan navigation property: n</expectedError>
-            </expectedErrors>
+            <expectedWarnings>
+                <expectedWarning>StandaloneModelLoadedOnly|Standalone models are supported only</expectedWarning>
+            </expectedWarnings>
         </Evl>
     </eolPrograms>
 </configuration>

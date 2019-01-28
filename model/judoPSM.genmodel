@@ -359,45 +359,42 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//authorization/AuthorizationResource/includedAuthorizationResources"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="NewPackage13" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//measure">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/UnaryMeasureOperationType">
-        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/UnaryMeasureOperationType/RECIPROCAL"/>
-      </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/BinaryMeasureOperationType">
-        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/BinaryMeasureOperationType/MULTIPLICATION"/>
-        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/BinaryMeasureOperationType/DIVISION"/>
+    <nestedGenPackages prefix="Measure" resource="XMI" disposableProviderFactory="true"
+        extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//measure">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/SystemUnitType">
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/millisecond"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/second"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/minute"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/hour"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/day"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/week"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/month"/>
+        <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/SystemUnitType/year"/>
       </genEnums>
       <genClasses ecoreClass="judoPSM.ecore#//measure/Measure">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/Measure/units"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Measure/symbol"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/MeasuredType">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasuredType/measure"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasuredType/storeUnit"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/Unit">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/multiplicationRate"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/divisionRate"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/rateDividend"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/rateDivisor"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/symbol"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureOperation">
+      <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureDefinitionTerm">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/MeasureDefinitionTerm/exponent"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasureOperation/result"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/MeasureDefinitionTerm/unit"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/UnaryMeasureOperation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/UnaryMeasureOperation/x"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/UnaryMeasureOperation/type"/>
+      <genClasses ecoreClass="judoPSM.ecore#//measure/SystemUnit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/SystemUnit/systemUnitType"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/BinaryMeasureOperation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/BinaryMeasureOperation/y"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//measure/BinaryMeasureOperation/x"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/BinaryMeasureOperation/type"/>
+      <genClasses ecoreClass="judoPSM.ecore#//measure/DerivedMeasure">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/DerivedMeasure/terms"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/SecondBasedDurationMeasure"/>
-      <genClasses ecoreClass="judoPSM.ecore#//measure/YearBasedDurationMeasure"/>
     </nestedGenPackages>
   </genPackages>
   <genPackages prefix="Expression" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
@@ -441,6 +438,9 @@
     <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//ReferenceExpression"/>
     <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//ReferenceSelector"/>
     <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//CustomExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//MeasuredExpression">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//MeasuredExpression/measure"/>
+    </genClasses>
     <nestedGenPackages prefix="Constant" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//constant">
       <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//constant/Constant"/>
@@ -467,23 +467,20 @@
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//constant/CustomData">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/custom#//constant/CustomData/value"/>
       </genClasses>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//constant/MeasuredDecimal">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/custom#//constant/MeasuredDecimal/unitName"/>
+      </genClasses>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//constant/MeasuredInteger">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/custom#//constant/MeasuredInteger/unitName"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Variable" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//variable">
       <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/Variable">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/custom#//variable/Variable/name"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/LogicalVariable"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/StringVariable"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/EnumerationVariable">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//variable/EnumerationVariable/elementName"/>
-      </genClasses>
       <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/ObjectVariable"/>
       <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/CollectionVariable"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/IntegerVariable"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/DecimalVariable"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//variable/CustomVariable"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Operator" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//operator">
@@ -572,14 +569,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/custom#//numeric/IntegerAggregatedExpression/operator"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//numeric/IntegerAggregatedExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//numeric/IntegerVariableReference">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//numeric/IntegerVariableReference/variable"/>
-      </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//numeric/DecimalVariableReference">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//numeric/DecimalVariableReference/variable"/>
-      </genClasses>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//numeric/DecimalAggregatedExpression">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/custom#//numeric/DecimalAggregatedExpression/operator"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//numeric/DecimalAggregatedExpression/expression"/>
@@ -589,6 +578,7 @@
       </genClasses>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//numeric/IntegerSwitchExpression"/>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//numeric/DecimalSwitchExpression"/>
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//numeric/NumericAttribute"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Logical" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//logical">
@@ -623,10 +613,6 @@
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//logical/UndefinedNavigationComparison">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//logical/UndefinedNavigationComparison/objectExression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//logical/LogicalVariableReference">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//logical/LogicalVariableReference/variable"/>
-      </genClasses>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//logical/ContainsExpression">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//logical/ContainsExpression/collectionExpression"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//logical/ContainsExpression/objectExpression"/>
@@ -659,10 +645,6 @@
     <nestedGenPackages prefix="String" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//string">
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//string/StringAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//string/StringVariableReference">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//string/StringVariableReference/variable"/>
-      </genClasses>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//string/Concatenate">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//string/Concatenate/left"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//string/Concatenate/right"/>
@@ -704,10 +686,6 @@
     <nestedGenPackages prefix="Enumeration" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//enumeration">
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//enumeration/EnumerationAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//enumeration/EnumerationVariableReference">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//enumeration/EnumerationVariableReference/variable"/>
-      </genClasses>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//enumeration/EnumerationSwitchExpression">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//enumeration/EnumerationSwitchExpression/elementName"/>
@@ -792,10 +770,6 @@
     <nestedGenPackages prefix="Custom" basePackage="hu.blackbelt.judo.meta.psm.expression"
         disposableProviderFactory="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/custom#//custom">
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//custom/CustomAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//custom/CustomVariableReference">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/custom#//custom/CustomVariableReference/variable"/>
-      </genClasses>
       <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/custom#//custom/CustomSwitchExpression"/>
     </nestedGenPackages>
   </genPackages>

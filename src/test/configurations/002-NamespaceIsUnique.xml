@@ -20,6 +20,7 @@
                 <param>http://blackbelt.hu/judo/meta/psm/type</param>
                 <param>http://blackbelt.hu/judo/meta/psm/data</param>
                 <param>http://blackbelt.hu/judo/meta/psm/derived</param>
+                <param>http://blackbelt.hu/judo/meta/psm/measure</param>
 
                 <param>http://blackbelt.hu/judo/meta/expression</param>
                 <param>http://blackbelt.hu/judo/meta/expression/constant</param>
@@ -39,8 +40,12 @@
         <Evl>
             <source>src/main/validations/judopsm.evl</source>
             <expectedErrors>
-                <expectedError>NamespaceIsUnique|Names Set {P, String} are not unique in namespace M</expectedError>
+                <expectedError>NamespaceIsUnique|Names Set {P, E, String} are not unique in namespace M</expectedError>
             </expectedErrors>
+            <expectedWarnings>
+                <expectedWarning>TypeNamesAreUnique|Type name is not unique: E</expectedWarning>
+                <expectedWarning>TypeNamesAreUnique|Type name is not unique: String</expectedWarning>
+            </expectedWarnings>
         </Evl>
     </eolPrograms>
 </configuration>

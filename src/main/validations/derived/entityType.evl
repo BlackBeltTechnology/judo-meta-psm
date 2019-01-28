@@ -79,6 +79,14 @@ context JUDOPSM!DataProperty {
         message: "Getter expression of derived attribute " + self.displayName() + " has invalid custom data type: " + self.getterExpression.toString()
     }
     
+    /* // type of getter expression is measured  
+    constraint DataPropertyGetterTypeIsMeasured {
+        guard: self.dataType.isTypeOf(JUDOPSM!MeasuredType)
+        
+        check: self.dataType.measure == self.getterExpression.getMeasure()
+        message: "Getter expression of derived attribute " + self.displayName() + " has invalid measure: " + self.getterExpression.toString()
+    } */
+    
     // type of setter expression is string
     constraint DataPropertySetterTypeIsString {
         guard: self.setterExpression.isDefined() and self.dataType.isKindOf(JUDOPSM!StringType)

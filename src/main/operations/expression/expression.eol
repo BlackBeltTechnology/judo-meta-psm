@@ -36,6 +36,11 @@ operation EXPR!Expression getOperands() : Collection {
     return operands;
 }
 
+@cached
 operation getStandaloneExpressions() : Collection {
     return EXPR!Expression.all.select(e | EXPR!Expression.all.excluding(e).selectOne(e2 | e2.getOperands().contains(e)).isUndefined());
+}
+
+operation EXPR!Expression isStandalone() : Boolean {
+    return getStandaloneExpressions().contains(self);
 }
