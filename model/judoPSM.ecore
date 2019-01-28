@@ -398,6 +398,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Measure" eSuperTypes="#//namespace/NamespaceElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="units" upperBound="-1"
           eType="#//measure/Unit" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbol" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MeasuredType" eSuperTypes="#//type/NumericType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="storeUnit" lowerBound="1"

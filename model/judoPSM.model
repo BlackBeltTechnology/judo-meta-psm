@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:measure="http://blackbelt.hu/judo/meta/psm/measure" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_WZpXEIRPEeipmMyz9cMCRA" name="Template">
   <packages xmi:id="_g0GS4B1REemwg4NgOjaKeA" name="measures">
-    <elements xsi:type="measure:Measure" xmi:id="_oNT8IB1REemwg4NgOjaKeA" name="Mass">
+    <elements xsi:type="measure:Measure" xmi:id="_oNT8IB1REemwg4NgOjaKeA" name="Mass" symbol="m">
       <units xmi:id="_2IFN4B1REemwg4NgOjaKeA" name="milligram" rateDividend="1.0E-6" symbol="mg"/>
       <units xmi:id="__1ZnwB1REemwg4NgOjaKeA" name="gram" rateDividend="0.001" symbol="g"/>
       <units xmi:id="_BY6o8B1SEemwg4NgOjaKeA" name="dekagram" rateDividend="0.01" symbol="dkg"/>
@@ -9,7 +9,7 @@
       <units xmi:id="_EqUvUB1SEemwg4NgOjaKeA" name="quintal" rateDividend="100.0" symbol="q"/>
       <units xmi:id="_HM9EIB1SEemwg4NgOjaKeA" name="tonne" rateDividend="1000.0" symbol="t"/>
     </elements>
-    <elements xsi:type="measure:Measure" xmi:id="_qJUV0B1REemwg4NgOjaKeA" name="Time">
+    <elements xsi:type="measure:Measure" xmi:id="_qJUV0B1REemwg4NgOjaKeA" name="Time" symbol="t">
       <units xsi:type="measure:SystemUnit" xmi:id="_PCQ14B2GEemwg4NgOjaKeA" name="millisecond" rateDividend="0.001" symbol="ms"/>
       <units xsi:type="measure:SystemUnit" xmi:id="_SlUs8B2GEemwg4NgOjaKeA" name="second" symbol="s" systemUnitType="second"/>
       <units xsi:type="measure:SystemUnit" xmi:id="_S5zvMB2GEemwg4NgOjaKeA" name="minute" rateDividend="60.0" symbol="min" systemUnitType="minute"/>
@@ -21,7 +21,7 @@
       <units xsi:type="measure:SystemUnit" xmi:id="_yX3RgB2GEemwg4NgOjaKeA" name="month" systemUnitType="month"/>
       <units xsi:type="measure:SystemUnit" xmi:id="_zDfocB2GEemwg4NgOjaKeA" name="year" rateDividend="12.0" systemUnitType="year"/>
     </elements>
-    <elements xsi:type="measure:Measure" xmi:id="_vrNREB1REemwg4NgOjaKeA" name="Length">
+    <elements xsi:type="measure:Measure" xmi:id="_vrNREB1REemwg4NgOjaKeA" name="Length" symbol="l">
       <units xmi:id="_nzyzcB1SEemwg4NgOjaKeA" name="nanometre" rateDividend="1.0E-9" symbol="nm"/>
       <units xmi:id="_tSZxMB1SEemwg4NgOjaKeA" name="micrometre" rateDividend="1.0E-6" symbol="μm"/>
       <units xmi:id="_yhwK8B1SEemwg4NgOjaKeA" name="millimetre" rateDividend="0.001" symbol="mm"/>
@@ -36,7 +36,7 @@
     <elements xsi:type="measure:Measure" xmi:id="_x2bLcB1REemwg4NgOjaKeA" name="Temperature">
       <units xmi:id="_-9i9QB1SEemwg4NgOjaKeA" name="celsius" symbol="°C"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_SGwCwB1TEemwg4NgOjaKeA" name="Area">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_SGwCwB1TEemwg4NgOjaKeA" name="Area" symbol="A">
       <units xmi:id="_TfYCkB1TEemwg4NgOjaKeA" name="squareMillimetre" rateDividend="1.0E-6" symbol="mm²"/>
       <units xmi:id="_bXi4sB1TEemwg4NgOjaKeA" name="squareCentimetre" rateDividend="1.0E-4" symbol="cm²"/>
       <units xmi:id="_cz3FsB1TEemwg4NgOjaKeA" name="squareDecimetre" rateDividend="0.01" symbol="dm²"/>
@@ -45,7 +45,7 @@
       <units xmi:id="_f9o6EB1TEemwg4NgOjaKeA" name="squareKilometre" rateDividend="1000000.0" symbol="km²"/>
       <terms xmi:id="_fxALgB8wEemH1tWVVVMmqg" exponent="2" unit="_5oYPYB1SEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_vk8mIB1TEemwg4NgOjaKeA" name="Volume">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_vk8mIB1TEemwg4NgOjaKeA" name="Volume" symbol="V">
       <units xmi:id="_wqf48B1TEemwg4NgOjaKeA" name="cubicMillimetre" rateDividend="1.0E-9" symbol="mm³"/>
       <units xmi:id="_0vv3EB1TEemwg4NgOjaKeA" name="cubicCentimetre" rateDividend="1.0E-6" symbol="cm³"/>
       <units xmi:id="_1outgB1TEemwg4NgOjaKeA" name="cubicDecimetre" rateDividend="0.001" symbol="dm³"/>
@@ -63,22 +63,22 @@
       <terms xmi:id="_FNbJsB8xEemH1tWVVVMmqg" unit="_5oYPYB1SEemwg4NgOjaKeA"/>
       <terms xmi:id="_FhD3YB8xEemH1tWVVVMmqg" exponent="-1" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_M00kMB1VEemwg4NgOjaKeA" name="Acceleration">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_M00kMB1VEemwg4NgOjaKeA" name="Acceleration" symbol="a">
       <units xmi:id="_RelkoB1VEemwg4NgOjaKeA" name="metrePerSecondSquared" symbol="m/s²"/>
       <terms xmi:id="_LD3_sB8xEemH1tWVVVMmqg" unit="_0T0TkB1UEemwg4NgOjaKeA"/>
       <terms xmi:id="_Lcc3wB8xEemH1tWVVVMmqg" exponent="-1" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_ZFoOgB1VEemwg4NgOjaKeA" name="Momentum">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_ZFoOgB1VEemwg4NgOjaKeA" name="Momentum" symbol="J">
       <units xmi:id="_GFfI8B1WEemwg4NgOjaKeA" name="kilogramMetrePerSecond" symbol="kg*m/s"/>
       <terms xmi:id="_XBiEgB8xEemH1tWVVVMmqg" unit="_C8XYsB1SEemwg4NgOjaKeA"/>
       <terms xmi:id="_XWqnAB8xEemH1tWVVVMmqg" unit="_0T0TkB1UEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_mq7mkB1VEemwg4NgOjaKeA" name="Force">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_mq7mkB1VEemwg4NgOjaKeA" name="Force" symbol="F">
       <units xmi:id="_oibTsB1VEemwg4NgOjaKeA" name="newton" symbol="N"/>
       <terms xmi:id="_nzfl0B8xEemH1tWVVVMmqg" unit="_C8XYsB1SEemwg4NgOjaKeA"/>
       <terms xmi:id="_oRnFMB8xEemH1tWVVVMmqg" unit="_RelkoB1VEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_9__osB16Eemwg4NgOjaKeA" name="Work">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_9__osB16Eemwg4NgOjaKeA" name="Work" symbol="W">
       <units xmi:id="_CbRhMB17Eemwg4NgOjaKeA" name="joule" symbol="J"/>
       <units xmi:id="_3ab0gB17Eemwg4NgOjaKeA" name="kilojoule" rateDividend="1000.0" symbol="kJ"/>
       <units xmi:id="_7IsO8B17Eemwg4NgOjaKeA" name="megajoule" rateDividend="1000000.0" symbol="MJ"/>
@@ -87,57 +87,57 @@
       <terms xmi:id="_tFj8YB8xEemH1tWVVVMmqg" unit="_oibTsB1VEemwg4NgOjaKeA"/>
       <terms xmi:id="_3S5TEB8xEemH1tWVVVMmqg" unit="_5oYPYB1SEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_JySLAB17Eemwg4NgOjaKeA" name="Power">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_JySLAB17Eemwg4NgOjaKeA" name="Power" symbol="P">
       <units xmi:id="_aIb6EB17Eemwg4NgOjaKeA" name="watt" symbol="W"/>
       <units xmi:id="_DGLC4B18Eemwg4NgOjaKeA" name="kilowatt" rateDividend="1000.0" symbol="kW"/>
       <units xmi:id="_D6JdgB18Eemwg4NgOjaKeA" name="megawatt" rateDividend="1000000.0" symbol="MW"/>
       <terms xmi:id="_DfGKMB8yEemH1tWVVVMmqg" unit="_CbRhMB17Eemwg4NgOjaKeA"/>
       <terms xmi:id="_OngpEB8yEemH1tWVVVMmqg" exponent="-1" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_LI-4MB17Eemwg4NgOjaKeA" name="Frequency">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_LI-4MB17Eemwg4NgOjaKeA" name="Frequency" symbol="f">
       <units xmi:id="_NGpewB17Eemwg4NgOjaKeA" name="hertz" symbol="Hz"/>
       <units xmi:id="_QHuDEB17Eemwg4NgOjaKeA" name="kilohertz" rateDividend="1000.0" symbol="kHz"/>
       <units xmi:id="_RefBsB17Eemwg4NgOjaKeA" name="megahertz" rateDividend="1000000.0" symbol="Mhz"/>
       <units xmi:id="_TAni0B17Eemwg4NgOjaKeA" name="gigahertz" rateDividend="1.0E9" symbol="Ghz"/>
       <terms xmi:id="_VasNEB8yEemH1tWVVVMmqg" exponent="-1" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_4TREgB18Eemwg4NgOjaKeA" name="Pressure">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_4TREgB18Eemwg4NgOjaKeA" name="Pressure" symbol="p">
       <units xmi:id="_8oFIoB18Eemwg4NgOjaKeA" name="pascal" symbol="Pa"/>
       <units xmi:id="__unbwB18Eemwg4NgOjaKeA" name="hectopascal" rateDividend="100.0" symbol="hPa"/>
       <terms xmi:id="_ZaOkwB8yEemH1tWVVVMmqg" unit="_oibTsB1VEemwg4NgOjaKeA"/>
       <terms xmi:id="_cHZVoB8yEemH1tWVVVMmqg" exponent="-1" unit="_eD5KMB1TEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_khxagB19Eemwg4NgOjaKeA" name="Density">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_khxagB19Eemwg4NgOjaKeA" name="Density" symbol="ρ">
       <units xmi:id="_lgklEB19Eemwg4NgOjaKeA" name="kilogramPerCubicMetre" symbol="kg/m³"/>
       <units xmi:id="_rOuasB19Eemwg4NgOjaKeA" name="gramPerCubicCentimetre" rateDividend="1000.0" symbol="g/cm³"/>
       <terms xmi:id="_rlYGkB8yEemH1tWVVVMmqg" unit="_C8XYsB1SEemwg4NgOjaKeA"/>
       <terms xmi:id="_r53v4B8yEemH1tWVVVMmqg" exponent="-1" unit="_2zAIQB1TEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:Measure" xmi:id="_Vtka4B80EemH1tWVVVMmqg" name="ElectricCurrent">
+    <elements xsi:type="measure:Measure" xmi:id="_Vtka4B80EemH1tWVVVMmqg" name="ElectricCurrent" symbol="I">
       <units xmi:id="_wsXjoB80EemH1tWVVVMmqg" name="milliampere" rateDividend="0.001" symbol="mA"/>
       <units xmi:id="_O-NKcB81EemH1tWVVVMmqg" name="ampere" symbol="A"/>
     </elements>
-    <elements xsi:type="measure:Measure" xmi:id="_K9bcoB81EemH1tWVVVMmqg" name="ThermodynamicTemperature">
+    <elements xsi:type="measure:Measure" xmi:id="_K9bcoB81EemH1tWVVVMmqg" name="ThermodynamicTemperature" symbol="T">
       <units xmi:id="_NFjmwB81EemH1tWVVVMmqg" name="kelvin" symbol="K"/>
     </elements>
-    <elements xsi:type="measure:Measure" xmi:id="_X4EHEB81EemH1tWVVVMmqg" name="AmountOfSubstance">
+    <elements xsi:type="measure:Measure" xmi:id="_X4EHEB81EemH1tWVVVMmqg" name="AmountOfSubstance" symbol="n">
       <units xmi:id="_Zd74sB81EemH1tWVVVMmqg" name="mol" symbol="mol"/>
     </elements>
-    <elements xsi:type="measure:Measure" xmi:id="_eFbBMB81EemH1tWVVVMmqg" name="LuminousIntensity">
+    <elements xsi:type="measure:Measure" xmi:id="_eFbBMB81EemH1tWVVVMmqg" name="LuminousIntensity" symbol="L">
       <units xmi:id="_flGEMB81EemH1tWVVVMmqg" name="candela" symbol="cd"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_1MUEQB81EemH1tWVVVMmqg" name="ElectricCharge">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_1MUEQB81EemH1tWVVVMmqg" name="ElectricCharge" symbol="Q">
       <units xmi:id="_32iO0B81EemH1tWVVVMmqg" name="coulomb" symbol="C"/>
       <terms xmi:id="_7OzyMB81EemH1tWVVVMmqg" unit="_O-NKcB81EemH1tWVVVMmqg"/>
       <terms xmi:id="_6tAFoB81EemH1tWVVVMmqg" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_kXwsgB82EemH1tWVVVMmqg" name="ElectricPotential">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_kXwsgB82EemH1tWVVVMmqg" name="ElectricPotential" symbol="U">
       <units xmi:id="_ly8REB82EemH1tWVVVMmqg" name="volt" symbol="V"/>
       <units xmi:id="_XbIhMB86EemH1tWVVVMmqg" name="kilovolt" rateDividend="1000.0" symbol="kV"/>
       <terms xmi:id="_EgRhEB83EemH1tWVVVMmqg" unit="_CbRhMB17Eemwg4NgOjaKeA"/>
       <terms xmi:id="_E5IF8B83EemH1tWVVVMmqg" exponent="-1" unit="_32iO0B81EemH1tWVVVMmqg"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_MeJWkB83EemH1tWVVVMmqg" name="Capacitance">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_MeJWkB83EemH1tWVVVMmqg" name="Capacitance" symbol="C">
       <units xmi:id="_QoAH4B83EemH1tWVVVMmqg" name="pikofarad" rateDividend="1.0E-12" symbol="pF"/>
       <units xmi:id="_TlB5sB83EemH1tWVVVMmqg" name="nanofarad" rateDividend="1.0E-9" symbol="nF"/>
       <units xmi:id="_T90NIB83EemH1tWVVVMmqg" name="microfarad" rateDividend="1.0E-6" symbol="μF"/>
@@ -145,7 +145,7 @@
       <terms xmi:id="_hRg30B83EemH1tWVVVMmqg" unit="_32iO0B81EemH1tWVVVMmqg"/>
       <terms xmi:id="_k2TNMB83EemH1tWVVVMmqg" exponent="-1" unit="_ly8REB82EemH1tWVVVMmqg"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_C2EXIB85EemH1tWVVVMmqg" name="ElectricalResistance">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_C2EXIB85EemH1tWVVVMmqg" name="ElectricalResistance" symbol="R">
       <units xmi:id="_GsrcUB85EemH1tWVVVMmqg" name="microohm" rateDividend="1.0E-6" symbol="μΩ"/>
       <units xmi:id="_LK-MkB85EemH1tWVVVMmqg" name="milliohm" rateDividend="0.001" symbol="mΩ"/>
       <units xmi:id="_MpgAEB85EemH1tWVVVMmqg" name="ohm" symbol="Ω"/>
@@ -156,13 +156,13 @@
       <units xmi:id="_fn_qYB85EemH1tWVVVMmqg" name="siemens" symbol="S"/>
       <terms xmi:id="_hssGAB85EemH1tWVVVMmqg" exponent="-1" unit="_MpgAEB85EemH1tWVVVMmqg"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_qhYOwB85EemH1tWVVVMmqg" name="MagneticFlux">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_qhYOwB85EemH1tWVVVMmqg" name="MagneticFlux" symbol="Φ">
       <units xmi:id="_tCx0gB85EemH1tWVVVMmqg" name="weber" symbol="Wb"/>
       <terms xmi:id="_zfxGEB85EemH1tWVVVMmqg" unit="_ly8REB82EemH1tWVVVMmqg"/>
       <terms xmi:id="_z3IdMB85EemH1tWVVVMmqg" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
     </elements>
     <elements xsi:type="measure:DerivedMeasure" xmi:id="_5RraUB85EemH1tWVVVMmqg" name="MagneticFluxDensity">
-      <units xmi:id="_7U6dYB85EemH1tWVVVMmqg" name="tesla" symbol="T"/>
+      <units xmi:id="_7U6dYB85EemH1tWVVVMmqg" name="tesla" symbol="B"/>
       <terms xmi:id="_IqxrQB86EemH1tWVVVMmqg" unit="_tCx0gB85EemH1tWVVVMmqg"/>
       <terms xmi:id="_JEhoAB86EemH1tWVVVMmqg" exponent="-1" unit="_eD5KMB1TEemwg4NgOjaKeA"/>
     </elements>
@@ -171,7 +171,7 @@
       <terms xmi:id="_jClsgB86EemH1tWVVVMmqg" unit="_tCx0gB85EemH1tWVVVMmqg"/>
       <terms xmi:id="_jXkeAB86EemH1tWVVVMmqg" exponent="-1" unit="_O-NKcB81EemH1tWVVVMmqg"/>
     </elements>
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_wsFoEB86EemH1tWVVVMmqg" name="Illuminance">
+    <elements xsi:type="measure:DerivedMeasure" xmi:id="_wsFoEB86EemH1tWVVVMmqg" name="Illuminance" symbol="">
       <units xmi:id="_x8b1oB86EemH1tWVVVMmqg" name="lux" symbol="lx"/>
       <terms xmi:id="_1I2HQB86EemH1tWVVVMmqg" unit="_flGEMB81EemH1tWVVVMmqg"/>
       <terms xmi:id="_1cs3YB86EemH1tWVVVMmqg" exponent="-1" unit="_eD5KMB1TEemwg4NgOjaKeA"/>
