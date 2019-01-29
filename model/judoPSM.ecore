@@ -419,7 +419,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="unit" lowerBound="1"
           eType="#//measure/Unit"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EEnum" name="SystemUnitType">
+    <eClassifiers xsi:type="ecore:EEnum" name="DurationType">
       <eLiterals name="millisecond"/>
       <eLiterals name="second" value="1"/>
       <eLiterals name="minute" value="2"/>
@@ -429,9 +429,9 @@
       <eLiterals name="month" value="6" literal="month"/>
       <eLiterals name="year" value="7"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="SystemUnit" eSuperTypes="#//measure/Unit">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="systemUnitType" lowerBound="1"
-          eType="#//measure/SystemUnitType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DurationUnit" eSuperTypes="#//measure/Unit">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="unitType" lowerBound="1"
+          eType="#//measure/DurationType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="DerivedMeasure" eSuperTypes="#//measure/Measure">
       <eStructuralFeatures xsi:type="ecore:EReference" name="terms" lowerBound="1"
