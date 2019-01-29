@@ -1,0 +1,9 @@
+@cached
+operation EXPR!TimestampAdditionExpression getInputExpression() : EXPR!Expression {
+    return self.timestamp;
+}
+
+@cached
+operation EXPR!TimestampAdditionExpression getLambdaExpressions() : Collection {
+    return Set{self.duration};
+}

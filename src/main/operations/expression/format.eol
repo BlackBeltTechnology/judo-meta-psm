@@ -295,34 +295,7 @@ operation EXPR!SwitchCase toString() : String {
 }
 
 @cached
-operation EXPR!IntegerSwitchExpression toString() : String {
-    var defaultExpr = "";
-    if (self.defaultExpression.isDefined()) {
-        defaultExpr = " default " + self.defaultExpression.toString();
-    }
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
-}
-
-@cached
-operation EXPR!DecimalSwitchExpression toString() : String {
-    var defaultExpr = "";
-    if (self.defaultExpression.isDefined()) {
-        defaultExpr = " default " + self.defaultExpression.toString();
-    }
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
-}
-
-@cached
-operation EXPR!StringSwitchExpression toString() : String {
-    var defaultExpr = "";
-    if (self.defaultExpression.isDefined()) {
-        defaultExpr = " default " + self.defaultExpression.toString();
-    }
-    return "(case" + self.cases.collect(c | c.toString()).concat(" ") + defaultExpr + ")";
-}
-
-@cached
-operation EXPR!EnumerationSwitchExpression toString() : String {
+operation EXPR!SwitchExpression toString() : String {
     var defaultExpr = "";
     if (self.defaultExpression.isDefined()) {
         defaultExpr = " default " + self.defaultExpression.toString();
@@ -352,7 +325,7 @@ operation EXPR!Instance toString() : String {
 
 @cached
 operation EXPR!CustomData toString() : String {
-    return "custom";
+    return self.value.toString();
 }
 
 @cached
@@ -368,4 +341,29 @@ operation EXPR!MeasuredDecimal toString() {
 @cached
 operation EXPR!MeasuredInteger toString() {
     return self.value.toString() + " [" + self.unitName + "]";
+}
+
+@cached
+operation EXPR!DateAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!TimestampAttribute toString() {
+    return self.objectExpression.toString() + "." + self.attributeName;
+}
+
+@cached
+operation EXPR!Date toString() : String {
+    return self.value.toString();
+}
+
+@cached
+operation EXPR!Timestamp toString() : String {
+    return self.value.toString();
+}
+
+@cached
+operation EXPR!TimestampAdditionExpression toString() : String {
+    return "(" + self.timestamp.toString() + " " + self.operator + " " + self.duration.toString() + ")";
 }

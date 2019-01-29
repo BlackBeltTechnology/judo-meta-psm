@@ -7,7 +7,7 @@ context EXPR!ElementName {
     }
     
     // object type with name defined by ElementName must exists in the namespace
-    constraint ObjectTypeIsValid {
+    critique ObjectTypeIsValid {
         guard: self.satisfiesAll("NamespaceIsValid")
         
         check: self.get().isDefined()
