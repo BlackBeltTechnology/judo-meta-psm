@@ -33,7 +33,7 @@ operation EXPR!MeasuredDecimal isMeasured() : Boolean {
 }
 
 @cached
-operation EXPR!ElementName getMeasure() : JUDOPSM!Measure {
+operation EXPR!MeasureName getMeasure() : JUDOPSM!Measure {
     return self.getNamespace().elements.selectOne(m | m.name = self.name);
 }
 
@@ -141,3 +141,7 @@ operation EXPR!MeasuredInteger getUnit() {
     }
 }
 
+@cached
+operation getDurationMeasure() : JUDOPSM!Measure {
+    return JUDOPSM!Measure.all.selectOne(m | m.units.selectOne(u | u.isValidDurationUnit()).isDefined());
+}

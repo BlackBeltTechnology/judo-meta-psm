@@ -1,6 +1,6 @@
 context EXPR!TimestampAdditionExpression {
     constraint Resolved {
-        guard: self.duration.satisfiesAll("Resolved")
+        guard: self.timestamp.satisfiesAll("Resolved") and self.duration.satisfiesAll("Resolved")
     
         check: self.duration.isMeasured()
         message: "Duration is not measured: " + self.duration.toString()
@@ -73,5 +73,28 @@ context EXPR!SwitchCase {
         
         check: self.expression.isKindOf(EXPR!TimestampExpression)
         message: "Type of switch case expression is not timestamp (expression type): " + self.expression.toString()
+    }
+}
+
+context EXPR!Timestamp {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!Date {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!TimestampDifferenceExpression {
+    constraint Resolved {
+        guard: self.startTimestamp.satisfiesAll("Resolved") and self.endTimestamp.satisfiesAll("Resolved")
+    
+        check: self.isMeasured() and self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty() 
+        message: "Difference of timestamps is not duration"
     }
 }

@@ -9,18 +9,26 @@ operation JUDOPSM!Primitive isTimestamp() : Boolean {
 }
 
 @cached
+operation JUDOPSM!Unit isValidDurationUnit() : Boolean {
+    return false;
+}
+
+@cached
+operation JUDOPSM!DurationUnit isValidDurationUnit() : Boolean {
+    return self.unitType == JUDOPSM!DurationType#millisecond
+        or self.unitType == JUDOPSM!DurationType#second
+        or self.unitType == JUDOPSM!DurationType#minute
+        or self.unitType == JUDOPSM!DurationType#hour
+        or self.unitType == JUDOPSM!DurationType#day
+        or self.unitType == JUDOPSM!DurationType#week;
+}
+
+@cached
 operation EXPR!TimestampAdditionExpression hasValidDurationUnit() : Boolean {
     var unit = self.duration.getUnit();
     if (not unit.isDefined() or not unit.isKindOf(JUDOPSM!DurationUnit)) {
         return false;
     }
     
-    var unitType = unit.unitType;
-    
-    return unitType == JUDOPSM!DurationType#millisecond
-        or unitType == JUDOPSM!DurationType#second
-        or unitType == JUDOPSM!DurationType#minute
-        or unitType == JUDOPSM!DurationType#hour
-        or unitType == JUDOPSM!DurationType#day
-        or unitType == JUDOPSM!DurationType#week;
+    return unit.isValidDurationUnit();
 }

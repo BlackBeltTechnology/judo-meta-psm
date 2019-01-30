@@ -156,7 +156,7 @@ operation EXPR!RoundExpression toString() : String {
 
 @cached
 operation EXPR!DecimalAritmeticExpression toString() : String {
-    return self.left.toString() + " " + self.operator + " " + self.right.toString();
+    return "(" + self.left.toString() + " " + self.operator + " " + self.right.toString() + ")";
 }
 
 @cached
@@ -366,4 +366,9 @@ operation EXPR!Timestamp toString() : String {
 @cached
 operation EXPR!TimestampAdditionExpression toString() : String {
     return "(" + self.timestamp.toString() + " " + self.operator + " " + self.duration.toString() + ")";
+}
+
+@cached
+operation EXPR!TimestampDifferenceExpression toString() : String {
+    return "(" + self.endTimestamp.toString() + " - " + self.startTimestamp.toString() + ")";
 }

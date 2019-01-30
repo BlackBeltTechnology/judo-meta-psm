@@ -7,3 +7,18 @@ operation EXPR!TimestampAdditionExpression getInputExpression() : EXPR!Expressio
 operation EXPR!TimestampAdditionExpression getLambdaExpressions() : Collection {
     return Set{self.duration};
 }
+
+@cached
+operation EXPR!TimestampDifferenceExpression toString() : String {
+    return Set{self.startTimestamp, self.endTimestamp};
+}
+
+@cached
+operation EXPR!TimestampDifferenceExpression isMeasured() : Boolean {
+    return true;
+}
+
+@cached
+operation EXPR!TimestampDifferenceExpression getBaseMeasures() : Map {
+    return Map{getDurationMeasure()=1};
+}
