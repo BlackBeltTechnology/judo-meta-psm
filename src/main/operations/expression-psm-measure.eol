@@ -1,4 +1,28 @@
 @cached
+operation EXPR!NumericAttribute isMeasured() : Boolean {
+    var attributeType = self.getAttributeType();
+    if (attributeType.isDefined()) {
+        return attributeType.isMeasured();
+    } else {
+        return false;
+    }
+}
+
+@cached
+operation EXPR!NumericAttribute getUnit() {
+    if (self.isMeasured()) {
+        var attributeType = self.getAttributeType();
+        if (attributeType.isDefined()) {
+            return attributeType.getUnit();
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+@cached
 operation EXPR!MeasuredInteger isMeasured() : Boolean {
     return true;
 }

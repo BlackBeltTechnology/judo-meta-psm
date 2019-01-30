@@ -1,0 +1,26 @@
+@cached
+operation JUDOPSM!Primitive isDate() : Boolean {
+    return self.isKindOf(JUDOPSM!DateType);
+}
+
+@cached
+operation JUDOPSM!Primitive isTimestamp() : Boolean {
+    return self.isKindOf(JUDOPSM!TimestampType);
+}
+
+@cached
+operation EXPR!TimestampAdditionExpression hasValidDurationUnit() : Boolean {
+    var unit = self.duration.getUnit();
+    if (not unit.isDefined() or not unit.isKindOf(JUDOPSM!DurationUnit)) {
+        return false;
+    }
+    
+    var unitType = unit.unitType;
+    
+    return unitType == JUDOPSM!DurationType#millisecond
+        or unitType == JUDOPSM!DurationType#second
+        or unitType == JUDOPSM!DurationType#minute
+        or unitType == JUDOPSM!DurationType#hour
+        or unitType == JUDOPSM!DurationType#day
+        or unitType == JUDOPSM!DurationType#week;
+}

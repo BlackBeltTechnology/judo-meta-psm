@@ -2,7 +2,7 @@ context EXPR!MeasuredInteger {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured()
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of integer constant is invalid: " + self.toString()
     }
     
@@ -18,7 +18,7 @@ context EXPR!MeasuredDecimal {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured()
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of decimal constant is invalid: " + self.toString()
     }
     
@@ -34,7 +34,7 @@ context EXPR!IntegerAttribute {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved")
         
-        check: not self.isMeasured() or self.getBaseMeasures().isDefined()
+        check: not self.isMeasured() or (self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty())
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -43,7 +43,7 @@ context EXPR!DecimalAttribute {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved")
         
-        check: not self.isMeasured() or self.getBaseMeasures().isDefined()
+        check: not self.isMeasured() or (self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty())
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -96,7 +96,7 @@ context EXPR!IntegerOppositeExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -105,7 +105,7 @@ context EXPR!DecimalOppositeExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -114,7 +114,7 @@ context EXPR!IntegerAggregatedExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -123,7 +123,7 @@ context EXPR!DecimalAggregatedExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -132,7 +132,7 @@ context EXPR!IntegerOppositeExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -141,7 +141,7 @@ context EXPR!RoundExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -150,7 +150,7 @@ context EXPR!IntegerOppositeExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.expression.satisfiesAll("MeasureIsValid")
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -159,7 +159,7 @@ context EXPR!IntegerSwitchExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.cases.select(c | not c.expression.satisfiesAll("MeasureIsValid")).size() == 0 and (not self.defaultExpression.isDefined() or self.defaultExpression.satisfiesAll("MeasureIsValid"))
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -168,7 +168,7 @@ context EXPR!DecimalSwitchExpression {
     constraint MeasureIsValid {
         guard: self.satisfiesAll("Resolved") and self.isMeasured() and self.cases.select(c | not c.expression.satisfiesAll("MeasureIsValid")).size() == 0 and (not self.defaultExpression.isDefined() or self.defaultExpression.satisfiesAll("MeasureIsValid"))
         
-        check: self.getBaseMeasures().isDefined()
+        check: self.getBaseMeasures().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure of expression is invalid: " + self.toString()
     }
 }
@@ -177,7 +177,7 @@ context EXPR!NumericExpression {
     constraint MeasureOfStandaloneExpressionIsDefined {
         guard: self.satisfiesAll("Resolved") and self.isStandalone() and self.isMeasured()
         
-        check: self.getMeasure().isDefined()
+        check: self.getMeasure().isDefined() and not self.getBaseMeasures().isEmpty()
         message: "Measure is not defined for standalone expression: " + self.toString()
     }
 }

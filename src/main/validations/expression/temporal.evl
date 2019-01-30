@@ -1,5 +1,5 @@
 context EXPR!TimestampAdditionExpression {
-    critique Resolved { // TODO - fix on ASM
+    constraint Resolved {
         guard: self.duration.satisfiesAll("Resolved")
     
         check: self.duration.isMeasured()

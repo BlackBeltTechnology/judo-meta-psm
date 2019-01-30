@@ -74,9 +74,17 @@ operation JUDOPSM!ReferenceTypedElement getTarget() : JUDOPSM!EntityType {
     return self.target;
 }
 
+operation JUDOPSM!EntityType getAttribute(name: String) : JUDOPSM!Attribute {
+    return self.attributes.selectOne(r | r.name = name);
+}
+
+operation JUDOPSM!EntityType getProperty(name: String) : JUDOPSM!DataProperty {
+    return JUDOPSM!DataProperty.all.selectOne(p | p.name = name and p.owner = self);
+}
+
 operation JUDOPSM!EntityType getAttributeType(name: String) : JUDOPSM!Primitive {
-    var attr = self.attributes.selectOne(r | r.name = name);
-    var prop = JUDOPSM!DataProperty.all.selectOne(p | p.name = name and p.owner = self);
+    var attr = self.getAttribute(name);
+    var prop = self.getProperty(name);
     
     if (attr.isDefined()) {
         return attr.dataType;

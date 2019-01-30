@@ -1,41 +1,29 @@
 @cached
-operation EXPR!NumericAttribute isMeasured() : Boolean {
-    var attributeType = self.getAttributeType();
-    if (attributeType.isDefined()) {
-        return attributeType.isMeasured();
-    } else {
-        return false;
-    }
-}
-
-@cached
 operation EXPR!NumericAttribute getBaseMeasures() : Map {
 	if (self.isMeasured()) {
-		return self.getMeasure().getBaseMeasures();
+		var m = self.getMeasure();
+		if (m.isDefined()) {
+		    return m.getBaseMeasures();
+		} else {
+		    return Map{};
+		}
 	} else {
 		return Map{};
 	}
 }
 
 @cached
-operation EXPR!NumericAttribute getUnit() {
-    if (self.isMeasured()) {
-        var attributeType = self.getAttributeType();
-        if (attributeType.isDefined()) {
-            return attributeType.getUnit();
-        } else {
-            return null;
-        }
-    } else {
-        return null;
-    }
-}
-
-@cached
 operation EXPR!MeasuredDecimal getBaseMeasures() : Map {
     var unit = self.getUnit();
     if (unit.isDefined()) {
-        return unit.getMeasure().getBaseMeasures();
+        var m = unit.getMeasure();
+        if (m.isDefined()) {
+            return m.getBaseMeasures();
+        } else {
+            return Map{};
+        }
+    } else {
+        return Map{};
     }
 }
 
@@ -43,7 +31,14 @@ operation EXPR!MeasuredDecimal getBaseMeasures() : Map {
 operation EXPR!MeasuredInteger getBaseMeasures() : Map {
     var unit = self.getUnit();
     if (unit.isDefined()) {
-        return unit.getMeasure().getBaseMeasures();
+        var m = unit.getMeasure();
+        if (m.isDefined()) {
+            return m.getBaseMeasures();
+        } else {
+            return Map{};
+        }
+    } else {
+        return Map{};
     }
 }
 
