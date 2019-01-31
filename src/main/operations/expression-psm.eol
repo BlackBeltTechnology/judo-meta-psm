@@ -29,12 +29,12 @@ operation EXPR!ElementName getObjectType() : JUDOPSM!Type {
 
 @cached
 operation EXPR!ElementName getEnumerationType() : JUDOPSM!EntityType {
-    return self.getNamespace().elements.selectOne(t | t.name = self.name);
+    return self.getNamespace().elements.selectOne(t | t.name == self.name);
 }
 
 operation JUDOPSM!EntityType getReferenceType(name: String) : JUDOPSM!ReferenceTypedElement {
     var relation = self.relations.selectOne(r | r.name = name);
-    var navigation = JUDOPSM!NavigationProperty.all.selectOne(n | n.name = name and n.owner = self);
+    var navigation = JUDOPSM!NavigationProperty.all.selectOne(n | n.name == name and n.getEntityType() == self);
     
     if (relation.isDefined()) {
         return relation;
@@ -46,8 +46,8 @@ operation JUDOPSM!EntityType getReferenceType(name: String) : JUDOPSM!ReferenceT
         while (super.isDefined() and not super.isEmpty()) {
             var super2 = new Sequence;
             for (s in super) {
-                relation = s.relations.selectOne(r | r.name = name);
-                navigation = JUDOPSM!NavigationProperty.all.selectOne(n | n.name = name and n.owner = s);
+                relation = s.relations.selectOne(r | r.name == name);
+                navigation = JUDOPSM!NavigationProperty.all.selectOne(n | n.name == name and n.getEntityType() == s);
                 
                 if (relation.isDefined()) {
                     return relation;
@@ -79,7 +79,7 @@ operation JUDOPSM!EntityType getAttribute(name: String) : JUDOPSM!Attribute {
 }
 
 operation JUDOPSM!EntityType getProperty(name: String) : JUDOPSM!DataProperty {
-    return JUDOPSM!DataProperty.all.selectOne(p | p.name = name and p.owner = self);
+    return JUDOPSM!DataProperty.all.selectOne(p | p.name == name and p.getEntityType() == self);
 }
 
 operation JUDOPSM!EntityType getAttributeType(name: String) : JUDOPSM!Primitive {
@@ -96,8 +96,8 @@ operation JUDOPSM!EntityType getAttributeType(name: String) : JUDOPSM!Primitive 
         while (super.isDefined() and not super.isEmpty()) {
             var super2 = new Sequence;
             for (s in super) {
-                attr = s.attributes.selectOne(a | a.name = name);
-                prop = JUDOPSM!DataProperty.all.selectOne(p | p.name = name and p.owner = s);
+                attr = s.attributes.selectOne(a | a.name == name);
+                prop = JUDOPSM!DataProperty.all.selectOne(p | p.name == name and p.getEntityType() == s);
                 
                 if (attr.isDefined()) {
                     return attr.dataType;
