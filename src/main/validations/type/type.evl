@@ -1,10 +1,28 @@
 import "../../operations/type/_importType.eol";
 
-context JUDOPSM!Type {
+context JUDOPSM!Primitive {
 
-    // type names should be unique
+    // primitive type names should be unique
     critique TypeNamesAreUnique {
-        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name and t.type() <> self.type()).isDefined()
+        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        message: "Type name is not unique: " + self.name
+    }
+}
+
+context JUDOPSM!EntityType {
+
+    // entity type names should be unique
+    critique TypeNamesAreUnique {
+        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        message: "Type name is not unique: " + self.name
+    }
+}
+
+context JUDOPSM!TransferObjectType {
+
+    // transfer object type names should be unique
+    critique TypeNamesAreUnique {
+        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
 }
