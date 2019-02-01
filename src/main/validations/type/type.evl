@@ -4,7 +4,7 @@ context JUDOPSM!Type {
 
     // type names should be unique
     critique TypeNamesAreUnique {
-        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name and t.type() <> self.type()).isDefined()
         message: "Type name is not unique: " + self.name
     }
 }

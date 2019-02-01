@@ -14,10 +14,3 @@ context EXPR!TypeName {
         message: "Element named " + self.name + " not found in namespace " + self.namespace 
     }
 }
-
-context EXPR!VariableReference {
-    constraint Resolved {
-        check: true // TODO - check variable scope
-        message: "Invalid variable reference: " + self.variable.name
-    }
-}

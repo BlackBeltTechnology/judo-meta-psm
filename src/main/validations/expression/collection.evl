@@ -98,3 +98,12 @@ context EXPR!CastCollection {
         message: "Invalid casting type: " + self.collectionExpression.getObjectType().getName() + " is not supertype of " + self.getObjectType().getName()
     }
 }
+
+context EXPR!CollectionVariableReference {
+    constraint Resolved {
+        guard: self.variable.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined() // TODO - check is variable is visible from the scope of reference
+        message: "Type of variable " + self.variable.name + " is unknown"
+    }
+}

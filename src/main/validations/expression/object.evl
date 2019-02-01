@@ -37,7 +37,7 @@ context EXPR!ObjectVariableReference {
         guard: self.variable.satisfiesAll("Resolved")
         
         check: self.getObjectType().isDefined() // TODO - check is variable is visible from the scope of reference
-        message: "Type of variable " + self.variable.name + " is not visible in its scope"
+        message: "Type of variable " + self.variable.name + " is unknown"
     }
 }
 
