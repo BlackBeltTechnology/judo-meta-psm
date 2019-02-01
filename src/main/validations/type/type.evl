@@ -4,7 +4,7 @@ context JUDOPSM!Primitive {
 
     // primitive type names should be unique
     critique TypeNamesAreUnique {
-        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        check: not JUDOPSM!Primitive.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
 }
@@ -13,7 +13,7 @@ context JUDOPSM!EntityType {
 
     // entity type names should be unique
     critique TypeNamesAreUnique {
-        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        check: not JUDOPSM!EntityType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
 }
@@ -22,7 +22,7 @@ context JUDOPSM!TransferObjectType {
 
     // transfer object type names should be unique
     critique TypeNamesAreUnique {
-        check: not JUDOPSM!Type.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        check: not JUDOPSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
 }
