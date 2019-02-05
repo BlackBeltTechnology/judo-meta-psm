@@ -14,3 +14,14 @@ context EXPR!TypeName {
         message: "Element named " + self.name + " not found in namespace " + self.namespace 
     }
 }
+
+/*
+context EXPR!Expression {
+    constraint LambdaVariableIsValid {
+        guard: self.getLambdaContainer().isDefined()
+        
+        check: false
+        message: "EXPR: " + self.toString() + " ; base: " + self.getBaseExpression().toString() + "; lambda base container: " + self.getLambdaBaseContainer().toString()
+    }
+}
+*/

@@ -120,22 +120,22 @@ operation EXPR!CollectionFilterExpression toString() : String {
 }
 
 @cached
-operation EXPR!Integer toString() : String {
+operation EXPR!IntegerConstant toString() : String {
     return self.value.toString();
 }
 
 @cached
-operation EXPR!Decimal toString() : String {
+operation EXPR!DecimalConstant toString() : String {
     return self.value.toString();
 }
 
 @cached
-operation EXPR!Boolean toString() : String {
+operation EXPR!BooleanConstant toString() : String {
     return self.value.toString();
 }
 
 @cached
-operation EXPR!String toString() : String {
+operation EXPR!StringConstant toString() : String {
     return "'" + self.value + "'";
 }
 
@@ -354,12 +354,12 @@ operation EXPR!TimestampAttribute toString() {
 }
 
 @cached
-operation EXPR!Date toString() : String {
+operation EXPR!DateConstant toString() : String {
     return self.value.toString();
 }
 
 @cached
-operation EXPR!Timestamp toString() : String {
+operation EXPR!TimestampConstant toString() : String {
     return self.value.toString();
 }
 

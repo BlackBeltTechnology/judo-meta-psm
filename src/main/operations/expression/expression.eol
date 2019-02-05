@@ -17,13 +17,13 @@ operation EXPR!Expression getVariableName() : String {
 }
 
 @cached
-operation EXPR!Expression getInputExpression() : EXPR!Expression {
+operation EXPR!Expression getInputExpression() : Collection {
     return null;
 }
 
 @cached
 operation EXPR!Expression getLambdaExpressions() : Collection {
-    return new Set;
+    return Set{};
 }
 
 @cached
@@ -41,6 +41,34 @@ operation getStandaloneExpressions() : Collection {
     return EXPR!Expression.all.select(e | EXPR!Expression.all.excluding(e).selectOne(e2 | e2.getOperands().contains(e)).isUndefined());
 }
 
+@cached
 operation EXPR!Expression isStandalone() : Boolean {
     return getStandaloneExpressions().contains(self);
+}
+
+@cached
+operation EXPR!Expression getLambdaContainer() : EXPR!Expression {
+    return EXPR!Expression.all.selectOne(e | e.getLambdaExpressions().contains(self));
+}
+
+@cached
+operation EXPR!Expression getLambdaBaseContainer() : EXPR!Expression {
+    var container = self.getLambdaContainer();
+    if (not container.isDefined()) {
+        return null;
+    } else if (container.isDefined() and not container.getLambdaContainer().isDefined()) {
+        return container;
+    } else {
+        return container.getLambdaBaseContainer();
+    }
+}
+
+@cached
+operation EXPR!Expression getBaseExpression() : EXPR!Expression {
+    var input = self.getInputExpression();
+    if (input.isDefined()) {
+        return input.getBaseExpression();
+    } else {
+        return self;
+    }
 }

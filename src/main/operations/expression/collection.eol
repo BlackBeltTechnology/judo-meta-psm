@@ -113,34 +113,6 @@ operation EXPR!CastCollection getObjectType() {
     return self.elementName.getObjectType();
 }
 
-/*@cached
-operation EXPR!IntegerAggregatedExpression getAttributeType() {
-    var collectionType = self.collectionExpression.getObjectType();
-    
-    if (collectionType.isDefined()) {
-        return collectionType.getAttributeType(self.attributeName);
-    } else {
-        return null;
-    }
-}
-
-@cached
-operation EXPR!DecimalAggregatedExpression getAttributeType() {
-    var collectionType = self.collectionExpression.getObjectType();
-    
-    if (collectionType.isDefined()) {
-        return collectionType.getAttributeType(self.attributeName);
-    } else {
-        return null;
-    }
-} */
-
-/*operation EXPR!CollectionFilterExpression getVariables() : Collection {
-    var variables = self.getOperands().getVariables().clone();
-    variables.add(self);
-    return variables;
-} */
-
 @cached
 operation EXPR!CollectionFilterExpression getInputExpression() : EXPR!CollectionExpression {
     return self.collectionExpression;

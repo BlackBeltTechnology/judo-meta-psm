@@ -109,12 +109,12 @@ operation EXPR!DecimalSwitchExpression isMeasured() : Boolean {
 }
 
 @cached
-operation EXPR!Integer isMeasured() : Boolean {
+operation EXPR!IntegerConstant isMeasured() : Boolean {
     return false;
 }
 
 @cached
-operation EXPR!Decimal isMeasured() : Boolean {
+operation EXPR!DecimalConstant isMeasured() : Boolean {
     return false;
 }
 
@@ -276,12 +276,12 @@ operation EXPR!DecimalSwitchExpression getBaseMeasures() : Map {
 }
 
 @cached
-operation EXPR!Integer getBaseMeasures() : Map {
+operation EXPR!IntegerConstant getBaseMeasures() : Map {
     return Map{};
 }
 
 @cached
-operation EXPR!Decimal getBaseMeasures() : Map {
+operation EXPR!DecimalConstant getBaseMeasures() : Map {
     return Map{};
 }
 

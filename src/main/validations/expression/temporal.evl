@@ -76,14 +76,14 @@ context EXPR!SwitchCase {
     }
 }
 
-context EXPR!Timestamp {
+context EXPR!TimestampConstant {
     constraint Resolved {
         check: true
         message: "Unsupported expression: " + self.toString()
     }
 }
 
-context EXPR!Date {
+context EXPR!DateConstant {
     constraint Resolved {
         check: true
         message: "Unsupported expression: " + self.toString()
