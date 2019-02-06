@@ -1,7 +1,7 @@
 @namespace(uri="http://blackbelt.hu/judo/meta/psm", prefix="psm")
 package psm;
 
-import "http://blackbelt.hu/judo/meta/expression/custom";
+import "http://blackbelt.hu/judo/meta/expression/temporal";
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/namespace", prefix="namespace")
 package namespace {
@@ -30,20 +30,20 @@ package type {
   abstract class Primitive extends DataType {
   }
 
-  class CustomType extends Primitive {
+  class CustomType extends FlatPrimitiveType {
   }
 
-  class StringType extends Primitive {
+  class StringType extends FlatPrimitiveType {
     attr int[1] maxLength;
     attr RegExp regExp;
   }
 
-  class NumericType extends Primitive {
+  class NumericType extends FlatPrimitiveType {
     attr int[1] precision;
     attr int[1] scale;
   }
 
-  class BooleanType extends Primitive {
+  class BooleanType extends FlatPrimitiveType {
   }
 
   class EnumerationType extends Primitive {
@@ -55,12 +55,13 @@ package type {
   }
 
   abstract class Type extends namespace.NamespaceElement {
+    val expression.TypeName typeName;
   }
 
   abstract class DataType extends Type {
   }
 
-  class XMLType extends Primitive {
+  class XMLType extends FlatPrimitiveType {
     attr XmlNamespace[1] xmlNamespace;
     attr XmlElement[1] xmlElement;
   }
@@ -72,17 +73,20 @@ package type {
 
   datatype RegExp : java.lang.String;
 
-  class PasswordType extends Primitive {
+  class PasswordType extends FlatPrimitiveType {
   }
 
   datatype XmlNamespace : java.lang.String;
 
   datatype XmlElement : java.lang.String;
 
-  class DateType extends Primitive {
+  class DateType extends FlatPrimitiveType {
   }
 
-  class TimestampType extends Primitive {
+  class TimestampType extends FlatPrimitiveType {
+  }
+
+  abstract class FlatPrimitiveType extends Primitive {
   }
 
 }
@@ -428,51 +432,42 @@ package authorization {
 package measure {
   class Measure extends namespace.NamespaceElement {
     val Unit[*] units;
-    val MeasureDefinition[*] definitions;
+    attr String symbol;
+    ref expression.MeasureName measureName;
   }
 
   class MeasuredType extends type.NumericType {
-    transient derived ref Measure[1] measure;
     ref Unit[1] storeUnit;
   }
 
   class Unit extends namespace.NamedElement {
     attr double[1] rateDividend = "1";
     attr double[1] rateDivisor = "1";
-    attr String sign;
-  }
-
-  class MeasureDefinition {
-    val MeasureDefinitionTerm[+] terms;
-    attr double[1] rateDividend = "1";
-    attr double[1] rateDivisor = "1";
+    attr String symbol;
   }
 
   class MeasureDefinitionTerm {
     attr int[1] exponent = 1;
-    ref Measure[1] measure;
+    ref Unit[1] unit;
   }
 
-  enum SecondBasedDuration {
+  enum DurationType {
     millisecond = 0;
     second = 1;
     minute = 2;
     hour = 3;
     day = 4;
     week = 5;
+    month = 6;
+    year = 7;
   }
 
-  enum MonthBasedDuration {
-    month = 0;
-    year = 1;
+  class DurationUnit extends Unit {
+    attr DurationType[1] unitType;
   }
 
-  class SecondBasedDurationUnit extends Unit {
-    attr SecondBasedDuration[1] durationType;
-  }
-
-  class MonthBasedDurationUnit extends Unit {
-    attr MonthBasedDuration[1] durationType;
+  class DerivedMeasure extends Measure {
+    val MeasureDefinitionTerm[+] terms;
   }
 
 }

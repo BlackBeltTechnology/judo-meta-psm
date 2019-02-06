@@ -79,13 +79,22 @@ public interface TypePackage extends EPackage {
 	int TYPE__NAME = NamespacePackage.NAMESPACE_ELEMENT__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE__TYPE_NAME = NamespacePackage.NAMESPACE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_FEATURE_COUNT = NamespacePackage.NAMESPACE_ELEMENT_FEATURE_COUNT + 0;
+	int TYPE_FEATURE_COUNT = NamespacePackage.NAMESPACE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Type</em>' class.
@@ -114,6 +123,15 @@ public interface TypePackage extends EPackage {
 	 * @ordered
 	 */
 	int DATA_TYPE__NAME = TYPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_TYPE__TYPE_NAME = TYPE__TYPE_NAME;
 
 	/**
 	 * The number of structural features of the '<em>Data Type</em>' class.
@@ -153,6 +171,15 @@ public interface TypePackage extends EPackage {
 	int PRIMITIVE__NAME = DATA_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE__TYPE_NAME = DATA_TYPE__TYPE_NAME;
+
+	/**
 	 * The number of structural features of the '<em>Primitive</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -188,6 +215,15 @@ public interface TypePackage extends EPackage {
 	 * @ordered
 	 */
 	int FLAT_PRIMITIVE_TYPE__NAME = PRIMITIVE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FLAT_PRIMITIVE_TYPE__TYPE_NAME = PRIMITIVE__TYPE_NAME;
 
 	/**
 	 * The number of structural features of the '<em>Flat Primitive Type</em>' class.
@@ -227,6 +263,15 @@ public interface TypePackage extends EPackage {
 	int CUSTOM_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CUSTOM_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
+
+	/**
 	 * The number of structural features of the '<em>Custom Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -262,6 +307,15 @@ public interface TypePackage extends EPackage {
 	 * @ordered
 	 */
 	int STRING_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRING_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Max Length</b></em>' attribute.
@@ -319,6 +373,15 @@ public interface TypePackage extends EPackage {
 	int NUMERIC_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NUMERIC_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Precision</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -374,6 +437,15 @@ public interface TypePackage extends EPackage {
 	int BOOLEAN_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOLEAN_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
+
+	/**
 	 * The number of structural features of the '<em>Boolean Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -409,6 +481,15 @@ public interface TypePackage extends EPackage {
 	 * @ordered
 	 */
 	int ENUMERATION_TYPE__NAME = PRIMITIVE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUMERATION_TYPE__TYPE_NAME = PRIMITIVE__TYPE_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Members</b></em>' containment reference list.
@@ -501,6 +582,15 @@ public interface TypePackage extends EPackage {
 	 * @ordered
 	 */
 	int XML_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int XML_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Xml Namespace</b></em>' attribute.
@@ -604,6 +694,15 @@ public interface TypePackage extends EPackage {
 	int PASSWORD_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PASSWORD_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
+
+	/**
 	 * The number of structural features of the '<em>Password Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -641,6 +740,15 @@ public interface TypePackage extends EPackage {
 	int DATE_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATE_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
+
+	/**
 	 * The number of structural features of the '<em>Date Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -676,6 +784,15 @@ public interface TypePackage extends EPackage {
 	 * @ordered
 	 */
 	int TIMESTAMP_TYPE__NAME = FLAT_PRIMITIVE_TYPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIMESTAMP_TYPE__TYPE_NAME = FLAT_PRIMITIVE_TYPE__TYPE_NAME;
 
 	/**
 	 * The number of structural features of the '<em>Timestamp Type</em>' class.
@@ -871,6 +988,17 @@ public interface TypePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getType();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.type.Type#getTypeName <em>Type Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Type Name</em>'.
+	 * @see hu.blackbelt.judo.meta.psm.type.Type#getTypeName()
+	 * @see #getType()
+	 * @generated
+	 */
+	EReference getType_TypeName();
 
 	/**
 	 * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.type.DataType <em>Data Type</em>}'.
@@ -1169,6 +1297,14 @@ public interface TypePackage extends EPackage {
 		 * @generated
 		 */
 		EClass TYPE = eINSTANCE.getType();
+
+		/**
+		 * The meta object literal for the '<em><b>Type Name</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TYPE__TYPE_NAME = eINSTANCE.getType_TypeName();
 
 		/**
 		 * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.type.impl.DataTypeImpl <em>Data Type</em>}' class.

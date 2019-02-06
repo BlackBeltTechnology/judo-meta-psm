@@ -11,8 +11,6 @@ import hu.blackbelt.judo.meta.psm.data.RelationCountConstraint;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 
-import hu.blackbelt.judo.meta.psm.expression.ElementName;
-
 import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 
 import hu.blackbelt.judo.meta.psm.type.impl.TypeImpl;
@@ -49,7 +47,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getDataProperties <em>Data Properties</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getNavigationProperties <em>Navigation Properties</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getOperations <em>Operations</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.data.impl.EntityTypeImpl#getElementName <em>Element Name</em>}</li>
  * </ul>
  *
  * @generated
@@ -144,16 +141,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 	 * @ordered
 	 */
 	protected EList<BoundOperation> operations;
-
-	/**
-	 * The cached value of the '{@link #getElementName() <em>Element Name</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getElementName()
-	 * @generated
-	 * @ordered
-	 */
-	protected ElementName elementName;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -284,49 +271,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ElementName getElementName() {
-		return elementName;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetElementName(ElementName newElementName, NotificationChain msgs) {
-		ElementName oldElementName = elementName;
-		elementName = newElementName;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DataPackage.ENTITY_TYPE__ELEMENT_NAME, oldElementName, newElementName);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setElementName(ElementName newElementName) {
-		if (newElementName != elementName) {
-			NotificationChain msgs = null;
-			if (elementName != null)
-				msgs = ((InternalEObject)elementName).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DataPackage.ENTITY_TYPE__ELEMENT_NAME, null, msgs);
-			if (newElementName != null)
-				msgs = ((InternalEObject)newElementName).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DataPackage.ENTITY_TYPE__ELEMENT_NAME, null, msgs);
-			msgs = basicSetElementName(newElementName, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DataPackage.ENTITY_TYPE__ELEMENT_NAME, newElementName, newElementName));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -342,8 +286,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 				return ((InternalEList<?>)getNavigationProperties()).basicRemove(otherEnd, msgs);
 			case DataPackage.ENTITY_TYPE__OPERATIONS:
 				return ((InternalEList<?>)getOperations()).basicRemove(otherEnd, msgs);
-			case DataPackage.ENTITY_TYPE__ELEMENT_NAME:
-				return basicSetElementName(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -372,8 +314,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 				return getNavigationProperties();
 			case DataPackage.ENTITY_TYPE__OPERATIONS:
 				return getOperations();
-			case DataPackage.ENTITY_TYPE__ELEMENT_NAME:
-				return getElementName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -418,9 +358,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 				getOperations().clear();
 				getOperations().addAll((Collection<? extends BoundOperation>)newValue);
 				return;
-			case DataPackage.ENTITY_TYPE__ELEMENT_NAME:
-				setElementName((ElementName)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -457,9 +394,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 			case DataPackage.ENTITY_TYPE__OPERATIONS:
 				getOperations().clear();
 				return;
-			case DataPackage.ENTITY_TYPE__ELEMENT_NAME:
-				setElementName((ElementName)null);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -488,8 +422,6 @@ public class EntityTypeImpl extends TypeImpl implements EntityType {
 				return navigationProperties != null && !navigationProperties.isEmpty();
 			case DataPackage.ENTITY_TYPE__OPERATIONS:
 				return operations != null && !operations.isEmpty();
-			case DataPackage.ENTITY_TYPE__ELEMENT_NAME:
-				return elementName != null;
 		}
 		return super.eIsSet(featureID);
 	}

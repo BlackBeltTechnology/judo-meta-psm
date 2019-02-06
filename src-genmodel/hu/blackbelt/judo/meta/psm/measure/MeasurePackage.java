@@ -145,6 +145,15 @@ public interface MeasurePackage extends EPackage {
 	int MEASURED_TYPE__NAME = TypePackage.NUMERIC_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASURED_TYPE__TYPE_NAME = TypePackage.NUMERIC_TYPE__TYPE_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Precision</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -80,6 +80,15 @@ public interface DataPackage extends EPackage {
 	int ENTITY_TYPE__NAME = TypePackage.TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENTITY_TYPE__TYPE_NAME = TypePackage.TYPE__TYPE_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Super Entity Types</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -152,22 +161,13 @@ public interface DataPackage extends EPackage {
 	int ENTITY_TYPE__OPERATIONS = TypePackage.TYPE_FEATURE_COUNT + 7;
 
 	/**
-	 * The feature id for the '<em><b>Element Name</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ENTITY_TYPE__ELEMENT_NAME = TypePackage.TYPE_FEATURE_COUNT + 8;
-
-	/**
 	 * The number of structural features of the '<em>Entity Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ENTITY_TYPE_FEATURE_COUNT = TypePackage.TYPE_FEATURE_COUNT + 9;
+	int ENTITY_TYPE_FEATURE_COUNT = TypePackage.TYPE_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Entity Type</em>' class.
@@ -699,17 +699,6 @@ public interface DataPackage extends EPackage {
 	EReference getEntityType_Operations();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getElementName <em>Element Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Element Name</em>'.
-	 * @see hu.blackbelt.judo.meta.psm.data.EntityType#getElementName()
-	 * @see #getEntityType()
-	 * @generated
-	 */
-	EReference getEntityType_ElementName();
-
-	/**
 	 * Returns the meta object for class '{@link hu.blackbelt.judo.meta.psm.data.Relation <em>Relation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -974,14 +963,6 @@ public interface DataPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ENTITY_TYPE__OPERATIONS = eINSTANCE.getEntityType_Operations();
-
-		/**
-		 * The meta object literal for the '<em><b>Element Name</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference ENTITY_TYPE__ELEMENT_NAME = eINSTANCE.getEntityType_ElementName();
 
 		/**
 		 * The meta object literal for the '{@link hu.blackbelt.judo.meta.psm.data.impl.RelationImpl <em>Relation</em>}' class.

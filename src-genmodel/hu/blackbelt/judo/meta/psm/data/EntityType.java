@@ -5,8 +5,6 @@ package hu.blackbelt.judo.meta.psm.data;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 
-import hu.blackbelt.judo.meta.psm.expression.ElementName;
-
 import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 
 import hu.blackbelt.judo.meta.psm.type.Type;
@@ -30,7 +28,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getDataProperties <em>Data Properties</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getNavigationProperties <em>Navigation Properties</em>}</li>
  *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getOperations <em>Operations</em>}</li>
- *   <li>{@link hu.blackbelt.judo.meta.psm.data.EntityType#getElementName <em>Element Name</em>}</li>
  * </ul>
  *
  * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getEntityType()
@@ -175,31 +172,5 @@ public interface EntityType extends Type {
 	 * @generated
 	 */
 	EList<BoundOperation> getOperations();
-
-	/**
-	 * Returns the value of the '<em><b>Element Name</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Element Name</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Element Name</em>' containment reference.
-	 * @see #setElementName(ElementName)
-	 * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getEntityType_ElementName()
-	 * @model containment="true"
-	 * @generated
-	 */
-	ElementName getElementName();
-
-	/**
-	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.data.EntityType#getElementName <em>Element Name</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Element Name</em>' containment reference.
-	 * @see #getElementName()
-	 * @generated
-	 */
-	void setElementName(ElementName value);
 
 } // EntityType

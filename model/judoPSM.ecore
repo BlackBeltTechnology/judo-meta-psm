@@ -41,7 +41,10 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordinal" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamespaceElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamespaceElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="typeName" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//TypeName"
+          containment="true"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
     <eClassifiers xsi:type="ecore:EClass" name="XMLType" eSuperTypes="#//type/FlatPrimitiveType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" lowerBound="1"
@@ -82,8 +85,6 @@
           upperBound="-1" eType="#//derived/NavigationProperty" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/BoundOperation" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="elementName" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ElementName"
-          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/ReferenceTypedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"

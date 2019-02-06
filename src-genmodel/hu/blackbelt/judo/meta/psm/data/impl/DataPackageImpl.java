@@ -393,15 +393,6 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getEntityType_ElementName() {
-		return (EReference)entityTypeEClass.getEStructuralFeatures().get(8);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getRelation() {
 		return relationEClass;
 	}
@@ -578,7 +569,6 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 		createEReference(entityTypeEClass, ENTITY_TYPE__DATA_PROPERTIES);
 		createEReference(entityTypeEClass, ENTITY_TYPE__NAVIGATION_PROPERTIES);
 		createEReference(entityTypeEClass, ENTITY_TYPE__OPERATIONS);
-		createEReference(entityTypeEClass, ENTITY_TYPE__ELEMENT_NAME);
 
 		relationEClass = createEClass(RELATION);
 		createEAttribute(relationEClass, RELATION__CASCADE_DELETE);
@@ -631,7 +621,6 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 		TypePackage theTypePackage = (TypePackage)EPackage.Registry.INSTANCE.getEPackage(TypePackage.eNS_URI);
 		DerivedPackage theDerivedPackage = (DerivedPackage)EPackage.Registry.INSTANCE.getEPackage(DerivedPackage.eNS_URI);
 		ServicePackage theServicePackage = (ServicePackage)EPackage.Registry.INSTANCE.getEPackage(ServicePackage.eNS_URI);
-		ExpressionPackage theExpressionPackage = (ExpressionPackage)EPackage.Registry.INSTANCE.getEPackage(ExpressionPackage.eNS_URI);
 		NamespacePackage theNamespacePackage = (NamespacePackage)EPackage.Registry.INSTANCE.getEPackage(NamespacePackage.eNS_URI);
 
 		// Create type parameters
@@ -658,7 +647,6 @@ public class DataPackageImpl extends EPackageImpl implements DataPackage {
 		initEReference(getEntityType_DataProperties(), theDerivedPackage.getDataProperty(), null, "dataProperties", null, 0, -1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntityType_NavigationProperties(), theDerivedPackage.getNavigationProperty(), null, "navigationProperties", null, 0, -1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getEntityType_Operations(), theServicePackage.getBoundOperation(), null, "operations", null, 0, -1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityType_ElementName(), theExpressionPackage.getElementName(), null, "elementName", null, 0, 1, EntityType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(relationEClass, Relation.class, "Relation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRelation_CascadeDelete(), ecorePackage.getEBoolean(), "cascadeDelete", "false", 1, 1, Relation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

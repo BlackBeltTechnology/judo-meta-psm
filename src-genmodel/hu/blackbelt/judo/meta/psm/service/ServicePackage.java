@@ -80,6 +80,15 @@ public interface ServicePackage extends EPackage {
 	int TRANSFER_OBJECT_TYPE__NAME = TypePackage.DATA_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRANSFER_OBJECT_TYPE__TYPE_NAME = TypePackage.DATA_TYPE__TYPE_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Representation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -391,6 +400,15 @@ public interface ServicePackage extends EPackage {
 	int MAPPED_TRANSFER_OBJECT_TYPE__NAME = TRANSFER_OBJECT_TYPE__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MAPPED_TRANSFER_OBJECT_TYPE__TYPE_NAME = TRANSFER_OBJECT_TYPE__TYPE_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Representation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -645,6 +663,15 @@ public interface ServicePackage extends EPackage {
 	 * @ordered
 	 */
 	int UNMAPPED_TRANSFER_OBJECT_TYPE__NAME = TRANSFER_OBJECT_TYPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type Name</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNMAPPED_TRANSFER_OBJECT_TYPE__TYPE_NAME = TRANSFER_OBJECT_TYPE__TYPE_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Representation</b></em>' reference.

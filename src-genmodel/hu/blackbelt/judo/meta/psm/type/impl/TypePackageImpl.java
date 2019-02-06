@@ -516,6 +516,15 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getType_TypeName() {
+		return (EReference)typeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDataType() {
 		return dataTypeEClass;
 	}
@@ -686,6 +695,7 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 		createEAttribute(enumerationMemberEClass, ENUMERATION_MEMBER__ORDINAL);
 
 		typeEClass = createEClass(TYPE);
+		createEReference(typeEClass, TYPE__TYPE_NAME);
 
 		dataTypeEClass = createEClass(DATA_TYPE);
 
@@ -736,6 +746,7 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 
 		// Obtain other dependent packages
 		NamespacePackage theNamespacePackage = (NamespacePackage)EPackage.Registry.INSTANCE.getEPackage(NamespacePackage.eNS_URI);
+		ExpressionPackage theExpressionPackage = (ExpressionPackage)EPackage.Registry.INSTANCE.getEPackage(ExpressionPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -779,6 +790,7 @@ public class TypePackageImpl extends EPackageImpl implements TypePackage {
 		initEAttribute(getEnumerationMember_Ordinal(), ecorePackage.getEInt(), "ordinal", null, 1, 1, EnumerationMember.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getType_TypeName(), theExpressionPackage.getTypeName(), null, "typeName", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataTypeEClass, DataType.class, "DataType", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
