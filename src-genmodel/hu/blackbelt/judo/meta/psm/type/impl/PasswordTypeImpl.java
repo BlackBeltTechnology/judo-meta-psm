@@ -14,24 +14,24 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class PasswordTypeImpl extends PrimitiveImpl implements PasswordType {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected PasswordTypeImpl() {
-        super();
-    }
+public class PasswordTypeImpl extends FlatPrimitiveTypeImpl implements PasswordType {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PasswordTypeImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return TypePackage.Literals.PASSWORD_TYPE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return TypePackage.Literals.PASSWORD_TYPE;
+	}
 
 } //PasswordTypeImpl

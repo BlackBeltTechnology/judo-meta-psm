@@ -13,30 +13,30 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface ConstraintFactory extends EFactory {
-    /**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    ConstraintFactory eINSTANCE = hu.blackbelt.judo.meta.psm.constraint.impl.ConstraintFactoryImpl.init();
+	/**
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	ConstraintFactory eINSTANCE = hu.blackbelt.judo.meta.psm.constraint.impl.ConstraintFactoryImpl.init();
 
-    /**
-     * Returns a new object of class '<em>Invariant Constraint</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Invariant Constraint</em>'.
-     * @generated
-     */
-    InvariantConstraint createInvariantConstraint();
+	/**
+	 * Returns a new object of class '<em>Invariant Constraint</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Invariant Constraint</em>'.
+	 * @generated
+	 */
+	InvariantConstraint createInvariantConstraint();
 
-    /**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
-    ConstraintPackage getConstraintPackage();
+	/**
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
+	ConstraintPackage getConstraintPackage();
 
 } //ConstraintFactory

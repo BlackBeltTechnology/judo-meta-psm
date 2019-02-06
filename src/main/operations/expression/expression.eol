@@ -3,72 +3,95 @@ operation EXPR!SwitchCase getSwitchExpression() {
     return EXPR!SwitchExpression.all.selectOne(e | e.cases.contains(self));
 }
 
+// get operands of an expression
 @cached
-operation EXPR!Expression getVariableName() : String {
-    if (self.isKindOf(EXPR!Variable)) {
-        return self.name;
-    } else {
-        var operandVariable = self.getOperands().selectOne(o | o.getVariableName().isDefined());
-        if (operandVariable.isDefined()) {
-            return operandVariable.getVariableName();
-        }
-    }
-    return null;
+operation EXPR!Expression getOperands() : Collection {
+    return Set{};
 }
 
+// get collection of lambda expressions where the given object/collection expression is used as input variable
 @cached
-operation EXPR!Expression getInputExpression() : Collection {
-    return null;
-}
-
-@cached
-operation EXPR!Expression getLambdaExpressions() : Collection {
+operation EXPR!ReferenceExpression getLambdaExpressions() : Collection {
     return Set{};
 }
 
 @cached
-operation EXPR!Expression getOperands() : Collection {
-    var operands = self.getLambdaExpressions().clone();
-    var inputExpression = self.getInputExpression();
-    if (inputExpression.isDefined()) {
-        operands.add(inputExpression);
-    }
-    return operands;
+operation EXPR!Expression isComplete() : Boolean {
+    return not EXPR!Expression.all.selectOne(e | e.getOperands().contains(self) or (e.isKindOf(EXPR!ReferenceExpression) and e.getLambdaExpressions().contains(self))).isDefined();
 }
 
 @cached
-operation getStandaloneExpressions() : Collection {
-    return EXPR!Expression.all.select(e | EXPR!Expression.all.excluding(e).selectOne(e2 | e2.getOperands().contains(e)).isUndefined());
+operation EXPR!Expression isFragment() : Boolean {
+    return not EXPR!Expression.all.selectOne(e | e.getOperands().contains(self)).isDefined();
 }
 
 @cached
-operation EXPR!Expression isStandalone() : Boolean {
-    return getStandaloneExpressions().contains(self);
+operation EXPR!Expression isLambdaExpression() : Boolean {
+    return self.getLambdaContainer().isDefined();
 }
 
 @cached
-operation EXPR!Expression getLambdaContainer() : EXPR!Expression {
-    return EXPR!Expression.all.selectOne(e | e.getLambdaExpressions().contains(self));
+operation EXPR!Expression getLambdaContainer() : EXPR!ReferenceExpression {
+    return EXPR!ReferenceExpression.all.selectOne(e | e.getLambdaExpressions().contains(self));
 }
 
 @cached
-operation EXPR!Expression getLambdaBaseContainer() : EXPR!Expression {
-    var container = self.getLambdaContainer();
-    if (not container.isDefined()) {
-        return null;
-    } else if (container.isDefined() and not container.getLambdaContainer().isDefined()) {
-        return container;
-    } else {
-        return container.getLambdaBaseContainer();
-    }
-}
-
-@cached
-operation EXPR!Expression getBaseExpression() : EXPR!Expression {
-    var input = self.getInputExpression();
-    if (input.isDefined()) {
-        return input.getBaseExpression();
+operation EXPR!Expression getFragment() : EXPR!Expression {
+    var fragment = EXPR!Expression.all.selectOne(e | e.getOperands().contains(self));
+    if (fragment.isDefined()) {
+        return fragment.getFragment();
     } else {
         return self;
     }
+}
+
+@cached
+operation EXPR!Expression getBaseExpressions() : Collection {
+    if (self.isKindOf(EXPR!AggregatedExpression)) {
+        return Set{self};
+    } else {
+	    var inputs = self.getOperands();
+	    if (not inputs.isEmpty()) {
+	        return inputs.collect(i | i.getBaseExpressions()).flatten();
+	    } else {
+	        return Set{self};
+	    }
+    }
+}
+
+@cached
+operation EXPR!Expression getLambdaBasePath() : Collection {
+    if (not self.isLambdaExpression()) {
+        return Set{};
+    }
+    
+    var result = new Set;
+    
+    var containers = Set{self.getLambdaContainer()};
+    var basePathEntries = containers.collect(e | e.getOperands()).flatten();
+    for (bpe in basePathEntries) {
+        var navigationSources = Set{bpe};
+        
+        while (not navigationSources.isEmpty()) {
+            var nextNavigationSources = new Set;
+            for (ns in navigationSources) {
+                if (ns.isKindOf(EXPR!ReferenceExpression)) {
+                    result.add(ns);
+                    if (ns.getOperands().isEmpty()) {
+                        var lambdaContainer = ns.getFragment().getLambdaContainer();
+                        if (lambdaContainer.isDefined()) {
+                            nextNavigationSources.add(lambdaContainer);
+                        }
+                    } else {
+                        nextNavigationSources.addAll(ns.getOperands());
+                    }
+                } else {
+                    result.add(ns);
+                }
+            }
+            navigationSources = nextNavigationSources;
+        }
+    }
+    
+    return result;
 }

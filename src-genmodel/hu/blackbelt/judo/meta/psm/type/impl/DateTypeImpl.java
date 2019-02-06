@@ -14,24 +14,24 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class DateTypeImpl extends PrimitiveImpl implements DateType {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected DateTypeImpl() {
-        super();
-    }
+public class DateTypeImpl extends FlatPrimitiveTypeImpl implements DateType {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DateTypeImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return TypePackage.Literals.DATE_TYPE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return TypePackage.Literals.DATE_TYPE;
+	}
 
 } //DateTypeImpl

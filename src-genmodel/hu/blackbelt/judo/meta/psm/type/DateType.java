@@ -13,5 +13,5 @@ package hu.blackbelt.judo.meta.psm.type;
  * @model
  * @generated
  */
-public interface DateType extends Primitive {
+public interface DateType extends FlatPrimitiveType {
 } // DateType

@@ -14,15 +14,15 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
  * @generated
  */
 public class ExpressionResourceImpl extends XMIResourceImpl {
-    /**
-     * Creates an instance of the resource.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param uri the URI of the new resource.
-     * @generated
-     */
-    public ExpressionResourceImpl(URI uri) {
-        super(uri);
-    }
+	/**
+	 * Creates an instance of the resource.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param uri the URI of the new resource.
+	 * @generated
+	 */
+	public ExpressionResourceImpl(URI uri) {
+		super(uri);
+	}
 
 } //ExpressionResourceImpl

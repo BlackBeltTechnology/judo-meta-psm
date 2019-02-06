@@ -13,5 +13,5 @@ package hu.blackbelt.judo.meta.psm.type;
  * @model
  * @generated
  */
-public interface CustomType extends Primitive {
+public interface CustomType extends FlatPrimitiveType {
 } // CustomType

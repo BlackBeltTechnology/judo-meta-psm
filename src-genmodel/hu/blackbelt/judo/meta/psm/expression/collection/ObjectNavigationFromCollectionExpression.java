@@ -24,30 +24,30 @@ import hu.blackbelt.judo.meta.psm.expression.variable.ObjectVariable;
  * @generated
  */
 public interface ObjectNavigationFromCollectionExpression extends CollectionExpression, NavigationExpression, ObjectVariable {
-    /**
-     * Returns the value of the '<em><b>Collection Expression</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Collection Expression</em>' containment reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Collection Expression</em>' containment reference.
-     * @see #setCollectionExpression(CollectionExpression)
-     * @see hu.blackbelt.judo.meta.psm.expression.collection.CollectionPackage#getObjectNavigationFromCollectionExpression_CollectionExpression()
-     * @model containment="true" required="true"
-     * @generated
-     */
-    CollectionExpression getCollectionExpression();
+	/**
+	 * Returns the value of the '<em><b>Collection Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Collection Expression</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Collection Expression</em>' containment reference.
+	 * @see #setCollectionExpression(CollectionExpression)
+	 * @see hu.blackbelt.judo.meta.psm.expression.collection.CollectionPackage#getObjectNavigationFromCollectionExpression_CollectionExpression()
+	 * @model containment="true" required="true"
+	 * @generated
+	 */
+	CollectionExpression getCollectionExpression();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.expression.collection.ObjectNavigationFromCollectionExpression#getCollectionExpression <em>Collection Expression</em>}' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Collection Expression</em>' containment reference.
-     * @see #getCollectionExpression()
-     * @generated
-     */
-    void setCollectionExpression(CollectionExpression value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.expression.collection.ObjectNavigationFromCollectionExpression#getCollectionExpression <em>Collection Expression</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Collection Expression</em>' containment reference.
+	 * @see #getCollectionExpression()
+	 * @generated
+	 */
+	void setCollectionExpression(CollectionExpression value);
 
 } // ObjectNavigationFromCollectionExpression

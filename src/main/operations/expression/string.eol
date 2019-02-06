@@ -1,45 +1,45 @@
 @cached
-operation EXPR!Concatenate getLambdaExpressions() : Collection {
+operation EXPR!Concatenate getOperands() : Collection {
     return Set{self.left, self.right};
 }
 
 @cached
-operation EXPR!LowerCase getLambdaExpressions() : Collection {
+operation EXPR!LowerCase getOperands() : Collection {
     return Set{self.expression};
 }
 
 @cached
-operation EXPR!UpperCase getLambdaExpressions() : Collection {
+operation EXPR!UpperCase getOperands() : Collection {
     return Set{self.expression};
 }
 
 @cached
-operation EXPR!Length getLambdaExpressions() : Collection {
+operation EXPR!Length getOperands() : Collection {
     return Set{self.expression};
 }
 
 @cached
-operation EXPR!SubString getLambdaExpressions() : Collection {
+operation EXPR!SubString getOperands() : Collection {
     return Set{self.expression, self.position, self.length};
 }
 
 @cached
-operation EXPR!Position getLambdaExpressions() : Collection {
+operation EXPR!Position getOperands() : Collection {
     return Set{self.container, self.containment};
 }
 
 @cached
-operation EXPR!Replace getLambdaExpressions() : Collection {
+operation EXPR!Replace getOperands() : Collection {
     return Set{self.expression, self.pattern, self.replacement};
 }
 
 @cached
-operation EXPR!Trim getLambdaExpressions() : Collection {
+operation EXPR!Trim getOperands() : Collection {
     return Set{self.expression};
 }
 
 @cached
-operation EXPR!ConcatenateCollection getInputExpression() : EXPR!CollectionExpression {
+operation EXPR!ConcatenateCollection getOperands() : Collection {
     return self.collectionExpression;
 }
 
@@ -49,7 +49,7 @@ operation EXPR!ConcatenateCollection getLambdaExpressions() : Collection {
 }
 
 @cached
-operation EXPR!StringSwitchExpression getLambdaExpressions() : Collection {
+operation EXPR!StringSwitchExpression getOperands() : Collection {
     var operands = new Set;
     operands.addAll(self.cases.collect(c | c.condition));
     operands.addAll(self.cases.collect(c | c.expression));

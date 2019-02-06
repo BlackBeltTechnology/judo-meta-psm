@@ -13,39 +13,39 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface NamespaceFactory extends EFactory {
-    /**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    NamespaceFactory eINSTANCE = hu.blackbelt.judo.meta.psm.namespace.impl.NamespaceFactoryImpl.init();
+	/**
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	NamespaceFactory eINSTANCE = hu.blackbelt.judo.meta.psm.namespace.impl.NamespaceFactoryImpl.init();
 
-    /**
-     * Returns a new object of class '<em>Model</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Model</em>'.
-     * @generated
-     */
-    Model createModel();
+	/**
+	 * Returns a new object of class '<em>Model</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Model</em>'.
+	 * @generated
+	 */
+	Model createModel();
 
-    /**
-     * Returns a new object of class '<em>Package</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Package</em>'.
-     * @generated
-     */
-    Package createPackage();
+	/**
+	 * Returns a new object of class '<em>Package</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Package</em>'.
+	 * @generated
+	 */
+	Package createPackage();
 
-    /**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
-    NamespacePackage getNamespacePackage();
+	/**
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
+	NamespacePackage getNamespacePackage();
 
 } //NamespaceFactory

@@ -174,6 +174,21 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
+            uri="http://blackbelt.hu/judo/meta/psm/measure"
+            class="hu.blackbelt.judo.meta.psm.measure.MeasurePackage"
+            genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="measure"
+            class="hu.blackbelt.judo.meta.psm.measure.util.MeasureResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated judoPSM -->
+      <package
             uri="http://blackbelt.hu/judo/meta/expression"
             class="hu.blackbelt.judo.meta.psm.expression.ExpressionPackage"
             genModel="model/judoPSM.genmodel"/>
@@ -194,12 +209,26 @@
             genModel="model/judoPSM.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="constant"
+            class="hu.blackbelt.judo.meta.psm.expression.constant.util.ConstantResourceFactoryImpl"/>
+   </extension>
+
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
             uri="http://blackbelt.hu/judo/meta/expression/variable"
             class="hu.blackbelt.judo.meta.psm.expression.variable.VariablePackage"
             genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="variable"
+            class="hu.blackbelt.judo.meta.psm.expression.variable.util.VariableResourceFactoryImpl"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -210,12 +239,26 @@
             genModel="model/judoPSM.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="operator"
+            class="hu.blackbelt.judo.meta.psm.expression.operator.util.OperatorResourceFactoryImpl"/>
+   </extension>
+
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
             uri="http://blackbelt.hu/judo/meta/expression/numeric"
             class="hu.blackbelt.judo.meta.psm.expression.numeric.NumericPackage"
             genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="numeric"
+            class="hu.blackbelt.judo.meta.psm.expression.numeric.util.NumericResourceFactoryImpl"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -226,12 +269,26 @@
             genModel="model/judoPSM.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="logical"
+            class="hu.blackbelt.judo.meta.psm.expression.logical.util.LogicalResourceFactoryImpl"/>
+   </extension>
+
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
             uri="http://blackbelt.hu/judo/meta/expression/string"
             class="hu.blackbelt.judo.meta.psm.expression.string.StringPackage"
             genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="string"
+            class="hu.blackbelt.judo.meta.psm.expression.string.util.StringResourceFactoryImpl"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -242,12 +299,26 @@
             genModel="model/judoPSM.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="enumeration"
+            class="hu.blackbelt.judo.meta.psm.expression.enumeration.util.EnumerationResourceFactoryImpl"/>
+   </extension>
+
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
             uri="http://blackbelt.hu/judo/meta/expression/object"
             class="hu.blackbelt.judo.meta.psm.expression.object.ObjectPackage"
             genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="object"
+            class="hu.blackbelt.judo.meta.psm.expression.object.util.ObjectResourceFactoryImpl"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -258,12 +329,41 @@
             genModel="model/judoPSM.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="collection"
+            class="hu.blackbelt.judo.meta.psm.expression.collection.util.CollectionResourceFactoryImpl"/>
+   </extension>
+
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated judoPSM -->
       <package
             uri="http://blackbelt.hu/judo/meta/expression/custom"
             class="hu.blackbelt.judo.meta.psm.expression.custom.CustomPackage"
             genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="custom"
+            class="hu.blackbelt.judo.meta.psm.expression.custom.util.CustomResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated judoPSM -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/expression/temporal"
+            class="hu.blackbelt.judo.meta.psm.expression.temporal.TemporalPackage"
+            genModel="model/judoPSM.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated judoPSM -->
+      <parser
+            type="temporal"
+            class="hu.blackbelt.judo.meta.psm.expression.temporal.util.TemporalResourceFactoryImpl"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">

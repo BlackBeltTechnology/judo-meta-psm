@@ -10,11 +10,11 @@ operation EXPR!AttributeSelector getAttributeType() {
 }
 
 @cached
-operation EXPR!AttributeSelector getInputExpression() : EXPR!ObjectExpression {
-    return self.objectExpression;
+operation EXPR!AttributeSelector getOperands() : Collection {
+    return Set{self.objectExpression};
 }
 
 @cached
-operation EXPR!AggregatedExpression getInputExpression() : EXPR!CollectionExpression {
-    return self.collectionExpression;
+operation EXPR!AggregatedExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }

@@ -2,7 +2,6 @@
  */
 package hu.blackbelt.judo.meta.psm.expression.numeric;
 
-import hu.blackbelt.judo.meta.psm.expression.AttributeSelector;
 import hu.blackbelt.judo.meta.psm.expression.DecimalExpression;
 
 /**
@@ -15,5 +14,5 @@ import hu.blackbelt.judo.meta.psm.expression.DecimalExpression;
  * @model
  * @generated
  */
-public interface DecimalAttribute extends DecimalExpression, AttributeSelector {
+public interface DecimalAttribute extends DecimalExpression, NumericAttribute {
 } // DecimalAttribute

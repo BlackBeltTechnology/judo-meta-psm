@@ -20,30 +20,30 @@ package hu.blackbelt.judo.meta.psm.expression;
  * @generated
  */
 public interface NavigationExpression extends Expression {
-    /**
-     * Returns the value of the '<em><b>Reference Name</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Reference Name</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Reference Name</em>' attribute.
-     * @see #setReferenceName(String)
-     * @see hu.blackbelt.judo.meta.psm.expression.ExpressionPackage#getNavigationExpression_ReferenceName()
-     * @model required="true"
-     * @generated
-     */
-    String getReferenceName();
+	/**
+	 * Returns the value of the '<em><b>Reference Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Reference Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Reference Name</em>' attribute.
+	 * @see #setReferenceName(String)
+	 * @see hu.blackbelt.judo.meta.psm.expression.ExpressionPackage#getNavigationExpression_ReferenceName()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getReferenceName();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.expression.NavigationExpression#getReferenceName <em>Reference Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Reference Name</em>' attribute.
-     * @see #getReferenceName()
-     * @generated
-     */
-    void setReferenceName(String value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.expression.NavigationExpression#getReferenceName <em>Reference Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Reference Name</em>' attribute.
+	 * @see #getReferenceName()
+	 * @generated
+	 */
+	void setReferenceName(String value);
 
 } // NavigationExpression

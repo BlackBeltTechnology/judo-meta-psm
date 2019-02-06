@@ -21,30 +21,30 @@ import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
  * @generated
  */
 public interface UnboundOperation extends Operation, NamespaceElement {
-    /**
-     * Returns the value of the '<em><b>Input</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Input</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Input</em>' reference.
-     * @see #setInput(TransferObjectType)
-     * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getUnboundOperation_Input()
-     * @model
-     * @generated
-     */
-    TransferObjectType getInput();
+	/**
+	 * Returns the value of the '<em><b>Input</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Input</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Input</em>' reference.
+	 * @see #setInput(TransferObjectType)
+	 * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getUnboundOperation_Input()
+	 * @model
+	 * @generated
+	 */
+	TransferObjectType getInput();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.UnboundOperation#getInput <em>Input</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Input</em>' reference.
-     * @see #getInput()
-     * @generated
-     */
-    void setInput(TransferObjectType value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.UnboundOperation#getInput <em>Input</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Input</em>' reference.
+	 * @see #getInput()
+	 * @generated
+	 */
+	void setInput(TransferObjectType value);
 
 } // UnboundOperation

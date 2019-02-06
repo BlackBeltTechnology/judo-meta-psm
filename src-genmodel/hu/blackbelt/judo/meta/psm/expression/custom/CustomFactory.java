@@ -13,48 +13,39 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface CustomFactory extends EFactory {
-    /**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    CustomFactory eINSTANCE = hu.blackbelt.judo.meta.psm.expression.custom.impl.CustomFactoryImpl.init();
+	/**
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	CustomFactory eINSTANCE = hu.blackbelt.judo.meta.psm.expression.custom.impl.CustomFactoryImpl.init();
 
-    /**
-     * Returns a new object of class '<em>Attribute</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Attribute</em>'.
-     * @generated
-     */
-    CustomAttribute createCustomAttribute();
+	/**
+	 * Returns a new object of class '<em>Attribute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Attribute</em>'.
+	 * @generated
+	 */
+	CustomAttribute createCustomAttribute();
 
-    /**
-     * Returns a new object of class '<em>Variable Reference</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Variable Reference</em>'.
-     * @generated
-     */
-    CustomVariableReference createCustomVariableReference();
+	/**
+	 * Returns a new object of class '<em>Switch Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Switch Expression</em>'.
+	 * @generated
+	 */
+	CustomSwitchExpression createCustomSwitchExpression();
 
-    /**
-     * Returns a new object of class '<em>Switch Expression</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Switch Expression</em>'.
-     * @generated
-     */
-    CustomSwitchExpression createCustomSwitchExpression();
-
-    /**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
-    CustomPackage getCustomPackage();
+	/**
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
+	CustomPackage getCustomPackage();
 
 } //CustomFactory

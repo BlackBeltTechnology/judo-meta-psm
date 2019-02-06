@@ -54,18 +54,18 @@ operation EXPR!CastObject getObjectType() {
 }
 
 @cached
-operation EXPR!ObjectNavigationExpression getInputExpression() : EXPR!ObjectExpression {
-    return self.objectExpression;
+operation EXPR!ObjectNavigationExpression getOperands() : Collection {
+    return Set{self.objectExpression};
 }
 
 @cached
-operation EXPR!ObjectSelectorExpression getInputExpression() : EXPR!CollectionExpression {
-    return self.collectionExpression;
+operation EXPR!ObjectSelectorExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }
 
 @cached
-operation EXPR!ObjectFilterExpression getInputExpression() : EXPR!ObjectExpression {
-    return self.objectExpression;
+operation EXPR!ObjectFilterExpression getOperands() : Collection {
+    return Set{self.objectExpression};
 }
 
 @cached
@@ -74,6 +74,6 @@ operation EXPR!ObjectFilterExpression getLambdaExpressions() : Collection {
 }
 
 @cached
-operation EXPR!CastObject getInputExpression() : EXPR!ObjectExpression {
-    return self.objectExpression;
+operation EXPR!CastObject getOperands() : Collection {
+    return Set{self.objectExpression};
 }

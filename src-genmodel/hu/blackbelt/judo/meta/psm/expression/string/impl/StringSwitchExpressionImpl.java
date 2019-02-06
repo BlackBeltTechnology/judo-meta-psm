@@ -17,23 +17,23 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class StringSwitchExpressionImpl extends SwitchExpressionImpl implements StringSwitchExpression {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected StringSwitchExpressionImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected StringSwitchExpressionImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return StringPackage.Literals.STRING_SWITCH_EXPRESSION;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return StringPackage.Literals.STRING_SWITCH_EXPRESSION;
+	}
 
 } //StringSwitchExpressionImpl

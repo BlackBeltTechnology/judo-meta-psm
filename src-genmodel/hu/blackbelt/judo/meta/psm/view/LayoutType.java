@@ -18,224 +18,224 @@ import org.eclipse.emf.common.util.Enumerator;
  * @generated
  */
 public enum LayoutType implements Enumerator {
-    /**
-     * The '<em><b>HORIZONTAL</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #HORIZONTAL_VALUE
-     * @generated
-     * @ordered
-     */
-    HORIZONTAL(0, "HORIZONTAL", "HORIZONTAL"),
+	/**
+	 * The '<em><b>HORIZONTAL</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #HORIZONTAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	HORIZONTAL(0, "HORIZONTAL", "HORIZONTAL"),
 
-    /**
-     * The '<em><b>VERTICAL</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #VERTICAL_VALUE
-     * @generated
-     * @ordered
-     */
-    VERTICAL(1, "VERTICAL", "VERTICAL"),
+	/**
+	 * The '<em><b>VERTICAL</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #VERTICAL_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	VERTICAL(1, "VERTICAL", "VERTICAL"),
 
-    /**
-     * The '<em><b>TAB</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #TAB_VALUE
-     * @generated
-     * @ordered
-     */
-    TAB(2, "TAB", "TAB");
+	/**
+	 * The '<em><b>TAB</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #TAB_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	TAB(2, "TAB", "TAB");
 
-    /**
-     * The '<em><b>HORIZONTAL</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of '<em><b>HORIZONTAL</b></em>' literal object isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @see #HORIZONTAL
-     * @model
-     * @generated
-     * @ordered
-     */
-    public static final int HORIZONTAL_VALUE = 0;
+	/**
+	 * The '<em><b>HORIZONTAL</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>HORIZONTAL</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #HORIZONTAL
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int HORIZONTAL_VALUE = 0;
 
-    /**
-     * The '<em><b>VERTICAL</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of '<em><b>VERTICAL</b></em>' literal object isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @see #VERTICAL
-     * @model
-     * @generated
-     * @ordered
-     */
-    public static final int VERTICAL_VALUE = 1;
+	/**
+	 * The '<em><b>VERTICAL</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>VERTICAL</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #VERTICAL
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int VERTICAL_VALUE = 1;
 
-    /**
-     * The '<em><b>TAB</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of '<em><b>TAB</b></em>' literal object isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @see #TAB
-     * @model
-     * @generated
-     * @ordered
-     */
-    public static final int TAB_VALUE = 2;
+	/**
+	 * The '<em><b>TAB</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>TAB</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #TAB
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TAB_VALUE = 2;
 
-    /**
-     * An array of all the '<em><b>Layout Type</b></em>' enumerators.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private static final LayoutType[] VALUES_ARRAY =
-        new LayoutType[] {
-            HORIZONTAL,
-            VERTICAL,
-            TAB,
-        };
+	/**
+	 * An array of all the '<em><b>Layout Type</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static final LayoutType[] VALUES_ARRAY =
+		new LayoutType[] {
+			HORIZONTAL,
+			VERTICAL,
+			TAB,
+		};
 
-    /**
-     * A public read-only list of all the '<em><b>Layout Type</b></em>' enumerators.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public static final List<LayoutType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	/**
+	 * A public read-only list of all the '<em><b>Layout Type</b></em>' enumerators.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static final List<LayoutType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
-    /**
-     * Returns the '<em><b>Layout Type</b></em>' literal with the specified literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param literal the literal.
-     * @return the matching enumerator or <code>null</code>.
-     * @generated
-     */
-    public static LayoutType get(String literal) {
-        for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            LayoutType result = VALUES_ARRAY[i];
-            if (result.toString().equals(literal)) {
-                return result;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Returns the '<em><b>Layout Type</b></em>' literal with the specified literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param literal the literal.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
+	public static LayoutType get(String literal) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			LayoutType result = VALUES_ARRAY[i];
+			if (result.toString().equals(literal)) {
+				return result;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Returns the '<em><b>Layout Type</b></em>' literal with the specified name.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param name the name.
-     * @return the matching enumerator or <code>null</code>.
-     * @generated
-     */
-    public static LayoutType getByName(String name) {
-        for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            LayoutType result = VALUES_ARRAY[i];
-            if (result.getName().equals(name)) {
-                return result;
-            }
-        }
-        return null;
-    }
+	/**
+	 * Returns the '<em><b>Layout Type</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
+	public static LayoutType getByName(String name) {
+		for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+			LayoutType result = VALUES_ARRAY[i];
+			if (result.getName().equals(name)) {
+				return result;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Returns the '<em><b>Layout Type</b></em>' literal with the specified integer value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the integer value.
-     * @return the matching enumerator or <code>null</code>.
-     * @generated
-     */
-    public static LayoutType get(int value) {
-        switch (value) {
-            case HORIZONTAL_VALUE: return HORIZONTAL;
-            case VERTICAL_VALUE: return VERTICAL;
-            case TAB_VALUE: return TAB;
-        }
-        return null;
-    }
+	/**
+	 * Returns the '<em><b>Layout Type</b></em>' literal with the specified integer value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the integer value.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
+	public static LayoutType get(int value) {
+		switch (value) {
+			case HORIZONTAL_VALUE: return HORIZONTAL;
+			case VERTICAL_VALUE: return VERTICAL;
+			case TAB_VALUE: return TAB;
+		}
+		return null;
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private final int value;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final int value;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private final String name;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String name;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private final String literal;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private final String literal;
 
-    /**
-     * Only this class can construct instances.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private LayoutType(int value, String name, String literal) {
-        this.value = value;
-        this.name = name;
-        this.literal = literal;
-    }
+	/**
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private LayoutType(int value, String name, String literal) {
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public int getValue() {
-      return value;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getValue() {
+	  return value;
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getName() {
-      return name;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+	  return name;
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public String getLiteral() {
-      return literal;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLiteral() {
+	  return literal;
+	}
 
-    /**
-     * Returns the literal value of the enumerator, which is its string representation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public String toString() {
-        return literal;
-    }
-    
+	/**
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		return literal;
+	}
+	
 } //LayoutType

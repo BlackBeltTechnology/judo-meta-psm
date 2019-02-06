@@ -14,24 +14,24 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class BooleanTypeImpl extends PrimitiveImpl implements BooleanType {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected BooleanTypeImpl() {
-        super();
-    }
+public class BooleanTypeImpl extends FlatPrimitiveTypeImpl implements BooleanType {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BooleanTypeImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return TypePackage.Literals.BOOLEAN_TYPE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return TypePackage.Literals.BOOLEAN_TYPE;
+	}
 
 } //BooleanTypeImpl

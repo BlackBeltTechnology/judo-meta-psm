@@ -23,110 +23,110 @@ import org.eclipse.emf.ecore.util.Switch;
  * @generated
  */
 public class AuthenticationSwitch<T> extends Switch<T> {
-    /**
-     * The cached model package
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected static AuthenticationPackage modelPackage;
+	/**
+	 * The cached model package
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected static AuthenticationPackage modelPackage;
 
-    /**
-     * Creates an instance of the switch.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public AuthenticationSwitch() {
-        if (modelPackage == null) {
-            modelPackage = AuthenticationPackage.eINSTANCE;
-        }
-    }
+	/**
+	 * Creates an instance of the switch.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public AuthenticationSwitch() {
+		if (modelPackage == null) {
+			modelPackage = AuthenticationPackage.eINSTANCE;
+		}
+	}
 
-    /**
-     * Checks whether this is a switch for the given package.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param ePackage the package in question.
-     * @return whether this is a switch for the given package.
-     * @generated
-     */
-    @Override
-    protected boolean isSwitchFor(EPackage ePackage) {
-        return ePackage == modelPackage;
-    }
+	/**
+	 * Checks whether this is a switch for the given package.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param ePackage the package in question.
+	 * @return whether this is a switch for the given package.
+	 * @generated
+	 */
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
+		return ePackage == modelPackage;
+	}
 
-    /**
-     * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the first non-null result returned by a <code>caseXXX</code> call.
-     * @generated
-     */
-    @Override
-    protected T doSwitch(int classifierID, EObject theEObject) {
-        switch (classifierID) {
-            case AuthenticationPackage.PASSWORD_AUTHENTICATED_USER: {
-                PasswordAuthenticatedUser passwordAuthenticatedUser = (PasswordAuthenticatedUser)theEObject;
-                T result = casePasswordAuthenticatedUser(passwordAuthenticatedUser);
-                if (result == null) result = caseAuthenticatedUser(passwordAuthenticatedUser);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case AuthenticationPackage.AUTHENTICATED_USER: {
-                AuthenticatedUser authenticatedUser = (AuthenticatedUser)theEObject;
-                T result = caseAuthenticatedUser(authenticatedUser);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            default: return defaultCase(theEObject);
-        }
-    }
+	/**
+	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the first non-null result returned by a <code>caseXXX</code> call.
+	 * @generated
+	 */
+	@Override
+	protected T doSwitch(int classifierID, EObject theEObject) {
+		switch (classifierID) {
+			case AuthenticationPackage.PASSWORD_AUTHENTICATED_USER: {
+				PasswordAuthenticatedUser passwordAuthenticatedUser = (PasswordAuthenticatedUser)theEObject;
+				T result = casePasswordAuthenticatedUser(passwordAuthenticatedUser);
+				if (result == null) result = caseAuthenticatedUser(passwordAuthenticatedUser);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AuthenticationPackage.AUTHENTICATED_USER: {
+				AuthenticatedUser authenticatedUser = (AuthenticatedUser)theEObject;
+				T result = caseAuthenticatedUser(authenticatedUser);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			default: return defaultCase(theEObject);
+		}
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Password Authenticated User</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Password Authenticated User</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T casePasswordAuthenticatedUser(PasswordAuthenticatedUser object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Password Authenticated User</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Password Authenticated User</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePasswordAuthenticatedUser(PasswordAuthenticatedUser object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Authenticated User</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Authenticated User</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseAuthenticatedUser(AuthenticatedUser object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Authenticated User</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Authenticated User</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAuthenticatedUser(AuthenticatedUser object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch, but this is the last case anyway.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
-     * @generated
-     */
-    @Override
-    public T defaultCase(EObject object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch, but this is the last case anyway.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
+	 * @generated
+	 */
+	@Override
+	public T defaultCase(EObject object) {
+		return null;
+	}
 
 } //AuthenticationSwitch

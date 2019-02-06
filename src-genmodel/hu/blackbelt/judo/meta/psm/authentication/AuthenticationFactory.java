@@ -13,30 +13,30 @@ import org.eclipse.emf.ecore.EFactory;
  * @generated
  */
 public interface AuthenticationFactory extends EFactory {
-    /**
-     * The singleton instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    AuthenticationFactory eINSTANCE = hu.blackbelt.judo.meta.psm.authentication.impl.AuthenticationFactoryImpl.init();
+	/**
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	AuthenticationFactory eINSTANCE = hu.blackbelt.judo.meta.psm.authentication.impl.AuthenticationFactoryImpl.init();
 
-    /**
-     * Returns a new object of class '<em>Password Authenticated User</em>'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return a new object of class '<em>Password Authenticated User</em>'.
-     * @generated
-     */
-    PasswordAuthenticatedUser createPasswordAuthenticatedUser();
+	/**
+	 * Returns a new object of class '<em>Password Authenticated User</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Password Authenticated User</em>'.
+	 * @generated
+	 */
+	PasswordAuthenticatedUser createPasswordAuthenticatedUser();
 
-    /**
-     * Returns the package supported by this factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the package supported by this factory.
-     * @generated
-     */
-    AuthenticationPackage getAuthenticationPackage();
+	/**
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
+	AuthenticationPackage getAuthenticationPackage();
 
 } //AuthenticationFactory

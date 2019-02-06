@@ -1,16 +1,11 @@
 @cached
-operation EXPR!TimestampAdditionExpression getInputExpression() : EXPR!Expression {
-    return self.timestamp;
+operation EXPR!TimestampAdditionExpression getOperands() : Collection {
+    return Set{self.timestamp};
 }
 
 @cached
 operation EXPR!TimestampAdditionExpression getLambdaExpressions() : Collection {
     return Set{self.duration};
-}
-
-@cached
-operation EXPR!TimestampDifferenceExpression toString() : String {
-    return Set{self.startTimestamp, self.endTimestamp};
 }
 
 @cached

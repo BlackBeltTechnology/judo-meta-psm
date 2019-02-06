@@ -114,8 +114,8 @@ operation EXPR!CastCollection getObjectType() {
 }
 
 @cached
-operation EXPR!CollectionFilterExpression getInputExpression() : EXPR!CollectionExpression {
-    return self.collectionExpression;
+operation EXPR!CollectionFilterExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }
 
 @cached
@@ -124,23 +124,23 @@ operation EXPR!CollectionFilterExpression getLambdaExpressions() : Collection {
 }
 
 @cached
-operation EXPR!CollectionNavigationFromObjectExpression getInputExpression() : EXPR!ObjectExpression {
-    return self.objectExpression;
+operation EXPR!CollectionNavigationFromObjectExpression getOperands() : Collection {
+    return Set{self.objectExpression};
 }
 
 @cached
-operation EXPR!CollectionNavigationFromCollectionExpression getInputExpression() : EXPR!CollectionExpression {
-    return self.collectionExpression;
+operation EXPR!CollectionNavigationFromCollectionExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }
 
 @cached
-operation EXPR!ObjectNavigationFromCollectionExpression getInputExpression() : EXPR!CollectionExpression{
-    return self.collectionExpression;
+operation EXPR!ObjectNavigationFromCollectionExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }
 
 @cached
-operation EXPR!SortExpression getInputExpression() : EXPR!CollectionExpression{
-    return self.collectionExpression;
+operation EXPR!SortExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }
 
 @cached
@@ -148,13 +148,13 @@ operation EXPR!SortExpression getLambdaExpressions() : Collection {
     if (self.orderBy.isDefined()) {
         return self.orderBy.collect(o | o.expression).clone();
     } else {
-        return new Set;
+        return Set{};
     }
 }
 
 @cached
-operation EXPR!SubCollectionExpression getInputExpression() : EXPR!CollectionExpression {
-    return self.collectionExpression;
+operation EXPR!SubCollectionExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
 }
 
 @cached
@@ -163,6 +163,6 @@ operation EXPR!SubCollectionExpression getLambdaExpressions() : Collection {
 }
 
 @cached
-operation EXPR!CastCollection getInputExpression() : EXPR!CollectionExpression {
-    return self.collectionExpression;
+operation EXPR!CastCollection getOperands() : Collection {
+    return Set{self.collectionExpression};
 }

@@ -2,7 +2,6 @@
  */
 package hu.blackbelt.judo.meta.psm.expression.numeric;
 
-import hu.blackbelt.judo.meta.psm.expression.AttributeSelector;
 import hu.blackbelt.judo.meta.psm.expression.IntegerExpression;
 
 /**
@@ -15,5 +14,5 @@ import hu.blackbelt.judo.meta.psm.expression.IntegerExpression;
  * @model
  * @generated
  */
-public interface IntegerAttribute extends IntegerExpression, AttributeSelector {
+public interface IntegerAttribute extends IntegerExpression, NumericAttribute {
 } // IntegerAttribute

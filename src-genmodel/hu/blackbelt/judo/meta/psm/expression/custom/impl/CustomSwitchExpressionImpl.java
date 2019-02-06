@@ -17,23 +17,23 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class CustomSwitchExpressionImpl extends SwitchExpressionImpl implements CustomSwitchExpression {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected CustomSwitchExpressionImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CustomSwitchExpressionImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return CustomPackage.Literals.CUSTOM_SWITCH_EXPRESSION;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return CustomPackage.Literals.CUSTOM_SWITCH_EXPRESSION;
+	}
 
 } //CustomSwitchExpressionImpl

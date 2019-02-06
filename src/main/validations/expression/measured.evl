@@ -174,11 +174,11 @@ context EXPR!DecimalSwitchExpression {
 }
 
 context EXPR!NumericExpression {
-    constraint MeasureOfStandaloneExpressionIsDefined {
-        guard: self.satisfiesAll("Resolved") and self.isStandalone() and self.isMeasured()
+    constraint MeasureOfCompleteExpressionIsDefined {
+        guard: self.satisfiesAll("Resolved") and self.isComplete() and self.isMeasured()
         
         check: self.getMeasure().isDefined() and not self.getBaseMeasures().isEmpty()
-        message: "Measure is not defined for standalone expression: " + self.toString()
+        message: "Measure is not defined for complete expression: " + self.toString()
     }
 }
 

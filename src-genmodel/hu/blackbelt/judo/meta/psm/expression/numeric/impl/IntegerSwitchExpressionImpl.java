@@ -17,23 +17,23 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class IntegerSwitchExpressionImpl extends SwitchExpressionImpl implements IntegerSwitchExpression {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected IntegerSwitchExpressionImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected IntegerSwitchExpressionImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return NumericPackage.Literals.INTEGER_SWITCH_EXPRESSION;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return NumericPackage.Literals.INTEGER_SWITCH_EXPRESSION;
+	}
 
 } //IntegerSwitchExpressionImpl

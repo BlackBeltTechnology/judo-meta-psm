@@ -2,9 +2,9 @@
  */
 package hu.blackbelt.judo.meta.psm.expression.object;
 
-import hu.blackbelt.judo.meta.psm.expression.ElementName;
 import hu.blackbelt.judo.meta.psm.expression.ObjectExpression;
 import hu.blackbelt.judo.meta.psm.expression.SwitchExpression;
+import hu.blackbelt.judo.meta.psm.expression.TypeName;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,30 +23,30 @@ import hu.blackbelt.judo.meta.psm.expression.SwitchExpression;
  * @generated
  */
 public interface ObjectSwitchExpression extends SwitchExpression, ObjectExpression {
-    /**
-     * Returns the value of the '<em><b>Element Name</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Element Name</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Element Name</em>' reference.
-     * @see #setElementName(ElementName)
-     * @see hu.blackbelt.judo.meta.psm.expression.object.ObjectPackage#getObjectSwitchExpression_ElementName()
-     * @model required="true"
-     * @generated
-     */
-    ElementName getElementName();
+	/**
+	 * Returns the value of the '<em><b>Element Name</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Element Name</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Element Name</em>' reference.
+	 * @see #setElementName(TypeName)
+	 * @see hu.blackbelt.judo.meta.psm.expression.object.ObjectPackage#getObjectSwitchExpression_ElementName()
+	 * @model required="true"
+	 * @generated
+	 */
+	TypeName getElementName();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.expression.object.ObjectSwitchExpression#getElementName <em>Element Name</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Element Name</em>' reference.
-     * @see #getElementName()
-     * @generated
-     */
-    void setElementName(ElementName value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.expression.object.ObjectSwitchExpression#getElementName <em>Element Name</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Element Name</em>' reference.
+	 * @see #getElementName()
+	 * @generated
+	 */
+	void setElementName(TypeName value);
 
 } // ObjectSwitchExpression

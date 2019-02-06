@@ -17,23 +17,23 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class DecimalSwitchExpressionImpl extends SwitchExpressionImpl implements DecimalSwitchExpression {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected DecimalSwitchExpressionImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DecimalSwitchExpressionImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return NumericPackage.Literals.DECIMAL_SWITCH_EXPRESSION;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return NumericPackage.Literals.DECIMAL_SWITCH_EXPRESSION;
+	}
 
 } //DecimalSwitchExpressionImpl

@@ -20,19 +20,19 @@
   </eSubpackages>
   <eSubpackages name="type" nsURI="http://blackbelt.hu/judo/meta/psm/type" nsPrefix="type">
     <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true" eSuperTypes="#//type/DataType"/>
-    <eClassifiers xsi:type="ecore:EClass" name="CustomType" eSuperTypes="#//type/Primitive"/>
-    <eClassifiers xsi:type="ecore:EClass" name="StringType" eSuperTypes="#//type/Primitive">
+    <eClassifiers xsi:type="ecore:EClass" name="CustomType" eSuperTypes="#//type/FlatPrimitiveType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="StringType" eSuperTypes="#//type/FlatPrimitiveType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLength" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="regExp" eType="#//type/RegExp"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="NumericType" eSuperTypes="#//type/Primitive">
+    <eClassifiers xsi:type="ecore:EClass" name="NumericType" eSuperTypes="#//type/FlatPrimitiveType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BooleanType" eSuperTypes="#//type/Primitive"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BooleanType" eSuperTypes="#//type/FlatPrimitiveType"/>
     <eClassifiers xsi:type="ecore:EClass" name="EnumerationType" eSuperTypes="#//type/Primitive">
       <eStructuralFeatures xsi:type="ecore:EReference" name="members" lowerBound="1"
           upperBound="-1" eType="#//type/EnumerationMember" containment="true"/>
@@ -43,7 +43,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XMLType" eSuperTypes="#//type/Primitive">
+    <eClassifiers xsi:type="ecore:EClass" name="XMLType" eSuperTypes="#//type/FlatPrimitiveType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" lowerBound="1"
           eType="#//type/XmlNamespace"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlElement" lowerBound="1"
@@ -56,11 +56,13 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="1"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EDataType" name="RegExp" instanceClassName="java.lang.String"/>
-    <eClassifiers xsi:type="ecore:EClass" name="PasswordType" eSuperTypes="#//type/Primitive"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PasswordType" eSuperTypes="#//type/FlatPrimitiveType"/>
     <eClassifiers xsi:type="ecore:EDataType" name="XmlNamespace" instanceClassName="java.lang.String"/>
     <eClassifiers xsi:type="ecore:EDataType" name="XmlElement" instanceClassName="java.lang.String"/>
-    <eClassifiers xsi:type="ecore:EClass" name="DateType" eSuperTypes="#//type/Primitive"/>
-    <eClassifiers xsi:type="ecore:EClass" name="TimestampType" eSuperTypes="#//type/Primitive"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DateType" eSuperTypes="#//type/FlatPrimitiveType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TimestampType" eSuperTypes="#//type/FlatPrimitiveType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="FlatPrimitiveType" abstract="true"
+        eSuperTypes="#//type/Primitive"/>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
@@ -80,6 +82,8 @@
           upperBound="-1" eType="#//derived/NavigationProperty" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/BoundOperation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="elementName" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ElementName"
+          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/ReferenceTypedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
@@ -121,7 +125,7 @@
       nsPrefix="constraint">
     <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//LogicalExpression"
+          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//LogicalExpression"
           containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="constrained" lowerBound="1"
           eType="#//data/EntityType"/>
@@ -137,20 +141,20 @@
     <eClassifiers xsi:type="ecore:EClass" name="PrimitiveAccessor" abstract="true"
         eSuperTypes="#//data/PrimitiveTypedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="getterExpression" lowerBound="1"
-          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//DataExpression"
+          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//DataExpression"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//AttributeSelector"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//AttributeSelector"
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="StaticData" eSuperTypes="#//derived/PrimitiveAccessor #//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceAccessor" abstract="true"
         eSuperTypes="#//data/ReferenceTypedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="getterExpression" lowerBound="1"
-          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//ReferenceExpression"
+          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//ReferenceSelector"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceSelector"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//ReferenceExpression"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"
           containment="true"/>
     </eClassifiers>
   </eSubpackages>
@@ -167,7 +171,7 @@
         eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//ReferenceExpression"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectReference" eSuperTypes="#//service/TransferRelation">
@@ -181,7 +185,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement #//data/PrimitiveTypedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/custom#//DataExpression"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//DataExpression"
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
@@ -399,6 +403,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="units" upperBound="-1"
           eType="#//measure/Unit" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbol" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="measureName" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//MeasureName"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MeasuredType" eSuperTypes="#//type/NumericType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="storeUnit" lowerBound="1"

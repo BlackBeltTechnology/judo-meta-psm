@@ -13,5 +13,5 @@ package hu.blackbelt.judo.meta.psm.type;
  * @model
  * @generated
  */
-public interface BooleanType extends Primitive {
+public interface BooleanType extends FlatPrimitiveType {
 } // BooleanType

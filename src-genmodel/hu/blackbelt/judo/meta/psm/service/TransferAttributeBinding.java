@@ -24,56 +24,56 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface TransferAttributeBinding extends EObject {
-    /**
-     * Returns the value of the '<em><b>Primitive Typed Element</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Primitive Typed Element</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Primitive Typed Element</em>' reference.
-     * @see #setPrimitiveTypedElement(PrimitiveTypedElement)
-     * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getTransferAttributeBinding_PrimitiveTypedElement()
-     * @model required="true"
-     * @generated
-     */
-    PrimitiveTypedElement getPrimitiveTypedElement();
+	/**
+	 * Returns the value of the '<em><b>Primitive Typed Element</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Primitive Typed Element</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Primitive Typed Element</em>' reference.
+	 * @see #setPrimitiveTypedElement(PrimitiveTypedElement)
+	 * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getTransferAttributeBinding_PrimitiveTypedElement()
+	 * @model required="true"
+	 * @generated
+	 */
+	PrimitiveTypedElement getPrimitiveTypedElement();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.TransferAttributeBinding#getPrimitiveTypedElement <em>Primitive Typed Element</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Primitive Typed Element</em>' reference.
-     * @see #getPrimitiveTypedElement()
-     * @generated
-     */
-    void setPrimitiveTypedElement(PrimitiveTypedElement value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.TransferAttributeBinding#getPrimitiveTypedElement <em>Primitive Typed Element</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Primitive Typed Element</em>' reference.
+	 * @see #getPrimitiveTypedElement()
+	 * @generated
+	 */
+	void setPrimitiveTypedElement(PrimitiveTypedElement value);
 
-    /**
-     * Returns the value of the '<em><b>Transfer Attribute</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Transfer Attribute</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Transfer Attribute</em>' reference.
-     * @see #setTransferAttribute(TransferAttribute)
-     * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getTransferAttributeBinding_TransferAttribute()
-     * @model required="true"
-     * @generated
-     */
-    TransferAttribute getTransferAttribute();
+	/**
+	 * Returns the value of the '<em><b>Transfer Attribute</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Transfer Attribute</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Transfer Attribute</em>' reference.
+	 * @see #setTransferAttribute(TransferAttribute)
+	 * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getTransferAttributeBinding_TransferAttribute()
+	 * @model required="true"
+	 * @generated
+	 */
+	TransferAttribute getTransferAttribute();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.TransferAttributeBinding#getTransferAttribute <em>Transfer Attribute</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Transfer Attribute</em>' reference.
-     * @see #getTransferAttribute()
-     * @generated
-     */
-    void setTransferAttribute(TransferAttribute value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.TransferAttributeBinding#getTransferAttribute <em>Transfer Attribute</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Transfer Attribute</em>' reference.
+	 * @see #getTransferAttribute()
+	 * @generated
+	 */
+	void setTransferAttribute(TransferAttribute value);
 
 } // TransferAttributeBinding

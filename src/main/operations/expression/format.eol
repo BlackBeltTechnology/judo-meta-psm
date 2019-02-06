@@ -1,4 +1,23 @@
 @cached
+operation EXPR!Expression getVariableName() {
+    if (self.isKindOf(EXPR!VariableReference)) {
+        return self.variable.name;
+    } else if (self.isKindOf(EXPR!Variable)) {
+        return self.name;
+    } else if (self.isKindOf(EXPR!ReferenceExpression)) {
+        var input = self.getOperands().first();
+        if (input.isDefined()) {
+            return input.getVariableName();
+        }
+    } else if (self.isKindOf(EXPR!AggregatedExpression)) {
+        return self.collectionExpression.getVariableName();
+    } else {
+        throw "Invalid type: " + self;
+    }
+    return null;
+}
+
+@cached
 operation EXPR!ObjectNavigationExpression toString() : String {
     return self.objectExpression.toString() + "->" + self.referenceName;
 }
@@ -40,12 +59,12 @@ operation EXPR!OrderByItem toString() : String {
 
 @cached
 operation EXPR!ObjectVariableReference toString() : String {
-    return self.variable.name;
+    return self.getVariableName();
 }
 
 @cached
 operation EXPR!CollectionVariableReference toString() : String {
-    return self.variable.name;
+    return self.getVariableName();
 }
 
 @cached

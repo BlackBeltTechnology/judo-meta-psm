@@ -15,13 +15,13 @@ context EXPR!TypeName {
     }
 }
 
-/*
 context EXPR!Expression {
+
+    // variable reference in lambda expression is referencing to variable visible from its scope
     constraint LambdaVariableIsValid {
-        guard: self.getLambdaContainer().isDefined()
+        guard: self.isLambdaExpression()
         
-        check: false
-        message: "EXPR: " + self.toString() + " ; base: " + self.getBaseExpression().toString() + "; lambda base container: " + self.getLambdaBaseContainer().toString()
+        check: self.getLambdaBasePath().containsAll(self.getBaseExpressions().select(e | e.isKindOf(EXPR!VariableReference)).collect(e | e.variable))
+        message: "Invalid variable references: " + self.getBaseExpressions().select(e | e.isKindOf(EXPR!VariableReference)).collect(e | e.variable).excludingAll(self.getLambdaBasePath()).collect(e | e.toString()) + " in expression: " + self.toString()
     }
 }
-*/

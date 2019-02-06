@@ -14,23 +14,23 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class PackageImpl extends NamespaceImpl implements hu.blackbelt.judo.meta.psm.namespace.Package {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected PackageImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PackageImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return NamespacePackage.Literals.PACKAGE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return NamespacePackage.Literals.PACKAGE;
+	}
 
 } //PackageImpl

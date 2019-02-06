@@ -13,5 +13,5 @@ package hu.blackbelt.judo.meta.psm.type;
  * @model
  * @generated
  */
-public interface PasswordType extends Primitive {
+public interface PasswordType extends FlatPrimitiveType {
 } // PasswordType

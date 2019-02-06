@@ -14,24 +14,24 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class TimestampTypeImpl extends PrimitiveImpl implements TimestampType {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected TimestampTypeImpl() {
-        super();
-    }
+public class TimestampTypeImpl extends FlatPrimitiveTypeImpl implements TimestampType {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected TimestampTypeImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return TypePackage.Literals.TIMESTAMP_TYPE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return TypePackage.Literals.TIMESTAMP_TYPE;
+	}
 
 } //TimestampTypeImpl

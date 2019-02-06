@@ -27,178 +27,178 @@ import org.eclipse.emf.ecore.util.Switch;
  * @generated
  */
 public class NamespaceSwitch<T> extends Switch<T> {
-    /**
-     * The cached model package
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected static NamespacePackage modelPackage;
+	/**
+	 * The cached model package
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected static NamespacePackage modelPackage;
 
-    /**
-     * Creates an instance of the switch.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public NamespaceSwitch() {
-        if (modelPackage == null) {
-            modelPackage = NamespacePackage.eINSTANCE;
-        }
-    }
+	/**
+	 * Creates an instance of the switch.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NamespaceSwitch() {
+		if (modelPackage == null) {
+			modelPackage = NamespacePackage.eINSTANCE;
+		}
+	}
 
-    /**
-     * Checks whether this is a switch for the given package.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param ePackage the package in question.
-     * @return whether this is a switch for the given package.
-     * @generated
-     */
-    @Override
-    protected boolean isSwitchFor(EPackage ePackage) {
-        return ePackage == modelPackage;
-    }
+	/**
+	 * Checks whether this is a switch for the given package.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param ePackage the package in question.
+	 * @return whether this is a switch for the given package.
+	 * @generated
+	 */
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
+		return ePackage == modelPackage;
+	}
 
-    /**
-     * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the first non-null result returned by a <code>caseXXX</code> call.
-     * @generated
-     */
-    @Override
-    protected T doSwitch(int classifierID, EObject theEObject) {
-        switch (classifierID) {
-            case NamespacePackage.NAMED_ELEMENT: {
-                NamedElement namedElement = (NamedElement)theEObject;
-                T result = caseNamedElement(namedElement);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case NamespacePackage.NAMESPACE: {
-                Namespace namespace = (Namespace)theEObject;
-                T result = caseNamespace(namespace);
-                if (result == null) result = caseNamedElement(namespace);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case NamespacePackage.MODEL: {
-                Model model = (Model)theEObject;
-                T result = caseModel(model);
-                if (result == null) result = caseNamespace(model);
-                if (result == null) result = caseNamedElement(model);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case NamespacePackage.PACKAGE: {
-                hu.blackbelt.judo.meta.psm.namespace.Package package_ = (hu.blackbelt.judo.meta.psm.namespace.Package)theEObject;
-                T result = casePackage(package_);
-                if (result == null) result = caseNamespace(package_);
-                if (result == null) result = caseNamedElement(package_);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case NamespacePackage.NAMESPACE_ELEMENT: {
-                NamespaceElement namespaceElement = (NamespaceElement)theEObject;
-                T result = caseNamespaceElement(namespaceElement);
-                if (result == null) result = caseNamedElement(namespaceElement);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            default: return defaultCase(theEObject);
-        }
-    }
+	/**
+	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the first non-null result returned by a <code>caseXXX</code> call.
+	 * @generated
+	 */
+	@Override
+	protected T doSwitch(int classifierID, EObject theEObject) {
+		switch (classifierID) {
+			case NamespacePackage.NAMED_ELEMENT: {
+				NamedElement namedElement = (NamedElement)theEObject;
+				T result = caseNamedElement(namedElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case NamespacePackage.NAMESPACE: {
+				Namespace namespace = (Namespace)theEObject;
+				T result = caseNamespace(namespace);
+				if (result == null) result = caseNamedElement(namespace);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case NamespacePackage.MODEL: {
+				Model model = (Model)theEObject;
+				T result = caseModel(model);
+				if (result == null) result = caseNamespace(model);
+				if (result == null) result = caseNamedElement(model);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case NamespacePackage.PACKAGE: {
+				hu.blackbelt.judo.meta.psm.namespace.Package package_ = (hu.blackbelt.judo.meta.psm.namespace.Package)theEObject;
+				T result = casePackage(package_);
+				if (result == null) result = caseNamespace(package_);
+				if (result == null) result = caseNamedElement(package_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case NamespacePackage.NAMESPACE_ELEMENT: {
+				NamespaceElement namespaceElement = (NamespaceElement)theEObject;
+				T result = caseNamespaceElement(namespaceElement);
+				if (result == null) result = caseNamedElement(namespaceElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			default: return defaultCase(theEObject);
+		}
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseNamedElement(NamedElement object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNamedElement(NamedElement object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Namespace</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Namespace</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseNamespace(Namespace object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Namespace</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Namespace</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNamespace(Namespace object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Model</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Model</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseModel(Model object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Model</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Model</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModel(Model object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Package</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Package</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T casePackage(hu.blackbelt.judo.meta.psm.namespace.Package object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Package</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Package</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePackage(hu.blackbelt.judo.meta.psm.namespace.Package object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Element</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseNamespaceElement(NamespaceElement object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNamespaceElement(NamespaceElement object) {
+		return null;
+	}
 
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch, but this is the last case anyway.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
-     * @generated
-     */
-    @Override
-    public T defaultCase(EObject object) {
-        return null;
-    }
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch, but this is the last case anyway.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
+	 * @generated
+	 */
+	@Override
+	public T defaultCase(EObject object) {
+		return null;
+	}
 
 } //NamespaceSwitch

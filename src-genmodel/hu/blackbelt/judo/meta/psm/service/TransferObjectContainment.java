@@ -20,30 +20,30 @@ package hu.blackbelt.judo.meta.psm.service;
  * @generated
  */
 public interface TransferObjectContainment extends TransferRelation {
-    /**
-     * Returns the value of the '<em><b>Containment</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Containment</em>' reference isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Containment</em>' reference.
-     * @see #setContainment(TransferObjectType)
-     * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getTransferObjectContainment_Containment()
-     * @model required="true"
-     * @generated
-     */
-    TransferObjectType getContainment();
+	/**
+	 * Returns the value of the '<em><b>Containment</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Containment</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Containment</em>' reference.
+	 * @see #setContainment(TransferObjectType)
+	 * @see hu.blackbelt.judo.meta.psm.service.ServicePackage#getTransferObjectContainment_Containment()
+	 * @model required="true"
+	 * @generated
+	 */
+	TransferObjectType getContainment();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.TransferObjectContainment#getContainment <em>Containment</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Containment</em>' reference.
-     * @see #getContainment()
-     * @generated
-     */
-    void setContainment(TransferObjectType value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.service.TransferObjectContainment#getContainment <em>Containment</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Containment</em>' reference.
+	 * @see #getContainment()
+	 * @generated
+	 */
+	void setContainment(TransferObjectType value);
 
 } // TransferObjectContainment

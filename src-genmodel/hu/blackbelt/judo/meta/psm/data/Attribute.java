@@ -21,56 +21,56 @@ package hu.blackbelt.judo.meta.psm.data;
  * @generated
  */
 public interface Attribute extends PrimitiveTypedElement {
-    /**
-     * Returns the value of the '<em><b>Required</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Required</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Required</em>' attribute.
-     * @see #setRequired(boolean)
-     * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getAttribute_Required()
-     * @model required="true"
-     * @generated
-     */
-    boolean isRequired();
+	/**
+	 * Returns the value of the '<em><b>Required</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Required</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Required</em>' attribute.
+	 * @see #setRequired(boolean)
+	 * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getAttribute_Required()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isRequired();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.data.Attribute#isRequired <em>Required</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Required</em>' attribute.
-     * @see #isRequired()
-     * @generated
-     */
-    void setRequired(boolean value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.data.Attribute#isRequired <em>Required</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Required</em>' attribute.
+	 * @see #isRequired()
+	 * @generated
+	 */
+	void setRequired(boolean value);
 
-    /**
-     * Returns the value of the '<em><b>Identifier</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Identifier</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Identifier</em>' attribute.
-     * @see #setIdentifier(boolean)
-     * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getAttribute_Identifier()
-     * @model required="true"
-     * @generated
-     */
-    boolean isIdentifier();
+	/**
+	 * Returns the value of the '<em><b>Identifier</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Identifier</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Identifier</em>' attribute.
+	 * @see #setIdentifier(boolean)
+	 * @see hu.blackbelt.judo.meta.psm.data.DataPackage#getAttribute_Identifier()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isIdentifier();
 
-    /**
-     * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.data.Attribute#isIdentifier <em>Identifier</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Identifier</em>' attribute.
-     * @see #isIdentifier()
-     * @generated
-     */
-    void setIdentifier(boolean value);
+	/**
+	 * Sets the value of the '{@link hu.blackbelt.judo.meta.psm.data.Attribute#isIdentifier <em>Identifier</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Identifier</em>' attribute.
+	 * @see #isIdentifier()
+	 * @generated
+	 */
+	void setIdentifier(boolean value);
 
 } // Attribute
