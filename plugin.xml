@@ -365,19 +365,4 @@
             type="temporal"
             class="hu.blackbelt.judo.meta.psm.expression.temporal.util.TemporalResourceFactoryImpl"/>
    </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated JudoPSM -->
-      <package
-            uri="http://blackbelt.hu/judo/meta/psm/facade"
-            class="hu.blackbelt.judo.meta.psm.facade.FacadePackage"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated JudoPSM -->
-      <package
-            uri="http://blackbelt.hu/judo/meta/psm/action"
-            class="hu.blackbelt.judo.meta.psm.action.ActionPackage"/>
-   </extension>
-
 </plugin>

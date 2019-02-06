@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/judo-meta-psm/src-genmodel" editDirectory="/JudoPSM.edit/src-gen"
-    editorDirectory="/JudoPSM.editor/src-gen" modelPluginID="judo-meta-psm" modelName="judo-meta-psm"
-    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testsDirectory=""
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/judo-meta-psm/src-genmodel" modelPluginID="judo-meta-psm"
+    modelName="JudoPSM" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>judoPSM.ecore</foreignModel>
@@ -43,7 +42,9 @@
       <genClasses ecoreClass="judoPSM.ecore#//type/EnumerationMember">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/EnumerationMember/ordinal"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Type"/>
+      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Type">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//type/Type/typeName"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/DataType"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/XMLType">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/XMLType/xmlNamespace"/>
@@ -56,7 +57,7 @@
       <genClasses ecoreClass="judoPSM.ecore#//type/PasswordType"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/DateType"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/TimestampType"/>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/FlatType"/>
+      <genClasses image="false" ecoreClass="judoPSM.ecore#//type/FlatPrimitiveType"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Data" resource="XMI" disposableProviderFactory="true"
         dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//data">
@@ -70,7 +71,6 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/dataProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/navigationProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/operations"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/elementName"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//data/Relation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Relation/cascadeDelete"/>
