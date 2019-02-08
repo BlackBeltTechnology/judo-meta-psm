@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmi:id="_WObzYJmJEeiyrNaxr-HdNQ" name="M">
+  <elements xsi:type="data:EntityType" xmi:id="_QUnq4JmKEeiyrNaxr-HdNQ" name="E1">
+    <relations xsi:type="data:Endpoint" xmi:id="_7lTF8L2VEeiOuYiCo6IbXQ" name="e2" target="_SL_cMJmKEeiyrNaxr-HdNQ">
+      <cardinality/>
+    </relations>
+    <relations xsi:type="data:Endpoint" xmi:id="_8y5hgL2VEeiOuYiCo6IbXQ" name="e3" target="_mKioUJoZEeiyrNaxr-HdNQ" partner="__kNykL2VEeiOuYiCo6IbXQ">
+      <cardinality/>
+    </relations>
+  </elements>
+  <elements xsi:type="data:EntityType" xmi:id="_SL_cMJmKEeiyrNaxr-HdNQ" name="E2">
+    <relations xsi:type="data:Endpoint" xmi:id="__kNykL2VEeiOuYiCo6IbXQ" name="e1" target="_QUnq4JmKEeiyrNaxr-HdNQ" partner="_8y5hgL2VEeiOuYiCo6IbXQ">
+      <cardinality/>
+    </relations>
+  </elements>
+  <elements xsi:type="data:EntityType" xmi:id="_mKioUJoZEeiyrNaxr-HdNQ" name="E3"/>
+</namespace:Model>

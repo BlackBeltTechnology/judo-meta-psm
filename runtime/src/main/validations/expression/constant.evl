@@ -1,0 +1,48 @@
+context EXPR!IntegerConstant {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of integer constant is not defined: " + self.toString()
+    }
+}
+
+context EXPR!DecimalConstant {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of integer constant is not defined: " + self.toString()
+    }
+}
+
+context EXPR!BooleanConstant {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of integer constant is not defined: " + self.toString()
+    }
+}
+
+context EXPR!StringConstant {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of integer constant is not defined: " + self.toString()
+    }
+}
+
+context EXPR!Literal {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of integer constant is not defined: " + self.toString()
+    }
+}
+
+context EXPR!Instance {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+}
+
+context EXPR!CustomData {
+    constraint Resolved {
+        check: self.value.isDefined()
+        message: "Value of custom (primitive) constant is not defined: " + self.toString()
+    }
+}

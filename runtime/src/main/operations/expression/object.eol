@@ -1,0 +1,79 @@
+@cached
+operation EXPR!Instance getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+@cached
+operation EXPR!ObjectSelectorExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!ObjectFilterExpression getObjectType() {
+    return self.objectExpression.getObjectType();
+}
+
+@cached
+operation EXPR!ObjectNavigationExpression getReference() {
+    var objectType = self.objectExpression.getObjectType();
+    if (objectType.isDefined()) {
+        return objectType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationExpression isCollection() : Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectVariableReference getObjectType() {
+    return self.variable.getObjectType();
+}
+
+@cached
+operation EXPR!CastObject getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+@cached
+operation EXPR!ObjectNavigationExpression getOperands() : Collection {
+    return Set{self.objectExpression};
+}
+
+@cached
+operation EXPR!ObjectSelectorExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}
+
+@cached
+operation EXPR!ObjectFilterExpression getOperands() : Collection {
+    return Set{self.objectExpression};
+}
+
+@cached
+operation EXPR!ObjectFilterExpression getLambdaExpressions() : Collection {
+    return Set{self.condition};
+}
+
+@cached
+operation EXPR!CastObject getOperands() : Collection {
+    return Set{self.objectExpression};
+}

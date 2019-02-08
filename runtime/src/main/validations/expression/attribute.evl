@@ -1,0 +1,8 @@
+context EXPR!AttributeSelector {
+    constraint Resolved {
+        guard: self.objectExpression.satisfiesAll("Resolved")
+        
+        check: self.getAttributeType().isDefined()
+        message: "Attribute named " + self.attributeName + " of object type " + self.objectExpression.getObjectType().getName() + " not found"
+    }
+}

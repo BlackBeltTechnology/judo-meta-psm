@@ -1,0 +1,31 @@
+context EXPR!CustomAttribute {
+    constraint AttributeTypeIsCustom {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.getAttributeType().isCustom()
+        message: "Attribute type of " + self.attributeName + " of object type " + self.objectExpression.getObjectType().getName() + " is not custom (expression type)"
+    }
+}
+
+context EXPR!CustomSwitchExpression {
+    constraint Resolved {
+        check: true
+        message: "Unsupported expression: " + self.toString()
+    }
+    
+    constraint TypeOfDefaultCaseIsCustom {
+        guard: self.defaultExpression.isDefined() and self.defaultExpression.satisfiesAll("Resolved")
+        
+        check: self.defaultExpression.isKindOf(EXPR!CustomExpression)
+        message: "Type of default case expression is not custom (expression type): " + self.defaultExpression.toString()
+    }
+}
+
+context EXPR!SwitchCase {
+    constraint TypeOfSwitchCaseIsCustom {
+        guard: self.getSwitchExpression().satisfiesAll("Resolved") and self.getSwitchExpression().isKindOf(EXPR!CustomExpression)
+        
+        check: self.expression.isKindOf(EXPR!CustomExpression)
+        message: "Type of switch case expression is not custom (expression type): " + self.expression.toString()
+    }
+}

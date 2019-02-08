@@ -1,0 +1,20 @@
+@cached
+operation EXPR!AttributeSelector getAttributeType() {
+    var objectType = self.objectExpression.getObjectType();
+    
+    if (objectType.isDefined()) {
+        return objectType.getAttributeType(self.attributeName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!AttributeSelector getOperands() : Collection {
+    return Set{self.objectExpression};
+}
+
+@cached
+operation EXPR!AggregatedExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}

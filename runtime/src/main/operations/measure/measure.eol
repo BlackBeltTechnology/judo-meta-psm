@@ -1,0 +1,71 @@
+operation JUDOPSM!DurationUnit getRates(durationType) : Sequence {
+    return JUDOPSM!DurationUnit.all
+        .select(u | u.unitType == durationType)
+        .collect(u | Map{'unitName' = u.name, 'divisor' = u.rateDividend * self.rateDivisor, 'dividend' = self.rateDividend * u.rateDivisor});
+}
+
+@cached
+operation JUDOPSM!Unit getMeasure() : JUDOPSM!Measure {
+    return JUDOPSM!Measure.all.selectOne(m | m.units.contains(self));
+}
+
+@cached
+operation JUDOPSM!Measure getBaseUnit() : JUDOPSM!Unit {
+    return self.units.selectOne(u | u.rateDividend = u.rateDivisor);
+}
+
+@cached
+operation JUDOPSM!DerivedMeasure hasCircularReference() : Boolean {
+    return self.hasCircularReference(new Set);
+}
+
+operation JUDOPSM!DerivedMeasure hasCircularReference(visited : Collection) : Boolean {
+    if (visited.includes(self)) {
+        return true;
+    }
+
+    for (m in self.terms.collect(t | t.unit.getMeasure())) {
+        if (m.isDefined() and m.isKindOf(JUDOPSM!DerivedMeasure) and m.hasCircularReference(visited.including(self))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+@cached
+operation getDimensions() : Map {
+    var dimensions = new Map;
+    for (m in JUDOPSM!Measure.all) {
+        dimensions.put(m.getBaseMeasures(), m);
+    }
+    return dimensions;
+}
+
+@cached
+operation JUDOPSM!Measure getBaseMeasures() : Map {
+    if (self.isKindOf(JUDOPSM!DerivedMeasure)) {
+        var baseMeasures = new Map;
+        for (t in self.terms) {
+            var termBases = t.unit.getMeasure().getBaseMeasures();
+            for (m in termBases.keySet()) {
+                var exponent = termBases.get(m) * t.exponent;
+
+                var currentExponent = baseMeasures.get(m);
+                if (currentExponent.isDefined()) {
+                    var newExponent = currentExponent + exponent;
+                    if (newExponent <> 0) {
+                        baseMeasures.put(m, newExponent);
+                    } else {
+                        baseMeasures.remove(m);
+                    }
+                } else {
+                    baseMeasures.put(m, exponent);
+                }
+            }
+        }
+        return baseMeasures;
+    } else {
+        return Map{self = 1};
+    }
+}

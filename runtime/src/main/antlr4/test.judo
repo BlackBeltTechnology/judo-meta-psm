@@ -1,0 +1,34 @@
+model test
+
+    package hello
+        entity e1
+            attribute identifier required a: test.str
+            attribute required identifier a: test.str
+            attribute required b: test.int
+            attribute identifier c: string
+            attribute d: numeric[]
+        end
+        
+        entity e2
+            attribute r: unique ordered test.hello.e1[]
+        end
+
+        view v1 base test.hello.e1
+            property p(selfxy)
+        end
+        
+        action a1 base e1
+            property p1(selfxy)
+            property p2(selfxy)
+            body
+                create e1 values a = aaa, b = nn
+                create e1
+                delete x
+            end
+        end
+        
+        type str string(255)
+        type int numeric(10,0)
+    end
+        
+end

@@ -1,0 +1,10 @@
+@cached
+operation EXPR!EnumerationAttribute getEnumeration() {
+    return self.getAttributeType();
+}
+
+@cached
+operation EXPR!Literal getEnumeration() {
+    // enumeration is unknown
+    return null;
+}

@@ -1,0 +1,109 @@
+context EXPR!ImmutableCollection {
+    constraint Resolved {
+        guard: self.elementName.satisfiesAll("ObjectTypeIsValid")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of collection expression is not defined: " + self.toString()
+    }
+}
+
+context EXPR!CollectionNavigationFromObjectExpression {
+    constraint Resolved {
+        guard: self.objectExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Reference named " + self.referenceName + " of object type " + self.objectExpression.getObjectType().getName() + " not found"
+    }
+    
+    // target must be a collection
+    constraint TargetIsCollection {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.isCollection()
+        message: "Reference named " + self.referenceName + " of object type " + self.objectExpression.getObjectType().getName() + " is not collection"
+    }
+}
+
+context EXPR!CollectionNavigationFromCollectionExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Reference named " + self.referenceName + " of object type " + self.collectionExpression.getObjectType().getName() + " not found"
+    }
+    
+    constraint TargetIsCollection {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: self.isCollection()
+        message: "Reference named " + self.referenceName + " of object type " + self.collectionExpression.getObjectType().getName() + " is not collection"
+    }
+}
+
+context EXPR!ObjectNavigationFromCollectionExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Reference named " + self.referenceName + " of object type " + self.collectionExpression.getObjectType().getName() + " not found"
+    }
+    
+    constraint TargetIsCollection {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: not self.isCollection()
+        message: "Reference named " + self.referenceName + " of object type " + self.collectionExpression.getObjectType().getName() + " is collection"
+    }
+}
+
+context EXPR!CollectionFilterExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of collection expression is not defined: " + self.toString()
+    }
+}
+
+context EXPR!SortExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of sort collection expression is not defined: " + self.toString()
+    }
+}
+
+context EXPR!SubCollectionExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of subcollection expression is not defined: " + self.toString()
+    }
+}
+
+context EXPR!CastCollection {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of cast collection expression is not defined: " + self.toString()
+    }
+    
+    constraint CastedTypeIsCompatible {
+        guard: self.satisfiesAll("Resolved") and self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().getSuperTypes().contains(self.collectionExpression.getObjectType())
+        message: "Invalid casting type: " + self.collectionExpression.getObjectType().getName() + " is not supertype of " + self.getObjectType().getName()
+    }
+}
+
+context EXPR!CollectionVariableReference {
+    constraint Resolved {
+        guard: self.variable.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined() // TODO - check is variable is visible from the scope of reference
+        message: "Type of variable " + self.variable.name + " is unknown"
+    }
+}
