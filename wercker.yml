@@ -12,13 +12,19 @@ build:
       
     - wercker/maven:
       goals: versions:set
-      maven_opts: -DnewVersion=${VERSION_FROM_POM_BASE_VERSION}-${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}-${VERSION_FROM_GIT_TAG_COMMIT_COUNT}
+      maven_opts: -DnewVersion=${VERSION_FROM_POM_BASE_VERSION}.${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}_${VERSION_FROM_GIT_TAG_COMMIT_COUNT}
+      settings: .maven.xml
       cache_repo: true
+
+    - wercker/maven:
+      goals: tycho-versions:update-eclipse-metadata
+      cache_repo: true
+      settings: .maven.xml
 
     - wercker/maven:
       goals: clean deploy
       settings: .maven.xml
-      profiles: release-github,release-blackbelt
+      profiles: release-github,release-blackbelt,release-p2-blackbelt
       cache_repo: true
 
 #  after-steps:
@@ -104,9 +110,14 @@ release:
       cache_repo: true
 
     - wercker/maven:
+      goals: tycho-versions:update-eclipse-metadata
+      cache_repo: true
+      settings: .maven.xml
+
+    - wercker/maven:
       goals: clean deploy
       settings: .maven.xml
-      profiles: release-blackbelt,release-github
+      profiles: release-blackbelt,release-github,release-p2-blackbelt
       cache_repo: true
 
     - script:

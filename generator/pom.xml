@@ -13,8 +13,8 @@
     <artifactId>judo-meta-psm-generator</artifactId>
     <packaging>pom</packaging>
   
-    <name>JUDO psm metamodel eclipse source generator</name>
-    <description>Judo Judo Platform Specific Model Source Generator</description>
+    <name>JUDO PSM Eclipse genmodel source generator</name>
+    <description>Judo Judo Platform Specific Model Eclipse Genmodel Source Generator</description>
 
 	  
     <build>
@@ -56,16 +56,21 @@
                             <artifactId>judo-meta-expression-model</artifactId>
                             <type>eclipse-plugin</type>
                         </dependency>
-
                     </dependencies>
-                    
+
                     <repositories>
                         <repository>
                             <id>proton</id>
                             <layout>p2</layout>
                             <url>http://download.eclipse.org/releases/2018-12</url>
                         </repository>
+                        <repository>
+                            <id>judo-meta-expression</id>
+                            <layout>p2</layout>
+                            <url>https://nexus.blackbelt.cloud/repository/p2-judo/judo-meta-expression/${judo-meta-expression-version}</url>
+                        </repository>
                     </repositories>
+
                 </configuration>
                 <executions>
                     <execution>

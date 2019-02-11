@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/judo-meta-psm/src-genmodel" modelPluginID="judo-meta-psm"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/judo-meta-psm-model/src-genmodel" modelPluginID="judo-meta-psm-model"
     modelName="JudoPSM" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    operationReflection="true" importOrganizing="true">
+    runtimeVersion="2.16" operationReflection="true" importOrganizing="true" eclipsePlatformVersion="2018-12">
   <foreignModel>judoPSM.ecore</foreignModel>
   <genPackages prefix="Psm" basePackage="hu.blackbelt.judo.meta" resource="XMI" disposableProviderFactory="true"
-      dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#/">
+      dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+      fileExtensions="judo-meta-psm" ecorePackage="judoPSM.ecore#/">
     <nestedGenPackages prefix="Namespace" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//namespace">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-namespace" ecorePackage="judoPSM.ecore#//namespace">
       <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/NamedElement">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//namespace/NamedElement/name"/>
       </genClasses>
@@ -21,7 +23,8 @@
       <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/NamespaceElement"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Type" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//type">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-type" ecorePackage="judoPSM.ecore#//type">
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/RegExp"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlNamespace"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlElement"/>
@@ -60,7 +63,8 @@
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/FlatPrimitiveType"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Data" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//data">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-data" ecorePackage="judoPSM.ecore#//data">
       <genClasses ecoreClass="judoPSM.ecore#//data/EntityType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/superEntityTypes"/>
@@ -99,10 +103,9 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Containment"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Behavior" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//behavior"/>
     <nestedGenPackages prefix="Constraint" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//constraint">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-constraint" ecorePackage="judoPSM.ecore#//constraint">
       <genClasses ecoreClass="judoPSM.ecore#//constraint/InvariantConstraint">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//constraint/InvariantConstraint/expression"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -110,11 +113,13 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Script" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//script">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-script" ecorePackage="judoPSM.ecore#//script">
       <genDataTypes ecoreDataType="judoPSM.ecore#//script/Script"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Derived" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//derived">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-derived" ecorePackage="judoPSM.ecore#//derived">
       <genClasses ecoreClass="judoPSM.ecore#//derived/DataProperty"/>
       <genClasses ecoreClass="judoPSM.ecore#//derived/NavigationProperty"/>
       <genClasses ecoreClass="judoPSM.ecore#//derived/StaticNavigation"/>
@@ -130,7 +135,8 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Service" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//service">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-service" ecorePackage="judoPSM.ecore#//service">
       <genClasses image="false" ecoreClass="judoPSM.ecore#//service/TransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/representation"/>
@@ -190,7 +196,8 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Accesspoint" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//accesspoint">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-accesspoint" ecorePackage="judoPSM.ecore#//accesspoint">
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedService">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedService/operation"/>
@@ -207,7 +214,8 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//view">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-view" ecorePackage="judoPSM.ecore#//view">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//view/EventType">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//view/EventType/SYSTEM_CHANGED"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//view/EventType/USER_CHANGED"/>
@@ -331,7 +339,8 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Authentication" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//authentication">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        ecorePackage="judoPSM.ecore#//authentication">
       <genClasses ecoreClass="judoPSM.ecore#//authentication/PasswordAuthenticatedUser">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//authentication/PasswordAuthenticatedUser/password"/>
@@ -344,7 +353,8 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Authorization" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//authorization">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-authorization" ecorePackage="judoPSM.ecore#//authorization">
       <genClasses ecoreClass="judoPSM.ecore#//authorization/AuthorizationResource">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//authorization/AuthorizationResource/referenceTypedElements"/>
@@ -355,7 +365,8 @@
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Measure" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="judoPSM.ecore#//measure">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-measure" ecorePackage="judoPSM.ecore#//measure">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/DurationType">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/DurationType/millisecond"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/DurationType/second"/>
@@ -394,411 +405,422 @@
       </genClasses>
     </nestedGenPackages>
   </genPackages>
-  <genPackages prefix="Expression" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+  <genPackages prefix="Expression" basePackage="hu.blackbelt.judo.meta" resource="XMI"
       disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
-      ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#/">
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//Expression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//ElementName">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//ElementName/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//ElementName/namespace"/>
+      childCreationExtenders="true" fileExtensions="judo-meta-expression" ecorePackage="http://blackbelt.hu/judo/meta/expression#/">
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//Expression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//ElementName">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//ElementName/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//ElementName/namespace"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//NumericExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//LogicalExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//StringExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//EnumerationExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//ObjectExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//CollectionExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//AttributeSelector">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//AttributeSelector/objectExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//AttributeSelector/attributeName"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//NumericExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//LogicalExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//StringExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//EnumerationExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//ObjectExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//CollectionExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//AttributeSelector">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//AttributeSelector/objectExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//AttributeSelector/attributeName"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//VariableReference"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//IntegerExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//DecimalExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//OrderedCollectionExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//DataExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//NavigationExpression">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//NavigationExpression/referenceName"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//VariableReference"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//IntegerExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//DecimalExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//OrderedCollectionExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//DataExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//NavigationExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//NavigationExpression/referenceName"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//SwitchExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//SwitchExpression/cases"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//SwitchExpression/defaultExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//SwitchExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//SwitchExpression/cases"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//SwitchExpression/defaultExpression"/>
     </genClasses>
-    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//SwitchCase">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//SwitchCase/condition"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//SwitchCase/expression"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//SwitchCase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//SwitchCase/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//SwitchCase/expression"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//AggregatedExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//AggregatedExpression/collectionExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//AggregatedExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//AggregatedExpression/collectionExpression"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceSelector"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//CustomExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//DateExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//TimestampExpression"/>
-    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//TypeName"/>
-    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//MeasureName"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//WindowingExpression"/>
-    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//FilteringExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//ReferenceExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//ReferenceSelector"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//CustomExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//DateExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//TimestampExpression"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//TypeName"/>
+    <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//MeasureName"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//WindowingExpression"/>
+    <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//FilteringExpression"/>
     <nestedGenPackages prefix="Constant" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//constant">
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/Constant"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/Number"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/IntegerConstant">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/IntegerConstant/value"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-constant" ecorePackage="http://blackbelt.hu/judo/meta/expression#//constant">
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/Constant"/>
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/Number"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/IntegerConstant">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/IntegerConstant/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/DecimalConstant">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/DecimalConstant/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/DecimalConstant">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/DecimalConstant/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/BooleanConstant">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/BooleanConstant/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/BooleanConstant">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/BooleanConstant/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/StringConstant">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/StringConstant/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/StringConstant">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/StringConstant/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/Literal">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/Literal/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/Literal">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/Literal/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/Instance">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/Instance">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//constant/Instance/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//constant/Instance/elementName"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/CustomData">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/CustomData/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/CustomData">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/CustomData/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/MeasuredDecimal">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/MeasuredDecimal/unitName"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/MeasuredDecimal">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/MeasuredDecimal/unitName"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//constant/MeasuredDecimal/measure"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//constant/MeasuredDecimal/measure"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/MeasuredInteger">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/MeasuredInteger/unitName"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/MeasuredInteger">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/MeasuredInteger/unitName"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//constant/MeasuredInteger/measure"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//constant/MeasuredInteger/measure"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/DateConstant">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/DateConstant/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/DateConstant">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/DateConstant/value"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//constant/TimestampConstant">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//constant/TimestampConstant/value"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//constant/TimestampConstant">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//constant/TimestampConstant/value"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Variable" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//variable">
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//variable/Variable">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//variable/Variable/name"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-variable" ecorePackage="http://blackbelt.hu/judo/meta/expression#//variable">
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//variable/Variable">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//variable/Variable/name"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//variable/ObjectVariable"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//variable/CollectionVariable"/>
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//variable/ObjectVariable"/>
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//variable/CollectionVariable"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Operator" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//operator">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/lessThan"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/greaterThan"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/lessOrEqual"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/greaterOrEqual"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/equal"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/notEqual"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/StringComparator/matches"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-operator" ecorePackage="http://blackbelt.hu/judo/meta/expression#//operator">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/lessThan"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/greaterThan"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/lessOrEqual"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/greaterOrEqual"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/equal"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/notEqual"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/StringComparator/matches"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/LogicalOperator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/LogicalOperator/or"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/LogicalOperator/and"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/LogicalOperator/xor"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/LogicalOperator/implies"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/LogicalOperator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/LogicalOperator/or"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/LogicalOperator/and"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/LogicalOperator/xor"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/LogicalOperator/implies"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/ObjectSelector">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/ObjectSelector/head"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/ObjectSelector/tail"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/ObjectSelector">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/ObjectSelector/head"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/ObjectSelector/tail"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerOperator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerOperator/add"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerOperator/substract"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerOperator/multiply"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerOperator/modulo"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerOperator/divide"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/IntegerOperator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerOperator/add"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerOperator/substract"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerOperator/multiply"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerOperator/modulo"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerOperator/divide"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalOperator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalOperator/add"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalOperator/substract"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalOperator/multiply"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalOperator/divide"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/DecimalOperator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalOperator/add"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalOperator/substract"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalOperator/multiply"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalOperator/divide"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator/lessThan"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator/greaterThan"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator/lessOrEqual"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator/greaterOrEqual"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator/equal"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerComparator/notEqual"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator/lessThan"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator/greaterThan"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator/lessOrEqual"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator/greaterOrEqual"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator/equal"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerComparator/notEqual"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalComparator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalComparator/lessThan"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalComparator/greaterThan"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/DecimalComparator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalComparator/lessThan"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalComparator/greaterThan"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerAggregator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerAggregator/min"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerAggregator/max"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/IntegerAggregator/sum"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/IntegerAggregator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerAggregator/min"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerAggregator/max"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/IntegerAggregator/sum"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalAggregator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalAggregator/min"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalAggregator/max"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalAggregator/avg"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/DecimalAggregator/sum"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/DecimalAggregator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalAggregator/min"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalAggregator/max"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalAggregator/avg"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/DecimalAggregator/sum"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/ObjectComparator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/ObjectComparator/equal"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/ObjectComparator/notEqual"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/ObjectComparator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/ObjectComparator/equal"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/ObjectComparator/notEqual"/>
       </genEnums>
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression/temporal#//operator/TimestampDurationOperator">
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/TimestampDurationOperator/add"/>
-        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression/temporal#//operator/TimestampDurationOperator/substract"/>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="http://blackbelt.hu/judo/meta/expression#//operator/TimestampDurationOperator">
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/TimestampDurationOperator/add"/>
+        <genEnumLiterals ecoreEnumLiteral="http://blackbelt.hu/judo/meta/expression#//operator/TimestampDurationOperator/substract"/>
       </genEnums>
     </nestedGenPackages>
     <nestedGenPackages prefix="Numeric" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//numeric">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/CountExpression"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAritmeticExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAritmeticExpression/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAritmeticExpression/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAritmeticExpression/operator"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-numeric" ecorePackage="http://blackbelt.hu/judo/meta/expression#//numeric">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/CountExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAritmeticExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAritmeticExpression/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAritmeticExpression/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAritmeticExpression/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAritmeticExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAritmeticExpression/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAritmeticExpression/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAritmeticExpression/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAritmeticExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAritmeticExpression/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAritmeticExpression/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAritmeticExpression/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerOppositeExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerOppositeExpression/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/IntegerOppositeExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/IntegerOppositeExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalOppositeExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalOppositeExpression/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/DecimalOppositeExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/DecimalOppositeExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAggregatedExpression">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAggregatedExpression/operator"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerAggregatedExpression/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAggregatedExpression">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAggregatedExpression/operator"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/IntegerAggregatedExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAggregatedExpression">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAggregatedExpression/operator"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalAggregatedExpression/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAggregatedExpression">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAggregatedExpression/operator"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/DecimalAggregatedExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/RoundExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//numeric/RoundExpression/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/RoundExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//numeric/RoundExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/IntegerSwitchExpression"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/DecimalSwitchExpression"/>
-      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//numeric/NumericAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/IntegerSwitchExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/DecimalSwitchExpression"/>
+      <genClasses image="false" ecoreClass="http://blackbelt.hu/judo/meta/expression#//numeric/NumericAttribute"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Logical" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//logical">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/StringComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/StringComparison/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/StringComparison/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/StringComparison/operator"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-logical" ecorePackage="http://blackbelt.hu/judo/meta/expression#//logical">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/StringComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/StringComparison/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/StringComparison/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/StringComparison/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/EnumerationComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/EnumerationComparison/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/EnumerationComparison/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/EnumerationComparison/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/EnumerationComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/EnumerationComparison/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/EnumerationComparison/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/EnumerationComparison/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/NegationExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/NegationExpression/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/NegationExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/NegationExpression/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/KleeneExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/KleeneExpression/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/KleeneExpression/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/KleeneExpression/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/KleeneExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/KleeneExpression/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/KleeneExpression/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/KleeneExpression/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/InstanceOfExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/InstanceOfExpression/objectExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/InstanceOfExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/InstanceOfExpression/objectExpression"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/InstanceOfExpression/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/InstanceOfExpression/elementName"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/LogicalAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/UndefinedAttributeComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/UndefinedAttributeComparison/objectExpression"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/UndefinedAttributeComparison/attributeName"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/LogicalAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/UndefinedAttributeComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/UndefinedAttributeComparison/objectExpression"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/UndefinedAttributeComparison/attributeName"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/UndefinedNavigationComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/UndefinedNavigationComparison/objectExression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/UndefinedNavigationComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/UndefinedNavigationComparison/objectExression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/ContainsExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/ContainsExpression/collectionExpression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/ContainsExpression/objectExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/ContainsExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/ContainsExpression/collectionExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/ContainsExpression/objectExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/IntegerComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/IntegerComparison/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/IntegerComparison/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/IntegerComparison/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/IntegerComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/IntegerComparison/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/IntegerComparison/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/IntegerComparison/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/DecimalComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/DecimalComparison/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/DecimalComparison/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/DecimalComparison/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/DecimalComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/DecimalComparison/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/DecimalComparison/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/DecimalComparison/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/ObjectComparison">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/ObjectComparison/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/ObjectComparison/right"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//logical/ObjectComparison/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/ObjectComparison">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/ObjectComparison/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/ObjectComparison/right"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//logical/ObjectComparison/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/MemberOfExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/MemberOfExpression/collectionExpression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/MemberOfExpression/objectExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/MemberOfExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/MemberOfExpression/collectionExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/MemberOfExpression/objectExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//logical/TypeOfExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/TypeOfExpression/objectExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//logical/TypeOfExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/TypeOfExpression/objectExpression"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//logical/TypeOfExpression/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//logical/TypeOfExpression/elementName"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="String" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//string">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/StringAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/Concatenate">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Concatenate/left"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Concatenate/right"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-string" ecorePackage="http://blackbelt.hu/judo/meta/expression#//string">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/StringAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/Concatenate">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Concatenate/left"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Concatenate/right"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/LowerCase">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/LowerCase/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/LowerCase">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/LowerCase/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/UpperCase">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/UpperCase/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/UpperCase">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/UpperCase/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/Length">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Length/expression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/Length">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Length/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/SubString">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/SubString/expression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/SubString/position"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/SubString/length"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/SubString">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/SubString/expression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/SubString/position"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/SubString/length"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/Position">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Position/container"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/Position">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Position/container"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Position/containment"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Position/containment"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/Replace">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Replace/expression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Replace/pattern"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Replace/replacement"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/Replace">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Replace/expression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Replace/pattern"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Replace/replacement"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/Trim">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/Trim">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/Trim/expression"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/Trim/expression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/StringSwitchExpression"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//string/ConcatenateCollection">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/ConcatenateCollection/expression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//string/ConcatenateCollection/separator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/StringSwitchExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//string/ConcatenateCollection">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/ConcatenateCollection/expression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//string/ConcatenateCollection/separator"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Enumeration" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//enumeration">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//enumeration/EnumerationAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//enumeration/EnumerationSwitchExpression">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-enumeration" ecorePackage="http://blackbelt.hu/judo/meta/expression#//enumeration">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//enumeration/EnumerationAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//enumeration/EnumerationSwitchExpression">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//enumeration/EnumerationSwitchExpression/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//enumeration/EnumerationSwitchExpression/elementName"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Object" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//object">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectNavigationExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectNavigationExpression/objectExpression"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-object" ecorePackage="http://blackbelt.hu/judo/meta/expression#//object">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//object/ObjectNavigationExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/ObjectNavigationExpression/objectExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectSelectorExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectSelectorExpression/collectionExpression"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectSelectorExpression/operator"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//object/ObjectSelectorExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/ObjectSelectorExpression/collectionExpression"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//object/ObjectSelectorExpression/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectFilterExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectFilterExpression/objectExpression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectFilterExpression/condition"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//object/ObjectFilterExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/ObjectFilterExpression/objectExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/ObjectFilterExpression/condition"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectVariableReference">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//object/ObjectVariableReference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectVariableReference/variable"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/ObjectVariableReference/variable"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//object/CastObject">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//object/CastObject">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/CastObject/elementName"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/CastObject/objectExpression"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/CastObject/elementName"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/CastObject/objectExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectSwitchExpression">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//object/ObjectSwitchExpression">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//object/ObjectSwitchExpression/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//object/ObjectSwitchExpression/elementName"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Collection" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//collection">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/ImmutableCollection">
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-collection" ecorePackage="http://blackbelt.hu/judo/meta/expression#//collection">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/ImmutableCollection">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/ImmutableCollection/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/ImmutableCollection/elementName"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionFilterExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionFilterExpression/collectionExpression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionFilterExpression/condition"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/CollectionFilterExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CollectionFilterExpression/collectionExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CollectionFilterExpression/condition"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionVariableReference">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/CollectionVariableReference">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionVariableReference/variable"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CollectionVariableReference/variable"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionNavigationFromObjectExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionNavigationFromObjectExpression/objectExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/CollectionNavigationFromObjectExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CollectionNavigationFromObjectExpression/objectExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionNavigationFromCollectionExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionNavigationFromCollectionExpression/collectionExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/CollectionNavigationFromCollectionExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CollectionNavigationFromCollectionExpression/collectionExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/SortExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/SortExpression/collectionExpression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/SortExpression/orderBy"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/SortExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/SortExpression/collectionExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/SortExpression/orderBy"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/SubCollectionExpression">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/SubCollectionExpression">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/SubCollectionExpression/collectionExpression"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/SubCollectionExpression/collectionExpression"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/SubCollectionExpression/position"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/SubCollectionExpression/position"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/SubCollectionExpression/length"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/SubCollectionExpression/length"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/OrderByItem">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/OrderByItem/expression"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//collection/OrderByItem/descending"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/OrderByItem">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/OrderByItem/expression"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//collection/OrderByItem/descending"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/ObjectNavigationFromCollectionExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/ObjectNavigationFromCollectionExpression/collectionExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/ObjectNavigationFromCollectionExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/ObjectNavigationFromCollectionExpression/collectionExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/CastCollection">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/CastCollection">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CastCollection/elementName"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CastCollection/collectionExpression"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CastCollection/elementName"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CastCollection/collectionExpression"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionSwitchExpression">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//collection/CollectionSwitchExpression">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//collection/CollectionSwitchExpression/elementName"/>
+            ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//collection/CollectionSwitchExpression/elementName"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Custom" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//custom">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//custom/CustomAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//custom/CustomSwitchExpression"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        ecorePackage="http://blackbelt.hu/judo/meta/expression#//custom">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//custom/CustomAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//custom/CustomSwitchExpression"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Temporal" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" ecorePackage="http://blackbelt.hu/judo/meta/expression/temporal#//temporal">
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//temporal/DateAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampAttribute"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//temporal/DateSwitchExpression"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampSwitchExpression"/>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampAdditionExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampAdditionExpression/timestamp"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampAdditionExpression/duration"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampAdditionExpression/operator"/>
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-expression-temporal" ecorePackage="http://blackbelt.hu/judo/meta/expression#//temporal">
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//temporal/DateAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//temporal/TimestampAttribute"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//temporal/DateSwitchExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//temporal/TimestampSwitchExpression"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//temporal/TimestampAdditionExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//temporal/TimestampAdditionExpression/timestamp"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//temporal/TimestampAdditionExpression/duration"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute http://blackbelt.hu/judo/meta/expression#//temporal/TimestampAdditionExpression/operator"/>
       </genClasses>
-      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampDifferenceExpression">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampDifferenceExpression/startTimestamp"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression/temporal#//temporal/TimestampDifferenceExpression/endTimestamp"/>
+      <genClasses ecoreClass="http://blackbelt.hu/judo/meta/expression#//temporal/TimestampDifferenceExpression">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//temporal/TimestampDifferenceExpression/startTimestamp"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference http://blackbelt.hu/judo/meta/expression#//temporal/TimestampDifferenceExpression/endTimestamp"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>
