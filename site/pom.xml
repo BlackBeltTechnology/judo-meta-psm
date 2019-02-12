@@ -64,6 +64,7 @@
                             <prerelease>true</prerelease>
                             <tag>${project.version}</tag>
                             <deleteRelease>true</deleteRelease>
+                            <commitish>${env.WERCKER_GIT_COMMIT}</commitish>
                             <fileSets>
                                 <fileSet>
                                     <directory>${project.parent.basedir}/model/target</directory>

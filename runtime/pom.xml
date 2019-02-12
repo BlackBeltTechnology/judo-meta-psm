@@ -90,4 +90,58 @@
             <artifactId>judo-meta-psm-model</artifactId>
         </dependency>
     </dependencies>
+    
+    <profiles>
+        <profile>
+            <id>test-judo-psm</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-test-resources</id>
+                                <phase>test-compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/test-configurations</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/test/configurations</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>hu.blackbelt.epsilon</groupId>
+                        <artifactId>epsilon-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>VALIDATE</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>executeConfiguration</goal>
+                                </goals>
+                                <configuration>
+                                    <configurationArtifacts>
+                                        <configurationArtifact>target/test-configurations/**/*.xml</configurationArtifact>
+                                    </configurationArtifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
