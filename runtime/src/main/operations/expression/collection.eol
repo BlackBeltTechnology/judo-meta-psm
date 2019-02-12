@@ -1,0 +1,168 @@
+@cached
+operation EXPR!ImmutableCollection getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+@cached
+operation EXPR!CollectionFilterExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression getReference() {
+    var objectType = self.objectExpression.getObjectType();
+    if (objectType.isDefined()) {
+        return objectType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression getReference() {
+    var collectionType = self.collectionExpression.getObjectType();
+    if (collectionType.isDefined()) {
+        return collectionType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression getReference() {
+    var collectionType = self.collectionExpression.getObjectType();
+    if (collectionType.isDefined()) {
+        return collectionType.getReferenceType(self.referenceName);
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression getObjectType() {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.getTarget();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression isCollection() : Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression isCollection() :Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression isCollection() : Boolean {
+    var ref = self.getReference();
+    if (ref.isDefined()) {
+        return ref.isCollection();
+    } else {
+        return null;
+    }
+}
+
+@cached
+operation EXPR!CollectionVariableReference getObjectType() {
+    return self.variable.getObjectType();
+}
+
+@cached
+operation EXPR!SortExpression getObjectType() {
+    return self.collectionExpression.getObjectType();
+}
+
+@cached
+operation EXPR!CastCollection getObjectType() {
+    return self.elementName.getObjectType();
+}
+
+@cached
+operation EXPR!CollectionFilterExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}
+
+@cached
+operation EXPR!CollectionFilterExpression getLambdaExpressions() : Collection {
+    return Set{self.condition};
+}
+
+@cached
+operation EXPR!CollectionNavigationFromObjectExpression getOperands() : Collection {
+    return Set{self.objectExpression};
+}
+
+@cached
+operation EXPR!CollectionNavigationFromCollectionExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}
+
+@cached
+operation EXPR!ObjectNavigationFromCollectionExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}
+
+@cached
+operation EXPR!SortExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}
+
+@cached
+operation EXPR!SortExpression getLambdaExpressions() : Collection {
+    if (self.orderBy.isDefined()) {
+        return self.orderBy.collect(o | o.expression).clone();
+    } else {
+        return Set{};
+    }
+}
+
+@cached
+operation EXPR!SubCollectionExpression getOperands() : Collection {
+    return Set{self.collectionExpression};
+}
+
+@cached
+operation EXPR!SubCollectionExpression getLambdaExpressions() : Collection {
+    return Set{self.position, self.length};
+}
+
+@cached
+operation EXPR!CastCollection getOperands() : Collection {
+    return Set{self.collectionExpression};
+}

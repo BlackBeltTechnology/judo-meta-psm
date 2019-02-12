@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmi:id="_FzOwgJoeEeiyrNaxr-HdNQ" name="M">
+  <elements xsi:type="data:EntityType" xmi:id="_OEP5kJogEeiyrNaxr-HdNQ" name="E">
+    <relations xsi:type="data:Endpoint" xmi:id="_E_CnEL2XEeiOuYiCo6IbXQ" name="e" target="_OEP5kJogEeiyrNaxr-HdNQ">
+      <cardinality xmi:id="_FRmrsBl2EemlcrqtQk4dUg"/>
+    </relations>
+    <relations xsi:type="data:Containment" xmi:id="_G6fnIL2XEeiOuYiCo6IbXQ" name="f" target="_OEP5kJogEeiyrNaxr-HdNQ">
+      <cardinality xmi:id="_FRmrsRl2EemlcrqtQk4dUg"/>
+    </relations>
+    <relationCountConstraints xmi:id="_Itqi4Bl2EemlcrqtQk4dUg" name="c1" relations="_G6fnIL2XEeiOuYiCo6IbXQ _E_CnEL2XEeiOuYiCo6IbXQ">
+      <cardinality xmi:id="_NVaxIBl2EemlcrqtQk4dUg" lower="1" upper="2"/>
+    </relationCountConstraints>
+    <relationCountConstraints xmi:id="_MOiBkBl2EemlcrqtQk4dUg" name="c1" relations="_E_CnEL2XEeiOuYiCo6IbXQ _G6fnIL2XEeiOuYiCo6IbXQ">
+      <cardinality xmi:id="_OAMMcBl2EemlcrqtQk4dUg" lower="2" upper="3"/>
+    </relationCountConstraints>
+  </elements>
+</namespace:Model>

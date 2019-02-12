@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
+    <metaModels>
+        <metaModel>model/judoPSM.ecore</metaModel>
+        <metaModel>mvn:hu.blackbelt.judo.meta:judo-meta-expression:ecore:expression:${judo.expression.version}</metaModel>
+    </metaModels>
+    <models>
+        <model>
+            <artifact>src/test/models/t033.model</artifact>
+            <name>M</name>
+            <aliases>
+                <alias>JUDOPSM</alias>
+                <alias>EXPR</alias>
+            </aliases>
+            <storeOnDisposal>false</storeOnDisposal>
+            <cached>false</cached>
+            <expand>true</expand>
+            <metaModelUris>
+                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
+                <param>http://blackbelt.hu/judo/meta/psm/measure</param>
+                <param>http://blackbelt.hu/judo/meta/psm/service</param>
+
+                <param>http://blackbelt.hu/judo/meta/expression</param>
+                <param>http://blackbelt.hu/judo/meta/expression/constant</param>
+                <param>http://blackbelt.hu/judo/meta/expression/variable</param>
+                <param>http://blackbelt.hu/judo/meta/expression/operator</param>
+                <param>http://blackbelt.hu/judo/meta/expression/numeric</param>
+                <param>http://blackbelt.hu/judo/meta/expression/logical</param>
+                <param>http://blackbelt.hu/judo/meta/expression/string</param>
+                <param>http://blackbelt.hu/judo/meta/expression/enumeration</param>
+                <param>http://blackbelt.hu/judo/meta/expression/object</param>
+                <param>http://blackbelt.hu/judo/meta/expression/collection</param>
+                <param>http://blackbelt.hu/judo/meta/expression/custom</param>
+            </metaModelUris>
+        </model>
+    </models>
+    <eolPrograms>
+        <Evl>
+            <source>src/main/validations/judopsm.evl</source>
+            <expectedErrors>
+                <expectedError>DataPropertyGetterTypeIsBoolean|Getter expression of derived attribute E.lowerName is not boolean: lower(M::E instance.name)</expectedError>
+                <expectedError>DataPropertyGetterTypeIsDecimal|Getter expression of derived attribute E.neighbourRoom is not decimal: (M::E instance.roomNumber + 1)</expectedError>
+                <expectedError>DataPropertyGetterTypeIsInteger|Getter expression of derived attribute E.area is not integer: ((M::E instance.radius * M::E instance.radius) * 3.1415)</expectedError>
+                <expectedError>DataPropertyGetterTypeIsDecimal|Getter expression of derived attribute E.internal is not decimal: NOT(M::E instance.external)</expectedError>
+                <expectedError>DataPropertyGetterTypeIsDecimal|Getter expression of derived attribute E.direction is not decimal: (case when M::E instance.country == 'RO' then 'east'  when M::E instance.country == 'SK' then 'north')</expectedError>
+                <expectedError>CustomDataPropertyGetterTypeIsValid|Getter expression of derived attribute E.place has invalid custom data type: M::E instance->f.location</expectedError>
+                <expectedError>DataPropertyGetterTypeIsString|Getter expression of derived attribute E.begin is not string: M::E instance->f.beginTimestamp</expectedError>
+                <expectedError>DataPropertySetterTypeIsBoolean|Setter expression of derived attribute E.lowerName is not boolean: M::E instance.name</expectedError>
+                <expectedError>DataPropertySetterTypeIsDecimal|Setter expression of derived attribute E.neighbourRoom is not decimal: M::E instance.roomNumber</expectedError>
+                <expectedError>DataPropertySetterTypeIsInteger|Setter expression of derived attribute E.area is not integer: M::E instance.radius</expectedError>
+                <expectedError>DataPropertySetterTypeIsDecimal|Setter expression of derived attribute E.internal is not decimal: M::E instance.external</expectedError>
+                <expectedError>CustomDataPropertySetterTypeIsValid|Setter expression of derived attribute E.place has invalid custom data type: M::E instance->f.location</expectedError>
+                <expectedError>DataPropertySetterTypeIsString|Setter expression of derived attribute E.begin is not string: M::E instance->f.beginTimestamp</expectedError>
+            </expectedErrors>
+        </Evl>
+    </eolPrograms>
+</configuration>

@@ -1,0 +1,19 @@
+@cached
+operation JUDOPSM!Namespace getParent() : JUDOPSM!Namespace {
+    return JUDOPSM!Namespace.all.selectOne(p | p.packages.includes(self));
+}
+
+@cached
+operation JUDOPSM!Namespace toString() : String {
+    var p = self.getParent();
+    if (p.isDefined()) {
+        return p.toString() + "::" + self.name;
+    } else {
+        return self.name;
+    }
+}
+
+@cached
+operation JUDOPSM!NamedElement getNamespace() : JUDOPSM!Namespace {
+    return JUDOPSM!Namespace.all.selectOne(p | p.elements.includes(self));
+}

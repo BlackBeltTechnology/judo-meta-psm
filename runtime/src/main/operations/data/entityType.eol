@@ -1,0 +1,33 @@
+@cached
+operation JUDOPSM!EntityType hasCircularRelation() : Boolean {
+	return self.hasCircularRelation(new Set);
+}
+
+operation JUDOPSM!EntityType hasCircularRelation(visited : Collection) : Boolean {
+    if (visited.includes(self)) {
+        return true;
+    }
+
+    for (set in self.superEntityTypes) {
+        if (set.hasCircularRelation(visited.including(self))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+@cached
+operation JUDOPSM!EntityType getNamespace() : JUDOPSM!Namespace {
+	return JUDOPSM!Namespace.all.selectOne(p | p.elements.includes(self));
+}
+
+@cached
+operation JUDOPSM!EntityType isContainment() : Boolean {
+	return JUDOPSM!Containment.all.select(c | c.target == self).size() > 0;
+}
+
+@cached
+operation JUDOPSM!EntityType isContainer() : Boolean {
+	return self.relations.all(r | r.isTypeOf(JUDOPSM!Containment)).size() > 0;
+}

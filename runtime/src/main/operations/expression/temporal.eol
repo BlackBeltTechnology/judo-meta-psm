@@ -1,0 +1,19 @@
+@cached
+operation EXPR!TimestampAdditionExpression getOperands() : Collection {
+    return Set{self.timestamp};
+}
+
+@cached
+operation EXPR!TimestampAdditionExpression getLambdaExpressions() : Collection {
+    return Set{self.duration};
+}
+
+@cached
+operation EXPR!TimestampDifferenceExpression isMeasured() : Boolean {
+    return true;
+}
+
+@cached
+operation EXPR!TimestampDifferenceExpression getBaseMeasures() : Map {
+    return Map{getDurationMeasure()=1};
+}

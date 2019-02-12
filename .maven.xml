@@ -28,6 +28,12 @@
              <username>${env.BLACKBELT_NEXUS_USERNAME}</username>
              <password>${env.BLACKBELT_NEXUS_PASSWORD}</password>
          </server>
+
+        <server>
+            <id>judo-meta-expression</id>
+            <username>${env.BLACKBELT_NEXUS_USERNAME}</username>
+            <password>${env.BLACKBELT_NEXUS_PASSWORD}</password>
+        </server>
     </servers>
 
     <mirrors>

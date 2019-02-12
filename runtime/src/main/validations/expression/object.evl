@@ -1,0 +1,58 @@
+context EXPR!ObjectNavigationExpression {
+    constraint Resolved {
+        guard: self.objectExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Reference named " + self.referenceName + " of object type " + self.objectExpression.getObjectType().getName() + " not found"
+    }
+    
+    constraint TargetIsCollection {
+        guard: self.satisfiesAll("Resolved")
+        
+        check: not self.isCollection()
+        message: "Reference named " + self.referenceName + " of object type " + self.objectExpression.getObjectType().getName() + " is collection"
+    }
+}
+
+context EXPR!ObjectSelectorExpression {
+    constraint Resolved {
+        guard: self.collectionExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of object selector expression is not defined: " + self.toString()
+    }
+}
+
+context EXPR!ObjectFilterExpression {
+    constraint Resolved {
+        guard: self.objectExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of object filter expression is not defined: " + self.toString()
+    }
+}
+
+context EXPR!ObjectVariableReference {
+    constraint Resolved {
+        guard: self.variable.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined() // TODO - check is variable is visible from the scope of reference
+        message: "Type of variable " + self.variable.name + " is unknown"
+    }
+}
+
+context EXPR!CastObject {
+    constraint Resolved {
+        guard: self.objectExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().isDefined()
+        message: "Type of cast object expression is not defined: " + self.toString()
+    }
+
+    constraint CastedTypeIsCompatible {
+        guard: self.satisfiesAll("Resolved") and self.objectExpression.satisfiesAll("Resolved")
+        
+        check: self.getObjectType().getSuperTypes().contains(self.objectExpression.getObjectType())
+        message: "Invalid casting type: " + self.objectExpression.getObjectType().getName() + " is not supertype of " + self.getObjectType().getName()
+    }
+}

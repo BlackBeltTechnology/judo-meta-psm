@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    
+    <parent>
+        <groupId>hu.blackbelt.judo.meta</groupId>
+        <artifactId>judo-meta-psm-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    
+    <artifactId>judo-meta-psm-runtime</artifactId>
+    <packaging>bundle</packaging>
+    
+    <name>JUDO PSM runtime</name>
+    <description>Judo Judo Platform Specific Model runtime</description>
+    
+    <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>hu.blackbelt</groupId>
+                <artifactId>unpack-artifact-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-expression-scripts</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        
+                        <configuration>
+                            <outDirectory>${basedir}/src/main</outDirectory>
+                            <artifacts>
+                                <artifact>
+                                    <groupId>hu.blackbelt.judo.meta</groupId>
+                                    <artifactId>judo-meta-expression-runtime</artifactId>
+                                    <version>${judo-meta-expression-version}</version>
+                                    <resources>
+                                        <resource>
+                                            <source>judo/expression/validations/expression</source>
+                                            <destination>validations/expression</destination>
+                                        </resource>
+                                        <resource>
+                                            <source>judo/expression/operations/expression</source>
+                                            <destination>operations/expression</destination>
+                                        </resource>
+                                    </resources>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>3.3.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <obrRepository>NONE</obrRepository>
+                    <instructions>
+                        <Import-Package>
+                            !lombok, *
+                        </Import-Package>
+                        <Export-Package>
+                            meta/psm;version=${project.version},
+                            hu.blackbelt.judo.meta.psm.*;version=${project.version}
+                        </Export-Package>
+                        <Include-Resource>
+                            {maven-resources},
+                            meta/psm/psm.ecore=../model/model/judoPSM.ecore,
+                            meta/psm/skeleton.model=../model/model/judoPSM.model,
+                            judo/psm/operations=src/main/operations,
+                            judo/psm/validations=src/main/validations
+                        </Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>hu.blackbelt.judo.meta</groupId>
+            <artifactId>judo-meta-psm-model</artifactId>
+        </dependency>
+    </dependencies>
+</project>
