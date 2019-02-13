@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
+    <metaModels>
+        <metaModel>model/model/judoPSM.ecore</metaModel>
+        <metaModel>mvn:hu.blackbelt.judo.meta:judo-meta-expression-model:ecore:expression:${judo-meta-expression-version}</metaModel>
+    </metaModels>
+    <models>
+        <model>
+            <artifact>runtime/src/test/models/t024.model</artifact>
+            <name>M</name>
+            <aliases>
+                <alias>JUDOPSM</alias>
+                <alias>EXPR</alias>
+            </aliases>
+            <storeOnDisposal>false</storeOnDisposal>
+            <cached>false</cached>
+            <expand>true</expand>
+            <metaModelUris>
+                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
+                <param>http://blackbelt.hu/judo/meta/psm/type</param>
+                <param>http://blackbelt.hu/judo/meta/psm/data</param>
+                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
+                <param>http://blackbelt.hu/judo/meta/psm/measure</param>
+                <param>http://blackbelt.hu/judo/meta/psm/service</param>
+
+                <param>http://blackbelt.hu/judo/meta/expression</param>
+                <param>http://blackbelt.hu/judo/meta/expression/constant</param>
+                <param>http://blackbelt.hu/judo/meta/expression/variable</param>
+                <param>http://blackbelt.hu/judo/meta/expression/operator</param>
+                <param>http://blackbelt.hu/judo/meta/expression/numeric</param>
+                <param>http://blackbelt.hu/judo/meta/expression/logical</param>
+                <param>http://blackbelt.hu/judo/meta/expression/string</param>
+                <param>http://blackbelt.hu/judo/meta/expression/enumeration</param>
+                <param>http://blackbelt.hu/judo/meta/expression/object</param>
+                <param>http://blackbelt.hu/judo/meta/expression/collection</param>
+                <param>http://blackbelt.hu/judo/meta/expression/custom</param>
+            </metaModelUris>
+        </model>
+    </models>
+    <eolPrograms>
+        <Evl>
+            <source>src/main/validations/judopsm.evl</source>
+            <expectedErrors>
+                <expectedError>EnumerationMemberHasEnumerationType|Enumeration member m1 must have exactly 1 enumeration</expectedError>
+            </expectedErrors>
+        </Evl>
+    </eolPrograms>
+</configuration>
