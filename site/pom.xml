@@ -57,8 +57,11 @@
                         <inherited>false</inherited>
                         <configuration>
                             <repositoryId>${project-repositoryId}</repositoryId>
-                            <description>Branch: ${env.WERCKER_GIT_BRANCH}
-                                Wercker: https://app.wercker.com/${project-repositoryId}/runs/build/${env.WERCKER_RUN_ID}
+                            <description>
+                                **Branch:** ${env.WERCKER_GIT_BRANCH}
+                                **P2 Update Site:** https://nexus.blackbelt.cloud/repository/p2-judo/judo-meta-psm/${project.version}
+                                **Maven repository:** https://nexus.blackbelt.cloud/#browse/browse:maven-judo-release:hu%2Fblackbelt%2Fjudo%2Fmeta
+                                **Wercker:** https://app.wercker.com/${project-repositoryId}/runs/build/${env.WERCKER_RUN_ID}
                             </description>
                             <releaseName>${project.version}</releaseName>
                             <prerelease>true</prerelease>
