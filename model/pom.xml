@@ -3,16 +3,50 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-  	      <groupId>hu.blackbelt.judo.meta</groupId>
-   		 <artifactId>judo-meta-psm-parent</artifactId>
-           <version>1.0.1-SNAPSHOT</version>
-           <relativePath>..</relativePath>
+        <groupId>hu.blackbelt.judo.meta</groupId>
+        <artifactId>judo-meta-psm-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
     <artifactId>judo-meta-psm-model</artifactId>
     <packaging>eclipse-plugin</packaging>
-  
+    
     <name>JUDO PSM Eclipse model plugin</name>
     <description>Judo Judo Platform Specific Model Plugin</description>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>model/judoPSM.ecore</file>
+                                    <type>ecore</type>
+                                    <classifier>psm</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>model/judoPSM.genmodel</file>
+                                    <type>genmodel</type>
+                                    <classifier>psm</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
 </project>
