@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-  	      <groupId>hu.blackbelt.judo.meta</groupId>
-   		 <artifactId>judo-meta-psm-parent</artifactId>
-           <version>1.0.1-SNAPSHOT</version>
-           <relativePath>..</relativePath>
+        <groupId>hu.blackbelt.judo.meta</groupId>
+        <artifactId>judo-meta-psm-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
     <artifactId>judo-meta-psm-generator</artifactId>
-    <packaging>pom</packaging>
-  
+    <packaging>eclipse-plugin</packaging>
+    
     <name>JUDO PSM Eclipse genmodel source generator</name>
     <description>Judo Judo Platform Specific Model Eclipse Genmodel Source Generator</description>
-
+    
     <build>
         <plugins>
-
+            
             <!-- Clean generated plugin sources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -78,7 +78,7 @@
                             <type>eclipse-plugin</type>
                         </dependency>
                     </dependencies>
-
+                    
                     <repositories>
                         <repository>
                             <id>eclipse</id>
@@ -91,7 +91,7 @@
                             <layout>p2</layout>
                         </repository>
                     </repositories>
-
+                    
                 </configuration>
                 <executions>
                     <execution>
@@ -102,6 +102,13 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.fornax.toolsupport</groupId>
+                <artifactId>fornax-oaw-m2-plugin</artifactId>
+                <configuration>
+                    <workflowDescriptor>src/workflows/GenerateBuilder.mwe2</workflowDescriptor>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
- </project>
+</project>
