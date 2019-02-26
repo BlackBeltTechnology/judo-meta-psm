@@ -1,0 +1,12 @@
+module EcoreBuilder
+
+Workflow {
+	bean = org.eclipse.emf.mwe.utils.StandaloneSetup {
+		registerGeneratedEPackage = 'hu.blackbelt.judo.meta.expression.ExpressionPackage'		
+	}
+	
+	component = hu.blackbelt.emfbuildergenerator.EMFBuilderGenerator {
+		ecoreURI = "platform:/resource/judo-meta-psm-model/model/judoPSM.ecore"
+		genModelUri = "platform:/resource/judo-meta-psm-model/model/judoPSM.genmodel"
+	}
+}
