@@ -154,8 +154,10 @@
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ExpressionType" abstract="true">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" eType="#//derived/ExpressionDialect"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" lowerBound="1"
+          eType="#//derived/ExpressionDialect"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="ExpressionDialect">
       <eLiterals name="JQL"/>
