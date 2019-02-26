@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:const="http://blackbelt.hu/judo/meta/expression/constant" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:derived="http://blackbelt.hu/judo/meta/psm/derived" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:o="http://blackbelt.hu/judo/meta/expression/object">
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:derived="http://blackbelt.hu/judo/meta/psm/derived" xmlns:expr="http://blackbelt.hu/judo/meta/expression" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace">
   <namespace:Model xmi:id="_S0D5MBl4EemlcrqtQk4dUg" name="M">
     <elements xsi:type="data:EntityType" xmi:id="_OEP5kJogEeiyrNaxr-HdNQ" name="E">
       <relations xsi:type="data:Containment" xmi:id="_WcSkIBl4EemlcrqtQk4dUg" name="r1" target="_OEP5kJogEeiyrNaxr-HdNQ" cascadeDelete="true">
@@ -9,11 +9,6 @@
   </namespace:Model>
   <derived:NavigationProperty xmi:id="_Xd0QkBmOEemlcrqtQk4dUg" name="n" target="_OEP5kJogEeiyrNaxr-HdNQ">
     <cardinality xmi:id="_pzhnIBmPEemlcrqtQk4dUg"/>
-    <getterExpression xsi:type="o:ObjectNavigationExpression" xmi:id="_WFWyYBmaEemlcrqtQk4dUg" referenceName="r1">
-      <objectExpression xsi:type="o:ObjectNavigationExpression" xmi:id="_WgEYcBmaEemlcrqtQk4dUg" referenceName="r1">
-        <objectExpression xsi:type="const:Instance" xmi:id="_XLPcYBmaEemlcrqtQk4dUg" elementName="_GcqAMBmPEemlcrqtQk4dUg"/>
-      </objectExpression>
-    </getterExpression>
+    <getterExpression xmi:id="_ZhJlkDngEemsDIfvozHEKg" expression="self.r1.r1"/>
   </derived:NavigationProperty>
-  <expr:TypeName xmi:id="_GcqAMBmPEemlcrqtQk4dUg" name="E" namespace="M"/>
 </xmi:XMI>

@@ -23,7 +23,7 @@ context JUDOPSM!DataProperty {
         message: "Orphan data property: " + self.name
     }
     
-    // type of getter expression is string
+/*    // type of getter expression is string
     constraint DataPropertyGetterTypeIsString {
         guard: self.dataType.isKindOf(JUDOPSM!StringType)
         
@@ -79,13 +79,13 @@ context JUDOPSM!DataProperty {
         message: "Getter expression of derived attribute " + self.displayName() + " has invalid custom data type: " + self.getterExpression.toString()
     }
     
-    /* // type of getter expression is measured  
-    constraint DataPropertyGetterTypeIsMeasured {
-        guard: self.dataType.isTypeOf(JUDOPSM!MeasuredType)
-        
-        check: self.dataType.measure == self.getterExpression.getMeasure()
-        message: "Getter expression of derived attribute " + self.displayName() + " has invalid measure: " + self.getterExpression.toString()
-    } */
+    //// type of getter expression is measured  
+    //constraint DataPropertyGetterTypeIsMeasured {
+    //    guard: self.dataType.isTypeOf(JUDOPSM!MeasuredType)
+    //    
+    //    check: self.dataType.measure == self.getterExpression.getMeasure()
+    //    message: "Getter expression of derived attribute " + self.displayName() + " has invalid measure: " + self.getterExpression.toString()
+    //}
     
     // type of setter expression is string
     constraint DataPropertySetterTypeIsString {
@@ -141,7 +141,7 @@ context JUDOPSM!DataProperty {
         
         check: self.dataType == self.setterExpression.getAttributeType()
         message: "Setter expression of derived attribute " + self.displayName() + " has invalid custom data type: " + self.setterExpression.toString()
-    }
+    } */
 }
 
 context JUDOPSM!NavigationProperty {

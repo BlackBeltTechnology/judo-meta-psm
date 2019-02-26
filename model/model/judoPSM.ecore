@@ -41,10 +41,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordinal" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamespaceElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="typeName" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//TypeName"
-          containment="true"/>
-    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="DataType" abstract="true" eSuperTypes="#//type/Type"/>
     <eClassifiers xsi:type="ecore:EClass" name="XMLType" eSuperTypes="#//type/FlatPrimitiveType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlNamespace" lowerBound="1"
@@ -142,22 +139,32 @@
     <eClassifiers xsi:type="ecore:EClass" name="PrimitiveAccessor" abstract="true"
         eSuperTypes="#//data/PrimitiveTypedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="getterExpression" lowerBound="1"
-          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//DataExpression"
-          containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//AttributeSelector"
+          eType="#//derived/DataExpressionType" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="#//derived/AttributeSelectorType"
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="StaticData" eSuperTypes="#//derived/PrimitiveAccessor #//namespace/NamespaceElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceAccessor" abstract="true"
         eSuperTypes="#//data/ReferenceTypedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="getterExpression" lowerBound="1"
-          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"
+          eType="#//derived/ReferenceExpressionType" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="#//derived/ReferenceSelectorType"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="setterExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceSelector"
-          containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="rangeExpression" eType="#//derived/ReferenceExpressionType"
           containment="true"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ExpressionType" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" eType="#//derived/ExpressionDialect"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="ExpressionDialect">
+      <eLiterals name="JQL"/>
+      <eLiterals name="XML" value="1"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ReferenceExpressionType" eSuperTypes="#//derived/ExpressionType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ReferenceSelectorType" eSuperTypes="#//derived/ExpressionType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DataExpressionType" eSuperTypes="#//derived/ExpressionType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AttributeSelectorType" eSuperTypes="#//derived/ExpressionType"/>
   </eSubpackages>
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectType" abstract="true"
@@ -404,7 +411,6 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="units" upperBound="-1"
           eType="#//measure/Unit" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="symbol" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="measureName" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//MeasureName"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MeasuredType" eSuperTypes="#//type/NumericType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="storeUnit" lowerBound="1"
