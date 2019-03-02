@@ -181,7 +181,7 @@
         eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//ReferenceExpression"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="#//derived/ReferenceExpressionType"
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectReference" eSuperTypes="#//service/TransferRelation">
@@ -195,7 +195,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement #//data/PrimitiveTypedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//DataExpression"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="initExpression" eType="#//derived/DataExpressionType"
           containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
