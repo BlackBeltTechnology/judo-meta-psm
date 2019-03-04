@@ -94,13 +94,10 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceTypedElement/target"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceTypedElement/cardinality"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceTypedElement/rangeExpression"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceTypedElement/initExpression"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//data/PrimitiveTypedElement">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/PrimitiveTypedElement/dataType"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/PrimitiveTypedElement/initExpression"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Containment"/>
     </nestedGenPackages>
@@ -173,6 +170,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferAttribute/required"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/transferAttributeBinding"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/defaultValue"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -191,6 +190,10 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/referenceTypedElement"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/transferRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/defaultValue"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/range"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//service/Operation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/Operation/body"/>
