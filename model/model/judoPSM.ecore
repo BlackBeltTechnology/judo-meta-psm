@@ -123,8 +123,7 @@
       nsPrefix="constraint">
     <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
-          eType="ecore:EClass http://blackbelt.hu/judo/meta/expression/temporal#//LogicalExpression"
-          containment="true"/>
+          eType="#//derived/LogicalExpressionType" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="constrained" lowerBound="1"
           eType="#//data/EntityType"/>
     </eClassifiers>
@@ -165,6 +164,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceSelectorType" eSuperTypes="#//derived/ExpressionType"/>
     <eClassifiers xsi:type="ecore:EClass" name="DataExpressionType" eSuperTypes="#//derived/ExpressionType"/>
     <eClassifiers xsi:type="ecore:EClass" name="AttributeSelectorType" eSuperTypes="#//derived/ExpressionType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="LogicalExpressionType" eSuperTypes="#//derived/DataExpressionType"/>
   </eSubpackages>
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectType" abstract="true"
