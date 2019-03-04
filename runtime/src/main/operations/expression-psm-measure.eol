@@ -1,43 +1,4 @@
 @cached
-operation EXPR!NumericAttribute isMeasured() : Boolean {
-    var attributeType = self.getAttributeType();
-    if (attributeType.isDefined()) {
-        return attributeType.isMeasured();
-    } else {
-        return false;
-    }
-}
-
-@cached
-operation EXPR!NumericAttribute getUnit() {
-    if (self.isMeasured()) {
-        var attributeType = self.getAttributeType();
-        if (attributeType.isDefined()) {
-            return attributeType.getUnit();
-        } else {
-            return null;
-        }
-    } else {
-        return null;
-    }
-}
-
-@cached
-operation EXPR!MeasuredInteger isMeasured() : Boolean {
-    return true;
-}
-
-@cached
-operation EXPR!MeasuredDecimal isMeasured() : Boolean {
-    return true;
-}
-
-@cached
-operation EXPR!MeasureName getMeasure() : JUDOPSM!Measure {
-    return self.getNamespace().elements.selectOne(m | m.name = self.name);
-}
-
-@cached
 operation JUDOPSM!Primitive isMeasured() : Boolean {
     return self.isKindOf(JUDOPSM!MeasuredType);
 }
@@ -99,45 +60,6 @@ operation JUDOPSM!Measure getBaseMeasures() : Map {
         return baseMeasures;
     } else {
         return Map{self = 1};
-    }
-}
-
-@cached
-operation EXPR!NumericAttribute getMeasure() : JUDOPSM!Measure {
-    if (self.isMeasured()) {
-        return JUDOPSM!Measure.all.selectOne(m | m.units.contains(self.getUnit()));
-    } else {
-        return Map{};
-    }
-}
-
-@cached
-operation EXPR!MeasuredDecimal getUnit() {
-    if (self.measure.isDefined()) {
-        return self.measure.getMeasure().units.selectOne(u | u.name = self.unitName or u.symbol = self.unitName);
-    } else {
-        var units = JUDOPSM!Unit.all.select(u | u.name = self.unitName or u.symbol = self.unitName);
-        if (units.size() == 1) {
-            return units.get(0);
-        } else {
-            units.collect(u | u.getMeasure().name + ": " + u.name + " [" + u.symbol + "]").concat(", ").println("Multiple units found with name " + self.unitName + ": ");
-            return null;
-        }
-    }
-}
-
-@cached
-operation EXPR!MeasuredInteger getUnit() {
-    if (self.measure.isDefined()) {
-        return self.measure.getMeasure().units.selectOne(u | u.name = self.unitName or u.symbol = self.unitName);
-    } else {
-        var units = JUDOPSM!Unit.all.select(u | u.name = self.unitName or u.symbol = self.unitName);
-        if (units.size() == 1) {
-            return units.get(0);
-        } else {
-            units.collect(u | u.getMeasure().name + ": " + u.name + " [" + u.symbol + "]").concat(", ").println("Multiple units found with name " + self.unitName + ": ");
-            return null;
-        }
     }
 }
 

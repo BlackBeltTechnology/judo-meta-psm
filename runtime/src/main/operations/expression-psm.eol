@@ -1,37 +1,3 @@
-@cached
-operation EXPR!ElementName getNamespace() : JUDOPSM!NamedElement {
-    var ns : JUDOPSM!Namespace;
-    
-    for (nsName in self.namespace.split("\\s*\\::\\s*")) {
-        if (ns.isDefined()) {
-            ns = ns.packages.selectOne(p | p.name = nsName);
-        } else {
-            ns = JUDOPSM!Model.all.selectOne(p | p.name = nsName);
-            if (not ns.isDefined()) {
-                nsName.println("Model not found: ");
-                return null;
-            }
-        }
-    }
-    
-    return ns;
-}
-
-@cached
-operation EXPR!ElementName get() : JUDOPSM!NamedElement {
-    return self.getNamespace().elements.selectOne(ne | ne.name = self.name);
-}
-
-@cached
-operation EXPR!ElementName getObjectType() : JUDOPSM!Type {
-    return self.getNamespace().elements.selectOne(et | et.name = self.name);
-}
-
-@cached
-operation EXPR!ElementName getEnumerationType() : JUDOPSM!EntityType {
-    return self.getNamespace().elements.selectOne(t | t.name == self.name);
-}
-
 operation JUDOPSM!EntityType getReferenceType(name: String) : JUDOPSM!ReferenceTypedElement {
     var relation = self.relations.selectOne(r | r.name = name);
     var navigation = JUDOPSM!NavigationProperty.all.selectOne(n | n.name == name and n.getEntityType() == self);

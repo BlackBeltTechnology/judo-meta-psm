@@ -77,7 +77,6 @@
         <eclipse-p2-base>http://download.eclipse.org/releases/2018-12</eclipse-p2-base>
 
         <emf-builder-generator-version>0.0.1.develop_54</emf-builder-generator-version>
-        <judo-meta-expression-version>1.0.1.develop_88</judo-meta-expression-version>
     </properties>
     
     <repositories>
@@ -385,26 +384,6 @@
     </dependencyManagement>
     
     <dependencies>
-        <!-- As described in https://stackoverflow.com/questions/27046544/building-a-p2-repository-by-resolving-tycho-features-from-a-maven-repository -->
-        <dependency>
-            <groupId>hu.blackbelt.judo.meta</groupId>
-            <artifactId>judo-meta-expression-model</artifactId>
-            <version>${judo-meta-expression-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>hu.blackbelt.judo.meta</groupId>
-            <artifactId>judo-meta-expression-model</artifactId>
-            <version>${judo-meta-expression-version}</version>
-            <classifier>p2metadata</classifier>
-            <type>xml</type>
-        </dependency>
-        <dependency>
-            <groupId>hu.blackbelt.judo.meta</groupId>
-            <artifactId>judo-meta-expression-model</artifactId>
-            <version>${judo-meta-expression-version}</version>
-            <classifier>p2artifacts</classifier>
-            <type>xml</type>
-        </dependency>
         <dependency>
             <groupId>hu.blackbelt.eclipse</groupId>
             <artifactId>emfbuildergenerator-core</artifactId>

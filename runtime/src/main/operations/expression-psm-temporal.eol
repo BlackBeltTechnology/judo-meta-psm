@@ -23,12 +23,3 @@ operation JUDOPSM!DurationUnit isValidDurationUnit() : Boolean {
         or self.unitType == JUDOPSM!DurationType#week;
 }
 
-@cached
-operation EXPR!TimestampAdditionExpression hasValidDurationUnit() : Boolean {
-    var unit = self.duration.getUnit();
-    if (not unit.isDefined() or not unit.isKindOf(JUDOPSM!DurationUnit)) {
-        return false;
-    }
-    
-    return unit.isValidDurationUnit();
-}

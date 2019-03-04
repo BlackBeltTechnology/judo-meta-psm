@@ -6,17 +6,7 @@ import hu.blackbelt.judo.meta.psm.authorization.AuthorizationPackage;
 import hu.blackbelt.judo.meta.psm.constraint.ConstraintPackage;
 import hu.blackbelt.judo.meta.psm.data.DataPackage;
 import hu.blackbelt.judo.meta.psm.derived.DerivedPackage;
-import hu.blackbelt.judo.meta.expression.ExpressionPackage;
-import hu.blackbelt.judo.meta.expression.collection.CollectionPackage;
-import hu.blackbelt.judo.meta.expression.constant.ConstantPackage;
-import hu.blackbelt.judo.meta.expression.custom.CustomPackage;
-import hu.blackbelt.judo.meta.expression.enumeration.EnumerationPackage;
-import hu.blackbelt.judo.meta.expression.logical.LogicalPackage;
-import hu.blackbelt.judo.meta.expression.numeric.NumericPackage;
-import hu.blackbelt.judo.meta.expression.object.ObjectPackage;
-import hu.blackbelt.judo.meta.expression.operator.OperatorPackage;
-import hu.blackbelt.judo.meta.expression.string.StringPackage;
-import hu.blackbelt.judo.meta.expression.variable.VariablePackage;
+import hu.blackbelt.judo.meta.psm.measure.MeasurePackage;
 import hu.blackbelt.judo.meta.psm.namespace.NamespacePackage;
 import hu.blackbelt.judo.meta.psm.script.ScriptPackage;
 import hu.blackbelt.judo.meta.psm.service.ServicePackage;
@@ -65,7 +55,6 @@ public class PsmMetaModelRegistration implements PsmMetaModel {
     @Override
     public void registerPsmMetamodel(ResourceSet resourceSet) {
 
-        //             NamespaceFactory theNamespaceFactory = (NamespaceFactory)EPackage.Registry.INSTANCE.getEFactory(NamespacePackage.eNS_URI);
         resourceSet.getPackageRegistry().put(AccesspointPackage.eINSTANCE.getNsURI(), AccesspointPackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(AuthenticationPackage.eINSTANCE.getNsURI(), AuthenticationPackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(AuthorizationPackage.eINSTANCE.getNsURI(), AuthorizationPackage.eINSTANCE);
@@ -77,19 +66,7 @@ public class PsmMetaModelRegistration implements PsmMetaModel {
         resourceSet.getPackageRegistry().put(ServicePackage.eINSTANCE.getNsURI(), ServicePackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(TypePackage.eINSTANCE.getNsURI(), TypePackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(ViewPackage.eINSTANCE.getNsURI(), ViewPackage.eINSTANCE);
-
-        // External metamodel - expression package
-        resourceSet.getPackageRegistry().put(ExpressionPackage.eINSTANCE.getNsURI(), ExpressionPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(CollectionPackage.eINSTANCE.getNsURI(), CollectionPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(ConstantPackage.eINSTANCE.getNsURI(), ConstantPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(CustomPackage.eINSTANCE.getNsURI(), CustomPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(EnumerationPackage.eINSTANCE.getNsURI(), EnumerationPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(LogicalPackage.eINSTANCE.getNsURI(), LogicalPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(NumericPackage.eINSTANCE.getNsURI(), NumericPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(ObjectPackage.eINSTANCE.getNsURI(), ObjectPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(OperatorPackage.eINSTANCE.getNsURI(), OperatorPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(StringPackage.eINSTANCE.getNsURI(), StringPackage.eINSTANCE);
-        resourceSet.getPackageRegistry().put(VariablePackage.eINSTANCE.getNsURI(), VariablePackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(MeasurePackage.eINSTANCE.getNsURI(), MeasurePackage.eINSTANCE);
 
     }
 }
