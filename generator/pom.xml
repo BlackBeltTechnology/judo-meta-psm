@@ -26,7 +26,7 @@
                 <configuration>
                     <filesets combine.children="append">
                         <fileset>
-                            <directory>${basedir}/../model/gen-src</directory>
+                            <directory>${basedir}/../model/src-genmodel</directory>
                             <includes>
                                 <include>**/*</include>
                             </includes>
@@ -71,10 +71,6 @@
                     <dependencies>
                         <dependency>
                             <artifactId>org.eclipse.emf.codegen.ecore</artifactId>
-                            <type>eclipse-plugin</type>
-                        </dependency>
-                        <dependency>
-                            <artifactId>judo-meta-expression-model</artifactId>
                             <type>eclipse-plugin</type>
                         </dependency>
                     </dependencies>
