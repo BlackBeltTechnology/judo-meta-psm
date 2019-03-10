@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration xmlns="http://epsilon.blackbelt.hu/maven/plugin/v1/xml/ns/definition">
     <metaModels>
-        <metaModel>model/model/judoPSM.ecore</metaModel>
+        <metaModel>${basedir}/../model/model/judoPSM.ecore</metaModel>
     </metaModels>
     <models>
         <model>
-            <artifact>runtime/src/test/models/t033.model</artifact>
+            <artifact>${basedir}/src/test/models/t033.model</artifact>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
@@ -24,7 +24,7 @@
     </models>
     <eolPrograms>
         <Evl>
-            <source>src/main/validations/judopsm.evl</source>
+            <source>${basedir}/src/main/validations/judopsm.evl</source>
             <expectedErrors>
                 <!-- expectedError>DataPropertyGetterTypeIsBoolean|Getter expression of derived attribute E.lowerName is not boolean: lower(M::E instance.name)</expectedError>
                 <expectedError>DataPropertyGetterTypeIsDecimal|Getter expression of derived attribute E.neighbourRoom is not decimal: (M::E instance.roomNumber + 1)</expectedError>
