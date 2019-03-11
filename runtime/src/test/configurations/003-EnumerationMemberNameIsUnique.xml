@@ -3,25 +3,17 @@
     <metaModels>
         <metaModel>${basedir}/../model/model/judoPSM.ecore</metaModel>
     </metaModels>
-    <models>
-        <model>
-            <artifact>${basedir}/src/test/models/t003.model</artifact>
+    <emfModels>
+        <emfModel>
+            <emf>${basedir}/src/test/models/t003.model</emf>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
             </aliases>
             <storeOnDisposal>false</storeOnDisposal>
             <cached>false</cached>
-            <metaModelUris>
-                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
-                <param>http://blackbelt.hu/judo/meta/psm/measure</param>
-                <param>http://blackbelt.hu/judo/meta/psm/service</param>
-            </metaModelUris>
-        </model>
-    </models>
+        </emfModel>
+    </emfModels>
     <eolPrograms>
         <Evl>
             <source>${basedir}/src/main/validations/judopsm.evl</source>

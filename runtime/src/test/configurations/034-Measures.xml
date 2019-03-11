@@ -3,31 +3,46 @@
     <metaModels>
         <metaModel>${basedir}/../model/model/judoPSM.ecore</metaModel>
     </metaModels>
-    <models>
-        <model>
-            <artifact>${basedir}/src/test/models/t034.model</artifact>
+    <emfModels>
+        <!--
+        <emfModel>
+            <emf>${basedir}/../model/model/judoPSM.model</emf>
+            <name>MEASUREREF</name>
+            <aliases>
+                <alias>MEASUREREF</alias>
+            </aliases>
+            <readOnLoad>false</readOnLoad>
+            <storeOnDisposal>false</storeOnDisposal>
+            <cached>false</cached>
+            <referenceUri>../../../../model/model/judoPSM.model</referenceUri>
+            <expand>false</expand>
+        </emfModel>
+        -->
+        <emfModel>
+            <emf>${basedir}/src/test/models/t034.model</emf>
             <name>M</name>
             <aliases>
                 <alias>JUDOPSM</alias>
             </aliases>
             <storeOnDisposal>false</storeOnDisposal>
             <cached>false</cached>
-            <metaModelUris>
-                <param>http://blackbelt.hu/judo/meta/psm/namespace</param>
-                <param>http://blackbelt.hu/judo/meta/psm/type</param>
-                <param>http://blackbelt.hu/judo/meta/psm/data</param>
-                <param>http://blackbelt.hu/judo/meta/psm/derived</param>
-                <param>http://blackbelt.hu/judo/meta/psm/measure</param>
-                <param>http://blackbelt.hu/judo/meta/psm/service</param>
-            </metaModelUris>
-        </model>
-    </models>
+            <expand>true</expand>
+            <uriMap>
+                <entry>
+                    <fromURI>../../../../model/model/judoPSM.model</fromURI>
+                    <toURI>${basedir}/../model/model/judoPSM.model</toURI>
+                </entry>
+            </uriMap>
+        </emfModel>
+    </emfModels>
     <eolPrograms>
         <Evl>
             <source>${basedir}/src/main/validations/judopsm.evl</source>
+            <!--
             <expectedWarnings>
                 <expectedWarning>StandaloneModelLoadedOnly|Standalone models are supported only</expectedWarning>
             </expectedWarnings>
+            -->
         </Evl>
     </eolPrograms>
 </configuration>
