@@ -179,47 +179,31 @@
         eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelationBinding"
-          eType="#//service/TransferRelationBinding" eOpposite="#//service/TransferRelationBinding/transferRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectReference" eSuperTypes="#//service/TransferRelation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenced" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/MappedTransferObjectType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectContainment" eSuperTypes="#//service/TransferRelation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="containment" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement #//data/PrimitiveTypedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferAttributeBinding"
-          eType="#//service/TransferAttributeBinding" eOpposite="#//service/TransferAttributeBinding/transferAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/PrimitiveTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
+          eType="#//type/Primitive"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelationBindings"
-          upperBound="-1" eType="#//service/TransferRelationBinding" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferAttributeBindings"
-          upperBound="-1" eType="#//service/TransferAttributeBinding" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferAttributeBinding">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="primitiveTypedElement"
-          lowerBound="1" eType="#//data/PrimitiveTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferAttribute" lowerBound="1"
-          eType="#//service/TransferAttribute" eOpposite="#//service/TransferAttribute/transferAttributeBinding"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferRelationBinding">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceTypedElement"
-          lowerBound="1" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelation" lowerBound="1"
-          eType="#//service/TransferRelation" eOpposite="#//service/TransferRelation/transferRelationBinding"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"
@@ -228,7 +212,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UnmappedTransferObjectType" eSuperTypes="#//service/TransferObjectType"/>
-    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//service/Operation">
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//service/Operation #//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="input" lowerBound="1"
           eType="#//service/MappedTransferObjectType"/>
     </eClassifiers>
