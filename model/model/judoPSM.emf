@@ -1,8 +1,6 @@
 @namespace(uri="http://blackbelt.hu/judo/meta/psm", prefix="psm")
 package psm;
 
-import "http://blackbelt.hu/judo/meta/expression/temporal";
-
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/namespace", prefix="namespace")
 package namespace {
   abstract class NamedElement {
@@ -55,7 +53,6 @@ package type {
   }
 
   abstract class Type extends namespace.NamespaceElement {
-    val expression.TypeName typeName;
   }
 
   abstract class DataType extends Type {
@@ -109,7 +106,6 @@ package data {
   }
 
   class Attribute extends PrimitiveTypedElement {
-    attr boolean[1] required;
     attr boolean[1] identifier;
   }
 
@@ -129,6 +125,7 @@ package data {
 
   abstract class PrimitiveTypedElement extends namespace.NamedElement {
     ref type.Primitive[1] dataType;
+    attr boolean[1] required;
   }
 
   class Containment extends Relation {
@@ -143,7 +140,7 @@ package behavior {
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/constraint", prefix="constraint")
 package constraint {
   class InvariantConstraint extends namespace.NamedElement {
-    val expression.LogicalExpression[1] expression;
+    val ~derived.LogicalExpressionType[1] expression;
     ref data.EntityType[1] constrained;
   }
 
@@ -167,17 +164,41 @@ package ~derived {
   }
 
   abstract class PrimitiveAccessor extends data.PrimitiveTypedElement {
-    val expression.DataExpression[1] getterExpression;
-    val expression.AttributeSelector setterExpression;
+    val DataExpressionType[1] getterExpression;
+    val AttributeSelectorType setterExpression;
   }
 
   class StaticData extends PrimitiveAccessor, namespace.NamespaceElement {
   }
 
   abstract class ReferenceAccessor extends data.ReferenceTypedElement {
-    val expression.ReferenceExpression[1] getterExpression;
-    val expression.ReferenceSelector setterExpression;
-    val expression.ReferenceExpression rangeExpression;
+    val ReferenceExpressionType[1] getterExpression;
+    val ReferenceSelectorType setterExpression;
+  }
+
+  abstract class ExpressionType {
+    attr String[1] expression;
+    attr ExpressionDialect[1] dialect;
+  }
+
+  enum ExpressionDialect {
+    JQL = 0;
+    XML = 1;
+  }
+
+  class ReferenceExpressionType extends ExpressionType {
+  }
+
+  class ReferenceSelectorType extends ExpressionType {
+  }
+
+  class DataExpressionType extends ExpressionType {
+  }
+
+  class AttributeSelectorType extends ExpressionType {
+  }
+
+  class LogicalExpressionType extends DataExpressionType {
   }
 
 }
@@ -186,60 +207,51 @@ package ~derived {
 package service {
   abstract class TransferObjectType extends type.DataType {
     ref TransferAttribute representation;
-    val TransferRelation[*] relations;
+    val TransferObjectContainment[*] containments;
     val TransferAttribute[*] attributes;
   }
 
-  abstract class TransferRelation extends namespace.NamedElement {
+  class TransferObjectContainment extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
-    val expression.ReferenceExpression initExpression;
+    ref data.ReferenceTypedElement binding;
+    ref data.ReferenceTypedElement defaultValue;
+    ref data.ReferenceTypedElement range;
+    ref TransferObjectType[1] target;
   }
 
-  class TransferObjectReference extends TransferRelation {
-    ref MappedTransferObjectType[1] referenced;
-  }
-
-  class TransferObjectContainment extends TransferRelation {
-    ref TransferObjectType[1] containment;
-  }
-
-  class TransferAttribute extends namespace.NamedElement, data.PrimitiveTypedElement {
+  class TransferAttribute extends namespace.NamedElement {
     attr boolean[1] required;
-    val expression.DataExpression initExpression;
+    ref data.PrimitiveTypedElement defaultValue;
+    ref type.Primitive[1] dataType;
+    ref data.PrimitiveTypedElement binding;
   }
 
   class MappedTransferObjectType extends TransferObjectType {
     ref data.EntityType[1] entityType;
-    val TransferRelationBinding[*] transferRelationBindings;
-    val TransferAttributeBinding[*] transferAttributeBindings;
   }
 
-  class TransferAttributeBinding {
-    ref data.PrimitiveTypedElement[1] primitiveTypedElement;
-    ref TransferAttribute[1] transferAttribute;
-  }
-
-  class TransferRelationBinding {
-    ref data.ReferenceTypedElement[1] referenceTypedElement;
-    ref TransferRelation[1] transferRelation;
-  }
-
-  abstract class Operation extends namespace.NamedElement {
-    attr script.Script body;
-    ref TransferObjectType output;
-    ref TransferObjectType[*] faults;
+  abstract class Operation {
+    val Parameter[*] faults;
     attr boolean[1] undefined;
+    val Parameter output;
+    val Parameter input;
+    attr script.Script body;
+    attr boolean[1] stateful = true;
   }
 
   class UnmappedTransferObjectType extends TransferObjectType {
   }
 
-  class BoundOperation extends Operation {
-    ref MappedTransferObjectType[1] input;
+  class BoundOperation extends Operation, namespace.NamedElement {
+    attr boolean[1] internal;
   }
 
   class UnboundOperation extends Operation, namespace.NamespaceElement {
-    ref TransferObjectType input;
+  }
+
+  class Parameter extends namespace.NamedElement {
+    val type.Cardinality[1] cardinality;
+    ref TransferObjectType[1] type;
   }
 
 }
@@ -252,12 +264,6 @@ package accesspoint {
 
   class AccessPoint extends namespace.NamespaceElement {
     val ExposedService[*] exposedServices;
-    val ExposedGraph[*] exposedGraphs;
-  }
-
-  class ExposedGraph extends namespace.NamedElement {
-    ref ~derived.StaticNavigation[1] selector;
-    ref service.MappedTransferObjectType[1] entryTransferObject;
   }
 
 }
@@ -297,7 +303,7 @@ package view {
   abstract class Navigation extends Component {
     ref ObjectView[1] navigationView;
     ref ObjectView rangeView;
-    ref service.TransferRelation[1] transferRelation;
+    ref service.TransferObjectContainment[1] transferRelation;
   }
 
   class Link extends Navigation {
@@ -433,7 +439,6 @@ package measure {
   class Measure extends namespace.NamespaceElement {
     val Unit[*] units;
     attr String symbol;
-    ref expression.MeasureName measureName;
   }
 
   class MeasuredType extends type.NumericType {

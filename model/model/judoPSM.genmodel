@@ -78,7 +78,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Relation/cascadeDelete"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Attribute">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Attribute/required"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Attribute/identifier"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Endpoint">
@@ -98,6 +97,7 @@
       <genClasses image="false" ecoreClass="judoPSM.ecore#//data/PrimitiveTypedElement">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/PrimitiveTypedElement/dataType"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/PrimitiveTypedElement/required"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Containment"/>
     </nestedGenPackages>
@@ -151,67 +151,52 @@
       <genClasses image="false" ecoreClass="judoPSM.ecore#//service/TransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/representation"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/relations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/containments"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/attributes"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//service/TransferRelation">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelation/cardinality"/>
+      <genClasses image="false" ecoreClass="judoPSM.ecore#//service/TransferObjectContainment">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectContainment/cardinality"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelation/transferRelationBinding"/>
-      </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//service/TransferObjectReference">
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectContainment/binding"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectReference/referenced"/>
-      </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//service/TransferObjectContainment">
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectContainment/defaultValue"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectContainment/containment"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectContainment/range"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectContainment/target"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/TransferAttribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferAttribute/required"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/transferAttributeBinding"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/defaultValue"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/dataType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttribute/binding"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/MappedTransferObjectType/entityType"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/MappedTransferObjectType/transferRelationBindings"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/MappedTransferObjectType/transferAttributeBindings"/>
-      </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//service/TransferAttributeBinding">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttributeBinding/primitiveTypedElement"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferAttributeBinding/transferAttribute"/>
-      </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//service/TransferRelationBinding">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/referenceTypedElement"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/transferRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/defaultValue"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferRelationBinding/range"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//service/Operation">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/Operation/body"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/Operation/output"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/Operation/faults"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/Operation/undefined"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/Operation/output"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/Operation/input"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/Operation/body"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/Operation/stateful"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/UnmappedTransferObjectType"/>
       <genClasses ecoreClass="judoPSM.ecore#//service/BoundOperation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/BoundOperation/input"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/BoundOperation/internal"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//service/UnboundOperation">
+      <genClasses ecoreClass="judoPSM.ecore#//service/UnboundOperation"/>
+      <genClasses ecoreClass="judoPSM.ecore#//service/Parameter">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/Parameter/cardinality"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/UnboundOperation/input"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/Parameter/type"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Accesspoint" resource="XMI" disposableProviderFactory="true"
@@ -223,13 +208,6 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/AccessPoint">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedServices"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
-      </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedGraph">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/selector"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/entryTransferObject"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" resource="XMI" disposableProviderFactory="true"

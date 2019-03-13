@@ -89,8 +89,6 @@
           defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//data/PrimitiveTypedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
@@ -114,6 +112,8 @@
         eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/Primitive"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Relation"/>
   </eSubpackages>
@@ -170,70 +170,57 @@
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectType" abstract="true"
         eSuperTypes="#//type/DataType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//service/TransferAttribute"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
-          eType="#//service/TransferRelation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="containments" upperBound="-1"
+          eType="#//service/TransferObjectContainment" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//service/TransferAttribute" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferRelation" abstract="true"
-        eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="TransferObjectContainment" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelationBinding"
-          eType="#//service/TransferRelationBinding" eOpposite="#//service/TransferRelationBinding/transferRelation"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferObjectReference" eSuperTypes="#//service/TransferRelation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenced" lowerBound="1"
-          eType="#//service/MappedTransferObjectType"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferObjectContainment" eSuperTypes="#//service/TransferRelation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="containment" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement #//data/PrimitiveTypedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferAttributeBinding"
-          eType="#//service/TransferAttributeBinding" eOpposite="#//service/TransferAttributeBinding/transferAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/PrimitiveTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
+          eType="#//type/Primitive"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelationBindings"
-          upperBound="-1" eType="#//service/TransferRelationBinding" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferAttributeBindings"
-          upperBound="-1" eType="#//service/TransferAttributeBinding" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferAttributeBinding">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="primitiveTypedElement"
-          lowerBound="1" eType="#//data/PrimitiveTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferAttribute" lowerBound="1"
-          eType="#//service/TransferAttribute" eOpposite="#//service/TransferAttribute/transferAttributeBinding"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransferRelationBinding">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="referenceTypedElement"
-          lowerBound="1" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelation" lowerBound="1"
-          eType="#//service/TransferRelation" eOpposite="#//service/TransferRelation/transferRelationBinding"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//service/TransferObjectType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"
-          eType="#//service/TransferObjectType"/>
+          eType="#//service/Parameter" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//service/Parameter"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/Parameter"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UnmappedTransferObjectType" eSuperTypes="#//service/TransferObjectType"/>
-    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//service/Operation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="input" lowerBound="1"
-          eType="#//service/MappedTransferObjectType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//service/Operation #//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="internal" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//service/Operation #//namespace/NamespaceElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/TransferObjectType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//service/Operation #//namespace/NamespaceElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
+          eType="#//type/Cardinality" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
+          eType="#//service/TransferObjectType"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
@@ -245,14 +232,6 @@
     <eClassifiers xsi:type="ecore:EClass" name="AccessPoint" eSuperTypes="#//namespace/NamespaceElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
           eType="#//accesspoint/ExposedService" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedGraphs" upperBound="-1"
-          eType="#//accesspoint/ExposedGraph" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedGraph" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="selector" lowerBound="1"
-          eType="#//derived/StaticNavigation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="entryTransferObject"
-          lowerBound="1" eType="#//service/MappedTransferObjectType"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">
@@ -294,7 +273,7 @@
           eType="#//view/ObjectView"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="rangeView" eType="#//view/ObjectView"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="transferRelation" lowerBound="1"
-          eType="#//service/TransferRelation"/>
+          eType="#//service/TransferObjectContainment"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//view/Navigation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//view/Placeholder"/>
@@ -441,7 +420,7 @@
       <eLiterals name="hour" value="3"/>
       <eLiterals name="day" value="4"/>
       <eLiterals name="week" value="5"/>
-      <eLiterals name="month" value="6" literal="month"/>
+      <eLiterals name="month" value="6"/>
       <eLiterals name="year" value="7"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="DurationUnit" eSuperTypes="#//measure/Unit">
