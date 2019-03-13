@@ -207,22 +207,15 @@ package ~derived {
 package service {
   abstract class TransferObjectType extends type.DataType {
     ref TransferAttribute representation;
-    val TransferRelation[*] relations;
+    val TransferObjectContainment[*] containments;
     val TransferAttribute[*] attributes;
   }
 
-  abstract class TransferRelation extends namespace.NamedElement {
+  abstract class TransferObjectContainment extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref data.ReferenceTypedElement binding;
     ref data.ReferenceTypedElement defaultValue;
     ref data.ReferenceTypedElement range;
-  }
-
-  class TransferObjectReference extends TransferRelation {
-    ref MappedTransferObjectType[1] target;
-  }
-
-  class TransferObjectContainment extends TransferRelation {
     ref TransferObjectType[1] target;
   }
 
@@ -238,21 +231,27 @@ package service {
   }
 
   abstract class Operation {
-    attr script.Script body;
-    ref TransferObjectType output;
-    ref TransferObjectType[*] faults;
+    val Parameter[*] faults;
     attr boolean[1] undefined;
+    val Parameter output;
+    val Parameter input;
+    attr script.Script body;
+    attr boolean[1..2] stateful = true;
   }
 
   class UnmappedTransferObjectType extends TransferObjectType {
   }
 
   class BoundOperation extends Operation, namespace.NamedElement {
-    ref MappedTransferObjectType[1] input;
+    attr boolean[1] internal;
   }
 
   class UnboundOperation extends Operation, namespace.NamespaceElement {
-    ref TransferObjectType input;
+  }
+
+  class Parameter extends namespace.NamedElement {
+    val type.Cardinality[1] cardinality;
+    ref TransferObjectType[1] type;
   }
 
 }
@@ -265,12 +264,6 @@ package accesspoint {
 
   class AccessPoint extends namespace.NamespaceElement {
     val ExposedService[*] exposedServices;
-    val ExposedGraph[*] exposedGraphs;
-  }
-
-  class ExposedGraph extends namespace.NamedElement {
-    ref ~derived.StaticNavigation[1] selector;
-    ref service.MappedTransferObjectType[1] entryTransferObject;
   }
 
 }
@@ -310,7 +303,7 @@ package view {
   abstract class Navigation extends Component {
     ref ObjectView[1] navigationView;
     ref ObjectView rangeView;
-    ref service.TransferRelation[1] transferRelation;
+    ref service.TransferObjectContainment[1] transferRelation;
   }
 
   class Link extends Navigation {
