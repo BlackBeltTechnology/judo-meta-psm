@@ -106,7 +106,6 @@ package data {
   }
 
   class Attribute extends PrimitiveTypedElement {
-    attr boolean[1] required;
     attr boolean[1] identifier;
   }
 
@@ -126,6 +125,7 @@ package data {
 
   abstract class PrimitiveTypedElement extends namespace.NamedElement {
     ref type.Primitive[1] dataType;
+    attr boolean[1] required;
   }
 
   class Containment extends Relation {
