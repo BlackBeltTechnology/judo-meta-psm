@@ -236,7 +236,7 @@ package service {
     val Parameter output;
     val Parameter input;
     attr script.Script body;
-    attr boolean[1..2] stateful = true;
+    attr boolean[1] stateful = true;
   }
 
   class UnmappedTransferObjectType extends TransferObjectType {

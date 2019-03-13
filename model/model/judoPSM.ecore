@@ -208,7 +208,7 @@
           containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
-          upperBound="2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UnmappedTransferObjectType" eSuperTypes="#//service/TransferObjectType"/>
@@ -421,7 +421,7 @@
       <eLiterals name="hour" value="3"/>
       <eLiterals name="day" value="4"/>
       <eLiterals name="week" value="5"/>
-      <eLiterals name="month" value="6" literal="month"/>
+      <eLiterals name="month" value="6"/>
       <eLiterals name="year" value="7"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="DurationUnit" eSuperTypes="#//measure/Unit">
