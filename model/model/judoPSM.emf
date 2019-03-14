@@ -98,7 +98,6 @@ package data {
     val RelationCountConstraint[*] relationCountConstraints;
     val ~derived.DataProperty[*] dataProperties;
     val ~derived.NavigationProperty[*] navigationProperties;
-    val service.BoundOperation[*] operations;
   }
 
   abstract class Relation extends ReferenceTypedElement {
@@ -207,11 +206,11 @@ package ~derived {
 package service {
   abstract class TransferObjectType extends type.DataType {
     ref TransferAttribute representation;
-    val TransferObjectContainment[*] containments;
+    val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
   }
 
-  class TransferObjectContainment extends namespace.NamedElement {
+  class TransferObjectRelation extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref data.ReferenceTypedElement binding;
     ref data.ReferenceTypedElement defaultValue;
@@ -228,6 +227,7 @@ package service {
 
   class MappedTransferObjectType extends TransferObjectType {
     ref data.EntityType[1] entityType;
+    val BoundOperation[*] operations;
   }
 
   abstract class Operation {
@@ -243,7 +243,6 @@ package service {
   }
 
   class BoundOperation extends Operation, namespace.NamedElement {
-    attr boolean[1] internal;
   }
 
   class UnboundOperation extends Operation, namespace.NamespaceElement {
@@ -303,7 +302,7 @@ package view {
   abstract class Navigation extends Component {
     ref ObjectView[1] navigationView;
     ref ObjectView rangeView;
-    ref service.TransferObjectContainment[1] transferRelation;
+    ref service.TransferObjectRelation[1] transferRelation;
   }
 
   class Link extends Navigation {

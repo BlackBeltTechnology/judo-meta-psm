@@ -153,16 +153,16 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/relations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectType/attributes"/>
       </genClasses>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//service/TransferObjectRelations">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelations/cardinality"/>
+      <genClasses image="false" ecoreClass="judoPSM.ecore#//service/TransferObjectRelation">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/cardinality"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelations/binding"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/binding"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelations/defaultValue"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/defaultValue"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelations/range"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/range"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelations/target"/>
+            ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/target"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/TransferAttribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferAttribute/required"/>
