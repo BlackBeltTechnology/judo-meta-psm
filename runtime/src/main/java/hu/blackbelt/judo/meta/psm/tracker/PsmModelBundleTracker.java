@@ -1,17 +1,17 @@
 package hu.blackbelt.judo.meta.psm.tracker;
 
 import hu.blackbelt.judo.meta.psm.PsmMetaModel;
-import hu.blackbelt.judo.meta.psm.PsmModelInfo;
+import hu.blackbelt.judo.meta.psm.PsmModel;
+import hu.blackbelt.judo.meta.psm.PsmModelLoader;
 import hu.blackbelt.osgi.utils.osgi.api.BundleCallback;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import hu.blackbelt.osgi.utils.osgi.api.BundleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.Version;
-import org.osgi.framework.VersionRange;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.osgi.framework.*;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+import static hu.blackbelt.judo.meta.psm.PsmModelLoader.loadPsmModel;
+
 @Component(immediate = true)
 @Slf4j
 public class PsmModelBundleTracker {
@@ -35,11 +37,9 @@ public class PsmModelBundleTracker {
     @Reference
     BundleTrackerManager bundleTrackerManager;
 
-    @Reference
-    PsmMetaModel psmMetaModel;
+    Map<String, ServiceRegistration<PsmModel>> psmModelRegistrations = new ConcurrentHashMap<>();
 
-    Map<String, ServiceRegistration<PsmModelInfo>> psmRegistrations = new ConcurrentHashMap<>();
-    Map<String, PsmModelInfo> psmModels = new HashMap<>();
+    Map<String, PsmModel> psmModels = new HashMap<>();
 
     @Activate
     public void activate(final ComponentContext componentContext) {
@@ -72,33 +72,40 @@ public class PsmModelBundleTracker {
         @Override
         public void accept(Bundle trackedBundle) {
             List<Map<String, String>> entries = BundleUtil.getHeaderEntries(trackedBundle, PSM_MODELS);
+
+
             for (Map<String, String> params : entries) {
-                if (params.containsKey(PsmModelInfo.META_VERSION)) {
-                    VersionRange versionRange = new VersionRange(params.get(PsmModelInfo.META_VERSION).replaceAll("\"", ""));
-                    if (versionRange.includes(bundleContext.getBundle().getVersion())) {
+                String key = params.get(PsmModel.NAME);
+                if (psmModelRegistrations.containsKey(key)) {
+                    log.error("Model already loaded: " + key);
+                } else {
+                    if (params.containsKey(PsmModel.META_VERSION_RANGE)) {
+                        VersionRange versionRange = new VersionRange(params.get(PsmModel.META_VERSION_RANGE).replaceAll("\"", ""));
+                        if (versionRange.includes(bundleContext.getBundle().getVersion())) {
+                            // Unpack model
+                            try {
+                                File file = BundleUtil.copyBundleFileToPersistentStorage(trackedBundle, key + ".judo-meta-psm", params.get("file"));
+                                Version version = bundleContext.getBundle().getVersion();
 
-                        // Unpack model
-                        try {
-                            String key = trackedBundle.getBundleId() + "-" + params.get(PsmModelInfo.NAME);
+                                // TODO: JNG-55 Copy mapping XLSX
 
-                            File file = BundleUtil.copyBundleFileToPersistentStorage(trackedBundle, key + ".model", params.get(PsmModelInfo.FILE));
+                                PsmModel psmModel = loadPsmModel(
+                                        new ResourceSetImpl(),
+                                        URI.createURI(file.getAbsolutePath()),
+                                        params.get(PsmModel.NAME),
+                                        version.toString(),
+                                        params.get(PsmModel.CHECKSUM),
+                                        versionRange.toString());
 
-                            PsmModelInfo psmModelInfo = new PsmModelInfo(
-                                    file,
-                                    params.get(PsmModelInfo.NAME),
-                                    new Version(params.get(PsmModelInfo.VERSION)),
-                                    URI.createURI(file.getAbsolutePath()),
-                                    params.get(PsmModelInfo.CHECKSUM),
-                                    versionRange);
+                                log.info("Registering model: " + psmModel);
 
-                            log.info("Registering model: " + psmModelInfo);
+                                ServiceRegistration<PsmModel> modelServiceRegistration = bundleContext.registerService(PsmModel.class, psmModel, psmModel.toDictionary());
+                                psmModels.put(key, psmModel);
+                                psmModelRegistrations.put(key, modelServiceRegistration);
 
-                            ServiceRegistration<PsmModelInfo> modelServiceRegistration = bundleContext.registerService(PsmModelInfo.class, psmModelInfo, psmModelInfo.toDictionary());
-                            psmModels.put(key, psmModelInfo);
-                            psmRegistrations.put(key, modelServiceRegistration);
-
-                        } catch (IOException e) {
-                            log.error("Could not load model: " + params.get(PsmModelInfo.NAME) + " from bundle: " + trackedBundle.getBundleId());
+                            } catch (IOException e) {
+                                log.error("Could not load model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId());
+                            }
                         }
                     }
                 }
@@ -122,19 +129,19 @@ public class PsmModelBundleTracker {
         public void accept(Bundle trackedBundle) {
             List<Map<String, String>> entries = BundleUtil.getHeaderEntries(trackedBundle, PSM_MODELS);
             for (Map<String, String> params : entries) {
-                VersionRange versionRange = new VersionRange(params.get(PsmModelInfo.META_VERSION).replaceAll("\"", ""));
-                if (params.containsKey(PsmModelInfo.META_VERSION)) {
-                    if (versionRange.includes(bundleContext.getBundle().getVersion())) {
-                        String key = trackedBundle.getBundleId() + "-" + params.get(PsmModelInfo.NAME);
-                        ServiceRegistration<PsmModelInfo> modelServiceRegistration = psmRegistrations.get(key);
+                String key = params.get(PsmModel.NAME);
 
-                        if (modelServiceRegistration != null) {
-                            log.info("Unregistering moodel: " + psmModels.get(key));
-                            modelServiceRegistration.unregister();
-                            psmRegistrations.remove(key);
-                            psmModels.remove(key);
-                        }
+                if (psmModels.containsKey(key)) {
+                    ServiceRegistration<PsmModel> modelServiceRegistration = psmModelRegistrations.get(key);
+
+                    if (modelServiceRegistration != null) {
+                        log.info("Unregistering moodel: " + psmModels.get(key));
+                        modelServiceRegistration.unregister();
+                        psmModelRegistrations.remove(key);
+                        psmModels.remove(key);
                     }
+                } else {
+                    log.error("Model is not registered: " + key);
                 }
             }
         }
@@ -144,4 +151,5 @@ public class PsmModelBundleTracker {
             return null;
         }
     }
+
 }

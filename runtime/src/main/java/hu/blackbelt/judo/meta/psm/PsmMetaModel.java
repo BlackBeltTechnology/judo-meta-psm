@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 
 public interface PsmMetaModel {
 
-    Resource.Factory getFactory();
+    Resource.Factory getPsmFactory();
 
-    void registerPsmMetamodel(ResourceSet resourceSet);
+    void registerPsmMetamodelPackages(ResourceSet resourceSet);
 }
