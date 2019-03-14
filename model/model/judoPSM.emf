@@ -189,13 +189,13 @@ package ~derived {
   class ReferenceExpressionType extends ExpressionType {
   }
 
-  class ReferenceSelectorType extends ExpressionType {
+  class ReferenceSelectorType extends ReferenceExpressionType {
   }
 
   class DataExpressionType extends ExpressionType {
   }
 
-  class AttributeSelectorType extends ExpressionType {
+  class AttributeSelectorType extends DataExpressionType {
   }
 
   class LogicalExpressionType extends DataExpressionType {
