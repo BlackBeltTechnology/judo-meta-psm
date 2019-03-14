@@ -229,6 +229,14 @@
     <eClassifiers xsi:type="ecore:EClass" name="AccessPoint" eSuperTypes="#//namespace/NamespaceElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
           eType="#//accesspoint/ExposedService" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedGraphs" upperBound="-1"
+          eType="#//accesspoint/ExposedGraph" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedGraph" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="mappedTransferObjectType"
+          lowerBound="1" eType="#//service/MappedTransferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="selector" lowerBound="1"
+          eType="#//derived/StaticNavigation"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">

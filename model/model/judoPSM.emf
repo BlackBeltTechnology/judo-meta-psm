@@ -263,6 +263,12 @@ package accesspoint {
 
   class AccessPoint extends namespace.NamespaceElement {
     val ExposedService[*] exposedServices;
+    val ExposedGraph[*] exposedGraphs;
+  }
+
+  class ExposedGraph extends namespace.NamedElement {
+    ref service.MappedTransferObjectType[1] mappedTransferObjectType;
+    ref ~derived.StaticNavigation[1] selector;
   }
 
 }

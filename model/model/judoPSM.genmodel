@@ -206,6 +206,13 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/AccessPoint">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedServices"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedGraph">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/mappedTransferObjectType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/selector"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" resource="XMI" disposableProviderFactory="true"
