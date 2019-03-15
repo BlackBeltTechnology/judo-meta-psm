@@ -80,7 +80,7 @@ class ExecutionContextTest {
         // Transformation script
         executionContext.executeProgram(
                 evlExecutionContextBuilder()
-                        .source("validations/judopsm.evl")
+                        .source("epsilon/validations/judopsm.evl")
                         .build());
 
 

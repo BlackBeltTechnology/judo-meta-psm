@@ -69,7 +69,7 @@ class PsmValidationTests {
         // Transformation script
         executionContext.executeProgram(
                 evlExecutionContextBuilder()
-                        .source("validations/judopsm.evl")
+                        .source("epsilon/validations/judopsm.evl")
                         .expectedErrors(expectedErrors)
                         .expectedWarnings(expectedWarnings)
                         .build());

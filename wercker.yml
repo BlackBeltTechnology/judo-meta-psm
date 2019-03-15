@@ -69,7 +69,7 @@ release:
              git config --global user.email "oss@blackbelt.hu"
              git config --global user.name "Wercker Release"
     
-    - blackbelttechnology/version-from-git-tag@1.0.0
+    - blackbelttechnology/version-from-git-tag@1.0.5
 
     - script:
       name: reset git state to actual commit
