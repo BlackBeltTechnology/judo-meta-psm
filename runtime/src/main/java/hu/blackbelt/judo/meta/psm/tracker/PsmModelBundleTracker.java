@@ -1,15 +1,11 @@
 package hu.blackbelt.judo.meta.psm.tracker;
 
-import hu.blackbelt.judo.meta.psm.PsmMetaModel;
 import hu.blackbelt.judo.meta.psm.PsmModel;
-import hu.blackbelt.judo.meta.psm.PsmModelLoader;
 import hu.blackbelt.osgi.utils.osgi.api.BundleCallback;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import hu.blackbelt.osgi.utils.osgi.api.BundleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.osgi.framework.*;
 import org.osgi.service.component.ComponentContext;
