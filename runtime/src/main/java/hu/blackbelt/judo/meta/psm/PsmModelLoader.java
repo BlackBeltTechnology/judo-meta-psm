@@ -16,6 +16,7 @@ import hu.blackbelt.judo.meta.psm.view.ViewPackage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
@@ -47,9 +48,16 @@ public class PsmModelLoader {
     }
 
     public static ResourceSet createPsmResourceSet() {
+        return createPsmResourceSet(null);
+    }
+
+    public static ResourceSet createPsmResourceSet(URIHandler uriHandler) {
         ResourceSet resourceSet = new ResourceSetImpl();
         registerPsmMetamodel(resourceSet);
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(ResourceFactoryRegistryImpl.DEFAULT_EXTENSION, getFactory());
+        if (uriHandler != null) {
+            resourceSet.getURIConverter().getURIHandlers().add(0, uriHandler);
+        }
         return resourceSet;
     }
 

@@ -11,6 +11,8 @@ import org.osgi.service.component.annotations.Deactivate;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import static hu.blackbelt.judo.meta.psm.PsmModelLoader.registerPsmMetamodel;
+
 @Component(immediate = true, service = PsmMetaModel.class)
 public class PsmMetaModelRegistration implements PsmMetaModel {
 
@@ -40,6 +42,6 @@ public class PsmMetaModelRegistration implements PsmMetaModel {
 
     @Override
     public void registerPsmMetamodelPackages(ResourceSet resourceSet) {
-        PsmModelLoader.registerPsmMetamodel(resourceSet);
+        registerPsmMetamodel(resourceSet);
     }
 }
