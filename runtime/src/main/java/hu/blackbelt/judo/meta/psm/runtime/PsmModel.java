@@ -1,10 +1,8 @@
-package hu.blackbelt.judo.meta.psm;
+package hu.blackbelt.judo.meta.psm.runtime;
 
 import lombok.*;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.osgi.framework.Version;
-import org.osgi.framework.VersionRange;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -18,7 +16,7 @@ public class PsmModel {
     public static final String NAME = "name";
     public static final String VERSION = "version";
     public static final String CHECKSUM = "checksum";
-    public static final String META_VERSION_RANGE = "meta-version-version-range";
+    public static final String META_VERSION_RANGE = "meta-version-range";
     public static final String URI = "uri";
     public static final String RESOURCE = "resource";
 

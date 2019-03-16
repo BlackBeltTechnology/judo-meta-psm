@@ -1,6 +1,5 @@
-package hu.blackbelt.judo.meta.psm.tracker;
+package hu.blackbelt.judo.meta.psm.runtime;
 
-import hu.blackbelt.judo.meta.psm.PsmModel;
 import hu.blackbelt.osgi.utils.osgi.api.BundleCallback;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import hu.blackbelt.osgi.utils.osgi.api.BundleUtil;
@@ -22,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
-import static hu.blackbelt.judo.meta.psm.PsmModelLoader.loadPsmModel;
+import static hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader.loadPsmModel;
 
 @Component(immediate = true)
 @Slf4j

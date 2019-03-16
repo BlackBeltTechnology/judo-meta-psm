@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.meta.psm;
+package hu.blackbelt.judo.meta.psm.runtime;
 
 import hu.blackbelt.judo.meta.psm.accesspoint.AccesspointPackage;
 import hu.blackbelt.judo.meta.psm.authentication.AuthenticationPackage;

@@ -5,6 +5,7 @@ import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
 import hu.blackbelt.judo.meta.psm.type.Primitive;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.*;

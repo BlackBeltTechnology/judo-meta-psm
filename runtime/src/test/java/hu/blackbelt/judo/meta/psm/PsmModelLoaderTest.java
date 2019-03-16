@@ -1,20 +1,15 @@
 package hu.blackbelt.judo.meta.psm;
 
+import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.jupiter.api.Test;
-import org.osgi.framework.Version;
-import org.osgi.framework.VersionRange;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 class PsmModelLoaderTest {
