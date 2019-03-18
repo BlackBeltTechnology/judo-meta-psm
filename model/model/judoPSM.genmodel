@@ -200,13 +200,9 @@
     <nestedGenPackages prefix="Accesspoint" resource="XMI" disposableProviderFactory="true"
         dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
         fileExtensions="judo-meta-psm-accesspoint" ecorePackage="judoPSM.ecore#//accesspoint">
-      <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedService">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedService/operation"/>
-      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/AccessPoint">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedServices"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedServices"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedGraph">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
