@@ -216,6 +216,7 @@ package service {
     ref data.ReferenceTypedElement defaultValue;
     ref data.ReferenceTypedElement range;
     ref TransferObjectType[1] target;
+    attr boolean[1] containment = false;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -228,6 +229,7 @@ package service {
   class MappedTransferObjectType extends TransferObjectType {
     ref data.EntityType[1] entityType;
     val BoundOperation[*] operations;
+    attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
   }
 
   abstract class Operation {
@@ -251,6 +253,12 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
+  }
+
+  enum EntityReferenceType {
+    REQUIRED = 0;
+    OPTIONAL = 1;
+    NOT_SUPPORTED = 2;
   }
 
 }

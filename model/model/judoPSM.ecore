@@ -181,6 +181,9 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="containment" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
@@ -195,6 +198,8 @@
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/BoundOperation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="entityReferencePresence"
+          lowerBound="1" eType="#//service/EntityReferenceType" defaultValueLiteral="OPTIONAL"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"
@@ -218,6 +223,11 @@
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
           eType="#//service/TransferObjectType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="EntityReferenceType">
+      <eLiterals name="REQUIRED"/>
+      <eLiterals name="OPTIONAL" value="1"/>
+      <eLiterals name="NOT_SUPPORTED" value="2"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
