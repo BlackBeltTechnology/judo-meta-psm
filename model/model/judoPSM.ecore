@@ -181,7 +181,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="containment" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="embedded" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
     </eClassifiers>
@@ -196,10 +196,10 @@
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
-          eType="#//service/BoundOperation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="entityReferencePresence"
           lowerBound="1" eType="#//service/EntityReferenceType" defaultValueLiteral="OPTIONAL"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+          eType="#//service/BoundOperation" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"
@@ -243,6 +243,8 @@
           lowerBound="1" eType="#//service/MappedTransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="selector" lowerBound="1"
           eType="#//derived/StaticNavigation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
+          eType="#//service/BoundOperation"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">

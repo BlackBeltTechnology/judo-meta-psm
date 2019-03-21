@@ -216,7 +216,7 @@ package service {
     ref data.ReferenceTypedElement defaultValue;
     ref data.ReferenceTypedElement range;
     ref TransferObjectType[1] target;
-    attr boolean[1] containment = false;
+    attr boolean[1] embedded = false;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -228,8 +228,8 @@ package service {
 
   class MappedTransferObjectType extends TransferObjectType {
     ref data.EntityType[1] entityType;
-    val BoundOperation[*] operations;
     attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
+    val BoundOperation[*] operations;
   }
 
   abstract class Operation {
@@ -273,6 +273,7 @@ package accesspoint {
   class ExposedGraph extends namespace.NamespaceElement {
     ref service.MappedTransferObjectType[1] mappedTransferObjectType;
     ref ~derived.StaticNavigation[1] selector;
+    ref service.BoundOperation[*] exposedServices;
   }
 
 }

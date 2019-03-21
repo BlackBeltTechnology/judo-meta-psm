@@ -168,7 +168,7 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/range"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/TransferObjectRelation/target"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferObjectRelation/containment"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferObjectRelation/embedded"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//service/TransferAttribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/TransferAttribute/required"/>
@@ -182,8 +182,8 @@
       <genClasses ecoreClass="judoPSM.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/MappedTransferObjectType/entityType"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/MappedTransferObjectType/operations"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//service/MappedTransferObjectType/entityReferencePresence"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//service/MappedTransferObjectType/operations"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//service/Operation">
         <genFeatures children="true" createChild="true" propertySortChoices="true"
@@ -216,6 +216,8 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/mappedTransferObjectType"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/selector"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/exposedServices"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" resource="XMI" disposableProviderFactory="true"
