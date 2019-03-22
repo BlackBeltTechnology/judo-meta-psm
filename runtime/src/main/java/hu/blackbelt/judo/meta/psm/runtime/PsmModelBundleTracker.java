@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+import static hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader.createPsmResourceSet;
 import static hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader.loadPsmModel;
 
 @Component(immediate = true)
@@ -52,6 +53,11 @@ public class PsmModelBundleTracker {
     private static class PsmBundlePredicate implements Predicate<Bundle> {
         @Override
         public boolean test(Bundle trackedBundle) {
+
+            if (log.isDebugEnabled()) {
+                log.debug("Checking bundle form Psm-Models header: " + trackedBundle.getSymbolicName());
+            }
+
             return BundleUtil.hasHeader(trackedBundle, PSM_MODELS);
         }
     }
@@ -68,6 +74,9 @@ public class PsmModelBundleTracker {
         public void accept(Bundle trackedBundle) {
             List<Map<String, String>> entries = BundleUtil.getHeaderEntries(trackedBundle, PSM_MODELS);
 
+            if (log.isDebugEnabled()) {
+                log.debug("Psm-Models header found: " + trackedBundle.getSymbolicName());
+            }
 
             for (Map<String, String> params : entries) {
                 String key = params.get(PsmModel.NAME);
@@ -80,12 +89,13 @@ public class PsmModelBundleTracker {
                             // Unpack model
                             try {
                                 File file = BundleUtil.copyBundleFileToPersistentStorage(trackedBundle, key + ".judo-meta-psm", params.get("file"));
+                                log.info("Loading PSM Model file: " + file.getAbsoluteFile());
                                 Version version = bundleContext.getBundle().getVersion();
 
                                 // TODO: JNG-55 Copy mapping XLSX
 
                                 PsmModel psmModel = loadPsmModel(
-                                        new ResourceSetImpl(),
+                                        createPsmResourceSet(),
                                         URI.createURI(file.getAbsolutePath()),
                                         params.get(PsmModel.NAME),
                                         version.toString(),
