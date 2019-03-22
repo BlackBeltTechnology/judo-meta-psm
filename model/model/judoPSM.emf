@@ -266,14 +266,22 @@ package service {
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/accesspoint", prefix="accesspoint")
 package accesspoint {
   class AccessPoint extends namespace.NamespaceElement {
-    ref service.UnboundOperation[*] exposedServices;
-    ref ExposedGraph[*] exposedGraphs;
+    val ExposedGraph[*] exposedGraphs;
+    val ExposedServices[*] exposedServices;
   }
 
-  class ExposedGraph extends namespace.NamespaceElement {
+  class ExposedGraph extends namespace.NamedElement {
     ref service.MappedTransferObjectType[1] mappedTransferObjectType;
     ref ~derived.StaticNavigation[1] selector;
-    ref service.BoundOperation[*] exposedServices;
+    val ExposedOperation[*] exposedOperations;
+  }
+
+  class ExposedServices extends namespace.NamedElement {
+    ref service.UnboundOperation[1] operation;
+  }
+
+  class ExposedOperation {
+    ref service.BoundOperation[1] operation;
   }
 
 }

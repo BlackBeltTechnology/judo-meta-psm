@@ -233,17 +233,25 @@
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
       nsPrefix="accesspoint">
     <eClassifiers xsi:type="ecore:EClass" name="AccessPoint" eSuperTypes="#//namespace/NamespaceElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
-          eType="#//service/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedGraphs" upperBound="-1"
-          eType="#//accesspoint/ExposedGraph"/>
+          eType="#//accesspoint/ExposedGraph" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
+          eType="#//accesspoint/ExposedServices" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedGraph" eSuperTypes="#//namespace/NamespaceElement">
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedGraph" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mappedTransferObjectType"
           lowerBound="1" eType="#//service/MappedTransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="selector" lowerBound="1"
           eType="#//derived/StaticNavigation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperations" upperBound="-1"
+          eType="#//accesspoint/ExposedOperation" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedServices" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
+          eType="#//service/UnboundOperation"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
           eType="#//service/BoundOperation"/>
     </eClassifiers>
   </eSubpackages>
