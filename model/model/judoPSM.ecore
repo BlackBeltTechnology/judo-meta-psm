@@ -236,7 +236,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedGraphs" upperBound="-1"
           eType="#//accesspoint/ExposedGraph" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
-          eType="#//accesspoint/ExposedServices" containment="true"/>
+          eType="#//accesspoint/ExposedService" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ExposedGraph" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mappedTransferObjectType"
@@ -246,7 +246,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperations" upperBound="-1"
           eType="#//accesspoint/ExposedOperation" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedServices" eSuperTypes="#//namespace/NamedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedService">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
           eType="#//service/UnboundOperation"/>
     </eClassifiers>

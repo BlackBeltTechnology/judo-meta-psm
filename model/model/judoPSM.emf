@@ -267,7 +267,7 @@ package service {
 package accesspoint {
   class AccessPoint extends namespace.NamespaceElement {
     val ExposedGraph[*] exposedGraphs;
-    val ExposedServices[*] exposedServices;
+    val ExposedService[*] exposedServices;
   }
 
   class ExposedGraph extends namespace.NamedElement {
@@ -276,7 +276,7 @@ package accesspoint {
     val ExposedOperation[*] exposedOperations;
   }
 
-  class ExposedServices extends namespace.NamedElement {
+  class ExposedService {
     ref service.UnboundOperation[1] operation;
   }
 
