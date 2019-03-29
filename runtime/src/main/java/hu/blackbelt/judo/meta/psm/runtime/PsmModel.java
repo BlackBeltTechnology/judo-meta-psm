@@ -3,6 +3,7 @@ package hu.blackbelt.judo.meta.psm.runtime;
 import lombok.*;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -18,7 +19,7 @@ public class PsmModel {
     public static final String CHECKSUM = "checksum";
     public static final String META_VERSION_RANGE = "meta-version-range";
     public static final String URI = "uri";
-    public static final String RESOURCE = "resource";
+    public static final String RESOURCESET = "resourceset";
 
     @NonNull
     String name;
@@ -31,7 +32,7 @@ public class PsmModel {
 
     String metaVersionRange;
     @NonNull
-    Resource resource;
+    ResourceSet resourceSet;
 
     public Dictionary<String, Object> toDictionary() {
         Dictionary<String, Object> ret = new Hashtable<>();
@@ -40,7 +41,7 @@ public class PsmModel {
         ret.put(URI, uri);
         ret.put(CHECKSUM, checksum);
         ret.put(META_VERSION_RANGE, metaVersionRange);
-        ret.put(RESOURCE, resource);
+        ret.put(RESOURCESET, resourceSet);
         return ret;
     }
 
