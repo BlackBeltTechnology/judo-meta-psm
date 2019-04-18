@@ -19,7 +19,48 @@
         eSuperTypes="#//namespace/NamedElement"/>
   </eSubpackages>
   <eSubpackages name="type" nsURI="http://blackbelt.hu/judo/meta/psm/type" nsPrefix="type">
-    <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true" eSuperTypes="#//type/DataType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true" eSuperTypes="#//type/DataType">
+      <eOperations name="isNumeric" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return this instanceof hu.blackbelt.judo.meta.psm.type.NumericType;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isInteger" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() == 0;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isDecimal" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() > 0;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return this instanceof hu.blackbelt.judo.meta.psm.type.StringType;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isBoolean" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return this instanceof hu.blackbelt.judo.meta.psm.type.BooleanType;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isDate" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return this instanceof hu.blackbelt.judo.meta.psm.type.DateType;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isTimestamp" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return this instanceof hu.blackbelt.judo.meta.psm.type.TimestampType;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isEnumeration" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return this instanceof hu.blackbelt.judo.meta.psm.type.EnumerationType;"/>
+        </eAnnotations>
+      </eOperations>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CustomType" eSuperTypes="#//type/FlatPrimitiveType"/>
     <eClassifiers xsi:type="ecore:EClass" name="StringType" eSuperTypes="#//type/FlatPrimitiveType">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLength" lowerBound="1"
@@ -34,6 +75,12 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BooleanType" eSuperTypes="#//type/FlatPrimitiveType"/>
     <eClassifiers xsi:type="ecore:EClass" name="EnumerationType" eSuperTypes="#//type/Primitive">
+      <eOperations name="contains" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return getMembers().stream().filter(m -> java.util.Objects.equals(name, m.getName())).count() > 0;"/>
+        </eAnnotations>
+        <eParameters name="name" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="members" lowerBound="1"
           upperBound="-1" eType="#//type/EnumerationMember" containment="true"/>
     </eClassifiers>
@@ -66,6 +113,35 @@
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
+      <eOperations name="getSuperTypes" ordered="false" upperBound="-1" eType="#//data/EntityType">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="final org.eclipse.emf.common.util.EList&lt;EntityType> result = org.eclipse.emf.common.util.ECollections.newBasicEList();&#xA;addSuperTypes(result);&#xA;return result;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="addSuperTypes" ordered="false">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="final java.util.Collection&lt;EntityType> newSuperTypes = getSuperEntityTypes().stream().filter(s -> !foundSuperTypes.contains(s)).collect(java.util.stream.Collectors.toSet());&#xA;foundSuperTypes.addAll(newSuperTypes);&#xA;newSuperTypes.forEach(s -> s.addSuperTypes(foundSuperTypes));"/>
+        </eAnnotations>
+        <eParameters name="foundSuperTypes" ordered="false" upperBound="-1" eType="#//data/EntityType"/>
+      </eOperations>
+      <eOperations name="getAttribute" eType="#//data/PrimitiveTypedElement">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getSuperTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }"/>
+        </eAnnotations>
+        <eParameters name="name" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="getReference" eType="#//data/ReferenceTypedElement">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getSuperTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Relation>> relation = base.stream()&#xA;                .filter(e -> e.getRelations().stream().anyMatch(r -> java.util.Objects.equals(name, r.getName()))) // get all types containing reference named name&#xA;                .map(e -> e.getRelations().stream().filter(r -> java.util.Objects.equals(name, r.getName())).findFirst()) // get references of types&#xA;                .findFirst(); // redefining references is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;NavigationProperty>> navigationProperty = base.stream()&#xA;                .filter(e -> e.getNavigationProperties().stream().anyMatch(n -> java.util.Objects.equals(name, n.getName()))) // get all types containing navigation property named name&#xA;                .map(e -> e.getNavigationProperties().stream().filter(n -> java.util.Objects.equals(name, n.getName())).findFirst()) // get navigation properties of types&#xA;                .findFirst(); // redefining navigation properties is not supported&#xA;&#xA;        if (relation.isPresent()) {&#xA;            return relation.get().get();&#xA;        } else if (navigationProperty.isPresent()) {&#xA;            return navigationProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }"/>
+        </eAnnotations>
+        <eParameters name="name" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="getAttributeType" eType="#//type/Primitive">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="        final PrimitiveTypedElement attribute = getAttribute(name);&#xA;&#xA;        if (attribute != null) {&#xA;            return attribute.getDataType();&#xA;        } else {&#xA;            return null;&#xA;        }"/>
+        </eAnnotations>
+        <eParameters name="name" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="superEntityTypes" upperBound="-1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
@@ -101,6 +177,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceTypedElement" abstract="true"
         eSuperTypes="#//namespace/NamedElement">
+      <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="if (getCardinality() == null) {&#xA;    return false;&#xA;} else {&#xA;    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;&#xA;}"/>
+        </eAnnotations>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
