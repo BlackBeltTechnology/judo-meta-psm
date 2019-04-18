@@ -39,6 +39,8 @@
             body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimestampType;"/>
         <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isEnumeration"
             body="return this instanceof hu.blackbelt.judo.meta.psm.type.EnumerationType;"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isMeasured"
+            body="return this instanceof hu.blackbelt.judo.meta.psm.measure.MeasuredType;"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/CustomType"/>
       <genClasses ecoreClass="judoPSM.ecore#//type/StringType">
@@ -440,6 +442,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/rateDividend"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/rateDivisor"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/symbol"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//measure/Unit/toString" body="return getSymbol() != null ? getSymbol() : getName();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureDefinitionTerm">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/MeasureDefinitionTerm/exponent"/>

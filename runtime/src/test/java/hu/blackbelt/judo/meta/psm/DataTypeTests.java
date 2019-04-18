@@ -44,6 +44,11 @@ public class DataTypeTests extends NorthwindTests {
     }
 
     @Test
+    public void testIsMeasured() {
+        assertThat(getEntityType("Product").getAttributeType("weight").isMeasured(), is(Boolean.TRUE));
+    }
+
+    @Test
     public void testContains() {
         final EnumerationType enumerationType = (EnumerationType) northwind.getPackages().stream()
                 .filter(p -> "types".equals(p.getName()))
