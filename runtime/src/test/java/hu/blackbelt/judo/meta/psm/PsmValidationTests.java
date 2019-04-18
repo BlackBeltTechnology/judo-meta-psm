@@ -6,6 +6,7 @@ import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -24,8 +25,11 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCustomTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newEnumerationMemberBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newEnumerationTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
 
+@Slf4j
 class PsmValidationTests {
 
     private final String createdSourceModelName = "urn:psm.judo-meta-psm";
@@ -81,6 +85,8 @@ class PsmValidationTests {
 
     @Test
     void testModelNameIsUnique() throws Exception {
+        log.info("Testing constraint: ModelNameIsUnique");
+
         Model m1 = newModelBuilder().withName("A").build();
         Model m2 = newModelBuilder().withName("A").build();
 
@@ -93,6 +99,8 @@ class PsmValidationTests {
 
     @Test
     void testNamespaceIsUnique() throws Exception {
+        log.info("Testing constraint: NamespaceIsUnique");
+
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
                         newStringTypeBuilder().withName("String").withMaxLength(255).build(),
@@ -110,6 +118,32 @@ class PsmValidationTests {
 
         runEpsilon(ImmutableList.of("NamespaceIsUnique|Names Set {P, E, String} are not unique in namespace M"),
                 ImmutableList.of("TypeNamesAreUnique|Type name is not unique: String"));
+    }
+
+    @Test
+    void testEnumerationMemberNameIsUnique() throws Exception {
+        log.info("Testing constraint: EnumerationMemberNameIsUnique");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(newEnumerationTypeBuilder()
+                        .withName("E")
+                        .withMembers(ImmutableList.of(newEnumerationMemberBuilder()
+                                        .withName("A")
+                                        .withOrdinal(0)
+                                        .build(),
+                                newEnumerationMemberBuilder()
+                                        .withName("A")
+                                        .withOrdinal(1)
+                                        .build()
+                                ))
+                        .build()
+                ))
+                .build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("EnumerationMemberNameIsUnique|Enum member names are not unique: E"),
+                null);
     }
 
     public File scriptDir() {
