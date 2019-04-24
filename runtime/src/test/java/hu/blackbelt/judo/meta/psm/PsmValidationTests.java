@@ -284,7 +284,8 @@ class PsmValidationTests {
     }
 
 
-    @Test
+    // TODO: 011 - fix
+    //@Test
     void ValidPartnerRelations() throws Exception {
         log.info("Testing constraint: ValidPartnerRelations");
 
@@ -358,10 +359,299 @@ class PsmValidationTests {
         */
         psmResource.getContents().add(m);
 
-        /* TODO: dis juan es fikidy fukd up
+
         runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1"),
                 null);
-         /**/
+    }
+
+    //TODO: 012 - fix with "ValidPartnerRelations()"
+    //@Test
+    void ValidPartnerType() throws Exception {
+        log.info("Testing constraint: ValidPartnerType");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newEntityTypeBuilder()
+                            .withName("E1")
+                            .withRelations(ImmutableList.of(
+                                    newEndpointBuilder()
+                                        .withName("e2")
+                                        .withTarget(newEntityTypeBuilder().withName("_SL_cMJmKEeiyrNaxr-HdNQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                    .build(),
+                                    newEndpointBuilder()
+                                        .withName("e3")
+                                        .withTarget(newEntityTypeBuilder().withName("_mKioUJoZEeiyrNaxr-HdNQ").build())
+                                        .withPartner(newEndpointBuilder().withName("__kNykL2VEeiOuYiCo6IbXQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                    .build())
+                            ).build()/**/,
+                        newEntityTypeBuilder()
+                            .withName("E2")
+                            .withRelations(
+                                    newEndpointBuilder()
+                                        .withName("e1")
+                                        .withTarget(newEntityTypeBuilder().withName("_QUnq4JmKEeiyrNaxr-HdNQ").build())
+                                        .withPartner(newEndpointBuilder().withName("_8y5hgL2VEeiOuYiCo6IbXQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                    .build()
+                            ).build(),/**/
+                        newEntityTypeBuilder()
+                            .withName("E3").build()
+                        )).build();
+
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: E2.e1 for E1.e3","ValidPartnerType|Invalid partner type: E1.e3 for E2.e1"),
+                null);
+    }
+
+    //TODO: (013, t013) after 011 and 012
+    //@Test
+    void OneToOneRelationsAreNotRecommended() throws Exception {
+        log.info("Testing constraint: OneToOneRelationsAreNotRecommended");
+
+
+        Model m;
+        //psmResource.getContents().add(M);
+        runEpsilon(null,
+                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1","OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1"));
+
+    }
+
+    //TODO: 014 - ask
+    //@Test
+    void InheritanceIsNotRecursive() throws Exception {
+        log.info("Testing constraint: InheritanceIsNotRecursive");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newEntityTypeBuilder()
+                                .withName("E1")
+                                .withSuperEntityTypes(newEntityTypeBuilder().withName("_m2RJEJodEeiyrNaxr-HdNQ").build())
+                        .build(),
+                        newEntityTypeBuilder()
+                                .withName("E2")
+                                .withSuperEntityTypes(newEntityTypeBuilder().withName("_l7yd0JodEeiyrNaxr-HdNQ").build())
+                        .build(),
+                        newEntityTypeBuilder()
+                                .withName("E3")
+                                .withSuperEntityTypes(newEntityTypeBuilder().withName("_rPDHMJodEeiyrNaxr-HdNQ").build())
+                        .build()
+                )).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("InheritanceIsNotRecursive|Entity type E1 is recursive","InheritanceIsNotRecursive|Entity type E2 is recursive","InheritanceIsNotRecursive|Entity type E3 is recursive"),
+                null);
+    }
+
+    //TODO: 015
+    //@Test
+    void PartnerIsNotSelf() throws Exception {
+        log.info("Testing constraint: PartnerIsNotSelf");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(
+                        ImmutableList.of(
+                              newEntityTypeBuilder()
+                                      .withName("E1")
+                                      .withRelations(
+                                              newEndpointBuilder()
+                                                      .withName("e1")
+                                                      .withTarget(newEntityTypeBuilder().withName("_3VNIUJl7EeiyrNaxr-HdNQ").build())
+                                                      .withPartner(newEndpointBuilder().withName("_ug8CUL2WEeiOuYiCo6IbXQ").build())
+                                                      .withCardinality(newCardinalityBuilder().build())
+                                              .build()
+                                      )
+                                      .build()
+                        )
+                ).build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("PartnerIsNotSelf|Self partner relation found: E1.e1"),
+                null);
+    }
+
+    @Test
+    void AttributeNameIsUnique() throws Exception {
+        log.info("Testing constraint: AttributeNameIsUnique");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newStringTypeBuilder()
+                                .withName("String")
+                                .withMaxLength(255)
+                        .build(),
+                        newNumericTypeBuilder()
+                                .withName("Integer")
+                                .withScale(18)
+                        .build(),
+                        newEntityTypeBuilder()
+                                .withName("E")
+                                .withAttributes(ImmutableList.of(
+                                        newAttributeBuilder()
+                                                .withName("a")
+                                                .withDataType(newDateTypeBuilder()
+                                                        .withName("_hqVaQJoeEeiyrNaxr-HdNQ")
+                                                        .build())
+                                        .build(),
+                                        newAttributeBuilder()
+                                                .withName("a")
+                                                .withDataType(newDateTypeBuilder()
+                                                        .withName("_jCGecJoeEeiyrNaxr-HdNQ")
+                                                        .build())
+                                        .build()
+                                ))
+                        .build()
+                )).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("AttributeNameIsUnique|Multiple attributes are added to entity E with the same name"),
+                null);
+    }
+
+    //TODO: check why the heck it's working
+    @Test
+    void RelationNameIsUnique() throws Exception {
+        log.info("Testing constraint: RelationNameIsUnique");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(
+                        newEntityTypeBuilder()
+                                .withName("E")
+                                .withRelations(ImmutableList.of(
+                                        newEndpointBuilder()
+                                                .withName("e")
+                                                .withTarget(newEntityTypeBuilder().withName("_OEP5kJogEeiyrNaxr-HdNQ").build())
+                                                .withCardinality(newCardinalityBuilder().build())
+                                                .build(),
+                                        newContainmentBuilder()
+                                                .withName("e")
+                                                .withTarget(newEntityTypeBuilder().withName("_OEP5kJogEeiyrNaxr-HdNQ").build())
+                                                .withCardinality(newCardinalityBuilder().build())
+                                                .build()
+                                ))
+                        .build()
+                ).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("RelationNameIsUnique|Multiple relations are added to entity E with the same name"),
+                null);
+    }
+
+    @Test
+    void NoAttributeAndRelationAreWithTheSameName() throws Exception {
+        log.info("Testing constraint: NoAttributeAndRelationAreWithTheSameName");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newStringTypeBuilder().withName("String").withMaxLength(255).build(),
+                        newEntityTypeBuilder().withName("E")
+                                .withAttributes(newAttributeBuilder().withName("x").withDataType(newDateTypeBuilder().withName("_5keiYJoiEeiyrNaxr-HdNQ").build()).build())
+                                .withRelations(newEndpointBuilder()
+                                        .withName("x")
+                                        .withTarget(newEntityTypeBuilder()
+                                                .withName("_0tFVoJoiEeiyrNaxr-HdNQ").build())
+                                        .withCardinality(newCardinalityBuilder().build()).build())
+                                .build()
+                )).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name"),
+                null);
+    }
+
+    //TODO: check (withPartner?)
+    //@Test
+    void OppositePartnerIsDefined() throws Exception {
+        log.info("Testing constraint: OppositePartnerIsDefined");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newEntityTypeBuilder()
+                                .withName("E1")
+                                .withRelations(newEndpointBuilder().withName("e")
+                                        .withTarget(newEntityTypeBuilder().withName("_GkQfwMIpEeiBdsJcLYLa1w").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                        .build())
+                                .build(),
+                        newEntityTypeBuilder()
+                                .withName("E2")
+                                .withRelations(newEndpointBuilder().withName("f")
+                                        .withTarget(newEntityTypeBuilder().withName("_hJRQoJmGEeiyrNaxr-HdNQ"))
+                                        .withPartner(newEndpointBuilder().withName("_dISfAL2XEeiOuYiCo6IbXQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                        .build())
+                                .build()
+                )).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("OppositePartnerIsDefined|Missing opposite partner relation for E2.f"),
+                null);
+    }
+
+    @Test
+    void MaxLengthIsNotTooLarge() throws Exception {
+        log.info("Testing constraint: MaxLengthIsNotTooLarge");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(
+                  newStringTypeBuilder().withName("String").withMaxLength(4001).build()
+                ).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("MaxLengthIsNotTooLarge|MaxLength must be less than/equals to 4000: String"),
+                null);
+    }
+
+    //TODO: fix 22 (namespace)
+    //@Test
+    void PackageHasNamespace() throws Exception {
+        log.info("Testing constraint: PackageHasNamespace");
+
+        Model m = newModelBuilder().withName("M")
+                .withPackages(newPackageBuilder().withName("pkg").build())
+                .build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("PackageHasNamespace|Package pkg must have exactly 1 namespace"),
+                null);
+    }
+
+    //TODO: fix 23 (namespace)
+    //@Test
+    void NamespaceElementHasNamespace() throws Exception {
+        log.info("Testing constraint: NamespaceElementHasNamespace");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(
+                        newStringTypeBuilder().withName("String").withMaxLength(255).build()
+                ).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("NamespaceElementHasNamespace|Element String must have exactly 1 namespace"),
+                null);
+    }
+
+    //TODO: finish - 24
+    //@Test
+    void EnumerationMemberHasEnumerationType() throws Exception {
+        log.info("Testing constraint: EnumerationMemberHasEnumerationType");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(newEnumerationTypeBuilder().withName("E")
+                        .withMembers(ImmutableList.of(
+                                newEnumerationMemberBuilder().withName("m2").withOrdinal(2).build(),
+                                newEnumerationMemberBuilder().withName("m3")/*.withordinal(0)*/.build()
+                        )).build()
+                        //newEnumerationMemberBuilder().build()
+                )
+                .build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("EnumerationMemberHasEnumerationType|Enumeration member m1 must have exactly 1 enumeration"),
+                null);
     }
 
     public File scriptDir() {
@@ -372,7 +662,4 @@ class PsmValidationTests {
         }
         return targetDir;
     }
-
-
-
 }
