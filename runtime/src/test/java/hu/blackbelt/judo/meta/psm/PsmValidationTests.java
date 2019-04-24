@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.data.Endpoint;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +21,12 @@ import java.util.Collection;
 import static hu.blackbelt.epsilon.runtime.execution.ExecutionContext.executionContextBuilder;
 import static hu.blackbelt.epsilon.runtime.execution.contexts.EvlExecutionContext.evlExecutionContextBuilder;
 import static hu.blackbelt.epsilon.runtime.execution.model.emf.WrappedEmfModelContext.wrappedEmfModelContextBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCustomTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newEnumerationMemberBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newEnumerationTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
 @Slf4j
 class PsmValidationTests {
@@ -146,6 +145,225 @@ class PsmValidationTests {
                 null);
     }
 
+    @Test
+    void EnumerationMemberValueIsUnique() throws Exception {
+        log.info("Testing constraint: EnumerationMemberValueIsUnique");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(newEnumerationTypeBuilder()
+                        .withName("E")
+                        .withMembers(ImmutableList.of(newEnumerationMemberBuilder()
+                                        .withName("A")
+                                        .withOrdinal(0)
+                                        .build(),
+                                newEnumerationMemberBuilder()
+                                        .withName("B")
+                                        .withOrdinal(0)
+                                        .build()
+                        ))
+                        .build()
+                ))
+                .build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("EnumerationMemberValueIsUnique|Enum member numbers are not unique: E"),
+                null);
+    }
+
+    @Test
+    void PrecisionIsLowerOrEqualThanScale() throws Exception {
+        log.info("Testing constraint: PrecisionIsLowerOrEqualThanScale");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(newNumericTypeBuilder()
+                        .withName("InvalidPrecision")
+                        .withPrecision(10)
+                        .withScale(5)
+                        .build()
+                ))
+                .build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("PrecisionIsLowerOrEqualThanScale|Precision (10) must be less than scale (5): InvalidPrecision"),
+                null);
+    }
+
+    @Test
+    void ValidPrecision() throws Exception {
+        log.info("Testing constraint: ValidPrecision");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(newNumericTypeBuilder()
+                        .withName("InvalidPrecision")
+                        .withPrecision(-2)
+                        .withScale(5)
+                        .build()
+                ))
+                .build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("ValidPrecision|Precision must be at least 0: InvalidPrecision"),
+                null);
+    }
+
+    @Test
+    void ValidMaxLength() throws Exception {
+        log.info("Testing constraint: ValidMaxLength");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(newStringTypeBuilder()
+                        .withName("String")
+                        .withMaxLength(-3)
+                        .build()
+                ))
+                .build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("ValidMaxLength|MaxLength must be greater than 0: String"),
+                null);
+
+
+    }
+
+    @Test
+    void AttributeNameIsNotReserved() throws Exception {
+        log.info("Testing constraint: AttributeNameIsNotReserved");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(newStringTypeBuilder()
+                            .withName("String")
+                            .withMaxLength(255)
+                            .build(),
+                        newEntityTypeBuilder()
+                            .withName("E")
+                            .withAttributes(newAttributeBuilder()
+                                .withName("id")
+                                .withDataType(newDateTypeBuilder()
+                                            .withName("_8WfKgJlzEeiyrNaxr-HdNQ") //TODO: check if being dummy
+                                            .build()
+                                ))
+                                .build()
+                ))
+                .build();
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("AttributeNameIsNotReserved|Name E.id is reserved"),
+                null);
+    }
+
+    @Test
+    void RelationNameIsNotReserved() throws Exception {
+        log.info("Testing constraint: RelationNameIsNotReserved");
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                                newEntityTypeBuilder()
+                                .withName("E1")
+                                .withRelations(newEndpointBuilder()
+                                                .withName("id")
+                                                .withTarget(newEntityTypeBuilder()
+                                                        .withName("_cn6_oJl2EeiyrNaxr-HdNQ")
+                                                        .build())
+                                                .withCardinality(newCardinalityBuilder()
+                                                        .build())
+                                                .build())
+                                .build(),
+                                newEntityTypeBuilder().withName("E2").build()
+                            )).build();
+
+
+        psmResource.getContents().add(m);
+
+        runEpsilon(ImmutableList.of("RelationNameIsNotReserved|Name E1.id is reserved"),
+                null);
+    }
+
+
+    @Test
+    void ValidPartnerRelations() throws Exception {
+        log.info("Testing constraint: ValidPartnerRelations");
+
+        Endpoint e1 = newEndpointBuilder()
+                .withName("e1")
+                .withTarget(newEntityTypeBuilder()
+                        .withName("_3VNIUJl7EeiyrNaxr-HdNQ").build())
+                .withPartner(newEndpointBuilder()
+                        .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
+                .withCardinality(newCardinalityBuilder().build())
+                .build();
+
+        Endpoint e2 = newEndpointBuilder()
+                .withName("e2")
+                .withTarget(newEntityTypeBuilder()
+                        .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
+                        .build())
+                .withPartner(newEndpointBuilder()
+                        .withName("_rTKUML2VEeiOuYiCo6IbXQ").build())
+                .withCardinality(newCardinalityBuilder().build())
+                .build();
+
+        Endpoint e3 = newEndpointBuilder()
+                .withName("e3")
+                .withTarget(newEntityTypeBuilder()
+                        .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
+                        .build())
+                .withPartner(newEndpointBuilder()
+                        .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
+                .withCardinality(newCardinalityBuilder().build())
+                .build();
+        newRelationCountConstraintBuilder();
+        newTransferObjectRelationBuilder();
+        Model m  = newModelBuilder().withName("M").withElements(newEntityTypeBuilder().withName("E1").withRelations(
+                ImmutableList.of(e1,e2,e3)
+        ).build()).build();
+        /*
+        Model m  = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newEntityTypeBuilder()
+                                .withName("E1")
+                                .withRelations(ImmutableList.of(
+                                        newEndpointBuilder()
+                                        .withName("e1")
+                                        .withTarget(newEntityTypeBuilder()
+                                                .withName("_3VNIUJl7EeiyrNaxr-HdNQ").build())
+                                        .withPartner(newEndpointBuilder()
+                                                .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                        .build(),
+                                        newEndpointBuilder()
+                                        .withName("e2")
+                                        .withTarget(newEntityTypeBuilder()
+                                                .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
+                                                .build())
+                                        .withPartner(newEndpointBuilder()
+                                                .withName("_rTKUML2VEeiOuYiCo6IbXQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                        .build(),
+                                        newEndpointBuilder()
+                                        .withName("e3")
+                                        .withTarget(newEntityTypeBuilder()
+                                                .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
+                                                .build())
+                                        .withPartner(newEndpointBuilder()
+                                                .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
+                                        .withCardinality(newCardinalityBuilder().build())
+                                        .build()
+                                )).build())
+                ).build();
+        */
+        psmResource.getContents().add(m);
+
+        /* TODO: dis juan es fikidy fukd up
+        runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1"),
+                null);
+         /**/
+    }
+
     public File scriptDir() {
         String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
         File targetDir = new File(relPath + "../../src/main");
@@ -154,5 +372,7 @@ class PsmValidationTests {
         }
         return targetDir;
     }
+
+
 
 }
