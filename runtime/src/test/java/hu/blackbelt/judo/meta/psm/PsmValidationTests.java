@@ -5,6 +5,7 @@ import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.Endpoint;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,6 @@ import static hu.blackbelt.epsilon.runtime.execution.model.emf.WrappedEmfModelCo
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
@@ -283,123 +283,49 @@ class PsmValidationTests {
                 null);
     }
 
-
-    // TODO: 011 - fix
-    //@Test
+    @Test
     void ValidPartnerRelations() throws Exception {
         log.info("Testing constraint: ValidPartnerRelations");
 
-        Endpoint e1 = newEndpointBuilder()
-                .withName("e1")
-                .withTarget(newEntityTypeBuilder()
-                        .withName("_3VNIUJl7EeiyrNaxr-HdNQ").build())
-                .withPartner(newEndpointBuilder()
-                        .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
-                .withCardinality(newCardinalityBuilder().build())
-                .build();
+        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint e3 = newEndpointBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
-        Endpoint e2 = newEndpointBuilder()
-                .withName("e2")
-                .withTarget(newEntityTypeBuilder()
-                        .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
-                        .build())
-                .withPartner(newEndpointBuilder()
-                        .withName("_rTKUML2VEeiOuYiCo6IbXQ").build())
-                .withCardinality(newCardinalityBuilder().build())
-                .build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e1,e2,e3)).build();
 
-        Endpoint e3 = newEndpointBuilder()
-                .withName("e3")
-                .withTarget(newEntityTypeBuilder()
-                        .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
-                        .build())
-                .withPartner(newEndpointBuilder()
-                        .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
-                .withCardinality(newCardinalityBuilder().build())
-                .build();
-        newRelationCountConstraintBuilder();
-        newTransferObjectRelationBuilder();
-        Model m  = newModelBuilder().withName("M").withElements(newEntityTypeBuilder().withName("E1").withRelations(
-                ImmutableList.of(e1,e2,e3)
-        ).build()).build();
-        /*
-        Model m  = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        newEntityTypeBuilder()
-                                .withName("E1")
-                                .withRelations(ImmutableList.of(
-                                        newEndpointBuilder()
-                                        .withName("e1")
-                                        .withTarget(newEntityTypeBuilder()
-                                                .withName("_3VNIUJl7EeiyrNaxr-HdNQ").build())
-                                        .withPartner(newEndpointBuilder()
-                                                .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                        .build(),
-                                        newEndpointBuilder()
-                                        .withName("e2")
-                                        .withTarget(newEntityTypeBuilder()
-                                                .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
-                                                .build())
-                                        .withPartner(newEndpointBuilder()
-                                                .withName("_rTKUML2VEeiOuYiCo6IbXQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                        .build(),
-                                        newEndpointBuilder()
-                                        .withName("e3")
-                                        .withTarget(newEntityTypeBuilder()
-                                                .withName("_3VNIUJl7EeiyrNaxr-HdNQ")
-                                                .build())
-                                        .withPartner(newEndpointBuilder()
-                                                .withName("_q9gNQL2VEeiOuYiCo6IbXQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                        .build()
-                                )).build())
-                ).build();
-        */
+        e1.setTarget(E1);
+        e1.setPartner(e2);
+        e2.setTarget(E1);
+        e2.setPartner(e3);
+        e3.setTarget(E1);
+        e3.setPartner(e2);
+
+        Model m  = newModelBuilder().withName("M").withElements(E1).build();
+
         psmResource.getContents().add(m);
-
-
         runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1"),
                 null);
     }
 
-    //TODO: 012 - fix with "ValidPartnerRelations()"
-    //@Test
+    @Test
     void ValidPartnerType() throws Exception {
         log.info("Testing constraint: ValidPartnerType");
 
-        Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        newEntityTypeBuilder()
-                            .withName("E1")
-                            .withRelations(ImmutableList.of(
-                                    newEndpointBuilder()
-                                        .withName("e2")
-                                        .withTarget(newEntityTypeBuilder().withName("_SL_cMJmKEeiyrNaxr-HdNQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                    .build(),
-                                    newEndpointBuilder()
-                                        .withName("e3")
-                                        .withTarget(newEntityTypeBuilder().withName("_mKioUJoZEeiyrNaxr-HdNQ").build())
-                                        .withPartner(newEndpointBuilder().withName("__kNykL2VEeiOuYiCo6IbXQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                    .build())
-                            ).build()/**/,
-                        newEntityTypeBuilder()
-                            .withName("E2")
-                            .withRelations(
-                                    newEndpointBuilder()
-                                        .withName("e1")
-                                        .withTarget(newEntityTypeBuilder().withName("_QUnq4JmKEeiyrNaxr-HdNQ").build())
-                                        .withPartner(newEndpointBuilder().withName("_8y5hgL2VEeiOuYiCo6IbXQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                    .build()
-                            ).build(),/**/
-                        newEntityTypeBuilder()
-                            .withName("E3").build()
-                        )).build();
+        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint e3 = newEndpointBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e2,e3)).build();
+        EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(e1).build();
+        EntityType E3 = newEntityTypeBuilder().withName("E3").build();
+
+        e1.setTarget(E1);
+        e1.setPartner(e3);
+        e2.setTarget(E2);
+        e3.setTarget(E3);
+        e3.setPartner(e1);
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2,E3)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: E2.e1 for E1.e3","ValidPartnerType|Invalid partner type: E1.e3 for E2.e1"),
@@ -411,64 +337,54 @@ class PsmValidationTests {
     void OneToOneRelationsAreNotRecommended() throws Exception {
         log.info("Testing constraint: OneToOneRelationsAreNotRecommended");
 
+        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().withLower(1).build()).build();
+        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().withLower(1).build()).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e2).build();
+        EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(e1).build();
+        e1.setTarget(E1);
+        e1.setPartner(e2);
+        e2.setTarget(E2);
+        e2.setPartner(e1);
 
-        Model m;
-        //psmResource.getContents().add(M);
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2)).build();
+        psmResource.getContents().add(m);
         runEpsilon(null,
                 ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1","OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1"));
 
     }
 
-    //TODO: 014 - ask
-    //@Test
+    @Test
     void InheritanceIsNotRecursive() throws Exception {
         log.info("Testing constraint: InheritanceIsNotRecursive");
 
-        Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        newEntityTypeBuilder()
-                                .withName("E1")
-                                .withSuperEntityTypes(newEntityTypeBuilder().withName("_m2RJEJodEeiyrNaxr-HdNQ").build())
-                        .build(),
-                        newEntityTypeBuilder()
-                                .withName("E2")
-                                .withSuperEntityTypes(newEntityTypeBuilder().withName("_l7yd0JodEeiyrNaxr-HdNQ").build())
-                        .build(),
-                        newEntityTypeBuilder()
-                                .withName("E3")
-                                .withSuperEntityTypes(newEntityTypeBuilder().withName("_rPDHMJodEeiyrNaxr-HdNQ").build())
-                        .build()
-                )).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").build();
+        EntityType E2 = newEntityTypeBuilder().withName("E2").build();
+        EntityType E3 = newEntityTypeBuilder().withName("E3").build();
+
+        E1.getSuperEntityTypes().add(E2);
+        E2.getSuperEntityTypes().add(E1);
+        E3.getSuperEntityTypes().add(E3);
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2,E3)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("InheritanceIsNotRecursive|Entity type E1 is recursive","InheritanceIsNotRecursive|Entity type E2 is recursive","InheritanceIsNotRecursive|Entity type E3 is recursive"),
                 null);
     }
 
-    //TODO: 015
-    //@Test
+    @Test
     void PartnerIsNotSelf() throws Exception {
         log.info("Testing constraint: PartnerIsNotSelf");
 
-        Model m = newModelBuilder().withName("M")
-                .withElements(
-                        ImmutableList.of(
-                              newEntityTypeBuilder()
-                                      .withName("E1")
-                                      .withRelations(
-                                              newEndpointBuilder()
-                                                      .withName("e1")
-                                                      .withTarget(newEntityTypeBuilder().withName("_3VNIUJl7EeiyrNaxr-HdNQ").build())
-                                                      .withPartner(newEndpointBuilder().withName("_ug8CUL2WEeiOuYiCo6IbXQ").build())
-                                                      .withCardinality(newCardinalityBuilder().build())
-                                              .build()
-                                      )
-                                      .build()
-                        )
-                ).build();
+        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e1).build();
+
+        e1.setTarget(E1);
+        e1.setPartner(e1);
+
+        Model m = newModelBuilder().withName("M").withElements(E1).build();
 
         psmResource.getContents().add(m);
-
         runEpsilon(ImmutableList.of("PartnerIsNotSelf|Self partner relation found: E1.e1"),
                 null);
     }
@@ -479,31 +395,16 @@ class PsmValidationTests {
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
-                        newStringTypeBuilder()
-                                .withName("String")
-                                .withMaxLength(255)
+                        newStringTypeBuilder().withName("String").withMaxLength(255)
                         .build(),
-                        newNumericTypeBuilder()
-                                .withName("Integer")
-                                .withScale(18)
+                        newNumericTypeBuilder().withName("Integer").withScale(18)
                         .build(),
                         newEntityTypeBuilder()
                                 .withName("E")
                                 .withAttributes(ImmutableList.of(
-                                        newAttributeBuilder()
-                                                .withName("a")
-                                                .withDataType(newDateTypeBuilder()
-                                                        .withName("_hqVaQJoeEeiyrNaxr-HdNQ")
-                                                        .build())
-                                        .build(),
-                                        newAttributeBuilder()
-                                                .withName("a")
-                                                .withDataType(newDateTypeBuilder()
-                                                        .withName("_jCGecJoeEeiyrNaxr-HdNQ")
-                                                        .build())
-                                        .build()
-                                ))
-                        .build()
+                                        newAttributeBuilder().withName("a").withDataType(newDateTypeBuilder().withName("_hqVaQJoeEeiyrNaxr-HdNQ").build()).build(),
+                                        newAttributeBuilder().withName("a").withDataType(newDateTypeBuilder().withName("_jCGecJoeEeiyrNaxr-HdNQ").build()).build()
+                                )).build()
                 )).build();
 
         psmResource.getContents().add(m);
@@ -511,7 +412,7 @@ class PsmValidationTests {
                 null);
     }
 
-    //TODO: check why the heck it's working
+    //TODO: check: faulty rel target, but working (bc names checked, not targets)
     @Test
     void RelationNameIsUnique() throws Exception {
         log.info("Testing constraint: RelationNameIsUnique");
@@ -523,12 +424,12 @@ class PsmValidationTests {
                                 .withRelations(ImmutableList.of(
                                         newEndpointBuilder()
                                                 .withName("e")
-                                                .withTarget(newEntityTypeBuilder().withName("_OEP5kJogEeiyrNaxr-HdNQ").build())
+                                                .withTarget(newEntityTypeBuilder().build()) //_OEP5kJogEeiyrNaxr-HdNQ
                                                 .withCardinality(newCardinalityBuilder().build())
                                                 .build(),
                                         newContainmentBuilder()
                                                 .withName("e")
-                                                .withTarget(newEntityTypeBuilder().withName("_OEP5kJogEeiyrNaxr-HdNQ").build())
+                                                .withTarget(newEntityTypeBuilder().build()) //_OEP5kJogEeiyrNaxr-HdNQ
                                                 .withCardinality(newCardinalityBuilder().build())
                                                 .build()
                                 ))
@@ -540,6 +441,7 @@ class PsmValidationTests {
                 null);
     }
 
+    //TODO: check: faulty rel target, but working (bc names checked, not targets)
     @Test
     void NoAttributeAndRelationAreWithTheSameName() throws Exception {
         log.info("Testing constraint: NoAttributeAndRelationAreWithTheSameName");
@@ -562,29 +464,22 @@ class PsmValidationTests {
                 null);
     }
 
-    //TODO: check (withPartner?)
-    //@Test
+    @Test
     void OppositePartnerIsDefined() throws Exception {
         log.info("Testing constraint: OppositePartnerIsDefined");
 
+        Endpoint e =newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint f =newEndpointBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
+
+        EntityType E1 =newEntityTypeBuilder().withName("E1").withRelations(e).build();
+        EntityType E2 =newEntityTypeBuilder().withName("E2").withRelations(f).build();
+
+        e.setTarget(E2);
+        f.setTarget(E1);
+        f.setPartner(e);
+
         Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        newEntityTypeBuilder()
-                                .withName("E1")
-                                .withRelations(newEndpointBuilder().withName("e")
-                                        .withTarget(newEntityTypeBuilder().withName("_GkQfwMIpEeiBdsJcLYLa1w").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                        .build())
-                                .build(),
-                        newEntityTypeBuilder()
-                                .withName("E2")
-                                .withRelations(newEndpointBuilder().withName("f")
-                                        .withTarget(newEntityTypeBuilder().withName("_hJRQoJmGEeiyrNaxr-HdNQ"))
-                                        .withPartner(newEndpointBuilder().withName("_dISfAL2XEeiOuYiCo6IbXQ").build())
-                                        .withCardinality(newCardinalityBuilder().build())
-                                        .build())
-                                .build()
-                )).build();
+                .withElements(ImmutableList.of(E1,E2)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("OppositePartnerIsDefined|Missing opposite partner relation for E2.f"),
