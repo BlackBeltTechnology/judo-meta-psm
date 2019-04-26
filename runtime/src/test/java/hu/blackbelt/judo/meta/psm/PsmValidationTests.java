@@ -4,10 +4,14 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
-import hu.blackbelt.judo.meta.psm.data.Endpoint;
-import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.derived.DataProperty;
+import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
+import hu.blackbelt.judo.meta.psm.measure.MeasuredType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
+import hu.blackbelt.judo.meta.psm.type.*;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -23,6 +27,9 @@ import static hu.blackbelt.epsilon.runtime.execution.ExecutionContext.executionC
 import static hu.blackbelt.epsilon.runtime.execution.contexts.EvlExecutionContext.evlExecutionContextBuilder;
 import static hu.blackbelt.epsilon.runtime.execution.model.emf.WrappedEmfModelContext.wrappedEmfModelContextBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newMeasuredTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newUnitBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
@@ -233,18 +240,19 @@ class PsmValidationTests {
     void AttributeNameIsNotReserved() throws Exception {
         log.info("Testing constraint: AttributeNameIsNotReserved");
 
+        StringType string = newStringTypeBuilder()
+                .withName("String")
+                .withMaxLength(255)
+                .build();
+
         Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(newStringTypeBuilder()
-                            .withName("String")
-                            .withMaxLength(255)
-                            .build(),
+                .withElements(ImmutableList.of(
+                        string,
                         newEntityTypeBuilder()
                             .withName("E")
                             .withAttributes(newAttributeBuilder()
                                 .withName("id")
-                                .withDataType(newDateTypeBuilder()
-                                            .withName("_8WfKgJlzEeiyrNaxr-HdNQ") //TODO: check if being dummy
-                                            .build()
+                                .withDataType(string
                                 ))
                                 .build()
                 ))
@@ -260,22 +268,21 @@ class PsmValidationTests {
     void RelationNameIsNotReserved() throws Exception {
         log.info("Testing constraint: RelationNameIsNotReserved");
 
+
+        EntityType E2 = newEntityTypeBuilder().withName("E2").build();
+
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
                                 newEntityTypeBuilder()
-                                .withName("E1")
-                                .withRelations(newEndpointBuilder()
-                                                .withName("id")
-                                                .withTarget(newEntityTypeBuilder()
-                                                        .withName("_cn6_oJl2EeiyrNaxr-HdNQ")
-                                                        .build())
-                                                .withCardinality(newCardinalityBuilder()
-                                                        .build())
-                                                .build())
-                                .build(),
-                                newEntityTypeBuilder().withName("E2").build()
+                                    .withName("E1")
+                                    .withRelations(newEndpointBuilder()
+                                                    .withName("id")
+                                                    .withTarget(E2)
+                                                    .withCardinality(newCardinalityBuilder().build())
+                                                    .build())
+                                    .build(),
+                                E2
                             )).build();
-
 
         psmResource.getContents().add(m);
 
@@ -332,7 +339,7 @@ class PsmValidationTests {
                 null);
     }
 
-    //TODO: (013, t013) after 011 and 012
+    //TODO: "All constraints have been satisfied" & critique OneToOneRelationsAreNotRecommended {...}?
     //@Test
     void OneToOneRelationsAreNotRecommended() throws Exception {
         log.info("Testing constraint: OneToOneRelationsAreNotRecommended");
@@ -393,17 +400,20 @@ class PsmValidationTests {
     void AttributeNameIsUnique() throws Exception {
         log.info("Testing constraint: AttributeNameIsUnique");
 
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255)
+                .build();
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withScale(18)
+                .build();
+
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
-                        newStringTypeBuilder().withName("String").withMaxLength(255)
-                        .build(),
-                        newNumericTypeBuilder().withName("Integer").withScale(18)
-                        .build(),
+                        string,
+                        integer,
                         newEntityTypeBuilder()
                                 .withName("E")
                                 .withAttributes(ImmutableList.of(
-                                        newAttributeBuilder().withName("a").withDataType(newDateTypeBuilder().withName("_hqVaQJoeEeiyrNaxr-HdNQ").build()).build(),
-                                        newAttributeBuilder().withName("a").withDataType(newDateTypeBuilder().withName("_jCGecJoeEeiyrNaxr-HdNQ").build()).build()
+                                        newAttributeBuilder().withName("a").withDataType(string).build(),
+                                        newAttributeBuilder().withName("a").withDataType(integer).build()
                                 )).build()
                 )).build();
 
@@ -412,52 +422,52 @@ class PsmValidationTests {
                 null);
     }
 
-    //TODO: check: faulty rel target, but working (bc names checked, not targets)
     @Test
     void RelationNameIsUnique() throws Exception {
         log.info("Testing constraint: RelationNameIsUnique");
 
-        Model m = newModelBuilder().withName("M")
-                .withElements(
-                        newEntityTypeBuilder()
-                                .withName("E")
-                                .withRelations(ImmutableList.of(
-                                        newEndpointBuilder()
-                                                .withName("e")
-                                                .withTarget(newEntityTypeBuilder().build()) //_OEP5kJogEeiyrNaxr-HdNQ
-                                                .withCardinality(newCardinalityBuilder().build())
-                                                .build(),
-                                        newContainmentBuilder()
-                                                .withName("e")
-                                                .withTarget(newEntityTypeBuilder().build()) //_OEP5kJogEeiyrNaxr-HdNQ
-                                                .withCardinality(newCardinalityBuilder().build())
-                                                .build()
-                                ))
-                        .build()
-                ).build();
+        Endpoint endpoint = newEndpointBuilder()
+                .withName("e")
+                .withCardinality(newCardinalityBuilder().build())
+                .build();
+        Containment containment = newContainmentBuilder()
+                .withName("e")
+                .withCardinality(newCardinalityBuilder().build())
+                .build();
+
+        EntityType E = newEntityTypeBuilder()
+                .withName("E")
+                .withRelations(ImmutableList.of(endpoint,containment))
+                .build();
+
+        endpoint.setTarget(E);
+        containment.setTarget(E);
+
+        Model m = newModelBuilder().withName("M").withElements(E).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("RelationNameIsUnique|Multiple relations are added to entity E with the same name"),
                 null);
     }
 
-    //TODO: check: faulty rel target, but working (bc names checked, not targets)
     @Test
     void NoAttributeAndRelationAreWithTheSameName() throws Exception {
         log.info("Testing constraint: NoAttributeAndRelationAreWithTheSameName");
 
-        Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        newStringTypeBuilder().withName("String").withMaxLength(255).build(),
-                        newEntityTypeBuilder().withName("E")
-                                .withAttributes(newAttributeBuilder().withName("x").withDataType(newDateTypeBuilder().withName("_5keiYJoiEeiyrNaxr-HdNQ").build()).build())
-                                .withRelations(newEndpointBuilder()
-                                        .withName("x")
-                                        .withTarget(newEntityTypeBuilder()
-                                                .withName("_0tFVoJoiEeiyrNaxr-HdNQ").build())
-                                        .withCardinality(newCardinalityBuilder().build()).build())
-                                .build()
-                )).build();
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+
+        Endpoint x = newEndpointBuilder()
+                .withName("x")
+                .withCardinality(newCardinalityBuilder().build()).build();
+
+        EntityType E = newEntityTypeBuilder().withName("E")
+                .withAttributes(newAttributeBuilder().withName("x").withDataType(string).build())
+                .withRelations(x)
+                .build();
+
+        x.setTarget(E);
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(string,E)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name"),
@@ -500,37 +510,44 @@ class PsmValidationTests {
                 null);
     }
 
-    //TODO: fix 22 (namespace)
+    //TODO: check (no model found, equivalent to testModelNameIsUnique?)
     //@Test
+    void StandaloneModelLoadedOnly() throws Exception {
+        log.info("Testing constraint: StandaloneModelLoadedOnly");
+
+        runEpsilon(null,
+                ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
+    }
+
+    @Test
     void PackageHasNamespace() throws Exception {
         log.info("Testing constraint: PackageHasNamespace");
 
-        Model m = newModelBuilder().withName("M")
-                .withPackages(newPackageBuilder().withName("pkg").build())
-                .build();
+        Package pkg = newPackageBuilder().withName("pkg").build();
+        Model m = newModelBuilder().withName("M").build();
 
         psmResource.getContents().add(m);
+        psmResource.getContents().add(pkg);
+
         runEpsilon(ImmutableList.of("PackageHasNamespace|Package pkg must have exactly 1 namespace"),
                 null);
     }
 
-    //TODO: fix 23 (namespace)
-    //@Test
+    @Test
     void NamespaceElementHasNamespace() throws Exception {
         log.info("Testing constraint: NamespaceElementHasNamespace");
 
-        Model m = newModelBuilder().withName("M")
-                .withElements(
-                        newStringTypeBuilder().withName("String").withMaxLength(255).build()
-                ).build();
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        Model m = newModelBuilder().withName("M").build();
 
         psmResource.getContents().add(m);
+        psmResource.getContents().add(string);
+
         runEpsilon(ImmutableList.of("NamespaceElementHasNamespace|Element String must have exactly 1 namespace"),
                 null);
     }
 
-    //TODO: finish - 24
-    //@Test
+    @Test
     void EnumerationMemberHasEnumerationType() throws Exception {
         log.info("Testing constraint: EnumerationMemberHasEnumerationType");
 
@@ -538,16 +555,289 @@ class PsmValidationTests {
                 .withElements(newEnumerationTypeBuilder().withName("E")
                         .withMembers(ImmutableList.of(
                                 newEnumerationMemberBuilder().withName("m2").withOrdinal(2).build(),
-                                newEnumerationMemberBuilder().withName("m3")/*.withordinal(0)*/.build()
+                                newEnumerationMemberBuilder().withName("m3").build()
                         )).build()
-                        //newEnumerationMemberBuilder().build()
                 )
                 .build();
 
+        EnumerationMember enumMemb = newEnumerationMemberBuilder().withName("m1").withOrdinal(1).build();
         psmResource.getContents().add(m);
+        psmResource.getContents().add(enumMemb);
         runEpsilon(ImmutableList.of("EnumerationMemberHasEnumerationType|Enumeration member m1 must have exactly 1 enumeration"),
                 null);
     }
+
+    //TODO: check "RelationCountConstraintHasUniqueName|..."(no error without it)
+    //@Test
+    void RelationCountConstraintHasUniqueName() throws Exception {
+        log.info("Testing constraint: RelationCountConstraintHasUniqueName");
+
+        Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
+        Containment f = newContainmentBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
+        RelationCountConstraint c1_1 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(f,e)).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build(); //TODO: relations
+        RelationCountConstraint c1_2 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(e,f)).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build(); //TODO: relations
+        EntityType E = newEntityTypeBuilder().withRelations(ImmutableList.of(e,f)).withRelationCountConstraints(ImmutableList.of(c1_2,c1_2)).build();
+        /*c1_1.getRelations().add(f);
+        c1_1.getRelations().add(e);
+        c1_2.getRelations().add(e);
+        c1_2.getRelations().add(f);*/
+
+        f.setTarget(E);
+        e.setTarget(E);
+
+        Model m = newModelBuilder().withName("M").withElements(E).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of(/**/"RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E",/**/"RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
+                null);
+    }
+
+    @Test
+    void RelationBelongsToEntity() throws Exception {
+        log.info("Testing constraint: RelationBelongsToEntity");
+
+        Endpoint r1 = newEndpointBuilder().withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
+        EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).build();
+        r1.setTarget(E);
+
+        Model m = newModelBuilder().withName("M").withElements(E).build();
+        Containment r2 = newContainmentBuilder().withName("r2").withTarget(E).withCardinality(newCardinalityBuilder().build()).build();
+
+        psmResource.getContents().add(m);
+        psmResource.getContents().add(r2);
+        runEpsilon(ImmutableList.of("RelationBelongsToEntity|Orphan relation: r2"),
+                null);
+    }
+
+    @Test
+    void AttributeBelongsToEntity() throws Exception {
+        log.info("Testing constraint: AttributeBelongsToEntity");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        newEntityTypeBuilder().withName("E").withAttributes(newAttributeBuilder().withName("a").withDataType(string).build()).build(),
+                        string
+                )).build();
+
+        Attribute b = newAttributeBuilder().withName("b").withDataType(string).build();
+
+        psmResource.getContents().add(m);
+        psmResource.getContents().add(b);
+
+        runEpsilon(ImmutableList.of("AttributeBelongsToEntity|Orphan attribute: b"),
+                null);
+    }
+
+    @Test
+    void EnumerationContainsAtLeastTwoMembers() throws Exception {
+        log.info("Testing constraint: EnumerationContainsAtLeastTwoMembers");
+
+        Model m = newModelBuilder().withName("M").withElements(
+                newEnumerationTypeBuilder().withName("E").withMembers(
+                        newEnumerationMemberBuilder().withName("m").build()
+                ).build()
+        ).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(null,
+                ImmutableList.of("EnumerationContainsAtLeastTwoMembers|Enum E has no or only a single member"));
+    }
+
+    //TODO: All constraints...
+    //@Test
+    void DataPropertyNameIsUnique() throws Exception {
+        log.info("Testing constraint: DataPropertyNameIsUnique");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                newEntityTypeBuilder().withName("E")
+                        .withAttributes(
+                                newAttributeBuilder().withName("a").withDataType(string).build())
+                        .withDataProperties(ImmutableList.of(
+                                newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(newDataExpressionTypeBuilder().withExpression("lower(self.a)").build()).build(),
+                                newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(newDataExpressionTypeBuilder().withExpression("upper(self.a)").build()).build()
+                        )
+                ).build(),
+                string
+        )).build();
+
+        runEpsilon(ImmutableList.of("DataPropertyNameIsUnique|Multiple data properties are added to entity E with the same name"),
+                null);
+    }
+
+    @Test
+    void NavigationPropertyNameIsUnique() throws Exception {
+        log.info("Testing constraint: NavigationPropertyNameIsUnique");
+
+        Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
+        NavigationProperty n1 = newNavigationPropertyBuilder().withName("n").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.r1.r1").build()
+        ).build();
+        NavigationProperty n2 = newNavigationPropertyBuilder().withName("n").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.r1.r1.r1").build()
+        ).build();
+
+
+        EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).withNavigationProperties(ImmutableList.of(n1,n2)).build();
+
+        r1.setTarget(E);
+        n1.setTarget(E);
+        n2.setTarget(E);
+
+
+        Model m = newModelBuilder().withName("M").withElements(E).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(ImmutableList.of("NavigationPropertyNameIsUnique|Multiple navigation properties are added to entity E with the same name"),
+                null);
+    }
+
+    @Test
+    void DataPropertyBelongsToEntity() throws Exception {
+        log.info("Testing constraint: DataPropertyBelongsToEntity");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        EntityType E = newEntityTypeBuilder().withName("E").withAttributes(newAttributeBuilder().withName("a").withDataType(string).build()).build();
+        DataProperty p = newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(newDataExpressionTypeBuilder().withExpression("lower(self.a)").build()).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E,string)).build();
+
+        psmResource.getContents().add(m);
+        psmResource.getContents().add(p);
+        runEpsilon(ImmutableList.of("DataPropertyBelongsToEntity|Orphan data property: p"),
+                null);
+    }
+
+    @Test
+    void NavigationPropertyBelongsToEntity() throws Exception {
+        log.info("Testing constraint: NavigationPropertyBelongsToEntity");
+
+        Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
+        EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).build();
+        r1.setTarget(E);
+        Model m = newModelBuilder().withName("M").withElements(E).build();
+
+        NavigationProperty n = newNavigationPropertyBuilder().withName("n").withCardinality(newCardinalityBuilder().build()).withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.r1.r1").build()).build();
+        n.setTarget(E);
+
+        psmResource.getContents().add(m);
+        psmResource.getContents().add(n);
+
+        runEpsilon(ImmutableList.of("NavigationPropertyBelongsToEntity|Orphan navigation property: n"),
+                null);
+    }
+
+
+    //TODO: ask about those errors (t033)
+    @Test
+    void DataPropertyGetterTypeIsValid() throws Exception {
+        log.info("Testing constraint: DataPropertyGetterTypeIsValid");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        BooleanType bool = newBooleanTypeBuilder().withName("Boolean").build();
+        DateType date = newDateTypeBuilder().withName("Date").build();
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withScale(10).build();
+        NumericType decimal = newNumericTypeBuilder().withName("Decimal").withPrecision(2).withScale(16).build();
+        CustomType email = newCustomTypeBuilder().withName("Email").build();
+        EnumerationType country = newEnumerationTypeBuilder().withName("Country").withMembers(ImmutableList.of(
+                newEnumerationMemberBuilder().withName("north").build(),
+                newEnumerationMemberBuilder().withName("east").withOrdinal(1).build(),
+                newEnumerationMemberBuilder().withName("south").withOrdinal(2).build(),
+                newEnumerationMemberBuilder().withName("west").withOrdinal(3).build()
+        )).build();
+        EnumerationType direction = newEnumerationTypeBuilder().withName("Direction").withMembers(ImmutableList.of(
+                newEnumerationMemberBuilder().withName("HU").build(),
+                newEnumerationMemberBuilder().withName("RO").withOrdinal(1).build(),
+                newEnumerationMemberBuilder().withName("SK").withOrdinal(2).build()
+        )).build();
+
+        TimestampType timestamp = newTimestampTypeBuilder().withName("Timestamp").build();
+        CustomType location = newCustomTypeBuilder().withName("Location").build();
+        EntityType F = newEntityTypeBuilder().withName("F").withAttributes(ImmutableList.of(
+                newAttributeBuilder().withName("beginTimestamp").withDataType(timestamp).build(),
+                newAttributeBuilder().withName("endTimestamp").withDataType(timestamp).build(),
+                newAttributeBuilder().withName("location").withDataType(location).build()
+        )).build();
+
+        Containment f = newContainmentBuilder().withName("f").withTarget(F).withCardinality(newCardinalityBuilder().withLower(1).build()).build();
+
+        EntityType e = newEntityTypeBuilder().withName("E").withAttributes(ImmutableList.of(
+                        newAttributeBuilder().withName("name").withDataType(string).build(),
+                        newAttributeBuilder().withName("external").withDataType(bool).build(),
+                        newAttributeBuilder().withName("birthDate").withDataType(date).build(),
+                        newAttributeBuilder().withName("roomNumber").withDataType(integer).build(),
+                        newAttributeBuilder().withName("email").withDataType(email).build(),
+                        newAttributeBuilder().withName("radius").withDataType(decimal).build(),
+                        newAttributeBuilder().withName("country").withDataType(country).build()
+                )).withRelations(f)
+                .withDataProperties(ImmutableList.of(
+                        newDataPropertyBuilder().withName("lowerName").withDataType(bool).withGetterExpression(newDataExpressionTypeBuilder().withExpression("lower(self.name)").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.name").build()).build(),
+                        newDataPropertyBuilder().withName("neighbourRoom").withDataType(decimal).withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.roomNumber + 1").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.roomNumber").build()).build(),
+                        newDataPropertyBuilder().withName("area").withDataType(integer).withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.roomNumber").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.radius").build()).build(),
+                        newDataPropertyBuilder().withName("internal").withDataType(decimal).withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.radius * self.radius * 3.1415").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.external").build()).build(),
+                        newDataPropertyBuilder().withName("direction").withDataType(decimal).withGetterExpression(newDataExpressionTypeBuilder().withExpression("SWITCH CASE WHEN self.country == 'RO' THEN 'east' CASE WHEN self.country == 'SK' THEN 'north' END").build()).build(),
+                        newDataPropertyBuilder().withName("begin").withDataType(string).withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.f.beginTimestamp").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.f.beginTimestamp").build()).build(),
+                        newDataPropertyBuilder().withName("place").withDataType(email).withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.f.location").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.f.location").build()).build()
+                )).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                e,
+                string,
+                bool,
+                date,
+                integer,
+                decimal,
+                email,
+                country,
+                direction,
+                F,
+                timestamp,
+                location
+        )).build();
+
+
+
+        psmResource.getContents().add(m);
+        runEpsilon(null, /*TODO: see 033 expectedError*/
+                null);
+    }
+
+    //TODO: "all constraints have been satisfied" (commented out warning!)
+    @Test
+    void Measures() throws Exception {
+        log.info("Testing constraint: Measures");
+
+        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(4).withScale(15).withStoreUnit(newUnitBuilder().build() /*TODO: check if being dummy*/).build();
+        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(4).withScale(15).withStoreUnit(newUnitBuilder().build() /*TODO: check if being dummy*/).build();
+
+        EntityType person = newEntityTypeBuilder().withName("Person").withAttributes(newAttributeBuilder().withName("weight").withDataType(massStoredInKg).build()).build();
+        EntityType car = newEntityTypeBuilder().withName("Car")
+                .withAttributes(
+                        newAttributeBuilder().withName("weight").withDataType(massStoredInQ).build()
+                ).withRelations(ImmutableList.of(
+                        newEndpointBuilder().withName("passangers").withTarget(person).withCardinality(newCardinalityBuilder().withUpper(4).build()).build(),
+                        newEndpointBuilder().withName("driver").withTarget(person).withCardinality(newCardinalityBuilder().withLower(1).build()).build())
+                ).withDataProperties(
+                        newDataPropertyBuilder().withName("totalWeight").withDataType(massStoredInKg).withGetterExpression(
+                                newDataExpressionTypeBuilder().withExpression("self.weight + self.passangers->sum(p | p.weight)").build()).build()
+                ).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                person,
+                massStoredInKg,
+                massStoredInQ,
+                car
+        )).build();
+
+        psmResource.getContents().add(m);
+        runEpsilon(null,
+                /*ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only")*/null); //TODO: something smells fishy
+    }
+
+
 
     public File scriptDir() {
         String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
