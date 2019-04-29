@@ -7,7 +7,9 @@ import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
+import hu.blackbelt.judo.meta.psm.measure.Measure;
 import hu.blackbelt.judo.meta.psm.measure.MeasuredType;
+import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader;
@@ -28,8 +30,7 @@ import static hu.blackbelt.epsilon.runtime.execution.contexts.EvlExecutionContex
 import static hu.blackbelt.epsilon.runtime.execution.model.emf.WrappedEmfModelContext.wrappedEmfModelContextBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newMeasuredTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newUnitBuilder;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
@@ -339,34 +340,30 @@ class PsmValidationTests {
                 null);
     }
 
-    //TODO: (t013)
-    // "All constraints have been satisfied" & critique OneToOneRelationsAreNotRecommended {...}?
     @Test
     void OneToOneRelationsAreNotRecommended() throws Exception {
         log.info("Testing constraint: OneToOneRelationsAreNotRecommended");
 
-        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
-        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
-
-
-        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e2).build();
+        Cardinality c1 = newCardinalityBuilder().withLower(1).withUpper(1).build();
+        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(c1).build();
         EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(e1).build();
 
+
+        Cardinality c2 = newCardinalityBuilder().withLower(1).withUpper(1).build();
+        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(c2).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e2).build();
+
+        e2.setTarget(E2);
         e1.setTarget(E1);
         e1.setPartner(e2);
-        e2.setTarget(E2);
         e2.setPartner(e1);
-        /*
-        E1.getRelations().add(e2);
-        E1.getRelations().add(e1);
-        */
+
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2)).build();
 
         psmResource.getContents().add(m);
 
         runEpsilon(null,
-                null);
-        /*ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1","OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1")*/
+                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1","OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E2.e1 - E1.e2"));
 
     }
 
@@ -599,7 +596,7 @@ class PsmValidationTests {
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of(/**/"RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E",/**/"RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
+        runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E","RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
                 null);
     }
 
@@ -662,21 +659,6 @@ class PsmValidationTests {
         log.info("Testing constraint: DataPropertyNameIsUnique");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
-        /*
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                newEntityTypeBuilder().withName("E")
-                        .withAttributes(
-                                newAttributeBuilder().withName("a").withDataType(string).build())
-                        .withDataProperties(ImmutableList.of(
-                                newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(
-                                        newDataExpressionTypeBuilder().withExpression("lower(self.a)").build()).build(),
-                                newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(
-                                        newDataExpressionTypeBuilder().withExpression("upper(self.a)").build()).build()
-                        )
-                ).build(),
-                string
-        )).build();
-        */
 
         DataProperty p1 = newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(
                 newDataExpressionTypeBuilder().withExpression("lower(self.a)").build()).build();
@@ -758,8 +740,7 @@ class PsmValidationTests {
     }
 
 
-    //TODO: (t033)
-    //TODO: ask about those errors, check symmetry
+    //TODO: (t033) ask about those errors, check symmetry
     @Test
     void DataPropertyGetterTypeIsValid() throws Exception {
         log.info("Testing constraint: DataPropertyGetterTypeIsValid");
@@ -835,24 +816,37 @@ class PsmValidationTests {
     }
 
     //TODO: (t034) "all constraints have been satisfied"
-    //@Test
+    @Test
     void Measures() throws Exception {
         log.info("Testing constraint: Measures");
 
-        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(4).withScale(15).withStoreUnit(newUnitBuilder().build() /*TODO: check if being dummy*/).build();
-        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(4).withScale(15).withStoreUnit(newUnitBuilder().build() /*TODO: check if being dummy*/).build();
+        //TODO: check if being dum-dum (href to judoPSM.model)
+        Unit quintal = newUnitBuilder().withName("quintal").withRateDividend(100.0).withSymbol("q").build();
+        Unit kilogram = newUnitBuilder().withName("kilogram").withSymbol("kg").build();
+        Measure mass = newMeasureBuilder().withName("Mass").withSymbol("m").withUnits(ImmutableList.of(kilogram, quintal)).build();
+        Model template = newModelBuilder().withName("Template").withElements(mass).build();
+
+        //---
+
+        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(4).withScale(15).withStoreUnit(kilogram).build(); //TODO: check if being dummy (storeUnit)
+        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(4).withScale(15).withStoreUnit(quintal).build(); //TODO: check if being dummy (storeUnit)
 
         EntityType person = newEntityTypeBuilder().withName("Person").withAttributes(newAttributeBuilder().withName("weight").withDataType(massStoredInKg).build()).build();
         EntityType car = newEntityTypeBuilder().withName("Car")
                 .withAttributes(
                         newAttributeBuilder().withName("weight").withDataType(massStoredInQ).build()
                 ).withRelations(ImmutableList.of(
-                        newEndpointBuilder().withName("passangers").withTarget(person).withCardinality(newCardinalityBuilder().withUpper(4).build()).build(),
-                        newEndpointBuilder().withName("driver").withTarget(person).withCardinality(newCardinalityBuilder().withLower(1).build()).build())
+                        newEndpointBuilder().withName("passangers").withTarget(person).withCardinality(
+                                newCardinalityBuilder().withUpper(4).withLower(0).build() //added lwr
+                        ).build(),
+                        newEndpointBuilder().withName("driver").withTarget(person).withCardinality(
+                                newCardinalityBuilder().withLower(1).withUpper(1).build() //added upp
+                        ).build())
                 ).withDataProperties(
                         newDataPropertyBuilder().withName("totalWeight").withDataType(massStoredInKg).withGetterExpression(
                                 newDataExpressionTypeBuilder().withExpression("self.weight + self.passangers->sum(p | p.weight)").build()).build()
                 ).build();
+
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
                 person,
@@ -862,8 +856,9 @@ class PsmValidationTests {
         )).build();
 
         psmResource.getContents().add(m);
+        psmResource.getContents().add(template);
         runEpsilon(null,
-                /**/ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only")/*null/**/); //TODO: something smells fishy
+                ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
     }
 
     public File scriptDir() {
