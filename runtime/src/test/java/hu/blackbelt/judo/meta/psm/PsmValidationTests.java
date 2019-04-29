@@ -142,7 +142,7 @@ class PsmValidationTests {
                                         .withName("A")
                                         .withOrdinal(1)
                                         .build()
-                                ))
+                        ))
                         .build()
                 ))
                 .build();
@@ -250,11 +250,11 @@ class PsmValidationTests {
                 .withElements(ImmutableList.of(
                         string,
                         newEntityTypeBuilder()
-                            .withName("E")
-                            .withAttributes(newAttributeBuilder()
-                                .withName("id")
-                                .withDataType(string
-                                ))
+                                .withName("E")
+                                .withAttributes(newAttributeBuilder()
+                                        .withName("id")
+                                        .withDataType(string
+                                        ))
                                 .build()
                 ))
                 .build();
@@ -274,16 +274,16 @@ class PsmValidationTests {
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
-                                newEntityTypeBuilder()
-                                    .withName("E1")
-                                    .withRelations(newEndpointBuilder()
-                                                    .withName("id")
-                                                    .withTarget(E2)
-                                                    .withCardinality(newCardinalityBuilder().build())
-                                                    .build())
-                                    .build(),
-                                E2
-                            )).build();
+                        newEntityTypeBuilder()
+                                .withName("E1")
+                                .withRelations(newEndpointBuilder()
+                                        .withName("id")
+                                        .withTarget(E2)
+                                        .withCardinality(newCardinalityBuilder().build())
+                                        .build())
+                                .build(),
+                        E2
+                )).build();
 
         psmResource.getContents().add(m);
 
@@ -299,7 +299,7 @@ class PsmValidationTests {
         Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
         Endpoint e3 = newEndpointBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
-        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e1,e2,e3)).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e1, e2, e3)).build();
 
         e1.setTarget(E1);
         e1.setPartner(e2);
@@ -308,7 +308,7 @@ class PsmValidationTests {
         e3.setTarget(E1);
         e3.setPartner(e2);
 
-        Model m  = newModelBuilder().withName("M").withElements(E1).build();
+        Model m = newModelBuilder().withName("M").withElements(E1).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1"),
@@ -323,7 +323,7 @@ class PsmValidationTests {
         Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
         Endpoint e3 = newEndpointBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
-        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e2,e3)).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e2, e3)).build();
         EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(e1).build();
         EntityType E3 = newEntityTypeBuilder().withName("E3").build();
 
@@ -333,10 +333,10 @@ class PsmValidationTests {
         e3.setTarget(E3);
         e3.setPartner(e1);
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2,E3)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3)).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: E2.e1 for E1.e3","ValidPartnerType|Invalid partner type: E1.e3 for E2.e1"),
+        runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: E2.e1 for E1.e3", "ValidPartnerType|Invalid partner type: E1.e3 for E2.e1"),
                 null);
     }
 
@@ -358,12 +358,12 @@ class PsmValidationTests {
         e1.setPartner(e2);
         e2.setPartner(e1);
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2)).build();
 
         psmResource.getContents().add(m);
 
         runEpsilon(null,
-                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1","OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E2.e1 - E1.e2"));
+                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1", "OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E2.e1 - E1.e2"));
 
     }
 
@@ -379,10 +379,10 @@ class PsmValidationTests {
         E2.getSuperEntityTypes().add(E1);
         E3.getSuperEntityTypes().add(E3);
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1,E2,E3)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3)).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("InheritanceIsNotRecursive|Entity type E1 is recursive","InheritanceIsNotRecursive|Entity type E2 is recursive","InheritanceIsNotRecursive|Entity type E3 is recursive"),
+        runEpsilon(ImmutableList.of("InheritanceIsNotRecursive|Entity type E1 is recursive", "InheritanceIsNotRecursive|Entity type E2 is recursive", "InheritanceIsNotRecursive|Entity type E3 is recursive"),
                 null);
     }
 
@@ -444,7 +444,7 @@ class PsmValidationTests {
 
         EntityType E = newEntityTypeBuilder()
                 .withName("E")
-                .withRelations(ImmutableList.of(endpoint,containment))
+                .withRelations(ImmutableList.of(endpoint, containment))
                 .build();
 
         endpoint.setTarget(E);
@@ -474,7 +474,7 @@ class PsmValidationTests {
 
         x.setTarget(E);
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(string,E)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(string, E)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name"),
@@ -485,18 +485,18 @@ class PsmValidationTests {
     void OppositePartnerIsDefined() throws Exception {
         log.info("Testing constraint: OppositePartnerIsDefined");
 
-        Endpoint e =newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
-        Endpoint f =newEndpointBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
+        Endpoint f = newEndpointBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
 
-        EntityType E1 =newEntityTypeBuilder().withName("E1").withRelations(e).build();
-        EntityType E2 =newEntityTypeBuilder().withName("E2").withRelations(f).build();
+        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e).build();
+        EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(f).build();
 
         e.setTarget(E2);
         f.setTarget(E1);
         f.setPartner(e);
 
         Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(E1,E2)).build();
+                .withElements(ImmutableList.of(E1, E2)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("OppositePartnerIsDefined|Missing opposite partner relation for E2.f"),
@@ -509,7 +509,7 @@ class PsmValidationTests {
 
         Model m = newModelBuilder().withName("M")
                 .withElements(
-                  newStringTypeBuilder().withName("String").withMaxLength(4001).build()
+                        newStringTypeBuilder().withName("String").withMaxLength(4001).build()
                 ).build();
 
         psmResource.getContents().add(m);
@@ -585,10 +585,10 @@ class PsmValidationTests {
         Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
         Containment f = newContainmentBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
 
-        RelationCountConstraint c1_1 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(f,e)).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
-        RelationCountConstraint c1_2 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(e,f)).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
+        RelationCountConstraint c1_1 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(f, e)).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
+        RelationCountConstraint c1_2 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(e, f)).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
 
-        EntityType E = newEntityTypeBuilder().withName("E").withRelations(ImmutableList.of(e,f)).withRelationCountConstraints(ImmutableList.of(c1_1,c1_2)).build();
+        EntityType E = newEntityTypeBuilder().withName("E").withRelations(ImmutableList.of(e, f)).withRelationCountConstraints(ImmutableList.of(c1_1, c1_2)).build();
 
         f.setTarget(E);
         e.setTarget(E);
@@ -596,7 +596,7 @@ class PsmValidationTests {
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E","RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
+        runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E", "RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
                 null);
     }
 
@@ -653,7 +653,6 @@ class PsmValidationTests {
                 ImmutableList.of("EnumerationContainsAtLeastTwoMembers|Enum E has no or only a single member"));
     }
 
-    // clean this piece of shilling
     @Test
     void DataPropertyNameIsUnique() throws Exception {
         log.info("Testing constraint: DataPropertyNameIsUnique");
@@ -666,11 +665,11 @@ class PsmValidationTests {
                 newDataExpressionTypeBuilder().withExpression("upper(self.a)").build()).build();
 
         EntityType E = newEntityTypeBuilder().withName("E")
-                        .withAttributes(newAttributeBuilder().withName("a").withDataType(string).build())
-                        .withDataProperties(ImmutableList.of(p1,p2))
+                .withAttributes(newAttributeBuilder().withName("a").withDataType(string).build())
+                .withDataProperties(ImmutableList.of(p1, p2))
                 .build();
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E,string)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E, string)).build();
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("DataPropertyNameIsUnique|Multiple data properties are added to entity E with the same name"),
@@ -690,7 +689,7 @@ class PsmValidationTests {
         ).build();
 
 
-        EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).withNavigationProperties(ImmutableList.of(n1,n2)).build();
+        EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).withNavigationProperties(ImmutableList.of(n1, n2)).build();
 
         r1.setTarget(E);
         n1.setTarget(E);
@@ -712,7 +711,7 @@ class PsmValidationTests {
         EntityType E = newEntityTypeBuilder().withName("E").withAttributes(newAttributeBuilder().withName("a").withDataType(string).build()).build();
         DataProperty p = newDataPropertyBuilder().withName("p").withDataType(string).withGetterExpression(newDataExpressionTypeBuilder().withExpression("lower(self.a)").build()).build();
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E,string)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E, string)).build();
 
         psmResource.getContents().add(m);
         psmResource.getContents().add(p);
@@ -739,8 +738,6 @@ class PsmValidationTests {
                 null);
     }
 
-
-    //TODO: (t033) ask about those errors, check symmetry
     @Test
     void DataPropertyGetterTypeIsValid() throws Exception {
         log.info("Testing constraint: DataPropertyGetterTypeIsValid");
@@ -774,14 +771,14 @@ class PsmValidationTests {
         Containment f = newContainmentBuilder().withName("f").withTarget(F).withCardinality(newCardinalityBuilder().withLower(1).build()).build();
 
         EntityType e = newEntityTypeBuilder().withName("E").withAttributes(ImmutableList.of(
-                        newAttributeBuilder().withName("name").withDataType(string).build(),
-                        newAttributeBuilder().withName("external").withDataType(bool).build(),
-                        newAttributeBuilder().withName("birthDate").withDataType(date).build(),
-                        newAttributeBuilder().withName("roomNumber").withDataType(integer).build(),
-                        newAttributeBuilder().withName("email").withDataType(email).build(),
-                        newAttributeBuilder().withName("radius").withDataType(decimal).build(),
-                        newAttributeBuilder().withName("country").withDataType(country).build()
-                )).withRelations(f)
+                newAttributeBuilder().withName("name").withDataType(string).build(),
+                newAttributeBuilder().withName("external").withDataType(bool).build(),
+                newAttributeBuilder().withName("birthDate").withDataType(date).build(),
+                newAttributeBuilder().withName("roomNumber").withDataType(integer).build(),
+                newAttributeBuilder().withName("email").withDataType(email).build(),
+                newAttributeBuilder().withName("radius").withDataType(decimal).build(),
+                newAttributeBuilder().withName("country").withDataType(country).build()
+        )).withRelations(f)
                 .withDataProperties(ImmutableList.of(
                         newDataPropertyBuilder().withName("lowerName").withDataType(bool).withGetterExpression(newDataExpressionTypeBuilder().withExpression("lower(self.name)").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.name").build()).build(),
                         newDataPropertyBuilder().withName("neighbourRoom").withDataType(decimal).withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.roomNumber + 1").build()).withSetterExpression(newAttributeSelectorTypeBuilder().withExpression("self.roomNumber").build()).build(),
@@ -808,28 +805,22 @@ class PsmValidationTests {
         )).build();
 
 
-
         psmResource.getContents().add(m);
-        /*TODO: see 033 expectedError*/
         runEpsilon(null,
                 null);
     }
 
-    //TODO: (t034) "all constraints have been satisfied"
     @Test
     void Measures() throws Exception {
         log.info("Testing constraint: Measures");
 
-        //TODO: check if being dum-dum (href to judoPSM.model)
         Unit quintal = newUnitBuilder().withName("quintal").withRateDividend(100.0).withSymbol("q").build();
         Unit kilogram = newUnitBuilder().withName("kilogram").withSymbol("kg").build();
         Measure mass = newMeasureBuilder().withName("Mass").withSymbol("m").withUnits(ImmutableList.of(kilogram, quintal)).build();
-        Model template = newModelBuilder().withName("Template").withElements(mass).build();
+        Model template = newModelBuilder().withPackages(newPackageBuilder().withName("sandbox").withElements(mass).build()).withName("Template").build();
 
-        //---
-
-        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(4).withScale(15).withStoreUnit(kilogram).build(); //TODO: check if being dummy (storeUnit)
-        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(4).withScale(15).withStoreUnit(quintal).build(); //TODO: check if being dummy (storeUnit)
+        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(4).withScale(15).withStoreUnit(kilogram).build();
+        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(4).withScale(15).withStoreUnit(quintal).build();
 
         EntityType person = newEntityTypeBuilder().withName("Person").withAttributes(newAttributeBuilder().withName("weight").withDataType(massStoredInKg).build()).build();
         EntityType car = newEntityTypeBuilder().withName("Car")
@@ -837,10 +828,10 @@ class PsmValidationTests {
                         newAttributeBuilder().withName("weight").withDataType(massStoredInQ).build()
                 ).withRelations(ImmutableList.of(
                         newEndpointBuilder().withName("passangers").withTarget(person).withCardinality(
-                                newCardinalityBuilder().withUpper(4).withLower(0).build() //added lwr
+                                newCardinalityBuilder().withUpper(4).withLower(0).build()
                         ).build(),
                         newEndpointBuilder().withName("driver").withTarget(person).withCardinality(
-                                newCardinalityBuilder().withLower(1).withUpper(1).build() //added upp
+                                newCardinalityBuilder().withLower(1).withUpper(1).build()
                         ).build())
                 ).withDataProperties(
                         newDataPropertyBuilder().withName("totalWeight").withDataType(massStoredInKg).withGetterExpression(
@@ -859,6 +850,64 @@ class PsmValidationTests {
         psmResource.getContents().add(template);
         runEpsilon(null,
                 ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
+    }
+
+    @Test
+    void test() throws Exception {
+        log.info("Positive test");
+
+        EntityType A0 = newEntityTypeBuilder().withName("A0").build();
+        EntityType A1 = newEntityTypeBuilder().withName("A1").withAbstract_(true).build();
+
+        Endpoint b = newEndpointBuilder().withName("b").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
+        Endpoint c = newEndpointBuilder().withName("c").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).build();
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+
+        EntityType A = newEntityTypeBuilder().withName("A").withAttributes(
+                newAttributeBuilder().withName("x").withDataType(string).withRequired(true).withIdentifier(true).build()
+        ).withRelations(
+                ImmutableList.of(b, c)
+        ).withSuperEntityTypes(ImmutableList.of(A0, A1)).build();
+
+        StringType text = newStringTypeBuilder().withName("Text").withMaxLength(255).build();
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withScale(10).build();
+        Endpoint a = newEndpointBuilder().withName("a").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
+
+        EntityType C = newEntityTypeBuilder().withName("C").withRelations(newEndpointBuilder().withName("a").withTarget(A).withCardinality(newCardinalityBuilder().withUpper(-1).build()).build()).build();
+
+        EntityType B = newEntityTypeBuilder().withName("B").withRelations(a).build();
+
+        EntityType S2 = newEntityTypeBuilder().withName("S2").withRelations(
+                newEndpointBuilder().withName("b").withTarget(B).withCardinality(newCardinalityBuilder().build()).build()
+        ).build();
+
+        EntityType S1 = newEntityTypeBuilder().withName("S1").withRelations(ImmutableList.of(
+                newEndpointBuilder().withName("a").withTarget(A).withCardinality(newCardinalityBuilder().build()).build(),
+                newEndpointBuilder().withName("s2").withTarget(S2).withCardinality(newCardinalityBuilder().build()).build()
+        )).build();
+
+        a.setTarget(A);
+        a.setPartner(b);
+        b.setTarget(B);
+        b.setPartner(a);
+        c.setTarget(C);
+
+        Model test = newModelBuilder().withPackages(newPackageBuilder().withName("sandbox").withElements(ImmutableList.of(
+                A0,
+                A1,
+                A,
+                B,
+                C,
+                S1,
+                S2
+        )).build()).withElements(ImmutableList.of(
+                string,
+                text,
+                integer
+        )).withName("TEST").build();
+
+        psmResource.getContents().add(test);
+        runEpsilon(null, null);
     }
 
     public File scriptDir() {
