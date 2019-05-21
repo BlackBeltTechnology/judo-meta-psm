@@ -5,7 +5,6 @@ import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import hu.blackbelt.osgi.utils.osgi.api.BundleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.osgi.framework.*;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
@@ -90,7 +89,7 @@ public class PsmModelBundleTracker {
                             try {
                                 File file = BundleUtil.copyBundleFileToPersistentStorage(trackedBundle, key + ".judo-meta-psm", params.get("file"));
                                 log.info("Loading PSM Model file: " + file.getAbsoluteFile());
-                                Version version = bundleContext.getBundle().getVersion();
+                                Version version = trackedBundle.getVersion();
 
                                 // TODO: JNG-55 Copy mapping XLSX
 
