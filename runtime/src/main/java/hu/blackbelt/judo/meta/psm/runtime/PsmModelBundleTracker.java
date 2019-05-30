@@ -91,8 +91,6 @@ public class PsmModelBundleTracker {
                                 log.info("Loading PSM Model file: " + file.getAbsoluteFile());
                                 Version version = trackedBundle.getVersion();
 
-                                // TODO: JNG-55 Copy mapping XLSX
-
                                 PsmModel psmModel = loadPsmModel(
                                         createPsmResourceSet(),
                                         URI.createURI(file.getAbsolutePath()),
