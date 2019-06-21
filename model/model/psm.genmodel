@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.meta.psm.model/src-genmodel"
+    modelPluginID="hu.blackbelt.judo.meta.psm.model" modelName="Psm" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="" importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true"
+    oSGiCompatible="true">
+  <foreignModel>psm.ecore</foreignModel>
+  <genPackages prefix="Psm" basePackage="hu.blackbelt.judo.meta" resource="XMI" disposableProviderFactory="true"
+      dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+      fileExtensions="psm" ecorePackage="psm.ecore#/">
+    <genClasses ecoreClass="psm.ecore#//PlaceHolder"/>
+    <nestedGenPackages prefix="Namespace" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-namespace" ecorePackage="psm.ecore#//namespace">
+      <genClasses image="false" ecoreClass="psm.ecore#//namespace/NamedElement">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/NamedElement/name"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//namespace/Namespace">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//namespace/Namespace/elements"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//namespace/Namespace/packages"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//namespace/Model"/>
+      <genClasses ecoreClass="psm.ecore#//namespace/Package"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//namespace/NamespaceElement"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Type" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-type" ecorePackage="psm.ecore#//type">
+      <genDataTypes ecoreDataType="psm.ecore#//type/RegExp"/>
+      <genDataTypes ecoreDataType="psm.ecore#//type/XmlNamespace"/>
+      <genDataTypes ecoreDataType="psm.ecore#//type/XmlElement"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//type/Primitive">
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isNumeric" body="return this instanceof hu.blackbelt.judo.meta.psm.type.NumericType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isInteger" body="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() == 0;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isDecimal" body="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() > 0;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isString" body="return this instanceof hu.blackbelt.judo.meta.psm.type.StringType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isBoolean" body="return this instanceof hu.blackbelt.judo.meta.psm.type.BooleanType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isDate" body="return this instanceof hu.blackbelt.judo.meta.psm.type.DateType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isTimestamp" body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimestampType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isEnumeration" body="return this instanceof hu.blackbelt.judo.meta.psm.type.EnumerationType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isMeasured" body="return this instanceof hu.blackbelt.judo.meta.psm.measure.MeasuredType;"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/CustomType"/>
+      <genClasses ecoreClass="psm.ecore#//type/StringType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/StringType/maxLength"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/StringType/regExp"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/NumericType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/NumericType/precision"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/NumericType/scale"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/BooleanType"/>
+      <genClasses ecoreClass="psm.ecore#//type/EnumerationType">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//type/EnumerationType/members"/>
+        <genOperations ecoreOperation="psm.ecore#//type/EnumerationType/contains"
+            body="return getMembers().stream().filter(m -> java.util.Objects.equals(name, m.getName())).count() > 0;">
+          <genParameters ecoreParameter="psm.ecore#//type/EnumerationType/contains/name"/>
+        </genOperations>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/EnumerationMember">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/EnumerationMember/ordinal"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//type/Type"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//type/DataType"/>
+      <genClasses ecoreClass="psm.ecore#//type/XMLType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/XMLType/xmlNamespace"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/XMLType/xmlElement"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/Cardinality">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/Cardinality/lower"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/Cardinality/upper"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/PasswordType"/>
+      <genClasses ecoreClass="psm.ecore#//type/DateType"/>
+      <genClasses ecoreClass="psm.ecore#//type/TimestampType"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//type/FlatPrimitiveType"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Data" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-data" ecorePackage="psm.ecore#//data">
+      <genClasses ecoreClass="psm.ecore#//data/EntityType">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/superEntityTypes"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/EntityType/abstract"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/attributes"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/relations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/relationCountConstraints"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/dataProperties"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/navigationProperties"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getSuperTypes"
+            body="final org.eclipse.emf.common.util.EList&lt;EntityType> result = org.eclipse.emf.common.util.ECollections.newBasicEList();&#xA;addSuperTypes(result);&#xA;return result;"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/addSuperTypes"
+            body="final java.util.Collection&lt;EntityType> newSuperTypes = getSuperEntityTypes().stream().filter(s -> !foundSuperTypes.contains(s)).collect(java.util.stream.Collectors.toSet());&#xA;foundSuperTypes.addAll(newSuperTypes);&#xA;newSuperTypes.forEach(s -> s.addSuperTypes(foundSuperTypes));">
+          <genParameters ecoreParameter="psm.ecore#//data/EntityType/addSuperTypes/foundSuperTypes"/>
+        </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAttribute" body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getSuperTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
+          <genParameters ecoreParameter="psm.ecore#//data/EntityType/getAttribute/name"/>
+        </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getReference" body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getSuperTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Relation>> relation = base.stream()&#xA;                .filter(e -> e.getRelations().stream().anyMatch(r -> java.util.Objects.equals(name, r.getName()))) // get all types containing reference named name&#xA;                .map(e -> e.getRelations().stream().filter(r -> java.util.Objects.equals(name, r.getName())).findFirst()) // get references of types&#xA;                .findFirst(); // redefining references is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;NavigationProperty>> navigationProperty = base.stream()&#xA;                .filter(e -> e.getNavigationProperties().stream().anyMatch(n -> java.util.Objects.equals(name, n.getName()))) // get all types containing navigation property named name&#xA;                .map(e -> e.getNavigationProperties().stream().filter(n -> java.util.Objects.equals(name, n.getName())).findFirst()) // get navigation properties of types&#xA;                .findFirst(); // redefining navigation properties is not supported&#xA;&#xA;        if (relation.isPresent()) {&#xA;            return relation.get().get();&#xA;        } else if (navigationProperty.isPresent()) {&#xA;            return navigationProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
+          <genParameters ecoreParameter="psm.ecore#//data/EntityType/getReference/name"/>
+        </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAttributeType"
+            body="        final PrimitiveTypedElement attribute = getAttribute(name);&#xA;&#xA;        if (attribute != null) {&#xA;            return attribute.getDataType();&#xA;        } else {&#xA;            return null;&#xA;        }">
+          <genParameters ecoreParameter="psm.ecore#//data/EntityType/getAttributeType/name"/>
+        </genOperations>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//data/Relation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/Relation/cascadeDelete"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//data/Attribute">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/Attribute/identifier"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//data/Endpoint">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/Endpoint/partner"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//data/RelationCountConstraint">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/RelationCountConstraint/relations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/RelationCountConstraint/cardinality"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//data/ReferenceTypedElement">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/ReferenceTypedElement/target"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/ReferenceTypedElement/cardinality"/>
+        <genOperations ecoreOperation="psm.ecore#//data/ReferenceTypedElement/isCollection"
+            body="if (getCardinality() == null) {&#xA;    return false;&#xA;} else {&#xA;    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;&#xA;}"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//data/PrimitiveTypedElement">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/PrimitiveTypedElement/dataType"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/PrimitiveTypedElement/required"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//data/Containment"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Behavior" resource="XMI" disposableProviderFactory="true"
+        ecorePackage="psm.ecore#//behavior"/>
+    <nestedGenPackages prefix="Constraint" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-constraint" ecorePackage="psm.ecore#//constraint">
+      <genClasses ecoreClass="psm.ecore#//constraint/InvariantConstraint">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//constraint/InvariantConstraint/expression"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//constraint/InvariantConstraint/constrained"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Script" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-script" ecorePackage="psm.ecore#//script">
+      <genDataTypes ecoreDataType="psm.ecore#//script/Script"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Derived" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-derived" ecorePackage="psm.ecore#//derived">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//derived/ExpressionDialect">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//derived/ExpressionDialect/JQL"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//derived/ExpressionDialect/XML"/>
+      </genEnums>
+      <genClasses ecoreClass="psm.ecore#//derived/DataProperty"/>
+      <genClasses ecoreClass="psm.ecore#//derived/NavigationProperty"/>
+      <genClasses ecoreClass="psm.ecore#//derived/StaticNavigation"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//derived/PrimitiveAccessor">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//derived/PrimitiveAccessor/getterExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//derived/PrimitiveAccessor/setterExpression"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//derived/StaticData"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//derived/ReferenceAccessor">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//derived/ReferenceAccessor/getterExpression"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//derived/ReferenceAccessor/setterExpression"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//derived/ExpressionType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//derived/ExpressionType/expression"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//derived/ExpressionType/dialect"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//derived/ReferenceExpressionType"/>
+      <genClasses ecoreClass="psm.ecore#//derived/ReferenceSelectorType"/>
+      <genClasses ecoreClass="psm.ecore#//derived/DataExpressionType"/>
+      <genClasses ecoreClass="psm.ecore#//derived/AttributeSelectorType"/>
+      <genClasses ecoreClass="psm.ecore#//derived/LogicalExpressionType"/>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Service" disposableProviderFactory="true" dataTypeConverters="true"
+        extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-service"
+        ecorePackage="psm.ecore#//service">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//service/EntityReferenceType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/EntityReferenceType/REQUIRED"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/EntityReferenceType/OPTIONAL"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/EntityReferenceType/NOT_SUPPORTED"/>
+      </genEnums>
+      <genClasses image="false" ecoreClass="psm.ecore#//service/TransferObjectType">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/representation"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/relations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/attributes"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//service/TransferObjectRelation">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/cardinality"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/binding"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/defaultValue"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/range"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/target"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embedded"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//service/TransferAttribute">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferAttribute/required"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferAttribute/defaultValue"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferAttribute/dataType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferAttribute/binding"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//service/MappedTransferObjectType">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/entityType"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/MappedTransferObjectType/entityReferencePresence"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//service/Operation">
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/Operation/faults"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/Operation/undefined"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/Operation/output"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/Operation/input"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/Operation/body"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/Operation/stateful"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//service/UnmappedTransferObjectType"/>
+      <genClasses ecoreClass="psm.ecore#//service/BoundOperation"/>
+      <genClasses ecoreClass="psm.ecore#//service/UnboundOperation"/>
+      <genClasses ecoreClass="psm.ecore#//service/Parameter">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/cardinality"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/type"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Accesspoint" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-accesspoint" ecorePackage="psm.ecore#//accesspoint">
+      <genClasses ecoreClass="psm.ecore#//accesspoint/AccessPoint">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/AccessPoint/exposedServices"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedGraph">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/mappedTransferObjectType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/selector"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/exposedOperations"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedService">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedService/operation"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedOperation">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedOperation/operation"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="View" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-view" ecorePackage="psm.ecore#//view">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//view/EventType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/SYSTEM_CHANGED"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/USER_CHANGED"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/ENABLED"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/DISABLED"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/SHOWN"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/HIDE"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/EventType/LOADED"/>
+      </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//view/ViewType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/ViewType/LIST"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/ViewType/GRID"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/ViewType/TILE"/>
+      </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//view/LayoutType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/LayoutType/HORIZONTAL"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/LayoutType/VERTICAL"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/LayoutType/TAB"/>
+      </genEnums>
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//view/AlignmentType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/AlignmentType/TOP"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/AlignmentType/BOTTOM"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/AlignmentType/LEFT"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/AlignmentType/RIGHT"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//view/AlignmentType/CENTER"/>
+      </genEnums>
+      <genClasses ecoreClass="psm.ecore#//view/Container">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//view/Container/components"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Container/layout"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Container/title"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Container/alignment"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//view/Component">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Component/label"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Component/parentView"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/Widget">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Widget/transferAttribute"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//view/Widget/emittedEvents"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/ObjectView">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/ObjectView/transferObject"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/ObjectView/viewType"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//view/ObjectView/controls"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/Groupbox"/>
+      <genClasses ecoreClass="psm.ecore#//view/Placeholder">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Placeholder/popup"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//view/Navigation">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Navigation/navigationView"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Navigation/rangeView"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Navigation/transferRelation"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/Link">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Link/target"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Link/text"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/Embedded"/>
+      <genClasses ecoreClass="psm.ecore#//view/Action">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Action/target"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Action/operation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Action/resultView"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Action/faultViews"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//view/Control">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Control/controller"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Control/components"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/VisibleControl"/>
+      <genClasses ecoreClass="psm.ecore#//view/EnabledControl"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//view/ViewControl"/>
+      <genClasses ecoreClass="psm.ecore#//view/Event">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//view/Event/eventType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/Event/triggered"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//view/MenuComponent">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//view/MenuComponent/subMenus"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//view/MenuComponent/menuItems"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/MenuBar"/>
+      <genClasses ecoreClass="psm.ecore#//view/Menu"/>
+      <genClasses image="false" ecoreClass="psm.ecore#//view/MenuItem">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/MenuItem/view"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/MenuItem/target"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/EntryMenuItem">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/EntryMenuItem/selector"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/ActionMenuItem">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/ActionMenuItem/exposedService"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/UserInterface">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/UserInterface/mainView"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//view/UserInterface/selector"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//view/Renderer"/>
+      <genClasses ecoreClass="psm.ecore#//view/Back"/>
+      <genClasses ecoreClass="psm.ecore#//view/UnboundActionLink">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//view/UnboundActionLink/actionView"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Authentication" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        ecorePackage="psm.ecore#//authentication">
+      <genClasses ecoreClass="psm.ecore#//authentication/PasswordAuthenticatedUser">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//authentication/PasswordAuthenticatedUser/password"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//authentication/PasswordAuthenticatedUser/login"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="psm.ecore#//authentication/AuthenticatedUser">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//authentication/AuthenticatedUser/user"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Authorization" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-authorization" ecorePackage="psm.ecore#//authorization">
+      <genClasses ecoreClass="psm.ecore#//authorization/AuthorizationResource">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//authorization/AuthorizationResource/referenceTypedElements"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//authorization/AuthorizationResource/operations"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//authorization/AuthorizationResource/includedAuthorizationResources"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Measure" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-measure" ecorePackage="psm.ecore#//measure">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//measure/DurationType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/millisecond"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/second"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/minute"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/hour"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/day"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/week"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/month"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/year"/>
+      </genEnums>
+      <genClasses ecoreClass="psm.ecore#//measure/Measure">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//measure/Measure/units"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//measure/Measure/symbol"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//measure/MeasuredType">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//measure/MeasuredType/storeUnit"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//measure/Unit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//measure/Unit/rateDividend"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//measure/Unit/rateDivisor"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//measure/Unit/symbol"/>
+        <genOperations ecoreOperation="psm.ecore#//measure/Unit/toString" body="return getSymbol() != null ? getSymbol() : getName();"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//measure/MeasureDefinitionTerm">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//measure/MeasureDefinitionTerm/exponent"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//measure/MeasureDefinitionTerm/unit"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//measure/DurationUnit">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//measure/DurationUnit/unitType"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//measure/DerivedMeasure">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//measure/DerivedMeasure/terms"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Behavior" resource="XMI" disposableProviderFactory="true"
+        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
+        fileExtensions="judo-meta-psm-behavior" ecorePackage="psm.ecore#//behavior"/>
+  </genPackages>
+</genmodel:GenModel>

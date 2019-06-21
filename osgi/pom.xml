@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>hu.blackbelt.judo.meta</groupId>
+		<artifactId>hu.blackbelt.judo.meta.psm</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+	<artifactId>hu.blackbelt.judo.meta.psm.osgi</artifactId>
+	<packaging>bundle</packaging>
+
+	<name>Judo :: Psm :: Model :: OSGi</name>
+	<description>Judo Psm Model OSGI Runtime</description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>3.3.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<obrRepository>NONE</obrRepository>
+					<instructions>
+						<Import-Package>
+                            ${osgi-default-import},
+							*
+						</Import-Package>
+						<Export-Package>
+                            meta/${mdoelName};version=${project.version},
+                            hu.blackbelt.judo.meta.psm*;version=${project.version},
+                        </Export-Package>
+						<Include-Resource>{maven-resources},meta/psm=../model/model</Include-Resource>
+					</instructions>
+				</configuration>
+			</plugin>
+        </plugins>
+	</build>
+    <dependencies>
+        <dependency>
+            <groupId>hu.blackbelt.judo.meta</groupId>
+            <artifactId>hu.blackbelt.judo.meta.psm.model</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>hu.blackbelt.epsilon</groupId>
+			<artifactId>epsilon-runtime-osgi</artifactId>
+			<version>${epsilon-runtime-version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>hu.blackbelt.epsilon</groupId>
+			<artifactId>epsilon-runtime-execution</artifactId>
+			<version>${epsilon-runtime-version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>

@@ -3,16 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
-		<groupId>hu.blackbelt.judo.meta</groupId>
-		<artifactId>judo-meta-psm-parent</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+        <groupId>hu.blackbelt.judo.meta</groupId>
+        <artifactId>hu.blackbelt.judo.meta.psm</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../</relativePath>
     </parent>
-    <artifactId>judo-meta-psm-feature</artifactId>
+    
+    <artifactId>hu.blackbelt.judo.meta.psm.feature</artifactId>
     <packaging>eclipse-feature</packaging>
-  
-    <name>JUDO PSM Eclipse feature</name>
-    <description>Judo Platform Specific Model Eclipse Feature</description>
+
+    <name>Judo :: Psm :: Model :: Eclipse feature</name>
+    <description>Judo Psm model feature</description>
+    
 </project>

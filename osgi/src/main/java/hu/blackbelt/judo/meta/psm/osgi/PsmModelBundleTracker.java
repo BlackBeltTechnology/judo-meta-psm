@@ -1,27 +1,29 @@
-package hu.blackbelt.judo.meta.psm.runtime;
+package hu.blackbelt.judo.meta.psm.osgi;
 
+import hu.blackbelt.epsilon.runtime.osgi.BundleURIHandler;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.osgi.utils.osgi.api.BundleCallback;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import hu.blackbelt.osgi.utils.osgi.api.BundleUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.framework.*;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.framework.VersionRange;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-
-import static hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader.createPsmResourceSet;
-import static hu.blackbelt.judo.meta.psm.runtime.PsmModelLoader.loadPsmModel;
 
 @Component(immediate = true)
 @Slf4j
@@ -52,11 +54,6 @@ public class PsmModelBundleTracker {
     private static class PsmBundlePredicate implements Predicate<Bundle> {
         @Override
         public boolean test(Bundle trackedBundle) {
-
-            if (log.isDebugEnabled()) {
-                log.debug("Checking bundle form Psm-Models header: " + trackedBundle.getSymbolicName());
-            }
-
             return BundleUtil.hasHeader(trackedBundle, PSM_MODELS);
         }
     }
@@ -73,40 +70,36 @@ public class PsmModelBundleTracker {
         public void accept(Bundle trackedBundle) {
             List<Map<String, String>> entries = BundleUtil.getHeaderEntries(trackedBundle, PSM_MODELS);
 
-            if (log.isDebugEnabled()) {
-                log.debug("Psm-Models header found: " + trackedBundle.getSymbolicName());
-            }
 
             for (Map<String, String> params : entries) {
                 String key = params.get(PsmModel.NAME);
                 if (psmModelRegistrations.containsKey(key)) {
-                    log.error("Model already loaded: " + key);
+                    log.error("Psm model already loaded: " + key);
                 } else {
                     if (params.containsKey(PsmModel.META_VERSION_RANGE)) {
                         VersionRange versionRange = new VersionRange(params.get(PsmModel.META_VERSION_RANGE).replaceAll("\"", ""));
                         if (versionRange.includes(bundleContext.getBundle().getVersion())) {
                             // Unpack model
                             try {
-                                File file = BundleUtil.copyBundleFileToPersistentStorage(trackedBundle, key + ".judo-meta-psm", params.get("file"));
-                                log.info("Loading PSM Model file: " + file.getAbsoluteFile());
-                                Version version = trackedBundle.getVersion();
+                                        PsmModel psmModel = PsmModel.loadPsmModel(
+                                        PsmModel.LoadArguments.loadArgumentsBuilder()
+                                                .uriHandler(Optional.of(new BundleURIHandler("urn", "", trackedBundle)))
+                                                .uri(URI.createURI(params.get("file")))
+                                                .name(params.get(PsmModel.NAME))
+                                                .version(Optional.of(trackedBundle.getVersion().toString()))
+                                                .checksum(Optional.ofNullable(params.get(PsmModel.CHECKSUM)))
+                                                .acceptedMetaVersionRange(Optional.of(versionRange.toString()))
+                                                .build()
+                                );
 
-                                PsmModel psmModel = loadPsmModel(
-                                        createPsmResourceSet(),
-                                        URI.createURI(file.getAbsolutePath()),
-                                        params.get(PsmModel.NAME),
-                                        version.toString(),
-                                        params.get(PsmModel.CHECKSUM),
-                                        versionRange.toString());
-
-                                log.info("Registering model: " + psmModel);
+                                log.info("Registering Psm model: " + psmModel);
 
                                 ServiceRegistration<PsmModel> modelServiceRegistration = bundleContext.registerService(PsmModel.class, psmModel, psmModel.toDictionary());
                                 psmModels.put(key, psmModel);
                                 psmModelRegistrations.put(key, modelServiceRegistration);
 
                             } catch (IOException e) {
-                                log.error("Could not load model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId());
+                                log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId());
                             }
                         }
                     }
@@ -137,13 +130,13 @@ public class PsmModelBundleTracker {
                     ServiceRegistration<PsmModel> modelServiceRegistration = psmModelRegistrations.get(key);
 
                     if (modelServiceRegistration != null) {
-                        log.info("Unregistering moodel: " + psmModels.get(key));
+                        log.info("Unregistering Psm model: " + psmModels.get(key));
                         modelServiceRegistration.unregister();
                         psmModelRegistrations.remove(key);
                         psmModels.remove(key);
                     }
                 } else {
-                    log.error("Model is not registered: " + key);
+                    log.error("Psm Model is not registered: " + key);
                 }
             }
         }
