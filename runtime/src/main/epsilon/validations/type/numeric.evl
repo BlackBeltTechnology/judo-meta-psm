@@ -1,14 +1,14 @@
 context JUDOPSM!NumericType {
 
-    // scale > precision
-	constraint PrecisionIsLowerOrEqualThanScale {
-		check: self.scale > self.precision
-		message: "Precision (" + self.precision + ") must be less than scale (" + self.scale + "): " + self.name
+    // precision > scale
+	constraint ScaleIsLowerThanPrecision {
+		check: self.precision > self.scale
+		message: "Scale (" + self.scale + ") must be less than precision (" + self.precision + ")"
 	}
 
-	// precision >= 0
-	constraint ValidPrecision {
-		check: self.precision >= 0
-		message: "Precision must be at least 0: " + self.name
+	// scale >= 0
+	constraint ValidScale {
+		check: self.scale >= 0
+		message: "Scale (" + self.scale + ") must be at least 0"
 	}
 }

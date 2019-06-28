@@ -27,12 +27,12 @@
       </eOperations>
       <eOperations name="isInteger" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() == 0;"/>
+          <details key="body" value="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getScale() == 0;"/>
         </eAnnotations>
       </eOperations>
       <eOperations name="isDecimal" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() > 0;"/>
+          <details key="body" value="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getScale() > 0;"/>
         </eAnnotations>
       </eOperations>
       <eOperations name="isString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">

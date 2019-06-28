@@ -1,2 +1,6 @@
 # judo-meta-psm
 
+Embedded relation of transfer objects:
+
+* aggregation on read (an instance could be found multiple times in response)
+* composition on write (containment must be in the same container, moving to other container is not allowed)

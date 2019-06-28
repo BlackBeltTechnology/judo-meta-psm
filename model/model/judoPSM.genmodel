@@ -30,8 +30,8 @@
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlElement"/>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/Primitive">
         <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isNumeric" body="return this instanceof hu.blackbelt.judo.meta.psm.type.NumericType;"/>
-        <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isInteger" body="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() == 0;"/>
-        <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isDecimal" body="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getPrecision() > 0;"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isInteger" body="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getScale() == 0;"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isDecimal" body="return isNumeric() &amp;&amp; ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getScale() > 0;"/>
         <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isString" body="return this instanceof hu.blackbelt.judo.meta.psm.type.StringType;"/>
         <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isBoolean" body="return this instanceof hu.blackbelt.judo.meta.psm.type.BooleanType;"/>
         <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isDate" body="return this instanceof hu.blackbelt.judo.meta.psm.type.DateType;"/>

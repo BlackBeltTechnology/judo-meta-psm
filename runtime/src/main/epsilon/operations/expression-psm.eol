@@ -105,12 +105,12 @@ operation JUDOPSM!Primitive isNumeric() : Boolean {
 
 @cached
 operation JUDOPSM!Primitive isInteger() : Boolean {
-    return self.isNumeric() and self.precision == 0;
+    return self.isNumeric() and self.scale == 0;
 }
 
 @cached
 operation JUDOPSM!Primitive isDecimal() : Boolean {
-    return self.isNumeric() and self.precision > 0;
+    return self.isNumeric() and self.scale > 0;
 }
 
 @cached

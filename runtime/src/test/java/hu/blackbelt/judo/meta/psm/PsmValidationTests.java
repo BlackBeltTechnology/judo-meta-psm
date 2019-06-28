@@ -154,7 +154,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void EnumerationMemberValueIsUnique() throws Exception {
+    void testEnumerationMemberValueIsUnique() throws Exception {
         log.info("Testing constraint: EnumerationMemberValueIsUnique");
 
         Model m = newModelBuilder().withName("M")
@@ -180,45 +180,45 @@ class PsmValidationTests {
     }
 
     @Test
-    void PrecisionIsLowerOrEqualThanScale() throws Exception {
-        log.info("Testing constraint: PrecisionIsLowerOrEqualThanScale");
+    void testScaleIsLowerThanPrecision() throws Exception {
+        log.info("Testing constraint: ScaleIsLowerThanPrecision");
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(newNumericTypeBuilder()
-                        .withName("InvalidPrecision")
-                        .withPrecision(10)
-                        .withScale(5)
+                        .withName("InvalidScale")
+                        .withPrecision(5)
+                        .withScale(10)
                         .build()
                 ))
                 .build();
 
         psmResource.getContents().add(m);
 
-        runEpsilon(ImmutableList.of("PrecisionIsLowerOrEqualThanScale|Precision (10) must be less than scale (5): InvalidPrecision"),
+        runEpsilon(ImmutableList.of("ScaleIsLowerThanPrecision|Scale (10) must be less than precision (5)"),
                 null);
     }
 
     @Test
-    void ValidPrecision() throws Exception {
-        log.info("Testing constraint: ValidPrecision");
+    void testValidScale() throws Exception {
+        log.info("Testing constraint: ValidScale");
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(newNumericTypeBuilder()
-                        .withName("InvalidPrecision")
-                        .withPrecision(-2)
-                        .withScale(5)
+                        .withName("InvalidScale")
+                        .withPrecision(5)
+                        .withScale(-2)
                         .build()
                 ))
                 .build();
 
         psmResource.getContents().add(m);
 
-        runEpsilon(ImmutableList.of("ValidPrecision|Precision must be at least 0: InvalidPrecision"),
+        runEpsilon(ImmutableList.of("ValidScale|Scale (-2) must be at least 0"),
                 null);
     }
 
     @Test
-    void ValidMaxLength() throws Exception {
+    void testValidMaxLength() throws Exception {
         log.info("Testing constraint: ValidMaxLength");
 
         Model m = newModelBuilder().withName("M")
@@ -238,7 +238,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void AttributeNameIsNotReserved() throws Exception {
+    void testAttributeNameIsNotReserved() throws Exception {
         log.info("Testing constraint: AttributeNameIsNotReserved");
 
         StringType string = newStringTypeBuilder()
@@ -266,7 +266,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void RelationNameIsNotReserved() throws Exception {
+    void testRelationNameIsNotReserved() throws Exception {
         log.info("Testing constraint: RelationNameIsNotReserved");
 
 
@@ -292,7 +292,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void ValidPartnerRelations() throws Exception {
+    void testValidPartnerRelations() throws Exception {
         log.info("Testing constraint: ValidPartnerRelations");
 
         Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
@@ -316,7 +316,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void ValidPartnerType() throws Exception {
+    void testValidPartnerType() throws Exception {
         log.info("Testing constraint: ValidPartnerType");
 
         Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
@@ -341,7 +341,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void OneToOneRelationsAreNotRecommended() throws Exception {
+    void testOneToOneRelationsAreNotRecommended() throws Exception {
         log.info("Testing constraint: OneToOneRelationsAreNotRecommended");
 
         Cardinality c1 = newCardinalityBuilder().withLower(1).withUpper(1).build();
@@ -368,7 +368,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void InheritanceIsNotRecursive() throws Exception {
+    void testInheritanceIsNotRecursive() throws Exception {
         log.info("Testing constraint: InheritanceIsNotRecursive");
 
         EntityType E1 = newEntityTypeBuilder().withName("E1").build();
@@ -387,7 +387,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void PartnerIsNotSelf() throws Exception {
+    void testPartnerIsNotSelf() throws Exception {
         log.info("Testing constraint: PartnerIsNotSelf");
 
         Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
@@ -404,12 +404,12 @@ class PsmValidationTests {
     }
 
     @Test
-    void AttributeNameIsUnique() throws Exception {
+    void testAttributeNameIsUnique() throws Exception {
         log.info("Testing constraint: AttributeNameIsUnique");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255)
                 .build();
-        NumericType integer = newNumericTypeBuilder().withName("Integer").withScale(18)
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(18)
                 .build();
 
         Model m = newModelBuilder().withName("M")
@@ -430,7 +430,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void RelationNameIsUnique() throws Exception {
+    void testRelationNameIsUnique() throws Exception {
         log.info("Testing constraint: RelationNameIsUnique");
 
         Endpoint endpoint = newEndpointBuilder()
@@ -458,7 +458,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void NoAttributeAndRelationAreWithTheSameName() throws Exception {
+    void testNoAttributeAndRelationAreWithTheSameName() throws Exception {
         log.info("Testing constraint: NoAttributeAndRelationAreWithTheSameName");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
@@ -482,7 +482,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void OppositePartnerIsDefined() throws Exception {
+    void testOppositePartnerIsDefined() throws Exception {
         log.info("Testing constraint: OppositePartnerIsDefined");
 
         Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
@@ -504,7 +504,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void MaxLengthIsNotTooLarge() throws Exception {
+    void testMaxLengthIsNotTooLarge() throws Exception {
         log.info("Testing constraint: MaxLengthIsNotTooLarge");
 
         Model m = newModelBuilder().withName("M")
@@ -518,7 +518,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void StandaloneModelLoadedOnly() throws Exception {
+    void testStandaloneModelLoadedOnly() throws Exception {
         log.info("Testing constraint: StandaloneModelLoadedOnly");
 
         Model a = newModelBuilder().withName("A").build();
@@ -531,7 +531,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void PackageHasNamespace() throws Exception {
+    void testPackageHasNamespace() throws Exception {
         log.info("Testing constraint: PackageHasNamespace");
 
         Package pkg = newPackageBuilder().withName("pkg").build();
@@ -545,7 +545,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void NamespaceElementHasNamespace() throws Exception {
+    void testNamespaceElementHasNamespace() throws Exception {
         log.info("Testing constraint: NamespaceElementHasNamespace");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
@@ -559,7 +559,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void EnumerationMemberHasEnumerationType() throws Exception {
+    void testEnumerationMemberHasEnumerationType() throws Exception {
         log.info("Testing constraint: EnumerationMemberHasEnumerationType");
 
         Model m = newModelBuilder().withName("M")
@@ -579,7 +579,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void RelationCountConstraintHasUniqueName() throws Exception {
+    void testRelationCountConstraintHasUniqueName() throws Exception {
         log.info("Testing constraint: RelationCountConstraintHasUniqueName");
 
         Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
@@ -601,7 +601,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void RelationBelongsToEntity() throws Exception {
+    void testRelationBelongsToEntity() throws Exception {
         log.info("Testing constraint: RelationBelongsToEntity");
 
         Endpoint r1 = newEndpointBuilder().withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
@@ -618,7 +618,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void AttributeBelongsToEntity() throws Exception {
+    void testAttributeBelongsToEntity() throws Exception {
         log.info("Testing constraint: AttributeBelongsToEntity");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
@@ -639,7 +639,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void EnumerationContainsAtLeastTwoMembers() throws Exception {
+    void testEnumerationContainsAtLeastTwoMembers() throws Exception {
         log.info("Testing constraint: EnumerationContainsAtLeastTwoMembers");
 
         Model m = newModelBuilder().withName("M").withElements(
@@ -654,7 +654,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void DataPropertyNameIsUnique() throws Exception {
+    void testDataPropertyNameIsUnique() throws Exception {
         log.info("Testing constraint: DataPropertyNameIsUnique");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
@@ -677,7 +677,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void NavigationPropertyNameIsUnique() throws Exception {
+    void testNavigationPropertyNameIsUnique() throws Exception {
         log.info("Testing constraint: NavigationPropertyNameIsUnique");
 
         Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
@@ -704,7 +704,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void DataPropertyBelongsToEntity() throws Exception {
+    void testDataPropertyBelongsToEntity() throws Exception {
         log.info("Testing constraint: DataPropertyBelongsToEntity");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
@@ -720,7 +720,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void NavigationPropertyBelongsToEntity() throws Exception {
+    void testNavigationPropertyBelongsToEntity() throws Exception {
         log.info("Testing constraint: NavigationPropertyBelongsToEntity");
 
         Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
@@ -739,14 +739,14 @@ class PsmValidationTests {
     }
 
     @Test
-    void DataPropertyGetterTypeIsValid() throws Exception {
+    void testDataPropertyGetterTypeIsValid() throws Exception {
         log.info("Testing constraint: DataPropertyGetterTypeIsValid");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
         BooleanType bool = newBooleanTypeBuilder().withName("Boolean").build();
         DateType date = newDateTypeBuilder().withName("Date").build();
-        NumericType integer = newNumericTypeBuilder().withName("Integer").withScale(10).build();
-        NumericType decimal = newNumericTypeBuilder().withName("Decimal").withPrecision(2).withScale(16).build();
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(10).build();
+        NumericType decimal = newNumericTypeBuilder().withName("Decimal").withPrecision(16).withScale(2).build();
         CustomType email = newCustomTypeBuilder().withName("Email").build();
         EnumerationType country = newEnumerationTypeBuilder().withName("Country").withMembers(ImmutableList.of(
                 newEnumerationMemberBuilder().withName("north").build(),
@@ -811,7 +811,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void Measures() throws Exception {
+    void testValidModelWithMeasures() throws Exception {
         log.info("Testing constraint: Measures");
 
         Unit quintal = newUnitBuilder().withName("quintal").withRateDividend(100.0).withSymbol("q").build();
@@ -819,8 +819,8 @@ class PsmValidationTests {
         Measure mass = newMeasureBuilder().withName("Mass").withSymbol("m").withUnits(ImmutableList.of(kilogram, quintal)).build();
         Model template = newModelBuilder().withPackages(newPackageBuilder().withName("sandbox").withElements(mass).build()).withName("Template").build();
 
-        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(4).withScale(15).withStoreUnit(kilogram).build();
-        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(4).withScale(15).withStoreUnit(quintal).build();
+        MeasuredType massStoredInKg = newMeasuredTypeBuilder().withName("MassStoredInKg").withPrecision(15).withScale(4).withStoreUnit(kilogram).build();
+        MeasuredType massStoredInQ = newMeasuredTypeBuilder().withName("MassStoredInQ").withPrecision(15).withScale(4).withStoreUnit(quintal).build();
 
         EntityType person = newEntityTypeBuilder().withName("Person").withAttributes(newAttributeBuilder().withName("weight").withDataType(massStoredInKg).build()).build();
         EntityType car = newEntityTypeBuilder().withName("Car")
@@ -853,7 +853,7 @@ class PsmValidationTests {
     }
 
     @Test
-    void test() throws Exception {
+    void testValidModel() throws Exception {
         log.info("Positive test");
 
         EntityType A0 = newEntityTypeBuilder().withName("A0").build();
@@ -870,7 +870,7 @@ class PsmValidationTests {
         ).withSuperEntityTypes(ImmutableList.of(A0, A1)).build();
 
         StringType text = newStringTypeBuilder().withName("Text").withMaxLength(255).build();
-        NumericType integer = newNumericTypeBuilder().withName("Integer").withScale(10).build();
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(10).build();
         Endpoint a = newEndpointBuilder().withName("a").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
 
         EntityType C = newEntityTypeBuilder().withName("C").withRelations(newEndpointBuilder().withName("a").withTarget(A).withCardinality(newCardinalityBuilder().withUpper(-1).build()).build()).build();
@@ -910,7 +910,7 @@ class PsmValidationTests {
         runEpsilon(null, null);
     }
 
-    public File scriptDir() {
+    private File scriptDir() {
         String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
         File targetDir = new File(relPath + "../../src/main");
         if (!targetDir.exists()) {
