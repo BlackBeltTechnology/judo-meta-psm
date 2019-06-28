@@ -256,6 +256,8 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/selector"/>
         <genFeatures children="true" createChild="true" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/exposedOperations"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedGraph/cardinality"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/ExposedService">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"

@@ -331,6 +331,8 @@
           eType="#//derived/StaticNavigation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedOperations" upperBound="-1"
           eType="#//accesspoint/ExposedOperation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
+          eType="#//type/Cardinality" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ExposedService">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
