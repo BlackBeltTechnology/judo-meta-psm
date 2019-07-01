@@ -119,18 +119,14 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/relationCountConstraints"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/dataProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/navigationProperties"/>
-        <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/getSuperTypes"
-            body="final org.eclipse.emf.common.util.EList&lt;EntityType> result = org.eclipse.emf.common.util.ECollections.newBasicEList();&#xA;addSuperTypes(result);&#xA;return result;"/>
-        <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/addSuperTypes"
-            body="final java.util.Collection&lt;EntityType> newSuperTypes = getSuperEntityTypes().stream().filter(s -> !foundSuperTypes.contains(s)).collect(java.util.stream.Collectors.toSet());&#xA;foundSuperTypes.addAll(newSuperTypes);&#xA;newSuperTypes.forEach(s -> s.addSuperTypes(foundSuperTypes));">
-          <genParameters ecoreParameter="judoPSM.ecore#//data/EntityType/addSuperTypes/foundSuperTypes"/>
-        </genOperations>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/getAllSuperEntityTypes"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperEntityTypes(this);"/>
         <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/getAttribute"
-            body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getSuperTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
+            body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getAllSuperEntityTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
           <genParameters ecoreParameter="judoPSM.ecore#//data/EntityType/getAttribute/name"/>
         </genOperations>
         <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/getReference"
-            body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getSuperTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Relation>> relation = base.stream()&#xA;                .filter(e -> e.getRelations().stream().anyMatch(r -> java.util.Objects.equals(name, r.getName()))) // get all types containing reference named name&#xA;                .map(e -> e.getRelations().stream().filter(r -> java.util.Objects.equals(name, r.getName())).findFirst()) // get references of types&#xA;                .findFirst(); // redefining references is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;NavigationProperty>> navigationProperty = base.stream()&#xA;                .filter(e -> e.getNavigationProperties().stream().anyMatch(n -> java.util.Objects.equals(name, n.getName()))) // get all types containing navigation property named name&#xA;                .map(e -> e.getNavigationProperties().stream().filter(n -> java.util.Objects.equals(name, n.getName())).findFirst()) // get navigation properties of types&#xA;                .findFirst(); // redefining navigation properties is not supported&#xA;&#xA;        if (relation.isPresent()) {&#xA;            return relation.get().get();&#xA;        } else if (navigationProperty.isPresent()) {&#xA;            return navigationProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
+            body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getAllSuperEntityTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Relation>> relation = base.stream()&#xA;                .filter(e -> e.getRelations().stream().anyMatch(r -> java.util.Objects.equals(name, r.getName()))) // get all types containing reference named name&#xA;                .map(e -> e.getRelations().stream().filter(r -> java.util.Objects.equals(name, r.getName())).findFirst()) // get references of types&#xA;                .findFirst(); // redefining references is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;NavigationProperty>> navigationProperty = base.stream()&#xA;                .filter(e -> e.getNavigationProperties().stream().anyMatch(n -> java.util.Objects.equals(name, n.getName()))) // get all types containing navigation property named name&#xA;                .map(e -> e.getNavigationProperties().stream().filter(n -> java.util.Objects.equals(name, n.getName())).findFirst()) // get navigation properties of types&#xA;                .findFirst(); // redefining navigation properties is not supported&#xA;&#xA;        if (relation.isPresent()) {&#xA;            return relation.get().get();&#xA;        } else if (navigationProperty.isPresent()) {&#xA;            return navigationProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
           <genParameters ecoreParameter="judoPSM.ecore#//data/EntityType/getReference/name"/>
         </genOperations>
         <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/getAttributeType"
@@ -138,6 +134,10 @@
           <genParameters ecoreParameter="judoPSM.ecore#//data/EntityType/getAttributeType/name"/>
         </genOperations>
         <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/toString" body="return super.toString();"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/isContainer"
+            body="return getRelations().stream().anyMatch(r -> r instanceof hu.blackbelt.judo.meta.psm.data.Containment);"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/isContainment"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.isContainment(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//data/Relation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Relation/cascadeDelete"/>
@@ -150,10 +150,14 @@
         <genOperations ecoreOperation="judoPSM.ecore#//data/Attribute/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.attributeToString(this);"/>
         <genOperations ecoreOperation="judoPSM.ecore#//data/Attribute/getEntityType"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfAttribute(this).get();"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/Attribute/isPrimitive"
+            body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Endpoint">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/Endpoint/partner"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/Endpoint/getOpposite"
+            body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/RelationCountConstraint">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -166,6 +170,8 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//data/ReferenceTypedElement/cardinality"/>
         <genOperations ecoreOperation="judoPSM.ecore#//data/ReferenceTypedElement/isCollection"
             body="if (getCardinality() == null) {&#xA;    return false;&#xA;} else {&#xA;    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;&#xA;}"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/ReferenceTypedElement/isRequired"
+            body="return getCardinality() != null &amp;&amp; getCardinality().getLower() > 0;"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//data/PrimitiveTypedElement">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"

@@ -81,63 +81,6 @@ operation JUDOPSM!EntityType getAttributeType(name: String) : JUDOPSM!Primitive 
 }
 
 @cached
-operation JUDOPSM!EntityType getSuperTypes() : Sequence {
-    var result = new Sequence;
-    
-    var super = self.superEntityTypes;
-    while (super.isDefined() and not super.isEmpty()) {
-        result.addAll(super);
-        
-        var super2 = new Sequence;
-        for (s in super) {
-            super2.addAll(s.superEntityTypes);
-        }
-        super = super2;
-    }
-    
-    return result;
-}
-
-@cached
-operation JUDOPSM!Primitive isNumeric() : Boolean {
-    return self.isKindOf(JUDOPSM!NumericType);
-}
-
-@cached
-operation JUDOPSM!Primitive isInteger() : Boolean {
-    return self.isNumeric() and self.scale == 0;
-}
-
-@cached
-operation JUDOPSM!Primitive isDecimal() : Boolean {
-    return self.isNumeric() and self.scale > 0;
-}
-
-@cached
-operation JUDOPSM!Primitive isBoolean() : Boolean {
-    return self.isKindOf(JUDOPSM!BooleanType);
-}
-
-@cached
-operation JUDOPSM!Primitive isString() : Boolean {
-    return self.isKindOf(JUDOPSM!StringType);
-}
-
-@cached
-operation JUDOPSM!Primitive isEnumeration() : Boolean {
-    return self.isKindOf(JUDOPSM!EnumerationType);
-}
-
-@cached
 operation JUDOPSM!Primitive isCustom() : Boolean {
     return not self.isNumeric() and not self.isBoolean() and not self.isString() and not self.isEnumeration();
-}
-
-operation JUDOPSM!EnumerationType contains(memberName : String) : Boolean {
-    return self.members.selectOne(m | m.name = memberName).isDefined();
-}
-
-@cached
-operation JUDOPSM!NamedElement getName() : String {
-    return self.name;
 }

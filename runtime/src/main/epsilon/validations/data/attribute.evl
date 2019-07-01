@@ -5,6 +5,6 @@ context JUDOPSM!Attribute {
     // reserved attribute names: id    
     constraint AttributeNameIsNotReserved {
     	check: self.name <> "id"
-    	message: "Name " + self.displayName() + " is reserved"
+    	message: "Name " + self + " is reserved"
     }
 }

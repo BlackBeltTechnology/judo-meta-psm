@@ -3,6 +3,7 @@ package hu.blackbelt.judo.meta.psm;
 import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 
 import static hu.blackbelt.epsilon.runtime.execution.ExecutionContext.executionContextBuilder;
 import static hu.blackbelt.epsilon.runtime.execution.contexts.EvlExecutionContext.evlExecutionContextBuilder;
@@ -75,19 +77,30 @@ class PsmValidationTests {
     }
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
-        // run the model / metadata loading
-        executionContext.load();
+        try {
+            // run the model / metadata loading
+            executionContext.load();
 
-        // Transformation script
-        executionContext.executeProgram(
-                evlExecutionContextBuilder()
-                        .source("epsilon/validations/judopsm.evl")
-                        .expectedErrors(expectedErrors)
-                        .expectedWarnings(expectedWarnings)
-                        .build());
-
-        executionContext.commit();
-        executionContext.close();
+            // Transformation script
+            executionContext.executeProgram(
+                    evlExecutionContextBuilder()
+                            .source("epsilon/validations/judopsm.evl")
+                            .expectedErrors(expectedErrors)
+                            .expectedWarnings(expectedWarnings)
+                            .build());
+        } catch (EvlScriptExecutionException ex) {
+            log.error("EVL failed", ex);
+            log.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
+            log.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
+            log.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
+            log.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
+            log.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
+            log.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
+            throw ex;
+        } finally {
+            executionContext.commit();
+            executionContext.close();
+        }
     }
 
     @Test
@@ -150,7 +163,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
 
         runEpsilon(ImmutableList.of("EnumerationMemberNameIsUnique|Enum member names are not unique: E"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -176,7 +189,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
 
         runEpsilon(ImmutableList.of("EnumerationMemberValueIsUnique|Enum member numbers are not unique: E"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -195,7 +208,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
 
         runEpsilon(ImmutableList.of("ScaleIsLowerThanPrecision|Scale (10) must be less than precision (5)"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -214,7 +227,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
 
         runEpsilon(ImmutableList.of("ValidScale|Scale (-2) must be at least 0"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -232,7 +245,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
 
         runEpsilon(ImmutableList.of("ValidMaxLength|MaxLength must be greater than 0: String"),
-                null);
+                Collections.emptyList());
 
 
     }
@@ -261,8 +274,8 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
 
-        runEpsilon(ImmutableList.of("AttributeNameIsNotReserved|Name E.id is reserved"),
-                null);
+        runEpsilon(ImmutableList.of("AttributeNameIsNotReserved|Name M::E.id is reserved"),
+                Collections.emptyList());
     }
 
     @Test
@@ -287,8 +300,8 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
 
-        runEpsilon(ImmutableList.of("RelationNameIsNotReserved|Name E1.id is reserved"),
-                null);
+        runEpsilon(ImmutableList.of("RelationNameIsNotReserved|Name M::E1.id is reserved"),
+                Collections.emptyList());
     }
 
     @Test
@@ -311,8 +324,8 @@ class PsmValidationTests {
         Model m = newModelBuilder().withName("M").withElements(E1).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of E1.e2 must be E1.e1"),
-                null);
+        runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of M::E1.e2 must be M::E1.e1"),
+                Collections.emptyList());
     }
 
     @Test
@@ -336,8 +349,8 @@ class PsmValidationTests {
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3)).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: E2.e1 for E1.e3", "ValidPartnerType|Invalid partner type: E1.e3 for E2.e1"),
-                null);
+        runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: M::E2.e1 for M::E1.e3", "ValidPartnerType|Invalid partner type: M::E1.e3 for M::E2.e1"),
+                Collections.emptyList());
     }
 
     @Test
@@ -362,9 +375,8 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
 
-        runEpsilon(null,
-                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E1.e2 - E2.e1", "OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: E2.e1 - E1.e2"));
-
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: M::E1.e2 - M::E2.e1", "OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: M::E2.e1 - M::E1.e2"));
     }
 
     @Test
@@ -383,7 +395,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("InheritanceIsNotRecursive|Entity type E1 is recursive", "InheritanceIsNotRecursive|Entity type E2 is recursive", "InheritanceIsNotRecursive|Entity type E3 is recursive"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -399,8 +411,8 @@ class PsmValidationTests {
         Model m = newModelBuilder().withName("M").withElements(E1).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("PartnerIsNotSelf|Self partner relation found: E1.e1"),
-                null);
+        runEpsilon(ImmutableList.of("PartnerIsNotSelf|Self partner relation found: M::E1.e1"),
+                Collections.emptyList());
     }
 
     @Test
@@ -426,7 +438,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("AttributeNameIsUnique|Multiple attributes are added to entity E with the same name"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -454,7 +466,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("RelationNameIsUnique|Multiple relations are added to entity E with the same name"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -478,7 +490,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -499,8 +511,8 @@ class PsmValidationTests {
                 .withElements(ImmutableList.of(E1, E2)).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(ImmutableList.of("OppositePartnerIsDefined|Missing opposite partner relation for E2.f"),
-                null);
+        runEpsilon(ImmutableList.of("OppositePartnerIsDefined|Missing opposite partner relation for M::E2.f"),
+                Collections.emptyList());
     }
 
     @Test
@@ -514,7 +526,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("MaxLengthIsNotTooLarge|MaxLength must be less than/equals to 4000: String"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -526,7 +538,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(a);
         psmResource.getContents().add(b);
-        runEpsilon(null,
+        runEpsilon(Collections.emptyList(),
                 ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
     }
 
@@ -541,7 +553,7 @@ class PsmValidationTests {
         psmResource.getContents().add(pkg);
 
         runEpsilon(ImmutableList.of("PackageHasNamespace|Package pkg must have exactly 1 namespace"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -555,7 +567,7 @@ class PsmValidationTests {
         psmResource.getContents().add(string);
 
         runEpsilon(ImmutableList.of("NamespaceElementHasNamespace|Element String must have exactly 1 namespace"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -575,7 +587,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
         psmResource.getContents().add(enumMemb);
         runEpsilon(ImmutableList.of("EnumerationMemberHasEnumerationType|Enumeration member m1 must have exactly 1 enumeration"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -597,7 +609,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E", "RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -614,7 +626,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
         psmResource.getContents().add(r2);
         runEpsilon(ImmutableList.of("RelationBelongsToEntity|Orphan relation: r2"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -635,7 +647,7 @@ class PsmValidationTests {
         psmResource.getContents().add(b);
 
         runEpsilon(ImmutableList.of("AttributeBelongsToEntity|Orphan attribute: b"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -649,7 +661,7 @@ class PsmValidationTests {
         ).build();
 
         psmResource.getContents().add(m);
-        runEpsilon(null,
+        runEpsilon(Collections.emptyList(),
                 ImmutableList.of("EnumerationContainsAtLeastTwoMembers|Enum E has no or only a single member"));
     }
 
@@ -673,7 +685,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("DataPropertyNameIsUnique|Multiple data properties are added to entity E with the same name"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -700,7 +712,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         runEpsilon(ImmutableList.of("NavigationPropertyNameIsUnique|Multiple navigation properties are added to entity E with the same name"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -716,7 +728,7 @@ class PsmValidationTests {
         psmResource.getContents().add(m);
         psmResource.getContents().add(p);
         runEpsilon(ImmutableList.of("DataPropertyBelongsToEntity|Orphan data property: p"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -735,7 +747,7 @@ class PsmValidationTests {
         psmResource.getContents().add(n);
 
         runEpsilon(ImmutableList.of("NavigationPropertyBelongsToEntity|Orphan navigation property: n"),
-                null);
+                Collections.emptyList());
     }
 
     @Test
@@ -806,8 +818,8 @@ class PsmValidationTests {
 
 
         psmResource.getContents().add(m);
-        runEpsilon(null,
-                null);
+        runEpsilon(Collections.emptyList(),
+                Collections.emptyList());
     }
 
     @Test
@@ -848,7 +860,7 @@ class PsmValidationTests {
 
         psmResource.getContents().add(m);
         psmResource.getContents().add(template);
-        runEpsilon(null,
+        runEpsilon(Collections.emptyList(),
                 ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
     }
 

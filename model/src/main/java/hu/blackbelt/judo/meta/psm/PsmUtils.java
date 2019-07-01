@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.meta.psm;
 
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.Containment;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Relation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
@@ -8,10 +9,16 @@ import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -137,6 +144,41 @@ public class PsmUtils {
         return getAllContents(relation, EntityType.class)
                 .filter(et -> et.getRelations().contains(relation))
                 .findAny();
+    }
+
+    /**
+     * Check if an entity type is used as containment.
+     *
+     * @param entityType entity type
+     * @return <code>true</code> if entity type is used as containment (at least once), <code>false</code> otherwise
+     */
+    public static boolean isContainment(final EntityType entityType) {
+        return getAllContents(entityType, Containment.class)
+                .anyMatch(containment -> EcoreUtil.equals(containment.getTarget(), entityType));
+    }
+
+    /**
+     * Get list of all super types of a given entity type. The given entity type is included in case of circular references.
+     *
+     * @param entityType entity type
+     * @return list of super types
+     */
+    public static EList<EntityType> getAllSuperEntityTypes(final EntityType entityType) {
+        final EList<EntityType> foundSuperTypes = new UniqueEList<>();
+        addSuperTypes(entityType, foundSuperTypes);
+        return foundSuperTypes;
+    }
+
+    /**
+     * Add super types of a given entity type recursively to a list.
+     *
+     * @param entityType      entity type
+     * @param foundSuperTypes list that super types added to
+     */
+    private static void addSuperTypes(final EntityType entityType, final EList<EntityType> foundSuperTypes) {
+        final Set<EntityType> newSuperTypes = entityType.getSuperEntityTypes().stream().filter(s -> !foundSuperTypes.contains(s)).collect(Collectors.toSet());
+        foundSuperTypes.addAll(newSuperTypes);
+        newSuperTypes.forEach(s -> addSuperTypes(s, foundSuperTypes));
     }
 
     /**
