@@ -8,23 +8,34 @@
   <genPackages prefix="Psm" basePackage="hu.blackbelt.judo.meta" resource="XMI" disposableProviderFactory="true"
       dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
       fileExtensions="judo-meta-psm" ecorePackage="judoPSM.ecore#/">
-    <nestedGenPackages prefix="Namespace" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-namespace" ecorePackage="judoPSM.ecore#//namespace">
+    <nestedGenPackages prefix="Namespace" basePackage="hu.blackbelt.judo.meta.psm"
+        resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
+        extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-namespace"
+        ecorePackage="judoPSM.ecore#//namespace">
       <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/NamedElement">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//namespace/NamedElement/name"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/Namespace">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/elements"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//namespace/Namespace/packages"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//namespace/Namespace/toString"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.namespaceToString(this);"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//namespace/Model"/>
-      <genClasses ecoreClass="judoPSM.ecore#//namespace/Package"/>
-      <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/NamespaceElement"/>
+      <genClasses ecoreClass="judoPSM.ecore#//namespace/Package">
+        <genOperations ecoreOperation="judoPSM.ecore#//namespace/Package/getNamespace"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getNamespaceOfPackage(this).get();"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="judoPSM.ecore#//namespace/NamespaceElement">
+        <genOperations ecoreOperation="judoPSM.ecore#//namespace/NamespaceElement/toString"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.namespaceElementToString(this);"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//namespace/NamespaceElement/getNamespace"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getNamespaceOfNamespaceElement(this).get();"/>
+      </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Type" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-type" ecorePackage="judoPSM.ecore#//type">
+    <nestedGenPackages prefix="Type" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-type" ecorePackage="judoPSM.ecore#//type">
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/RegExp"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlNamespace"/>
       <genDataTypes ecoreDataType="judoPSM.ecore#//type/XmlElement"/>
@@ -42,22 +53,32 @@
         <genOperations ecoreOperation="judoPSM.ecore#//type/Primitive/isMeasured"
             body="return this instanceof hu.blackbelt.judo.meta.psm.measure.MeasuredType;"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//type/CustomType"/>
+      <genClasses ecoreClass="judoPSM.ecore#//type/CustomType">
+        <genOperations ecoreOperation="judoPSM.ecore#//type/CustomType/toString" body="return super.toString();"/>
+      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/StringType">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/StringType/maxLength"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/StringType/regExp"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/StringType/toString" body="return super.toString();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/NumericType">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/NumericType/precision"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/NumericType/scale"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/NumericType/toString"
+            body="return super.toString();"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//type/BooleanType"/>
+      <genClasses ecoreClass="judoPSM.ecore#//type/BooleanType">
+        <genOperations ecoreOperation="judoPSM.ecore#//type/BooleanType/toString"
+            body="return super.toString();"/>
+      </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/EnumerationType">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//type/EnumerationType/members"/>
         <genOperations ecoreOperation="judoPSM.ecore#//type/EnumerationType/contains"
             body="return getMembers().stream().filter(m -> java.util.Objects.equals(name, m.getName())).count() > 0;">
           <genParameters ecoreParameter="judoPSM.ecore#//type/EnumerationType/contains/name"/>
         </genOperations>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/EnumerationType/toString"
+            body="return super.toString();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/EnumerationMember">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/EnumerationMember/ordinal"/>
@@ -67,19 +88,28 @@
       <genClasses ecoreClass="judoPSM.ecore#//type/XMLType">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/XMLType/xmlNamespace"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/XMLType/xmlElement"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//type/XMLType/toString" body="return super.toString();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//type/Cardinality">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Cardinality/lower"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//type/Cardinality/upper"/>
       </genClasses>
-      <genClasses ecoreClass="judoPSM.ecore#//type/PasswordType"/>
-      <genClasses ecoreClass="judoPSM.ecore#//type/DateType"/>
-      <genClasses ecoreClass="judoPSM.ecore#//type/TimestampType"/>
+      <genClasses ecoreClass="judoPSM.ecore#//type/PasswordType">
+        <genOperations ecoreOperation="judoPSM.ecore#//type/PasswordType/toString"
+            body="return super.toString();"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//type/DateType">
+        <genOperations ecoreOperation="judoPSM.ecore#//type/DateType/toString" body="return super.toString();"/>
+      </genClasses>
+      <genClasses ecoreClass="judoPSM.ecore#//type/TimestampType">
+        <genOperations ecoreOperation="judoPSM.ecore#//type/TimestampType/toString"
+            body="return super.toString();"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//type/FlatPrimitiveType"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Data" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-data" ecorePackage="judoPSM.ecore#//data">
+    <nestedGenPackages prefix="Data" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-data" ecorePackage="judoPSM.ecore#//data">
       <genClasses ecoreClass="judoPSM.ecore#//data/EntityType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//data/EntityType/superEntityTypes"/>
@@ -107,12 +137,19 @@
             body="        final PrimitiveTypedElement attribute = getAttribute(name);&#xA;&#xA;        if (attribute != null) {&#xA;            return attribute.getDataType();&#xA;        } else {&#xA;            return null;&#xA;        }">
           <genParameters ecoreParameter="judoPSM.ecore#//data/EntityType/getAttributeType/name"/>
         </genOperations>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/EntityType/toString" body="return super.toString();"/>
       </genClasses>
       <genClasses image="false" ecoreClass="judoPSM.ecore#//data/Relation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Relation/cascadeDelete"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/Relation/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/Relation/getEntityType"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfRelation(this).get();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Attribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//data/Attribute/identifier"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/Attribute/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.attributeToString(this);"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//data/Attribute/getEntityType"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfAttribute(this).get();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Endpoint">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -137,24 +174,26 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//data/Containment"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Behavior" disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//behavior"/>
-    <nestedGenPackages prefix="Constraint" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-constraint" ecorePackage="judoPSM.ecore#//constraint">
+    <nestedGenPackages prefix="Behavior" basePackage="hu.blackbelt.judo.meta.psm"
+        disposableProviderFactory="true" ecorePackage="judoPSM.ecore#//behavior"/>
+    <nestedGenPackages prefix="Constraint" basePackage="hu.blackbelt.judo.meta.psm"
+        resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
+        extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-constraint"
+        ecorePackage="judoPSM.ecore#//constraint">
       <genClasses ecoreClass="judoPSM.ecore#//constraint/InvariantConstraint">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//constraint/InvariantConstraint/expression"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//constraint/InvariantConstraint/constrained"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Script" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-script" ecorePackage="judoPSM.ecore#//script">
+    <nestedGenPackages prefix="Script" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-script" ecorePackage="judoPSM.ecore#//script">
       <genDataTypes ecoreDataType="judoPSM.ecore#//script/Script"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Derived" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-derived" ecorePackage="judoPSM.ecore#//derived">
+    <nestedGenPackages prefix="Derived" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-derived" ecorePackage="judoPSM.ecore#//derived">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//derived/ExpressionDialect">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//derived/ExpressionDialect/JQL"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//derived/ExpressionDialect/XML"/>
@@ -181,9 +220,9 @@
       <genClasses ecoreClass="judoPSM.ecore#//derived/AttributeSelectorType"/>
       <genClasses ecoreClass="judoPSM.ecore#//derived/LogicalExpressionType"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Service" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-service" ecorePackage="judoPSM.ecore#//service">
+    <nestedGenPackages prefix="Service" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-service" ecorePackage="judoPSM.ecore#//service">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//service/EntityReferenceType">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//service/EntityReferenceType/REQUIRED"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//service/EntityReferenceType/OPTIONAL"/>
@@ -241,9 +280,10 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//service/Parameter/type"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Accesspoint" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-accesspoint" ecorePackage="judoPSM.ecore#//accesspoint">
+    <nestedGenPackages prefix="Accesspoint" basePackage="hu.blackbelt.judo.meta.psm"
+        resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
+        extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-accesspoint"
+        ecorePackage="judoPSM.ecore#//accesspoint">
       <genClasses ecoreClass="judoPSM.ecore#//accesspoint/AccessPoint">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
         <genFeatures children="true" createChild="true" propertySortChoices="true"
@@ -262,9 +302,9 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//accesspoint/ExposedService/operation"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="View" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-view" ecorePackage="judoPSM.ecore#//view">
+    <nestedGenPackages prefix="View" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-view" ecorePackage="judoPSM.ecore#//view">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//view/EventType">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//view/EventType/SYSTEM_CHANGED"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//view/EventType/USER_CHANGED"/>
@@ -387,9 +427,9 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//view/UnboundActionLink/actionView"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Authentication" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        ecorePackage="judoPSM.ecore#//authentication">
+    <nestedGenPackages prefix="Authentication" basePackage="hu.blackbelt.judo.meta.psm"
+        resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
+        extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="judoPSM.ecore#//authentication">
       <genClasses ecoreClass="judoPSM.ecore#//authentication/PasswordAuthenticatedUser">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//authentication/PasswordAuthenticatedUser/password"/>
@@ -401,9 +441,10 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//authentication/AuthenticatedUser/user"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Authorization" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-authorization" ecorePackage="judoPSM.ecore#//authorization">
+    <nestedGenPackages prefix="Authorization" basePackage="hu.blackbelt.judo.meta.psm"
+        resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
+        extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-authorization"
+        ecorePackage="judoPSM.ecore#//authorization">
       <genClasses ecoreClass="judoPSM.ecore#//authorization/AuthorizationResource">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference judoPSM.ecore#//authorization/AuthorizationResource/referenceTypedElements"/>
@@ -413,9 +454,9 @@
             ecoreFeature="ecore:EReference judoPSM.ecore#//authorization/AuthorizationResource/includedAuthorizationResources"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Measure" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-measure" ecorePackage="judoPSM.ecore#//measure">
+    <nestedGenPackages prefix="Measure" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
+        disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
+        childCreationExtenders="true" fileExtensions="judo-meta-psm-measure" ecorePackage="judoPSM.ecore#//measure">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="judoPSM.ecore#//measure/DurationType">
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/DurationType/millisecond"/>
         <genEnumLiterals ecoreEnumLiteral="judoPSM.ecore#//measure/DurationType/second"/>
@@ -452,8 +493,5 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/DerivedMeasure/terms"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Behavior" resource="XMI" disposableProviderFactory="true"
-        dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
-        fileExtensions="judo-meta-psm-behavior" ecorePackage="judoPSM.ecore#//behavior"/>
   </genPackages>
 </genmodel:GenModel>
