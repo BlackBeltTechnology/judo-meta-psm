@@ -4,6 +4,8 @@ import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.Containment;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Relation;
+import hu.blackbelt.judo.meta.psm.derived.DataProperty;
+import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
@@ -143,6 +145,30 @@ public class PsmUtils {
     public static Optional<EntityType> getEntityTypeOfRelation(final Relation relation) {
         return getAllContents(relation, EntityType.class)
                 .filter(et -> et.getRelations().contains(relation))
+                .findAny();
+    }
+
+    /**
+     * Get entity type of a data property.
+     *
+     * @param dataProperty data property
+     * @return entity type of the data property
+     */
+    public static Optional<EntityType> getEntityTypeOfDataProperty(final DataProperty dataProperty) {
+        return getAllContents(dataProperty, EntityType.class)
+                .filter(et -> et.getDataProperties().contains(dataProperty))
+                .findAny();
+    }
+
+    /**
+     * Get entity type of a navigation property.
+     *
+     * @param navigationProperty navigation property
+     * @return entity type of the navigation property
+     */
+    public static Optional<EntityType> getEntityTypeOfNavigationProperty(final NavigationProperty navigationProperty) {
+        return getAllContents(navigationProperty, EntityType.class)
+                .filter(et -> et.getNavigationProperties().contains(navigationProperty))
                 .findAny();
     }
 
