@@ -5,11 +5,6 @@ operation JUDOPSM!DurationUnit getRates(durationType) : Sequence {
 }
 
 @cached
-operation JUDOPSM!Unit getMeasure() : JUDOPSM!Measure {
-    return JUDOPSM!Measure.all.selectOne(m | m.units.contains(self));
-}
-
-@cached
 operation JUDOPSM!Measure getBaseUnit() : JUDOPSM!Unit {
     return self.units.selectOne(u | u.rateDividend = u.rateDivisor);
 }

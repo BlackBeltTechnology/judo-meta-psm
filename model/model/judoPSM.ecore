@@ -642,6 +642,11 @@
           <details key="body" value="return getSymbol() != null ? getSymbol() : getName();"/>
         </eAnnotations>
       </eOperations>
+      <eOperations name="getMeasure" lowerBound="1" eType="#//measure/Measure">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.getMeasure(this).get();"/>
+        </eAnnotations>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="rateDividend" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
           defaultValueLiteral="1"/>

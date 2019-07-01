@@ -6,12 +6,13 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Relation;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
+import hu.blackbelt.judo.meta.psm.measure.Measure;
+import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
@@ -205,6 +206,18 @@ public class PsmUtils {
         final Set<EntityType> newSuperTypes = entityType.getSuperEntityTypes().stream().filter(s -> !foundSuperTypes.contains(s)).collect(Collectors.toSet());
         foundSuperTypes.addAll(newSuperTypes);
         newSuperTypes.forEach(s -> addSuperTypes(s, foundSuperTypes));
+    }
+
+    /**
+     * Get measure of a given unit.
+     *
+     * @param unit unit
+     * @return measure of the unit
+     */
+    public static Optional<Measure> getMeasure(final Unit unit) {
+        return getAllContents(unit, Measure.class)
+                .filter(m -> m.getUnits().contains(unit))
+                .findAny();
     }
 
     /**

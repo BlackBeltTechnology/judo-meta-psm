@@ -496,6 +496,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/rateDivisor"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/Unit/symbol"/>
         <genOperations ecoreOperation="judoPSM.ecore#//measure/Unit/toString" body="return getSymbol() != null ? getSymbol() : getName();"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//measure/Unit/getMeasure" body="return hu.blackbelt.judo.meta.psm.PsmUtils.getMeasure(this).get();"/>
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/MeasureDefinitionTerm">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute judoPSM.ecore#//measure/MeasureDefinitionTerm/exponent"/>

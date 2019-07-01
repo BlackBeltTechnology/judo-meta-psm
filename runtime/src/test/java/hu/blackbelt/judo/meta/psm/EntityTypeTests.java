@@ -51,7 +51,7 @@ public class EntityTypeTests extends NorthwindTests {
 
     @Test
     public void testOrderAttributeType() {
-        assertThat(getEntityType("Order").getAttributeType("shipName"), instanceOf(StringType.class));
+        assertThat(getEntityType("Order").getAttribute("shipName").getDataType(), instanceOf(StringType.class));
     }
 
     @Test
