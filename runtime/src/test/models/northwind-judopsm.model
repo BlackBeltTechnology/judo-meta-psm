@@ -2,21 +2,16 @@
 <namespace:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:accesspoint="http://blackbelt.hu/judo/meta/psm/accesspoint" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:derived="http://blackbelt.hu/judo/meta/psm/derived" xmlns:measure="http://blackbelt.hu/judo/meta/psm/measure" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:service="http://blackbelt.hu/judo/meta/psm/service" xmlns:type="http://blackbelt.hu/judo/meta/psm/type" xmi:id="_vbf8wINkEeiLE-B2bbL0fg" name="northwind">
   <elements xsi:type="accesspoint:AccessPoint" xmi:id="_X9vDsEZlEemHs64O5EYsyQ" name="internalAP">
     <exposedGraphs xmi:id="_hanN0EZlEemHs64O5EYsyQ" name="ordersAssignedToEmployee" mappedTransferObjectType="_ETGEYCVQEemLpvUY7MQgng" selector="_EuQ5MCYbEemLpvUY7MQgng">
-      <exposedOperations xmi:id="_dx8U8E7fEemZHbZiENeSGg" operation="_ZXOmQEWhEemHs64O5EYsyQ"/>
-      <exposedOperations xmi:id="_dx8U8U7fEemZHbZiENeSGg" operation="_PwEewEWhEemHs64O5EYsyQ"/>
-      <exposedOperations xmi:id="_dx8U8k7fEemZHbZiENeSGg" operation="_adE0AEWhEemHs64O5EYsyQ"/>
-      <exposedOperations xmi:id="_kkHxcF9IEemi46opE_pjYQ" operation="_3cvWQF0kEemy96upLHyphg"/>
+      <cardinality xmi:id="_-JpZwJmWEempZtzZV59LpQ" upper="-1"/>
     </exposedGraphs>
     <exposedServices xmi:id="_fvPm8EyhEemBn-SJ5OPvtg" operation="_mr1P4EWhEemHs64O5EYsyQ"/>
   </elements>
   <elements xsi:type="accesspoint:AccessPoint" xmi:id="_ab0PsEZlEemHs64O5EYsyQ" name="externalAP">
     <exposedGraphs xmi:id="_lnxx0EZlEemHs64O5EYsyQ" name="products" mappedTransferObjectType="_o7IkkEWXEemHs64O5EYsyQ" selector="_vA7SgEZlEemHs64O5EYsyQ">
-      <exposedOperations xmi:id="_dx8U807fEemZHbZiENeSGg" operation="_ZXOmQEWhEemHs64O5EYsyQ"/>
-      <exposedOperations xmi:id="_dx8U9E7fEemZHbZiENeSGg" operation="_adE0AEWhEemHs64O5EYsyQ"/>
+      <cardinality xmi:id="__7YdIJmWEempZtzZV59LpQ" upper="-1"/>
     </exposedGraphs>
     <exposedGraphs xmi:id="_ot-twEZlEemHs64O5EYsyQ" name="categories" mappedTransferObjectType="_xxeTIEWXEemHs64O5EYsyQ" selector="_xeUiAEZlEemHs64O5EYsyQ">
-      <exposedOperations xmi:id="_dx8U9U7fEemZHbZiENeSGg" operation="_ZXOmQEWhEemHs64O5EYsyQ"/>
-      <exposedOperations xmi:id="_dx8U9k7fEemZHbZiENeSGg" operation="_adE0AEWhEemHs64O5EYsyQ"/>
+      <cardinality xmi:id="_AQmfMJmXEempZtzZV59LpQ" upper="-1"/>
     </exposedGraphs>
   </elements>
   <packages xmi:id="_g0GS4B1REemwg4NgOjaKeA" name="measures">
