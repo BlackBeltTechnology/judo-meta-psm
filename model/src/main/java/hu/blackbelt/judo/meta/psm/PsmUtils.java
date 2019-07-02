@@ -279,8 +279,8 @@ public class PsmUtils {
      */
     public static <T> Stream<T> getAllContents(final EObject eObject, final Class<T> clazz) {
         final ResourceSet resourceSet = eObject.eResource().getResourceSet();
-        final Iterable<Notifier> asmContents = resourceSet::getAllContents;
-        return StreamSupport.stream(asmContents.spliterator(), true)
+        final Iterable<Notifier> psmContents = resourceSet::getAllContents;
+        return StreamSupport.stream(psmContents.spliterator(), true)
                 .filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
     }
 
