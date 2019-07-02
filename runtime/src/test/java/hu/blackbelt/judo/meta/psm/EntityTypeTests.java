@@ -22,20 +22,20 @@ public class EntityTypeTests extends NorthwindTests {
 
     @Test
     public void testSingleGetSuperTypes() {
-        assertThat(new HashSet<>(getEntityType("Employee").getSuperTypes()), is(ImmutableSet.of(
+        assertThat(new HashSet<>(getEntityType("Employee").getAllSuperEntityTypes()), is(ImmutableSet.of(
                 getEntityType("Person"))));
     }
 
     @Test
     public void testMultiGetSuperTypes() {
-        assertThat(new HashSet<>(getEntityType("Individual").getSuperTypes()), is(ImmutableSet.of(
+        assertThat(new HashSet<>(getEntityType("Individual").getAllSuperEntityTypes()), is(ImmutableSet.of(
                 getEntityType("Customer"),
                 getEntityType("Person"))));
     }
 
     @Test
     public void testDiamondGetSuperTypes() {
-        assertThat(new HashSet<>(getEntityType("OnlineInternationalOrder").getSuperTypes()), is(ImmutableSet.of(
+        assertThat(new HashSet<>(getEntityType("OnlineInternationalOrder").getAllSuperEntityTypes()), is(ImmutableSet.of(
                 getEntityType("Order"),
                 getEntityType("OnlineOrder"),
                 getEntityType("InternationalOrder"))));
@@ -51,7 +51,7 @@ public class EntityTypeTests extends NorthwindTests {
 
     @Test
     public void testOrderAttributeType() {
-        assertThat(getEntityType("Order").getAttributeType("shipName"), instanceOf(StringType.class));
+        assertThat(getEntityType("Order").getAttribute("shipName").getDataType(), instanceOf(StringType.class));
     }
 
     @Test
