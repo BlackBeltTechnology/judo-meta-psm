@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.uml2.uml.profile.standard.Derive;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -825,6 +824,8 @@ class PsmValidationTests {
 
     @Test
     void testUnitNameIsUnique() throws Exception {
+        log.info("Testing critique: unitNameIsUnique");
+
         final Unit millimetre = newUnitBuilder().withName("millimetre").withSymbol("mm").withRateDividend(1.0).withRateDivisor(1000.0).build();
         final Unit centimetre = newUnitBuilder().withName("centimetre").withSymbol("cm").withRateDividend(1.0).withRateDivisor(100.0).build();
         final Unit metre = newUnitBuilder().withName("metre").withSymbol("m").withRateDividend(1.0).withRateDivisor(1.0).build();
@@ -844,6 +845,8 @@ class PsmValidationTests {
 
     @Test
     void testUnitRates() throws Exception {
+        log.info("Testing constraints: *RateIsValid");
+
         final DurationUnit millisecond = newDurationUnitBuilder().withName("millisecond").withSymbol("ms").withRateDividend(1.0).withRateDivisor(1000.0).withUnitType(DurationType.MILLISECOND).build();
         final DurationUnit second = newDurationUnitBuilder().withName("second").withSymbol("s").withRateDividend(1.0).withRateDivisor(1.0).withUnitType(DurationType.SECOND).build();
         final DurationUnit minute = newDurationUnitBuilder().withName("minute").withSymbol("m").withRateDividend(60.0).withRateDivisor(1.0).withUnitType(DurationType.MINUTE).build();
@@ -866,6 +869,8 @@ class PsmValidationTests {
 
     @Test
     void testBaseUnitShouldBeDefined() throws Exception {
+        log.info("Testing critique: BaseUnitShouldBeDefined");
+
         final Unit millimetre = newUnitBuilder().withName("millimetre").withSymbol("mm").withRateDividend(1.0).withRateDivisor(1000.0).build();
         final Unit centimetre = newUnitBuilder().withName("centimetre").withSymbol("cm").withRateDividend(1.0).withRateDivisor(100.0).build();
         final Unit kilometre = newUnitBuilder().withName("kilometre").withSymbol("km").withRateDividend(1000.0).withRateDivisor(1.0).build();
@@ -880,6 +885,8 @@ class PsmValidationTests {
 
     @Test
     void testMeasureNameIsUnique() throws Exception {
+        log.info("Testing critique: MeasureNameIsUnique");
+
         final DurationUnit second = newDurationUnitBuilder().withName("second").withSymbol("s").withRateDividend(1.0).withRateDivisor(1.0).withUnitType(DurationType.SECOND).build();
         final DurationUnit minute = newDurationUnitBuilder().withName("minute").withSymbol("m").withRateDividend(60.0).withRateDivisor(1.0).withUnitType(DurationType.MINUTE).build();
         final DurationUnit month = newDurationUnitBuilder().withName("month").withSymbol("mo").withRateDividend(1.0).withRateDivisor(1.0).withUnitType(DurationType.MONTH).build();
@@ -899,6 +906,8 @@ class PsmValidationTests {
 
     @Test
     void testMeasureSymbolIsUnique() throws Exception {
+        log.info("Testing constraint: MeasureSymbolIsUnique");
+
         final DurationUnit second = newDurationUnitBuilder().withName("second").withSymbol("s").withRateDividend(1.0).withRateDivisor(1.0).withUnitType(DurationType.SECOND).build();
         final DurationUnit minute = newDurationUnitBuilder().withName("minute").withSymbol("m").withRateDividend(60.0).withRateDivisor(1.0).withUnitType(DurationType.MINUTE).build();
         final DurationUnit month = newDurationUnitBuilder().withName("month").withSymbol("mo").withRateDividend(1.0).withRateDivisor(1.0).withUnitType(DurationType.MONTH).build();
@@ -916,6 +925,8 @@ class PsmValidationTests {
 
     @Test
     void testNoCircularReferencesOfDerivedMeasures() throws Exception {
+        log.info("Testing constraint: NoCircularReferencesOfDerivedMeasures");
+
         final Unit u1 = newUnitBuilder().withName("u1").withRateDividend(1.0).withRateDivisor(1.0).build();
         final Unit u2 = newUnitBuilder().withName("u2").withRateDividend(1.0).withRateDivisor(1.0).build();
         final MeasureDefinitionTerm t1 = newMeasureDefinitionTermBuilder().withUnit(u2).withExponent(1).build();
@@ -933,7 +944,7 @@ class PsmValidationTests {
 
     @Test
     void testValidModelWithMeasures() throws Exception {
-        log.info("Testing constraint: Measures");
+        log.info("Positive test with measures");
 
         Unit quintal = newUnitBuilder().withName("quintal").withRateDividend(100.0).withSymbol("q").build();
         Unit kilogram = newUnitBuilder().withName("kilogram").withSymbol("kg").build();
