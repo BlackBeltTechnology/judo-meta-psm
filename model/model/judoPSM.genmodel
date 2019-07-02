@@ -508,6 +508,8 @@
       </genClasses>
       <genClasses ecoreClass="judoPSM.ecore#//measure/DerivedMeasure">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference judoPSM.ecore#//measure/DerivedMeasure/terms"/>
+        <genOperations ecoreOperation="judoPSM.ecore#//measure/DerivedMeasure/getAllTermMeasures"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllTermMeasures(this);"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

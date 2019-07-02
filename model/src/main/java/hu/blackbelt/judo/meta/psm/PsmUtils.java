@@ -6,8 +6,7 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Relation;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.measure.Measure;
-import hu.blackbelt.judo.meta.psm.measure.Unit;
+import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
@@ -221,6 +220,56 @@ public class PsmUtils {
     }
 
     /**
+     * Get rate of duration unit to duration type.
+     * <p>
+     * Dividend and divisor returned separately so some problem related to rounding is eliminated. In example: second = 1 / 3600 hour.
+     *
+     * @param durationUnit duration unit
+     * @param durationType duration type
+     * @return rate of duration unit to duration type
+     */
+    public static Optional<Rate> getRate(final DurationUnit durationUnit, final DurationType durationType) {
+        return getAllContents(durationUnit, DurationUnit.class)
+                .filter(u -> u.getUnitType() == durationType)
+                .map(u -> new Rate(durationUnit.getRateDividend() * u.getRateDivisor(), u.getRateDividend() * durationUnit.getRateDivisor()))
+                .findAny();
+    }
+
+    /**
+     * Get all term measures of a given derived measure. Both base and derived measures are returned that used as terms collected recursively.
+     *
+     * @param derivedMeasure derived measure
+     * @return terms that define derived measure
+     */
+    public static EList<Measure> getAllTermMeasures(final DerivedMeasure derivedMeasure) {
+        final EList<Measure> termMeasures = new UniqueEList<>();
+        addTermMeasures(derivedMeasure, termMeasures);
+        return termMeasures;
+    }
+
+    /**
+     * Add term measures of a given derived measure recursively to a list.
+     *
+     * @param derivedMeasure derived measure
+     * @param terms          list that term measures added to
+     */
+    private static void addTermMeasures(final DerivedMeasure derivedMeasure, final EList<Measure> terms) {
+        terms.addAll(derivedMeasure.getTerms().stream()
+                .map(term -> term.getUnit().getMeasure())
+                .filter(m -> !(m instanceof DerivedMeasure))
+                .collect(Collectors.toSet()));
+
+        final Set<DerivedMeasure> newDerivedTerms = derivedMeasure.getTerms().stream()
+                .map(term -> term.getUnit().getMeasure())
+                .filter(m -> !terms.contains(m))
+                .filter(m -> m instanceof DerivedMeasure)
+                .map(m -> (DerivedMeasure) m)
+                .collect(Collectors.toSet());
+        terms.addAll(newDerivedTerms);
+        newDerivedTerms.forEach(s -> addTermMeasures(s, terms));
+    }
+
+    /**
      * Get all contents with a type from resource set of a given EObject.
      *
      * @param eObject EObject in the resource set
@@ -233,5 +282,32 @@ public class PsmUtils {
         final Iterable<Notifier> asmContents = resourceSet::getAllContents;
         return StreamSupport.stream(asmContents.spliterator(), true)
                 .filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
+    }
+
+    /**
+     * Rate of two doubles. Used to check consistency of duration units.
+     */
+    public static class Rate {
+
+        private final double dividend;
+        private final double divisor;
+
+        public Rate(final double dividend, final double divisor) {
+            this.dividend = dividend;
+            this.divisor = divisor;
+        }
+
+        public double getDividend() {
+            return dividend;
+        }
+
+        public double getDivisor() {
+            return divisor;
+        }
+
+        @Override
+        public String toString() {
+            return dividend + "/" + divisor;
+        }
     }
 }
