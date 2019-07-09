@@ -395,6 +395,26 @@
           eType="#//service/TransferAttribute" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
+      <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="if (getCardinality() == null) {&#xA;    return false;&#xA;} else {&#xA;    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;&#xA;}"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isRequired" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return getCardinality() != null &amp;&amp; getCardinality().getLower() > 0;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isMutable" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return (getBinding() instanceof hu.blackbelt.judo.meta.psm.data.Relation) ||&#xA;                (getBinding() instanceof hu.blackbelt.judo.meta.psm.derived.ReferenceAccessor) &amp;&amp; ((hu.blackbelt.judo.meta.psm.derived.ReferenceAccessor)getBinding()).getSetterExpression() != null;"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isNavigable" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return (eContainer() instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType);"/>
+        </eAnnotations>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
@@ -407,6 +427,11 @@
           defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
+      <eOperations name="isPrimitive" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;"/>
+        </eAnnotations>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/PrimitiveTypedElement"/>

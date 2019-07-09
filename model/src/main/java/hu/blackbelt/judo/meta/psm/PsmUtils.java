@@ -1,9 +1,6 @@
 package hu.blackbelt.judo.meta.psm;
 
-import hu.blackbelt.judo.meta.psm.data.Attribute;
-import hu.blackbelt.judo.meta.psm.data.Containment;
-import hu.blackbelt.judo.meta.psm.data.EntityType;
-import hu.blackbelt.judo.meta.psm.data.Relation;
+import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.measure.*;
@@ -11,6 +8,8 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -77,9 +76,9 @@ public class PsmUtils {
      * @return attribute as string
      */
     public static String attributeToString(final Attribute attribute) {
-        final Optional<EntityType> entityType = getEntityTypeOfAttribute(attribute);
-        if (entityType.isPresent()) {
-            return namespaceElementToString(entityType.get()) + FEATURE_SEPARATOR + attribute.getName();
+        final EntityType entityType = (EntityType) attribute.eContainer();
+        if (entityType != null) {
+            return namespaceElementToString(entityType) + FEATURE_SEPARATOR + attribute.getName();
         } else {
             return FEATURE_SEPARATOR + attribute.getName();
         }
@@ -92,11 +91,57 @@ public class PsmUtils {
      * @return relation as string
      */
     public static String relationToString(final Relation relation) {
-        final Optional<EntityType> entityType = getEntityTypeOfRelation(relation);
-        if (entityType.isPresent()) {
-            return namespaceElementToString(entityType.get()) + FEATURE_SEPARATOR + relation.getName();
+        final EntityType entityType = (EntityType) relation.eContainer();
+        if (entityType != null) {
+            return namespaceElementToString(entityType) + FEATURE_SEPARATOR + relation.getName();
         } else {
             return FEATURE_SEPARATOR + relation.getName();
+        }
+    }
+
+    /**
+     * Convert transfer attribute to string.
+     *
+     * @param transferAttribute transfer attribute
+     * @return transfer attribute as string
+     */
+    public static String transferAttributeToString(final TransferAttribute transferAttribute) {
+        final PrimitiveTypedElement binding = transferAttribute.getBinding();
+        final Optional<EntityType> entityType;
+        if (binding instanceof Attribute) {
+            entityType = Optional.ofNullable((EntityType) binding.eContainer());
+        } else if (binding instanceof DataProperty) {
+            entityType = Optional.ofNullable((EntityType) binding.eContainer());
+        } else {
+            entityType = Optional.empty();
+        }
+        if (entityType.isPresent()) {
+            return namespaceElementToString(entityType.get()) + FEATURE_SEPARATOR + transferAttribute.getName();
+        } else {
+            return FEATURE_SEPARATOR + transferAttribute.getName();
+        }
+    }
+
+    /**
+     * Convert transfer object relation to string.
+     *
+     * @param transferObjectRelation transfer object relation
+     * @return transfer object relation as string
+     */
+    public static String transferObjectRelationToString(final TransferObjectRelation transferObjectRelation) {
+        final ReferenceTypedElement binding = transferObjectRelation.getBinding();
+        final Optional<EntityType> entityType;
+        if (binding instanceof Relation) {
+            entityType = Optional.ofNullable((EntityType) binding.eContainer());
+        } else if (binding instanceof NavigationProperty) {
+            entityType = Optional.ofNullable((EntityType) binding.eContainer());
+        } else {
+            entityType = Optional.empty();
+        }
+        if (entityType.isPresent()) {
+            return namespaceElementToString(entityType.get()) + FEATURE_SEPARATOR + transferObjectRelation.getName();
+        } else {
+            return FEATURE_SEPARATOR + transferObjectRelation.getName();
         }
     }
 
@@ -130,10 +175,9 @@ public class PsmUtils {
      * @param attribute attribute
      * @return entity type of the attribute
      */
+    @Deprecated
     public static Optional<EntityType> getEntityTypeOfAttribute(final Attribute attribute) {
-        return getAllContents(attribute, EntityType.class)
-                .filter(et -> et.getAttributes().contains(attribute))
-                .findAny();
+        return Optional.ofNullable((EntityType) attribute.eContainer());
     }
 
     /**
@@ -142,10 +186,9 @@ public class PsmUtils {
      * @param relation relation
      * @return entity type of the relation
      */
+    @Deprecated
     public static Optional<EntityType> getEntityTypeOfRelation(final Relation relation) {
-        return getAllContents(relation, EntityType.class)
-                .filter(et -> et.getRelations().contains(relation))
-                .findAny();
+        return Optional.ofNullable((EntityType) relation.eContainer());
     }
 
     /**
@@ -154,10 +197,9 @@ public class PsmUtils {
      * @param dataProperty data property
      * @return entity type of the data property
      */
+    @Deprecated
     public static Optional<EntityType> getEntityTypeOfDataProperty(final DataProperty dataProperty) {
-        return getAllContents(dataProperty, EntityType.class)
-                .filter(et -> et.getDataProperties().contains(dataProperty))
-                .findAny();
+        return Optional.ofNullable((EntityType) dataProperty.eContainer());
     }
 
     /**
@@ -166,10 +208,9 @@ public class PsmUtils {
      * @param navigationProperty navigation property
      * @return entity type of the navigation property
      */
+    @Deprecated
     public static Optional<EntityType> getEntityTypeOfNavigationProperty(final NavigationProperty navigationProperty) {
-        return getAllContents(navigationProperty, EntityType.class)
-                .filter(et -> et.getNavigationProperties().contains(navigationProperty))
-                .findAny();
+        return Optional.ofNullable((EntityType) navigationProperty.eContainer());
     }
 
     /**
