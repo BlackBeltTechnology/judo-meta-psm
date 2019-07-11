@@ -8,7 +8,7 @@ import hu.blackbelt.eclipse.emf.genmodel.generator.helper.*
 var rootPath = "."
 
 var modelDir = "model"
-var javaGenPath = "src-genmodel"
+var javaGenPath = "src-gen"
 var platformUri = "platform:/resource/hu.blackbelt.judo.meta.psm.model"
 
 
@@ -27,62 +27,24 @@ Workflow {
 	component = EcoreGenerator {
 		generateCustomClasses = false
 		genModel = "${platformUri}/${modelDir}/psm.genmodel"
-		srcPath = "${platformUri}/${javaGenPath}"   
-	}
-
-	// Model builder
-	component = EMFBuilderGenerator {
-		platformUri = "${rootPath}"
-		outputPath = "${rootPath}/${javaGenPath}"
-		ecoreURI = "${platformUri}/${modelDir}/psm.ecore"
-		genModelUri = "${platformUri}/${modelDir}/psm.genmodel"
+		srcPath = "${platformUri}/src/main/java"   
 	}
 
 	// Helper for model
-	bean = engine.ModelHelperGeneratorStandaloneSetup : genModelHelperSetup {
-		config = {
-			javaGenPath = "${rootPath}/${javaGenPath}"
-			}
-		doInit = true
+	component = hu.blackbelt.eclipse.emf.genmodel.generator.helper.HelperGeneratorWorkflow {
+		modelDir = "${rootPath}/${modelDir}"
+		javaGenPath = "${rootPath}/${javaGenPath}"
 	}
 
-	component = org.eclipse.xtext.mwe.Reader {
-		path = "${rootPath}/${modelDir}"
-		register = genModelHelperSetup
-		loadResource = {
-			slot = "model"
-		}
-	}
-	
-	component = org.eclipse.xtext.generator.GeneratorComponent {
-		register = genModelHelperSetup
-        	slot = 'model'
-        	outlet = {
-          	  path = "${rootPath}/${javaGenPath}"
-        	}
-   	}	
+	// Builder for model
+	component = hu.blackbelt.eclipse.emf.genmodel.generator.builder.BuilderGeneratorWorkflow {
+		modelDir = "${rootPath}/${modelDir}"
+		javaGenPath = "${rootPath}/${javaGenPath}"
+	}	
 
-     // Runtime model for Judo
-	bean = hu.blackbelt.judo.eclipse.emf.genmodel.generator.runtimemodel.engine.RuntimeModelGeneratorStandaloneSetup : genRuntimeModelSetup {
-		config = {
-			javaGenPath = "${rootPath}/${javaGenPath}"
-		}
-		doInit = true
-	}
-
-	component = org.eclipse.xtext.mwe.Reader {
-		path = "${rootPath}/${modelDir}"
-		register = genRuntimeModelSetup
-		loadResource = {
-			slot = "model"
-		}
-	}
-	
-	component = org.eclipse.xtext.generator.GeneratorComponent {
-		register = genRuntimeModelSetup
-        	slot = 'model'
-        	outlet = {
-       		path = "${rootPath}/${javaGenPath}"
-        	}
+	// Judo RuntimeModel for model
+	component = hu.blackbelt.judo.eclipse.emf.genmodel.generator.runtimemodel.RuntimeModelGeneratorWorkflow {
+		modelDir = "${rootPath}/${modelDir}"
+		javaGenPath = "${rootPath}/${javaGenPath}"
 	}
 }

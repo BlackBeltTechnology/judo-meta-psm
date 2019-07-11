@@ -42,7 +42,7 @@ public class PsmModelBundleTracker {
     public void activate(final ComponentContext componentContext) {
         bundleTrackerManager.registerBundleCallback(this.getClass().getName(),
                 new PsmRegisterCallback(componentContext.getBundleContext()),
-                new PsmUnregisterCallback(componentContext.getBundleContext()),
+                new PsmUnregisterCallback(),
                 new PsmBundlePredicate());
     }
 
@@ -65,6 +65,7 @@ public class PsmModelBundleTracker {
         public PsmRegisterCallback(BundleContext bundleContext) {
             this.bundleContext = bundleContext;
         }
+
 
         @Override
         public void accept(Bundle trackedBundle) {
@@ -114,11 +115,6 @@ public class PsmModelBundleTracker {
     }
 
     private class PsmUnregisterCallback implements BundleCallback {
-        BundleContext bundleContext;
-
-        public PsmUnregisterCallback(BundleContext bundleContext) {
-            this.bundleContext = bundleContext;
-        }
 
         @Override
         public void accept(Bundle trackedBundle) {

@@ -35,7 +35,7 @@ build:
       goals: deploy
       settings: .maven.xml
       maven_opts: -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=${WERCKER_GIT_COMMIT}
-      profiles: ${RELEASE_GITHUB_PROFILES}
+      profiles: ${DEPLOY_PROFILES}
       cache_repo: true
 
 #  after-steps:
@@ -136,7 +136,7 @@ release:
       goals: deploy
       settings: .maven.xml
       maven_opts: -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=${WERCKER_GIT_COMMIT}
-      profiles: ${RELEASE_GITHUB_PROFILES}
+      profiles: ${DEPLOY_PROFILES}
       cache_repo: true
 
     - script:
