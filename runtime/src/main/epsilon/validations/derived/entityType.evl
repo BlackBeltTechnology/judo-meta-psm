@@ -1,5 +1,3 @@
-import "../../operations/derived/_importDerived.eol";
-
 context JUDOPSM!EntityType {
 
 	// entity has no multiple data properties with the same name	
@@ -41,7 +39,7 @@ context JUDOPSM!DataProperty {
     
     // type of getter expression is integer
     constraint DataPropertyGetterTypeIsInteger {
-        guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision == 0
+        guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.scale == 0
         
         check: self.getterExpression.isKindOf(EXPR!IntegerExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not integer: " + self.getterExpression.toString()
@@ -49,7 +47,7 @@ context JUDOPSM!DataProperty {
     
     // type of getter expression is decimal
     constraint DataPropertyGetterTypeIsDecimal {
-        guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision > 0
+        guard: self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.scale > 0
         
         check: self.getterExpression.isKindOf(EXPR!DecimalExpression)
         message: "Getter expression of derived attribute " + self.displayName() + " is not decimal: " + self.getterExpression.toString()
@@ -105,7 +103,7 @@ context JUDOPSM!DataProperty {
     
     // type of setter expression is integer
     constraint DataPropertySetterTypeIsInteger {
-        guard: self.setterExpression.isDefined() and self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision == 0
+        guard: self.setterExpression.isDefined() and self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.scale == 0
         
         check: self.setterExpression.isKindOf(EXPR!IntegerExpression)
         message: "Setter expression of derived attribute " + self.displayName() + " is not integer: " + self.setterExpression.toString()
@@ -113,7 +111,7 @@ context JUDOPSM!DataProperty {
     
     // type of setter expression is decimal
     constraint DataPropertySetterTypeIsDecimal {
-        guard: self.setterExpression.isDefined() and self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.precision > 0
+        guard: self.setterExpression.isDefined() and self.dataType.isKindOf(JUDOPSM!NumericType) and self.dataType.scale > 0
         
         check: self.setterExpression.isKindOf(EXPR!DecimalExpression)
         message: "Setter expression of derived attribute " + self.displayName() + " is not decimal: " + self.setterExpression.toString()

@@ -1,20 +1,12 @@
-import "../../operations/measure/_importMeasure.eol";
-
 context JUDOPSM!Measure {
 
     // base unit of measure should be defined (recommended only, base unit is used for calculations)
     critique BaseUnitShouldBeDefined {
-        check: self.getBaseUnit().isDefined()
+        check: self.units.exists(u | u.rateDividend = u.rateDivisor)
         message: "No base unit is defined for measure: " + self.name
     }
 
-    // circular references in unit definitions is invalid
-    constraint NoCircularReferencesOfUnits {
-        check: not self.isKindOf(JUDOPSM!DerivedMeasure) or not self.hasCircularReference()
-        message: "Derived measure definition " + self.name + " is recursive"
-    }
-
-    // no multiple measures are defined for the same dimension
+    /*// no multiple measures are defined for the same dimension
     constraint DimensionsAreUnique {
         check {
             var dimensions = new Map;
@@ -24,7 +16,7 @@ context JUDOPSM!Measure {
 		    return not dimensions.containsKey(self.getBaseMeasures());
         }
         message: "Multiple measures are defined for the same dimension: " + self.name
-    }
+    } */
     
     // measure name should be unique
     critique MeasureNameIsUnique {
@@ -38,5 +30,14 @@ context JUDOPSM!Measure {
         
         check: not JUDOPSM!Measure.all.excluding(self).selectOne(m | m.symbol == self.symbol).isDefined()
         message: "Measure symbol is not unique: " + self.symbol + " (measure: " + self.name + ")"
+    }
+}
+
+context JUDOPSM!DerivedMeasure {
+
+    // circular references in derived measure definitions is invalid
+    constraint NoCircularReferencesOfDerivedMeasures {
+        check: not self.getAllTermMeasures().contains(self)
+        message: "Derived measure definition " + self.name + " is recursive"
     }
 }

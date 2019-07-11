@@ -286,3 +286,7 @@ https://bugs.eclipse.org/bugs/show_bug.cgi?id=534587
 Tycho does not support lombok generation directly as mentioned in https://github.com/rzwitserloot/lombok/issues/285 .
 This will be fixed in later version. No lombok is not used in eclipse projects, all codes are generated.
 
+Embedded relation of transfer objects:
+
+* aggregation on read (an instance could be found multiple times in response)
+* composition on write (containment must be in the same container, moving to other container is not allowed)

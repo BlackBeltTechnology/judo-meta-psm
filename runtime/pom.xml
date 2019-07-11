@@ -139,25 +139,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
-                    <!--plugin>
-                        <groupId>hu.blackbelt.epsilon</groupId>
-                        <artifactId>epsilon-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>VALIDATE</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>executeConfiguration</goal>
-                                </goals>
-                                <configuration>
-                                    <configurationArtifacts>
-                                        <configurationArtifact>target/test-configurations/**/*.xml</configurationArtifact>
-                                    </configurationArtifacts>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin-->
                 </plugins>
             </build>
         </profile>

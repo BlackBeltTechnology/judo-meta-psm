@@ -22,7 +22,7 @@ class PsmModelLoaderTest {
                 "1.0.0");
 
         for (Iterator<EObject> i = psmModel.getResourceSet().getResource(psmModel.getUri(), false).getAllContents(); i.hasNext(); ) {
-            log.info(i.next().toString());
+            log.debug(i.next().toString());
         }
     }
 
