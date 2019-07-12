@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:data="http://blackbelt.hu/judo/meta/psm/data" xmlns:namespace="http://blackbelt.hu/judo/meta/psm/namespace" xmlns:type="http://blackbelt.hu/judo/meta/psm/type">
+  <namespace:Model xmi:id="_WZpXEIRPEeipmMyz9cMCRA" name="TEST">
+    <packages xmi:id="_WZp-IIRPEeipmMyz9cMCRA" name="sandbox">
+      <elements xsi:type="data:EntityType" xmi:id="A0-EntityType" name="A0"/>
+      <elements xsi:type="data:EntityType" xmi:id="A1-EntityType" name="A1" abstract="true"/>
+      <elements xsi:type="data:EntityType" xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
+        <attributes xmi:id="_mD22ULvrEeiOuYiCo6IbXQ" name="x" dataType="_U4jZoLaVEeiphaohSbmpfA" required="true" identifier="true"/>
+        <relations xsi:type="data:Endpoint" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" target="B-EntityType" partner="_6cnfMLvrEeiOuYiCo6IbXQ">
+          <cardinality xmi:id="_TownkBTNEemVqaiCEVZg7g" lower="1"/>
+        </relations>
+        <relations xsi:type="data:Endpoint" xmi:id="_Ke7FMLvsEeiOuYiCo6IbXQ" name="c" target="C-EntityType">
+          <cardinality xmi:id="_TownkRTNEemVqaiCEVZg7g"/>
+        </relations>
+      </elements>
+      <elements xsi:type="data:EntityType" xmi:id="B-EntityType" name="B">
+        <relations xsi:type="data:Endpoint" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" partner="_0lc3gLvrEeiOuYiCo6IbXQ">
+          <cardinality xmi:id="_ToxOoBTNEemVqaiCEVZg7g" lower="1"/>
+        </relations>
+      </elements>
+      <elements xsi:type="data:EntityType" xmi:id="C-EntityType" name="C">
+        <relations xsi:type="data:Endpoint" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
+          <cardinality xmi:id="_ToxOoRTNEemVqaiCEVZg7g" upper="-1"/>
+        </relations>
+      </elements>
+      <elements xsi:type="data:EntityType" xmi:id="_lGrKcLvtEeiOuYiCo6IbXQ" name="S1">
+        <relations xsi:type="data:Endpoint" xmi:id="_pR08QLvtEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
+          <cardinality xmi:id="_Tox1sBTNEemVqaiCEVZg7g"/>
+        </relations>
+        <relations xsi:type="data:Containment" xmi:id="_sGtesLvtEeiOuYiCo6IbXQ" name="s2" target="_mhVKkLvtEeiOuYiCo6IbXQ">
+          <cardinality xmi:id="_Tox1sRTNEemVqaiCEVZg7g"/>
+        </relations>
+      </elements>
+      <elements xsi:type="data:EntityType" xmi:id="_mhVKkLvtEeiOuYiCo6IbXQ" name="S2">
+        <relations xsi:type="data:Endpoint" xmi:id="_uPr9YLvtEeiOuYiCo6IbXQ" name="b" target="B-EntityType">
+          <cardinality xmi:id="_ToycwBTNEemVqaiCEVZg7g"/>
+        </relations>
+      </elements>
+    </packages>
+    <elements xsi:type="type:StringType" xmi:id="_U4jZoLaVEeiphaohSbmpfA" name="String" maxLength="255"/>
+    <elements xsi:type="type:StringType" xmi:id="_U4jZoLaVEeiphaohSbmpfB" name="Text" maxLength="255"/>
+    <elements xsi:type="type:NumericType" xmi:id="_61eesBTNEemVqaiCEVZg7g" name="Integer" scale="10"/>
+  </namespace:Model>
+</xmi:XMI>

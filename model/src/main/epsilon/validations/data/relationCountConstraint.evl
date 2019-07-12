@@ -1,0 +1,8 @@
+context JUDOPSM!RelationCountConstraint {
+
+    // relation count constraints are not supported yet
+    constraint RelationCountConstraintsAreNotSupportedYet {
+    	check: JUDOPSM!RelationCountConstraint.all.size() = 0
+    	message: "Relation count constraints are not supported yet"
+    }
+}
