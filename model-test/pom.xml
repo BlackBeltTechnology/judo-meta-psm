@@ -16,23 +16,12 @@
 	<name>Judo :: Psm :: Model :: Eclipse test plugin</name>
 	<description>Judo Psm Model eclipse test plugin</description>
 
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<dependencies>
-						<dependency>
-							<groupId>hu.blackbelt.epsilon</groupId>
-							<artifactId>epsilon-runtime-execution</artifactId>
-							<version>${epsilon-runtime-version}</version>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<dependencies>
+		<dependency>
+			<groupId>hu.blackbelt.epsilon</groupId>
+			<artifactId>hu.blackbelt.epsilon.runtime.execution</artifactId>
+			<version>${epsilon-runtime-eclipse-version}</version>
+		</dependency>
+	</dependencies>
 
 </project>

@@ -18,6 +18,7 @@
    </license>
 
    <requires>
+      <import plugin="hu.blackbelt.epsilon.runtime.execution"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
@@ -38,7 +39,6 @@
       <import plugin="org.eclipse.xtext"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.xpand"/>
       <import plugin="hu.blackbelt.judo.eclipse.emf.genmodel.generator.runtimemodel"/>
       <import plugin="hu.blackbelt.eclipse.emf.genmodel.generator.builder"/>
       <import plugin="hu.blackbelt.eclipse.emf.genmodel.generator.helper"/>

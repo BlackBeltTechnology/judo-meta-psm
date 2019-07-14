@@ -14,13 +14,14 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
 import hu.blackbelt.judo.meta.psm.type.*;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collection;
@@ -37,8 +38,9 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
-@Slf4j
-class PsmValidationTests {
+class PsmValidationTest {
+	
+	Logger log = LoggerFactory.getLogger(PsmValidationTest.class);
 
     private final String createdSourceModelName = "urn:psm.judo-meta-psm";
     private ResourceSet executionResourceSet;

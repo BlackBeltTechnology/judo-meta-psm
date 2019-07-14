@@ -57,7 +57,12 @@
 			<layout>p2</layout>
 			<url>${eclipse-p2-base}</url>
 		</repository>
-	</repositories>
+        <repository>
+            <id>epsilon</id>
+            <layout>p2</layout>
+            <url>http://download.eclipse.org/epsilon/updates/</url>
+        </repository>
+    </repositories>
 
 	<properties>
         <project-shortname>judo-meta-psm</project-shortname>
@@ -79,7 +84,8 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 
 		<epsilon-runtime-version>1.2.0.develop_96</epsilon-runtime-version>
-		<epsilon-maven-plugin-version>1.2.0_develop-62</epsilon-maven-plugin-version>
+        <epsilon-runtime-eclipse-version>1.2.0.develop_00001</epsilon-runtime-eclipse-version>
+        <epsilon-maven-plugin-version>1.2.0_develop-62</epsilon-maven-plugin-version>
 
 		<src.dir>src/main</src.dir>
 

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import java.io.File;
 import java.util.Optional;
 
-abstract class NorthwindTests {
+abstract class NorthwindTest {
 
     protected ResourceSet resourceSet;
     protected Model northwind;

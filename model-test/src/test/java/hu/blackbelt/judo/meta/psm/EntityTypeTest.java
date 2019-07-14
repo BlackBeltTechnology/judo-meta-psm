@@ -18,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class EntityTypeTests extends NorthwindTests {
+public class EntityTypeTest extends NorthwindTest {
 
     @Test
     public void testSingleGetSuperTypes() {
