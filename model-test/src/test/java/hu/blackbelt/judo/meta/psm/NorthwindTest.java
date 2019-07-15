@@ -47,12 +47,4 @@ abstract class NorthwindTest {
                 .findFirst().get();
     }
 
-    private File srcDir() {
-        final String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-        final File targetDir = new File(relPath + "../../src");
-        if (!targetDir.exists()) {
-            targetDir.mkdir();
-        }
-        return targetDir;
-    }
 }

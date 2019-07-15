@@ -12,10 +12,48 @@
    <extension
          point="org.eclipse.epsilon.evl.emf.validation">
       <constraintsBinding
-            constraints="validations/esm.evl"
-            namespaceURI="http://blackbelt.hu/judo/meta/psm">
+            constraints="validations/psm-namespace.evl"
+            modelName="PSM"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm/namespace">
       </constraintsBinding>
    </extension>
+
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            constraints="validations/psm-data.evl"
+            modelName="PSM"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm/data">
+      </constraintsBinding>
+   </extension>
+
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            constraints="validations/psm-derived.evl"
+            modelName="PSM"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm/derived">
+      </constraintsBinding>
+   </extension>
+
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            constraints="validations/psm-measure.evl"
+            modelName="PSM"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm/measure">
+      </constraintsBinding>
+   </extension>
+
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            constraints="validations/psm-type.evl"
+            modelName="PSM"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm/type">
+      </constraintsBinding>
+   </extension>
+
    <extension
          point="org.eclipse.ui.ide.markerResolution">
       <markerResolutionGenerator
@@ -28,6 +66,14 @@
       </markerResolutionGenerator>
    </extension>
 
+
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+         <tool
+			class="hu.blackbelt.judo.meta.psm.PsmUtils"
+			defaultName="psmUtils"
+			/>
+   </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated psm -->

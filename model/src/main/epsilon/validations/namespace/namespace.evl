@@ -1,4 +1,4 @@
-context Namespace {
+context PSM!Namespace {
 
 	// names of elements and packages must be unique in a given package
 	constraint NamespaceIsUnique {
@@ -16,4 +16,8 @@ context Namespace {
 		}
 		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name
 	}
+}
+
+pre {
+	"NameSpace".println("dassfasf");
 }

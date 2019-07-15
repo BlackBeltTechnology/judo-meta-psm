@@ -1,4 +1,4 @@
-context Measure {
+context PSM!Measure {
 
     // base unit of measure should be defined (recommended only, base unit is used for calculations)
     critique BaseUnitShouldBeDefined {
@@ -10,7 +10,7 @@ context Measure {
     constraint DimensionsAreUnique {
         check {
             var dimensions = new Map;
-		    for (m in JUDOPSM!Measure.all.excluding(self)) {
+		    for (m in PSM!Measure.all.excluding(self)) {
 		        dimensions.put(m.getBaseMeasures(), m);
 		    }
 		    return not dimensions.containsKey(self.getBaseMeasures());
@@ -20,7 +20,7 @@ context Measure {
     
     // measure name should be unique
     critique MeasureNameIsUnique {
-        check: not Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
+        check: not PSM!Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
         message: "Measure name is not unique: " + self.name
     }
     
@@ -28,12 +28,12 @@ context Measure {
     constraint MeasureSymbolIsUnique {
         guard: self.symbol.isDefined()
         
-        check: not Measure.all.excluding(self).selectOne(m | m.symbol == self.symbol).isDefined()
+        check: not PSM!Measure.all.excluding(self).selectOne(m | m.symbol == self.symbol).isDefined()
         message: "Measure symbol is not unique: " + self.symbol + " (measure: " + self.name + ")"
     }
 }
 
-context DerivedMeasure {
+context PSM!DerivedMeasure {
 
     // circular references in derived measure definitions is invalid
     constraint NoCircularReferencesOfDerivedMeasures {

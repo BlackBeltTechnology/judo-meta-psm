@@ -1,4 +1,4 @@
-context Endpoint {
+context PSM!Endpoint {
 
     // reserved relation names: id
     constraint RelationNameIsNotReserved {
@@ -25,7 +25,7 @@ context Endpoint {
     }
 }
 
-context Endpoint {
+context PSM!Endpoint {
 
     guard: self.partner.isDefined()
 

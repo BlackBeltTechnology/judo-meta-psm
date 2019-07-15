@@ -61,6 +61,7 @@ class ExecutionContextTest {
 
         psmResource.getContents().add(model);
 
+
         // Executrion context
         ExecutionContext executionContext = executionContextBuilder()
                 .log(log)
@@ -89,12 +90,6 @@ class ExecutionContextTest {
         executionContext.commit();
         executionContext.close();
 
-    }
-
-    public File scriptDir(){
-        String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-        File targetDir = new File(relPath+"../../../model/src/main");
-        return targetDir;
     }
 
 }

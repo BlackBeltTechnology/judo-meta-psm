@@ -1,4 +1,4 @@
-context EnumerationType {
+context PSM!EnumerationType {
 
     // enumeration member name must be unique
     constraint EnumerationMemberNameIsUnique {
@@ -19,11 +19,11 @@ context EnumerationType {
     }
 }
 
-context EnumerationMember {
+context PSM!EnumerationMember {
 
     // enumeration member is not standalone
     constraint EnumerationMemberHasEnumerationType {
-        check: EnumerationType.all.select(et | et.members.contains(self)).size() == 1
+        check: PSM!EnumerationType.all.select(et | et.members.contains(self)).size() == 1
         message: "Enumeration member " + self.name + " must have exactly 1 enumeration"
     }
 }

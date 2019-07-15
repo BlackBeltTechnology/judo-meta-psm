@@ -7,9 +7,13 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Activator: hu.blackbelt.judo.meta.psm.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.ui,
+ org.eclipse.epsilon.evl.emf.validation,
+ org.eclipse.ui.ide
 Export-Package: hu.blackbelt.judo.meta.psm,
  hu.blackbelt.judo.meta.psm.accesspoint,
  hu.blackbelt.judo.meta.psm.accesspoint.impl,

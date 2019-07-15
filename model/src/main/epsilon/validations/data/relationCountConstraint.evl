@@ -1,8 +1,8 @@
-context RelationCountConstraint {
+context PSM!RelationCountConstraint {
 
     // relation count constraints are not supported yet
     constraint RelationCountConstraintsAreNotSupportedYet {
-    	check: RelationCountConstraint.all.size() = 0
+    	check: PSM!RelationCountConstraint.all.size() = 0
     	message: "Relation count constraints are not supported yet"
     }
 }
