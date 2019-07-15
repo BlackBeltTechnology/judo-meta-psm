@@ -1,4 +1,4 @@
-context JUDOPSM!EnumerationType {
+context EnumerationType {
 
     // enumeration member name must be unique
     constraint EnumerationMemberNameIsUnique {
@@ -19,11 +19,11 @@ context JUDOPSM!EnumerationType {
     }
 }
 
-context JUDOPSM!EnumerationMember {
+context EnumerationMember {
 
     // enumeration member is not standalone
     constraint EnumerationMemberHasEnumerationType {
-        check: JUDOPSM!EnumerationType.all.select(et | et.members.contains(self)).size() == 1
+        check: EnumerationType.all.select(et | et.members.contains(self)).size() == 1
         message: "Enumeration member " + self.name + " must have exactly 1 enumeration"
     }
 }

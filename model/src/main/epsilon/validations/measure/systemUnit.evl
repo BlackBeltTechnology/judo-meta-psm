@@ -1,11 +1,11 @@
-context JUDOPSM!DurationUnit {
+context DurationUnit {
 
     // rate of second unit to smaller temporal unit(s) must be valid
     constraint SecondRateIsValid {
-        guard: self.unitType = JUDOPSM!DurationType#second
+        guard: self.unitType = DurationType#second
         
         check {
-        	var rateToMillisecond = psmUtils.getRate(self, JUDOPSM!DurationType#millisecond);
+        	var rateToMillisecond = psmUtils.getRate(self, DurationType#millisecond);
             return not rateToMillisecond.isPresent() or rateToMillisecond.get().dividend == rateToMillisecond.get().divisor * 1000.0;
         }
         message: "Rate of second (" + self.name + ") temporal measure unit is invalid"
@@ -13,11 +13,11 @@ context JUDOPSM!DurationUnit {
     
     // rate of minute unit to smaller temporal unit(s) must be valid
     constraint MinuteRateIsValid {
-        guard: self.unitType = JUDOPSM!DurationType#minute
+        guard: self.unitType = DurationType#minute
         
         check {
-        	var rateToMillisecond = psmUtils.getRate(self, JUDOPSM!DurationType#millisecond);
-        	var rateToSecond = psmUtils.getRate(self, JUDOPSM!DurationType#second);
+        	var rateToMillisecond = psmUtils.getRate(self, DurationType#millisecond);
+        	var rateToSecond = psmUtils.getRate(self, DurationType#second);
             return (not rateToMillisecond.isPresent() or rateToMillisecond.get().dividend == rateToMillisecond.get().divisor * 60000.0) and
                    (not rateToSecond.isPresent() or rateToSecond.get().dividend == rateToSecond.get().divisor * 60.0);
         }
@@ -26,12 +26,12 @@ context JUDOPSM!DurationUnit {
 
     // rate of hour unit to smaller temporal unit(s) must be valid
     constraint HourRateIsValid {
-        guard: self.unitType = JUDOPSM!DurationType#hour
+        guard: self.unitType = DurationType#hour
         
         check {
-        	var rateToMillisecond = psmUtils.getRate(self, JUDOPSM!DurationType#millisecond);
-        	var rateToSecond = psmUtils.getRate(self, JUDOPSM!DurationType#second);
-        	var rateToMinute = psmUtils.getRate(self, JUDOPSM!DurationType#minute);
+        	var rateToMillisecond = psmUtils.getRate(self, DurationType#millisecond);
+        	var rateToSecond = psmUtils.getRate(self, DurationType#second);
+        	var rateToMinute = psmUtils.getRate(self, DurationType#minute);
             return (not rateToMillisecond.isPresent() or rateToMillisecond.get().dividend == rateToMillisecond.get().divisor * 3600000.0) and
                    (not rateToSecond.isPresent() or rateToSecond.get().dividend == rateToSecond.get().divisor * 3600.0) and 
                    (not rateToMinute.isPresent() or rateToMinute.get().dividend == rateToMinute.get().divisor * 60.0);
@@ -41,13 +41,13 @@ context JUDOPSM!DurationUnit {
     
     // rate of day unit to smaller temporal unit(s) must be valid
     constraint DayRateIsValid {
-        guard: self.unitType = JUDOPSM!DurationType#day
+        guard: self.unitType = DurationType#day
         
         check {
-        	var rateToMillisecond = psmUtils.getRate(self, JUDOPSM!DurationType#millisecond);
-        	var rateToSecond = psmUtils.getRate(self, JUDOPSM!DurationType#second);
-        	var rateToMinute = psmUtils.getRate(self, JUDOPSM!DurationType#minute);
-        	var rateToHour = psmUtils.getRate(self, JUDOPSM!DurationType#hour);
+        	var rateToMillisecond = psmUtils.getRate(self, DurationType#millisecond);
+        	var rateToSecond = psmUtils.getRate(self, DurationType#second);
+        	var rateToMinute = psmUtils.getRate(self, DurationType#minute);
+        	var rateToHour = psmUtils.getRate(self, DurationType#hour);
             return (not rateToMillisecond.isPresent() or rateToMillisecond.get().dividend == rateToMillisecond.get().divisor * 86400000.0) and
                    (not rateToSecond.isPresent() or rateToSecond.get().dividend == rateToSecond.get().divisor * 86400.0) and 
                    (not rateToMinute.isPresent() or rateToMinute.get().dividend == rateToMinute.get().divisor * 1440.0) and
@@ -58,14 +58,14 @@ context JUDOPSM!DurationUnit {
     
     // rate of week unit to smaller temporal unit(s) must be valid
     constraint WeekRateIsValid {
-        guard: self.unitType = JUDOPSM!DurationType#week
+        guard: self.unitType = DurationType#week
         
         check {
-        	var rateToMillisecond = psmUtils.getRate(self, JUDOPSM!DurationType#millisecond);
-        	var rateToSecond = psmUtils.getRate(self, JUDOPSM!DurationType#second);
-        	var rateToMinute = psmUtils.getRate(self, JUDOPSM!DurationType#minute);
-        	var rateToHour = psmUtils.getRate(self, JUDOPSM!DurationType#hour);
-        	var rateToDay = psmUtils.getRate(self, JUDOPSM!DurationType#day);
+        	var rateToMillisecond = psmUtils.getRate(self, DurationType#millisecond);
+        	var rateToSecond = psmUtils.getRate(self, DurationType#second);
+        	var rateToMinute = psmUtils.getRate(self, DurationType#minute);
+        	var rateToHour = psmUtils.getRate(self, DurationType#hour);
+        	var rateToDay = psmUtils.getRate(self, DurationType#day);
             return (not rateToMillisecond.isPresent() or rateToMillisecond.get().dividend == rateToMillisecond.get().divisor * 604800000.0) and
                    (not rateToSecond.isPresent() or rateToSecond.get().dividend == rateToSecond.get().divisor * 604800.0) and 
                    (not rateToMinute.isPresent() or rateToMinute.get().dividend == rateToMinute.get().divisor * 10080.0) and
@@ -77,10 +77,10 @@ context JUDOPSM!DurationUnit {
     
     // rate of year unit to smaller temporal unit(s) must be valid
     constraint YearRateIsValid {
-        guard: self.unitType = JUDOPSM!DurationType#year
+        guard: self.unitType = DurationType#year
         
         check {
-        	var rateToMonth = psmUtils.getRate(self, JUDOPSM!DurationType#month);
+        	var rateToMonth = psmUtils.getRate(self, DurationType#month);
             return not rateToMonth.isPresent() or rateToMonth.get().dividend == rateToMonth.get().divisor * 12.0;
         }
         message: "Rate of year (" + self.name + ") temporal measure unit is invalid"

@@ -63,11 +63,11 @@ class PsmValidationTest {
                 .modelContexts(ImmutableList.of(
                         wrappedEmfModelContextBuilder()
                                 .log(log)
-                                .name("JUDOPSM")
+                                .name("PSM")
                                 .resource(psmResource)
                                 .build()))
                 .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils()))
-                .sourceDirectory(scriptDir())
+                .sourceDirectory(new File("../model/src/main").getAbsoluteFile())
                 .build();
     }
 
@@ -86,7 +86,7 @@ class PsmValidationTest {
             // Transformation script
             executionContext.executeProgram(
                     evlExecutionContextBuilder()
-                            .source("epsilon/validations/judopsm.evl")
+                            .source("epsilon/validations/psm.evl")
                             .expectedErrors(expectedErrors)
                             .expectedWarnings(expectedWarnings)
                             .build());
@@ -1042,11 +1042,5 @@ class PsmValidationTest {
 
         psmResource.getContents().add(test);
         runEpsilon(null, null);
-    }
-
-    public File scriptDir(){
-        String relPath = getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-        File targetDir = new File(relPath+"../../../model/src/main");
-        return targetDir;
-    }
+   }
 }

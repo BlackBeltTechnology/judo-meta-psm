@@ -1,4 +1,4 @@
-context JUDOPSM!Endpoint {
+context Endpoint {
 
     // reserved relation names: id
     constraint RelationNameIsNotReserved {
@@ -25,7 +25,7 @@ context JUDOPSM!Endpoint {
     }
 }
 
-context JUDOPSM!Endpoint {
+context Endpoint {
 
     guard: self.partner.isDefined()
 

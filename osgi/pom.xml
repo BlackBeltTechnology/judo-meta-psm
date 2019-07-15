@@ -31,9 +31,13 @@
 						</Import-Package>
 						<Export-Package>
                             meta/${mdoelName};version=${project.version},
-                            hu.blackbelt.judo.meta.psm*;version=${project.version},
+                            hu.blackbelt.judo.meta.psm*;version=${project.version}
                         </Export-Package>
-						<Include-Resource>{maven-resources},meta/psm=../model/model</Include-Resource>
+						<Include-Resource>
+                            {maven-resources},
+                            meta/psm=../model/model,
+                            validations=../model/src/main/epsilon/validations
+                        </Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>

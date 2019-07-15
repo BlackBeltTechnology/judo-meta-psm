@@ -8,6 +8,27 @@
  $Id$
 -->
 <plugin>
+
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            constraints="validations/esm.evl"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm">
+      </constraintsBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="org.eclipse.epsilon.evl.emf.validation.EvlMarkerResolutionGenerator"
+            markerType="org.eclipse.emf.ecore.diagnostic">
+      </markerResolutionGenerator>
+      <markerResolutionGenerator
+            class="org.eclipse.epsilon.evl.emf.validation.EvlMarkerResolutionGenerator"
+            markerType="org.eclipse.emf.ecoretools.diagram.diagnostic">
+      </markerResolutionGenerator>
+   </extension>
+
+
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated psm -->
       <package

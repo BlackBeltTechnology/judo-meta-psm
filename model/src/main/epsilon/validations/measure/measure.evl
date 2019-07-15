@@ -1,4 +1,4 @@
-context JUDOPSM!Measure {
+context Measure {
 
     // base unit of measure should be defined (recommended only, base unit is used for calculations)
     critique BaseUnitShouldBeDefined {
@@ -20,7 +20,7 @@ context JUDOPSM!Measure {
     
     // measure name should be unique
     critique MeasureNameIsUnique {
-        check: not JUDOPSM!Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
+        check: not Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
         message: "Measure name is not unique: " + self.name
     }
     
@@ -28,12 +28,12 @@ context JUDOPSM!Measure {
     constraint MeasureSymbolIsUnique {
         guard: self.symbol.isDefined()
         
-        check: not JUDOPSM!Measure.all.excluding(self).selectOne(m | m.symbol == self.symbol).isDefined()
+        check: not Measure.all.excluding(self).selectOne(m | m.symbol == self.symbol).isDefined()
         message: "Measure symbol is not unique: " + self.symbol + " (measure: " + self.name + ")"
     }
 }
 
-context JUDOPSM!DerivedMeasure {
+context DerivedMeasure {
 
     // circular references in derived measure definitions is invalid
     constraint NoCircularReferencesOfDerivedMeasures {

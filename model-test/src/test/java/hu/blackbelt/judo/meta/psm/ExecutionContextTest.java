@@ -69,10 +69,10 @@ class ExecutionContextTest {
                 .modelContexts(ImmutableList.of(
                         wrappedEmfModelContextBuilder()
                                 .log(log)
-                                .name("JUDOPSM")
+                                .name("PSM")
                                 .resource(psmResource)
                                 .build()))
-                .sourceDirectory(scriptDir())
+                .sourceDirectory(new File("../model/src/main"))
                 .build();
 
         // run the model / metadata loading
@@ -81,7 +81,7 @@ class ExecutionContextTest {
         // Transformation script
         executionContext.executeProgram(
                 evlExecutionContextBuilder()
-                        .source("epsilon/validations/judopsm.evl")
+                        .source("epsilon/validations/psm.evl")
                         .build());
 
 

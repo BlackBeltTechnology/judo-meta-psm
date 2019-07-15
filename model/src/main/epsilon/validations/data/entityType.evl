@@ -1,4 +1,4 @@
-context JUDOPSM!EntityType {
+context EntityType {
 
     // recursive inheritance is not supported
 	constraint InheritanceIsNotRecursive {
@@ -37,20 +37,20 @@ context JUDOPSM!EntityType {
     }
 }
 
-context JUDOPSM!Relation {
+context Relation {
 
     // relations must be attached to entities
     constraint RelationBelongsToEntity {
-        check: JUDOPSM!EntityType.all.select(et | et.relations.contains(self)).size() == 1
+        check: EntityType.all.select(et | et.relations.contains(self)).size() == 1
         message: "Orphan relation: " + self.name
     }
 }
 
-context JUDOPSM!Attribute {
+context Attribute {
 
     // attributes must be attached to entities
     constraint AttributeBelongsToEntity {
-        check: JUDOPSM!EntityType.all.select(et | et.attributes.contains(self)).size() == 1
+        check: EntityType.all.select(et | et.attributes.contains(self)).size() == 1
         message: "Orphan attribute: " + self.name
     }
 }

@@ -1,4 +1,4 @@
-context JUDOPSM!EntityType {
+context EntityType {
 
 	// entity has no multiple data properties with the same name	
 	constraint DataPropertyNameIsUnique {
@@ -13,11 +13,11 @@ context JUDOPSM!EntityType {
 	}
 }
 
-context JUDOPSM!DataProperty {
+context DataProperty {
 
     // data properties must be attached to entities
     constraint DataPropertyBelongsToEntity {
-        check: JUDOPSM!EntityType.all.select(et | et.dataProperties.contains(self)).size() == 1
+        check: EntityType.all.select(et | et.dataProperties.contains(self)).size() == 1
         message: "Orphan data property: " + self.name
     }
     
@@ -142,11 +142,11 @@ context JUDOPSM!DataProperty {
     } */
 }
 
-context JUDOPSM!NavigationProperty {
+context NavigationProperty {
 
     // navigation properties must be attached to entities
     constraint NavigationPropertyBelongsToEntity {
-        check: JUDOPSM!EntityType.all.select(et | et.navigationProperties.contains(self)).size() == 1
+        check: EntityType.all.select(et | et.navigationProperties.contains(self)).size() == 1
         message: "Orphan navigation property: " + self.name
     }
 }
