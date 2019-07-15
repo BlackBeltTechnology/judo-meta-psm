@@ -12,48 +12,47 @@
    <extension
          point="org.eclipse.epsilon.evl.emf.validation">
       <constraintsBinding
-            constraints="validations/psm-namespace.evl"
+            constraints="validations/psm-plugin-validation.evl"
             modelName="PSM"
             namespaceURI="http://blackbelt.hu/judo/meta/psm/namespace">
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/type">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/data">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/behavior">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/constraint">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/script">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/derived">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/service">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/accesspoint">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/view">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/authentication">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/authorization">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/measure">
+            </additionalNamespaceURI>    
       </constraintsBinding>
    </extension>
-
-   <extension
-         point="org.eclipse.epsilon.evl.emf.validation">
-      <constraintsBinding
-            constraints="validations/psm-data.evl"
-            modelName="PSM"
-            namespaceURI="http://blackbelt.hu/judo/meta/psm/data">
-      </constraintsBinding>
-   </extension>
-
-   <extension
-         point="org.eclipse.epsilon.evl.emf.validation">
-      <constraintsBinding
-            constraints="validations/psm-derived.evl"
-            modelName="PSM"
-            namespaceURI="http://blackbelt.hu/judo/meta/psm/derived">
-      </constraintsBinding>
-   </extension>
-
-   <extension
-         point="org.eclipse.epsilon.evl.emf.validation">
-      <constraintsBinding
-            constraints="validations/psm-measure.evl"
-            modelName="PSM"
-            namespaceURI="http://blackbelt.hu/judo/meta/psm/measure">
-      </constraintsBinding>
-   </extension>
-
-   <extension
-         point="org.eclipse.epsilon.evl.emf.validation">
-      <constraintsBinding
-            constraints="validations/psm-type.evl"
-            modelName="PSM"
-            namespaceURI="http://blackbelt.hu/judo/meta/psm/type">
-      </constraintsBinding>
-   </extension>
-
    <extension
          point="org.eclipse.ui.ide.markerResolution">
       <markerResolutionGenerator
@@ -65,15 +64,15 @@
             markerType="org.eclipse.emf.ecoretools.diagram.diagnostic">
       </markerResolutionGenerator>
    </extension>
-
-
    <extension
          point="org.eclipse.epsilon.common.dt.tool">
          <tool
 			class="hu.blackbelt.judo.meta.psm.PsmUtils"
-			defaultName="psmUtils"
-			/>
+			defaultName="psmUtils"/>
    </extension>
+
+
+
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated psm -->
