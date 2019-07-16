@@ -67,7 +67,6 @@ class PsmValidationTest {
                                 .resource(psmResource)
                                 .build()))
                 .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils()))
-                .sourceDirectory(new File("../model/src/main").getAbsoluteFile())
                 .build();
     }
 
@@ -86,7 +85,7 @@ class PsmValidationTest {
             // Transformation script
             executionContext.executeProgram(
                     evlExecutionContextBuilder()
-                            .source("epsilon/validations/psm.evl")
+                            .source(new File("../model/src/main/epsilon/validations/psm.evl").toURI())
                             .expectedErrors(expectedErrors)
                             .expectedWarnings(expectedWarnings)
                             .build());
