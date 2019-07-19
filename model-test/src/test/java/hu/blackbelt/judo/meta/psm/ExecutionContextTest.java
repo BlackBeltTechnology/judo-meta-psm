@@ -71,9 +71,9 @@ class ExecutionContextTest {
                         wrappedEmfModelContextBuilder()
                                 .log(log)
                                 .name("PSM")
+                                .validateModel(false)
                                 .resource(psmResource)
                                 .build()))
-                .sourceDirectory(new File("../model/src/main"))
                 .build();
 
         // run the model / metadata loading
@@ -82,7 +82,7 @@ class ExecutionContextTest {
         // Transformation script
         executionContext.executeProgram(
                 evlExecutionContextBuilder()
-                        .source("epsilon/validations/psm.evl")
+                        .source(new File("../model/src/main/epsilon/validations/psm.evl").toURI())
                         .build());
 
 

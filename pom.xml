@@ -83,9 +83,8 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 
-		<epsilon-runtime-version>1.2.0.develop_98</epsilon-runtime-version>
-		<epsilon-runtime-eclipse-version>1.2.0.develop_00003</epsilon-runtime-eclipse-version>
-        <epsilon-maven-plugin-version>1.2.0_develop-62</epsilon-maven-plugin-version>
+		<epsilon-runtime-version>1.2.0.develop_99</epsilon-runtime-version>
+		<epsilon-runtime-eclipse-version>1.2.0.develop_00004</epsilon-runtime-eclipse-version>
 
 		<src.dir>src/main</src.dir>
 
@@ -184,13 +183,7 @@
 					<!-- <configuration> <deployAtEnd>true</deployAtEnd> </configuration> -->
 				</plugin>
 
-				<plugin>
-					<groupId>hu.blackbelt.epsilon</groupId>
-					<artifactId>epsilon-maven-plugin</artifactId>
-					<version>${epsilon.maven.plugin.version}</version>
-				</plugin>
-
-				<!-- Generates the Ecore model via MWE2 -->
+                <!-- Generates the Ecore model via MWE2 -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>

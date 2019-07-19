@@ -64,6 +64,7 @@ class PsmValidationTest {
                         wrappedEmfModelContextBuilder()
                                 .log(log)
                                 .name("PSM")
+                                .validateModel(false)
                                 .resource(psmResource)
                                 .build()))
                 .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils()))
