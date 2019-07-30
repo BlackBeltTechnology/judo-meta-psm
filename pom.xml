@@ -51,19 +51,6 @@
         </developer>
     </developers>
 
-	<repositories>
-		<repository>
-			<id>eclipse</id>
-			<layout>p2</layout>
-			<url>${eclipse-p2-base}</url>
-		</repository>
-        <repository>
-            <id>epsilon</id>
-            <layout>p2</layout>
-            <url>http://download.eclipse.org/epsilon/updates/</url>
-        </repository>
-    </repositories>
-
 	<properties>
         <project-shortname>judo-meta-psm</project-shortname>
         <project-repositoryId>BlackBeltTechnology/judo-meta-psm</project-repositoryId>
@@ -127,7 +114,13 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<pomDependencies>consider</pomDependencies>
+                    <target>
+                        <artifact>
+                            <groupId>hu.blackbelt.judo.meta</groupId>
+                            <artifactId>hu.blackbelt.judo.meta.psm.targetdefinition</artifactId>
+                            <version>${project.version}</version>
+                        </artifact>
+                    </target>
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -654,6 +647,7 @@
                 </property>
             </activation>
             <modules>
+                <module>targetdefinition</module>
                 <module>model</module>
                 <module>model-test</module>
                 <module>osgi</module>
