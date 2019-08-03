@@ -23,11 +23,10 @@ abstract class NorthwindTest {
     public void setUp() throws Exception {
     	resourceSet = PsmModelResourceSupport.createPsmResourceSet();
 
-        PsmModel psmModel = PsmModel.loadPsmModel(LoadArguments.loadArgumentsBuilder()
-                .resourceSet(Optional.of(resourceSet))
+        PsmModel psmModel = PsmModel.loadPsmModel(LoadArguments.psmLoadArgumentsBuilder()
+                .resourceSet(resourceSet)
                 .uri(URI.createFileURI(new File("src/test/model/northwind-judopsm.model").getAbsolutePath()))
-                .name("test")
-                .build());    	
+                .name("test"));
     
         northwind = (Model) resourceSet.getResources().get(0).getEObject("/");
     }

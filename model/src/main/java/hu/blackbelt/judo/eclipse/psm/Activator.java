@@ -1,4 +1,4 @@
-package hu.blackbelt.judo.meta.psm;
+package hu.blackbelt.judo.eclipse.psm;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

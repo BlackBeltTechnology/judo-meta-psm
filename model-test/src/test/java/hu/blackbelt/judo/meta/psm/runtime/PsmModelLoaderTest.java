@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Optional;
 
-import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments.loadArgumentsBuilder;
+import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments.psmLoadArgumentsBuilder;
 
 public class PsmModelLoaderTest {
 
@@ -26,11 +26,10 @@ public class PsmModelLoaderTest {
     void loadPsmModel() throws IOException {
         ResourceSet psmResourceSet = PsmModelResourceSupport.createPsmResourceSet();
 
-        PsmModel psmModel = PsmModel.loadPsmModel(loadArgumentsBuilder()
-                .resourceSet(Optional.of(psmResourceSet))
+        PsmModel psmModel = PsmModel.loadPsmModel(psmLoadArgumentsBuilder()
+                .resourceSet(psmResourceSet)
                 .uri(URI.createFileURI(new File("src/test/model/test.psm").getAbsolutePath()))
-                .name("test")
-                .build());
+                .name("test"));
 
         for (Iterator<EObject> i = psmModel.getResourceSet().getResource(psmModel.getUri(), false).getAllContents(); i.hasNext(); ) {
             log.info(i.next().toString());

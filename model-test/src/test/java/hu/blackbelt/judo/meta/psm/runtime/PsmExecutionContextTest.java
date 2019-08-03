@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport.psmModelResourceSupportBuilder;
 
-class ExecutionContextTest {
+class PsmExecutionContextTest {
 
     @Test
     @DisplayName("Create Psm model with builder pattern")

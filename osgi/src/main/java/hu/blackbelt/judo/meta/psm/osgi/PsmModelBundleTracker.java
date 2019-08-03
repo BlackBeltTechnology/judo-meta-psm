@@ -25,6 +25,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments.psmLoadArgumentsBuilder;
+import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.loadPsmModel;
+
 @Component(immediate = true)
 @Slf4j
 public class PsmModelBundleTracker {
@@ -82,16 +85,13 @@ public class PsmModelBundleTracker {
                         if (versionRange.includes(bundleContext.getBundle().getVersion())) {
                             // Unpack model
                             try {
-                                        PsmModel psmModel = PsmModel.loadPsmModel(
-                                        PsmModel.LoadArguments.loadArgumentsBuilder()
-                                                .uriHandler(Optional.of(new BundleURIHandler("urn", "", trackedBundle)))
-                                                .uri(URI.createURI(params.get("file")))
-                                                .name(params.get(PsmModel.NAME))
-                                                .version(Optional.of(trackedBundle.getVersion().toString()))
-                                                .checksum(Optional.ofNullable(params.get(PsmModel.CHECKSUM)))
-                                                .acceptedMetaVersionRange(Optional.of(versionRange.toString()))
-                                                .build()
-                                );
+                                PsmModel psmModel = loadPsmModel(psmLoadArgumentsBuilder()
+                                        .uriHandler(new BundleURIHandler(trackedBundle.getSymbolicName(), "", trackedBundle))
+                                        .uri(URI.createURI(trackedBundle.getSymbolicName() + ":" + params.get("file")))
+                                        .name(params.get(PsmModel.NAME))
+                                        .version(trackedBundle.getVersion().toString())
+                                        .checksum(Optional.ofNullable(params.get(PsmModel.CHECKSUM)).orElse("notset"))
+                                        .acceptedMetaVersionRange(Optional.of(versionRange.toString()).orElse("[0,99)")));
 
                                 log.info("Registering Psm model: " + psmModel);
 
