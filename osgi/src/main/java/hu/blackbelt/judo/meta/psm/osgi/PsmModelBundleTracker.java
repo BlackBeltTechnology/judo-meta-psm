@@ -101,6 +101,8 @@ public class PsmModelBundleTracker {
 
                             } catch (IOException e) {
                                 log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId());
+                            } catch (PsmModel.PsmValidationException e) {
+                                log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId(), e);
                             }
                         }
                     }

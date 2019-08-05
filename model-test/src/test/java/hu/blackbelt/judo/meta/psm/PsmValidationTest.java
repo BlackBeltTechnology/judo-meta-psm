@@ -1,8 +1,6 @@
 package hu.blackbelt.judo.meta.psm;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
@@ -12,12 +10,9 @@ import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.type.*;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -27,9 +22,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
-import static hu.blackbelt.epsilon.runtime.execution.ExecutionContext.executionContextBuilder;
-import static hu.blackbelt.epsilon.runtime.execution.contexts.EvlExecutionContext.evlExecutionContextBuilder;
-import static hu.blackbelt.epsilon.runtime.execution.model.emf.WrappedEmfModelContext.wrappedEmfModelContextBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
@@ -40,68 +32,37 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
 class PsmValidationTest {
 	
-	Logger log = LoggerFactory.getLogger(PsmValidationTest.class);
-
+    Logger logger = LoggerFactory.getLogger(PsmValidationTest.class);
+    
     private final String createdSourceModelName = "urn:psm.judo-meta-psm";
-    private ResourceSet executionResourceSet;
-    private Resource psmResource;
-    private ExecutionContext executionContext;
 
+    private PsmModel psmModel;
+    private Log log = new Slf4jLog();
+    
     @BeforeEach
     void setUp() {
-        executionResourceSet = PsmModelResourceSupport.createPsmResourceSet();
-        psmResource = executionResourceSet.createResource(
-                URI.createURI(createdSourceModelName));
-
-        Log log = new Slf4jLog();
-
-        // Execution context
-        executionContext = executionContextBuilder()
-                .log(log)
-                .resourceSet(executionResourceSet)
-                .metaModels(ImmutableList.of())
-                .modelContexts(ImmutableList.of(
-                        wrappedEmfModelContextBuilder()
-                                .log(log)
-                                .name("PSM")
-                                .validateModel(false)
-                                .resource(psmResource)
-                                .build()))
-                .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils()))
+        psmModel = PsmModel.buildPsmModel()
+                .uri(URI.createURI(createdSourceModelName))
+                .name("test")
                 .build();
-    }
-
-    @AfterEach
-    void tearDown() {
-        executionContext = null;
-        psmResource = null;
-        executionResourceSet = null;
     }
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
-            // run the model / metadata loading
-            executionContext.load();
-
-            // Transformation script
-            executionContext.executeProgram(
-                    evlExecutionContextBuilder()
-                            .source(new File("../model/src/main/epsilon/validations/psm.evl").toURI())
-                            .expectedErrors(expectedErrors)
-                            .expectedWarnings(expectedWarnings)
-                            .build());
+            PsmEpsilonValidator.validatePsm(log,
+                    psmModel, 
+                    new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
+                    expectedErrors,
+                    expectedWarnings);
         } catch (EvlScriptExecutionException ex) {
-            log.error("EVL failed", ex);
-            log.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
-            log.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
-            log.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
-            log.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
-            log.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
-            log.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
+            logger.error("EVL failed", ex);
+            logger.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
+            logger.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
+            logger.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
+            logger.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
+            logger.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
+            logger.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
             throw ex;
-        } finally {
-            executionContext.commit();
-            executionContext.close();
         }
     }
 
@@ -112,8 +73,8 @@ class PsmValidationTest {
         Model m1 = newModelBuilder().withName("A").build();
         Model m2 = newModelBuilder().withName("A").build();
 
-        psmResource.getContents().add(m1);
-        psmResource.getContents().add(m2);
+        psmModel.addContent(m1);
+        psmModel.addContent(m2);
 
         runEpsilon(ImmutableList.of("ModelNameIsUnique|Model name is not unique: A"),
                 ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
@@ -136,7 +97,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("NamespaceIsUnique|Names Set {P, E, String} are not unique in namespace M"),
                 ImmutableList.of("TypeNamesAreUnique|Type name is not unique: String"));
@@ -162,7 +123,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("EnumerationMemberNameIsUnique|Enum member names are not unique: E"),
                 Collections.emptyList());
@@ -188,7 +149,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("EnumerationMemberValueIsUnique|Enum member numbers are not unique: E"),
                 Collections.emptyList());
@@ -207,7 +168,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("ScaleIsLowerThanPrecision|Scale (10) must be less than precision (5)"),
                 Collections.emptyList());
@@ -226,7 +187,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("ValidScale|Scale (-2) must be at least 0"),
                 Collections.emptyList());
@@ -244,7 +205,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("ValidMaxLength|MaxLength must be greater than 0: String"),
                 Collections.emptyList());
@@ -274,7 +235,7 @@ class PsmValidationTest {
                 ))
                 .build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("AttributeNameIsNotReserved|Name M::E.id is reserved"),
                 Collections.emptyList());
@@ -300,7 +261,7 @@ class PsmValidationTest {
                         E2
                 )).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("RelationNameIsNotReserved|Name M::E1.id is reserved"),
                 Collections.emptyList());
@@ -325,7 +286,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(E1).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("ValidPartnerRelations|Opposite partner relation of M::E1.e2 must be M::E1.e1"),
                 Collections.emptyList());
     }
@@ -350,7 +311,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3)).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: M::E2.e1 for M::E1.e3", "ValidPartnerType|Invalid partner type: M::E1.e3 for M::E2.e1"),
                 Collections.emptyList());
     }
@@ -375,7 +336,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2)).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
 
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: M::E1.e2 - M::E2.e1", "OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: M::E2.e1 - M::E1.e2"));
@@ -395,7 +356,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3)).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("InheritanceIsNotRecursive|Entity type E1 is recursive", "InheritanceIsNotRecursive|Entity type E2 is recursive", "InheritanceIsNotRecursive|Entity type E3 is recursive"),
                 Collections.emptyList());
     }
@@ -412,7 +373,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(E1).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("PartnerIsNotSelf|Self partner relation found: M::E1.e1"),
                 Collections.emptyList());
     }
@@ -438,7 +399,7 @@ class PsmValidationTest {
                                 )).build()
                 )).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("AttributeNameIsUnique|Multiple attributes are added to entity E with the same name"),
                 Collections.emptyList());
     }
@@ -466,7 +427,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("RelationNameIsUnique|Multiple relations are added to entity E with the same name"),
                 Collections.emptyList());
     }
@@ -490,7 +451,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(string, E)).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name"),
                 Collections.emptyList());
     }
@@ -512,7 +473,7 @@ class PsmValidationTest {
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(E1, E2)).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("OppositePartnerIsDefined|Missing opposite partner relation for M::E2.f"),
                 Collections.emptyList());
     }
@@ -526,7 +487,7 @@ class PsmValidationTest {
                         newStringTypeBuilder().withName("String").withMaxLength(4001).build()
                 ).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("MaxLengthIsNotTooLarge|MaxLength must be less than/equals to 4000: String"),
                 Collections.emptyList());
     }
@@ -538,8 +499,8 @@ class PsmValidationTest {
         Model a = newModelBuilder().withName("A").build();
         Model b = newModelBuilder().withName("B").build();
 
-        psmResource.getContents().add(a);
-        psmResource.getContents().add(b);
+        psmModel.addContent(a);
+        psmModel.addContent(b);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
     }
@@ -551,8 +512,8 @@ class PsmValidationTest {
         Package pkg = newPackageBuilder().withName("pkg").build();
         Model m = newModelBuilder().withName("M").build();
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(pkg);
+        psmModel.addContent(m);
+        psmModel.addContent(pkg);
 
         runEpsilon(ImmutableList.of("PackageHasNamespace|Package pkg must have exactly 1 namespace"),
                 Collections.emptyList());
@@ -565,8 +526,8 @@ class PsmValidationTest {
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
         Model m = newModelBuilder().withName("M").build();
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(string);
+        psmModel.addContent(m);
+        psmModel.addContent(string);
 
         runEpsilon(ImmutableList.of("NamespaceElementHasNamespace|Element String must have exactly 1 namespace"),
                 Collections.emptyList());
@@ -586,8 +547,8 @@ class PsmValidationTest {
                 .build();
 
         EnumerationMember enumMemb = newEnumerationMemberBuilder().withName("m1").withOrdinal(1).build();
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(enumMemb);
+        psmModel.addContent(m);
+        psmModel.addContent(enumMemb);
         runEpsilon(ImmutableList.of("EnumerationMemberHasEnumerationType|Enumeration member m1 must have exactly 1 enumeration"),
                 Collections.emptyList());
     }
@@ -609,7 +570,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E", "RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
                 Collections.emptyList());
     }
@@ -625,8 +586,8 @@ class PsmValidationTest {
         Model m = newModelBuilder().withName("M").withElements(E).build();
         Containment r2 = newContainmentBuilder().withName("r2").withTarget(E).withCardinality(newCardinalityBuilder().build()).build();
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(r2);
+        psmModel.addContent(m);
+        psmModel.addContent(r2);
         runEpsilon(ImmutableList.of("RelationBelongsToEntity|Orphan relation: r2"),
                 Collections.emptyList());
     }
@@ -645,8 +606,8 @@ class PsmValidationTest {
 
         Attribute b = newAttributeBuilder().withName("b").withDataType(string).build();
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(b);
+        psmModel.addContent(m);
+        psmModel.addContent(b);
 
         runEpsilon(ImmutableList.of("AttributeBelongsToEntity|Orphan attribute: b"),
                 Collections.emptyList());
@@ -662,7 +623,7 @@ class PsmValidationTest {
                 ).build()
         ).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("EnumerationContainsAtLeastTwoMembers|Enum E has no or only a single member"));
     }
@@ -685,7 +646,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E, string)).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("DataPropertyNameIsUnique|Multiple data properties are added to entity E with the same name"),
                 Collections.emptyList());
     }
@@ -712,7 +673,7 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NavigationPropertyNameIsUnique|Multiple navigation properties are added to entity E with the same name"),
                 Collections.emptyList());
     }
@@ -727,8 +688,8 @@ class PsmValidationTest {
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E, string)).build();
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(p);
+        psmModel.addContent(m);
+        psmModel.addContent(p);
         runEpsilon(ImmutableList.of("DataPropertyBelongsToEntity|Orphan data property: p"),
                 Collections.emptyList());
     }
@@ -745,8 +706,8 @@ class PsmValidationTest {
         NavigationProperty n = newNavigationPropertyBuilder().withName("n").withCardinality(newCardinalityBuilder().build()).withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.r1.r1").build()).build();
         n.setTarget(E);
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(n);
+        psmModel.addContent(m);
+        psmModel.addContent(n);
 
         runEpsilon(ImmutableList.of("NavigationPropertyBelongsToEntity|Orphan navigation property: n"),
                 Collections.emptyList());
@@ -819,7 +780,7 @@ class PsmValidationTest {
         )).build();
 
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 Collections.emptyList());
     }
@@ -839,7 +800,7 @@ class PsmValidationTest {
         final Measure time = newMeasureBuilder().withName("Time").withSymbol("t").withUnits(ImmutableList.of(second, minute, hour)).build();
         final Model m = newModelBuilder().withPackages(newPackageBuilder().withName("measures").withElements(ImmutableList.of(length, time)).build()).withName("M").build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("UnitNameIsUnique|Unit name/symbol is not unique: metre/m",
                         "UnitNameIsUnique|Unit name/symbol is not unique: minute/m"));
@@ -862,7 +823,7 @@ class PsmValidationTest {
         final Measure monthBasedTime = newMeasureBuilder().withName("MonthBasedTime").withUnits(ImmutableList.of(month, year)).build();
         final Model m = newModelBuilder().withPackages(newPackageBuilder().withName("measures").withElements(ImmutableList.of(time, monthBasedTime)).build()).withName("M").build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of());
 
@@ -880,7 +841,7 @@ class PsmValidationTest {
         final Measure length = newMeasureBuilder().withName("Length").withSymbol("l").withUnits(ImmutableList.of(millimetre, centimetre, kilometre)).build();
         final Model m = newModelBuilder().withPackages(newPackageBuilder().withName("measures").withElements(ImmutableList.of(length)).build()).withName("M").build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("BaseUnitShouldBeDefined|No base unit is defined for measure: Length"));
     }
@@ -901,7 +862,7 @@ class PsmValidationTest {
                 newPackageBuilder().withName("otherMeasures").withElements(ImmutableList.of(monthBasedTime)).build()
         )).withName("M").build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("MeasureNameIsUnique|Measure name is not unique: Time"));
     }
@@ -919,7 +880,7 @@ class PsmValidationTest {
         final Measure monthBasedTime = newMeasureBuilder().withName("MonthBasedTime").withSymbol("t").withUnits(ImmutableList.of(month, year)).build();
         final Model m = newModelBuilder().withPackages(newPackageBuilder().withName("measures").withElements(ImmutableList.of(time, monthBasedTime)).build()).withName("M").build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("MeasureSymbolIsUnique|Measure symbol is not unique: t (measure: Time)",
                 "MeasureSymbolIsUnique|Measure symbol is not unique: t (measure: MonthBasedTime)"),
                 Collections.emptyList());
@@ -938,7 +899,7 @@ class PsmValidationTest {
 
         final Model m = newModelBuilder().withPackages(newPackageBuilder().withName("measures").withElements(ImmutableList.of(m1, m2)).build()).withName("M").build();
 
-        psmResource.getContents().add(m);
+        psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NoCircularReferencesOfDerivedMeasures|Derived measure definition m1 is recursive",
                 "NoCircularReferencesOfDerivedMeasures|Derived measure definition m2 is recursive"),
                 Collections.emptyList());
@@ -980,8 +941,8 @@ class PsmValidationTest {
                 car
         )).build();
 
-        psmResource.getContents().add(m);
-        psmResource.getContents().add(template);
+        psmModel.addContent(m);
+        psmModel.addContent(template);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
     }
@@ -1040,7 +1001,7 @@ class PsmValidationTest {
                 integer
         )).withName("TEST").build();
 
-        psmResource.getContents().add(test);
+        psmModel.addContent(test);
         runEpsilon(null, null);
    }
 }

@@ -12,8 +12,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.ui,
+ org.eclipse.ui.ide,
  org.eclipse.epsilon.evl.emf.validation,
- org.eclipse.ui.ide
+ org.eclipse.epsilon.common,
+ hu.blackbelt.epsilon.runtime.execution
 Export-Package: hu.blackbelt.judo.meta.psm,
  hu.blackbelt.judo.meta.psm.accesspoint,
  hu.blackbelt.judo.meta.psm.accesspoint.impl,
