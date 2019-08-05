@@ -1,0 +1,12 @@
+context PSM!NamespaceElement {
+
+    // namespace element must have exactly one namespace
+    constraint NamespaceElementHasNamespace {
+        check {
+        	return self.eContainer.isDefined(); 
+        	// PSM!Namespace.all.select(n | n.elements.contains(self)).size() == 1
+    	}
+        message: "Element " + self.name + " must have exactly 1 namespace"
+        // - it has: " + PSM!Namespace.all.select(n | n.elements.contains(self)).size()
+    }
+}

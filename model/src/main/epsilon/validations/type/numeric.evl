@@ -1,0 +1,14 @@
+context PSM!NumericType {
+
+    // precision > scale
+	constraint ScaleIsLowerThanPrecision {
+		check: self.precision > self.scale
+		message: "Scale (" + self.scale + ") must be less than precision (" + self.precision + ")"
+	}
+
+	// scale >= 0
+	constraint ValidScale {
+		check: self.scale >= 0
+		message: "Scale (" + self.scale + ") must be at least 0"
+	}
+}

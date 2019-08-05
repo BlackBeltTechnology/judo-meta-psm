@@ -4,15 +4,18 @@ command-timeout: 60
 
 build:
   steps:	
-   
-    - blackbelttechnology/version-from-git-tag@1.0.5
+    - blackbelttechnology/import-gpg-keys@1.0.4:
+      secretkeys: $GPG_SECRET_KEYS 
+      ownertrust: $GPG_OWNERTRUST
+
+    - blackbelttechnology/version-from-git-tag@1.0.7
  
     - blackbelttechnology/version-from-pom@1.0.2:
       pom: ./pom.xml
       
     - wercker/maven:
       goals: versions:set
-      maven_opts: -DnewVersion=${VERSION_FROM_POM_BASE_VERSION}.${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}_${VERSION_FROM_GIT_TAG_COMMIT_COUNT}
+      maven_opts: -DnewVersion=${VERSION_FROM_POM_BASE_VERSION}.${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}_${VERSION_FROM_GIT_TAG_FOR_GITFLOW}
       settings: .maven.xml
       cache_repo: true
 
@@ -23,8 +26,16 @@ build:
 
     - wercker/maven:
       goals: clean deploy
-      settings: .maven.xml
       profiles: ${BUILD_PROFILES}
+      settings: .maven.xml
+      maven_opts: -Dorg.ops4j.pax.url.mvn.settings=${WERCKER_ROOT}/.maven.xml -DuseCustomSettings=true
+      cache_repo: true
+
+    - wercker/maven:
+      goals: deploy
+      settings: .maven.xml
+      maven_opts: -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=${WERCKER_GIT_COMMIT}
+      profiles: ${DEPLOY_PROFILES}
       cache_repo: true
 
 #  after-steps:
@@ -69,7 +80,7 @@ release:
              git config --global user.email "oss@blackbelt.hu"
              git config --global user.name "Wercker Release"
     
-    - blackbelttechnology/version-from-git-tag@1.0.5
+    - blackbelttechnology/version-from-git-tag@1.0.7
 
     - script:
       name: reset git state to actual commit
@@ -116,8 +127,16 @@ release:
 
     - wercker/maven:
       goals: clean deploy
-      settings: .maven.xml
       profiles: ${RELEASE_PROFILES}
+      settings: .maven.xml
+      maven_opts: -Dorg.ops4j.pax.url.mvn.settings=${WERCKER_ROOT}/.maven.xml -DuseCustomSettings=true
+      cache_repo: true
+
+    - wercker/maven:
+      goals: deploy
+      settings: .maven.xml
+      maven_opts: -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=${WERCKER_GIT_COMMIT}
+      profiles: ${DEPLOY_PROFILES}
       cache_repo: true
 
     - script:
@@ -157,7 +176,7 @@ release:
     - script:
       name: git checkout master
       code: |-
-             git checkout -b master origin/master
+             git checkout master
 
 
     - script:

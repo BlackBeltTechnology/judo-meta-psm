@@ -1,0 +1,14 @@
+context PSM!StringType {
+
+    // maxLength > 0
+	constraint ValidMaxLength {
+		check: self.maxLength > 0
+		message: "MaxLength must be greater than 0: " + self.name
+	}
+
+    // maxLength <= 4000
+	constraint MaxLengthIsNotTooLarge {
+		check: self.maxLength <= 4000
+		message: "MaxLength must be less than/equals to 4000: " + self.name
+	}
+}

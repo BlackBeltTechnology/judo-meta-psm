@@ -1,0 +1,19 @@
+context PSM!Namespace {
+
+	// names of elements and packages must be unique in a given package
+	constraint NamespaceIsUnique {
+		check {
+			var notUniqueNames = new Set;
+			var names = new Set;
+			
+			for (p in self.elements.includingAll(self.packages)) {
+				if (names.includes(p.name)) {
+					notUniqueNames.add(p.name);
+				}
+				names.add(p.name);
+			}
+			return notUniqueNames.isEmpty();
+		}
+		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name
+	}
+}

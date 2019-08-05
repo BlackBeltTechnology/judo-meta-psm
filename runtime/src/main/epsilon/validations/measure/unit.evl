@@ -1,8 +1,0 @@
-context JUDOPSM!Unit {
-    
-    // unit name should be unique
-    critique UnitNameIsUnique {
-        check: not JUDOPSM!Unit.all.excluding(self).selectOne(u | u.name == self.name or u.symbol == self.name or self.symbol.isDefined() and (u.name = self.symbol or u.symbol.isDefined() and u.symbol = self.symbol)).isDefined()
-        message: "Unit name/symbol is not unique: " + self.name + "/" + self.symbol
-    }
-}

@@ -6,47 +6,86 @@
     
     <parent>
         <groupId>hu.blackbelt.judo.meta</groupId>
-        <artifactId>judo-meta-psm-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <artifactId>hu.blackbelt.judo.meta.psm</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../</relativePath>
     </parent>
-    <artifactId>judo-meta-psm-model</artifactId>
+    <artifactId>hu.blackbelt.judo.meta.psm.model</artifactId>
     <packaging>eclipse-plugin</packaging>
     
-    <name>JUDO PSM Eclipse model plugin</name>
-    <description>Judo Judo Platform Specific Model Plugin</description>
-    
+    <name>Judo :: Psm :: Model :: Eclipse plugin</name>
+    <description>Judo Psm model eclipse plugin</description>
+
+
+    <properties>
+        <src.dir>src/main/java</src.dir>
+    </properties>
+
     <build>
+        <sourceDirectory>${src.dir}</sourceDirectory>
+
         <plugins>
+             <!-- Generates the Ecore model via MWE2 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+
+                    <execution>
+                        <id>mwe2Launcher-builder</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/workflow/generateModel.mwe2</argument>
+                                <argument>-p</argument>
+                                <argument>rootPath=${project.basedir}</argument>
+                            </arguments>
+                            <classpathScope>compile</classpathScope>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <cleanupDaemonThreads>false</cleanupDaemonThreads><!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=475098#c3 -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <executions>
+                    <!-- Adds the generated sources to the compiler input -->
                     <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
+                        <id>add-genmodel-source</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>attach-artifact</goal>
+                            <goal>add-source</goal>
                         </goals>
                         <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>model/judoPSM.ecore</file>
-                                    <type>ecore</type>
-                                    <classifier>psm</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>model/judoPSM.genmodel</file>
-                                    <type>genmodel</type>
-                                    <classifier>psm</classifier>
-                                </artifact>
-                            </artifacts>
+                            <!-- This should be in sync with xtext-maven-plugin//source-roots,
+                             except for /model directory -->
+                            <sources>
+                                <source>${basedir}/src-gen</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
-    
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>workbench</artifactId>
+            <version>3.3.0-I20070608-1100</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.blackbelt.epsilon</groupId>
+            <artifactId>epsilon-runtime-execution</artifactId>
+            <version>${epsilon-runtime-version}</version>
+        </dependency>
+    </dependencies>
 </project>

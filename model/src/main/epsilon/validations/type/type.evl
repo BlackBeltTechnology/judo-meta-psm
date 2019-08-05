@@ -1,0 +1,26 @@
+context PSM!Primitive {
+
+    // primitive type names should be unique
+    critique TypeNamesAreUnique {
+        check: not PSM!Primitive.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        message: "Type name is not unique: " + self.name
+    }
+}
+
+context PSM!EntityType {
+
+    // entity type names should be unique
+    critique TypeNamesAreUnique {
+        check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        message: "Type name is not unique: " + self.name
+    }
+}
+
+context PSM!TransferObjectType {
+
+    // transfer object type names should be unique
+    critique TypeNamesAreUnique {
+        check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
+        message: "Type name is not unique: " + self.name
+    }
+}

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<description>To install these features, point Eclipse at this site.</description>
-	<category-def label="Judo Platform Specific Metamodel Update Site" name="site">
-		<description>Judo Platform Specific Metamodel Update Site: contains all features in this build.</description>
-	</category-def>
-	<feature id="judo-meta-psm-feature"><category name="site" /></feature>
+   <description>
+      To install these features, point Eclipse at this site.
+   </description>
+   <feature id="hu.blackbelt.judo.meta.psm.feature">
+      <category name="site"/>
+   </feature>
+   <category-def name="site" label="Judo Psm Model Update Site">
+      <description>
+         Judo Psm Model Update Site: contains all features in this build.
+      </description>
+   </category-def>
 </site>

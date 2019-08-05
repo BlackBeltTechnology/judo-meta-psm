@@ -1,0 +1,14 @@
+context PSM!Model {
+
+	// model name must be unique
+	constraint ModelNameIsUnique {
+		check: not PSM!Model.all().select(m | m <> self).collect(m | m.name).includes(self.name)
+		message: "Model name is not unique: " + self.name
+	}
+	
+	// standalone models are supported only, loading multiple JUDO models (that are referencing to each other) is not supported
+	critique StandaloneModelLoadedOnly {
+	   check: PSM!Model.all().size() == 1
+	   message: "Standalone models are supported only"
+	}
+}
