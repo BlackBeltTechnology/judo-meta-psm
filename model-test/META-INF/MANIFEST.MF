@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  com.google.guava,
- hu.blackbelt.judo.meta.psm.model,
  org.slf4j.api,
  org.junit.platform.commons,
  org.junit.platform.engine,
@@ -19,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit.platform.runner,
  org.junit.platform.suite.api,
  org.hamcrest.core,
- hu.blackbelt.epsilon.runtime.execution
+ hu.blackbelt.epsilon.runtime.execution,
+ hu.blackbelt.judo.meta.psm.model
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: hu.blackbelt.judo.meta.psm.model.test
 Import-Package: org.junit.jupiter.api;version="5.0.0"
