@@ -4,13 +4,23 @@
       To install these features, point Eclipse at this site.
    </description>
    <feature id="hu.blackbelt.judo.meta.psm.feature">
-      <category name="site"/>
+      <category name="psm"/>
    </feature>
-   <category-def name="site" label="Judo Psm Model Update Site">
+   <category-def name="psm" label="Judo Psm Model">
       <description>
-         Judo Psm Model Update Site: contains all features in this build.
+         Judo Psm Model
       </description>
    </category-def>
+
+   <feature id="hu.blackbelt.judo.meta.psm.feature.source">
+      <category name="psm_source"/>
+   </feature>
+   <category-def name="psm_source" label="Judo Psm Model Developer Resources">
+      <description>
+         Judo Psm Model Source code
+      </description>
+   </category-def>
+   
    <!-- This is currently ignored by Tycho, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=453708 -->
    <!-- The tycho plugin 1.5.0 will fix it -->
    <repository-reference location="https://nexus.blackbelt.cloud/repository/p2-judo/epsilon-runtime-eclipse/1.2.0.develop_00009" enabled="true" />
