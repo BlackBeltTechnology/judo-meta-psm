@@ -71,7 +71,7 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 
 		<epsilon-runtime-version>1.2.0.develop_101</epsilon-runtime-version>
-		<epsilon-runtime-eclipse-version>1.2.0.develop_00007</epsilon-runtime-eclipse-version>
+		<epsilon-runtime-eclipse-version>1.2.0.develop_00009</epsilon-runtime-eclipse-version>
 
 		<src.dir>src/main</src.dir>
 
@@ -158,6 +158,17 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-versions-plugin</artifactId>
 			</plugin>
+            
+            <!--
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-p2-repository-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <includeAllDependencies>true</includeAllDependencies>
+                </configuration>
+            </plugin>
+            -->
 		</plugins>
 
 		<pluginManagement>

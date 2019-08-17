@@ -40,7 +40,7 @@
                             <replacements>
                                 <!-- Epsilon Runtime -->
                                 <replacement>
-                                    <token>(repository-reference\ location\=\")(.*?)(epsilon-runtime-eclipse\/)(.*)(\")</token>
+                                    <token>(repository-reference\ location\=\")(.*?)(epsilon-runtime-eclipse\/)(.*?)(\")</token>
                                     <value>repository-reference location="$2$3${epsilon-runtime-eclipse-version}"</value>
                                 </replacement>
                             </replacements>
