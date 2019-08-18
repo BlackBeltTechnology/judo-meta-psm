@@ -87,5 +87,31 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.jboss.tools.tycho-plugins</groupId>
+                <artifactId>repository-utils</artifactId>
+                <version>${tycho-version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-facade</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>generate-repository-facade</goal>
+                        </goals>
+                        <configuration>
+                            <symbols>
+                                <update.site.name>${project.description} Update site</update.site.name>
+                                <update.site.description>Use this URL in Eclipse to install</update.site.description>
+                            </symbols>
+                            <associateSites>
+                                <site>http://download.eclipse.org/epsilon/updates/</site>
+                                <site>https://nexus.blackbelt.cloud/repository/p2-judo/epsilon-runtime-eclipse/${epsilon-runtime-eclipse-version}/</site>
+                            </associateSites>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
