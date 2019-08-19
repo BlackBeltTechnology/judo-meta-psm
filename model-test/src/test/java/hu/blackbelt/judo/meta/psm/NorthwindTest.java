@@ -11,8 +11,14 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import com.google.common.collect.ImmutableSet;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 abstract class NorthwindTest {
 
@@ -26,7 +32,10 @@ abstract class NorthwindTest {
         PsmModel psmModel = PsmModel.loadPsmModel(LoadArguments.psmLoadArgumentsBuilder()
                 .resourceSet(resourceSet)
                 .uri(URI.createFileURI(new File("src/test/model/northwind-judopsm.model").getAbsolutePath()))
+                .tags(ImmutableSet.of("test"))
                 .name("test"));
+        
+        assertEquals(ImmutableSet.of("test"), psmModel.getTags());
     
         northwind = (Model) resourceSet.getResources().get(0).getEObject("/");
     }
