@@ -1,12 +1,10 @@
 package hu.blackbelt.judo.meta.psm.osgi;
 
-import hu.blackbelt.epsilon.runtime.osgi.BundleURIHandler;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.osgi.utils.osgi.api.BundleCallback;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import hu.blackbelt.osgi.utils.osgi.api.BundleUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -16,6 +14,9 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.Designate;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,15 +25,28 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments.psmLoadArgumentsBuilder;
 import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.loadPsmModel;
+import static java.util.Optional.ofNullable;
 
 @Component(immediate = true)
 @Slf4j
+@Designate(ocd = PsmModelBundleTracker.TrackerConfig.class)
 public class PsmModelBundleTracker {
 
     public static final String PSM_MODELS = "Psm-Models";
+
+    @ObjectClassDefinition(name="Psm Model Bundle TTracker")
+    public @interface TrackerConfig {
+        @AttributeDefinition(
+                name = "Tags",
+                description = "Which tags are on the loaded model when there is no one defined in bundle"
+        )
+        String tags() default "";
+    }
 
     @Reference
     BundleTrackerManager bundleTrackerManager;
@@ -41,8 +55,11 @@ public class PsmModelBundleTracker {
 
     Map<String, PsmModel> psmModels = new HashMap<>();
 
+    TrackerConfig config;
+
     @Activate
-    public void activate(final ComponentContext componentContext) {
+    public void activate(final ComponentContext componentContext, final TrackerConfig trackerConfig) {
+        this.config = trackerConfig;
         bundleTrackerManager.registerBundleCallback(this.getClass().getName(),
                 new PsmRegisterCallback(componentContext.getBundleContext()),
                 new PsmUnregisterCallback(),
@@ -86,11 +103,11 @@ public class PsmModelBundleTracker {
                             // Unpack model
                             try {
                                 PsmModel psmModel = loadPsmModel(psmLoadArgumentsBuilder()
-                                        .uriHandler(new BundleURIHandler(trackedBundle.getSymbolicName(), "", trackedBundle))
-                                        .uri(URI.createURI(trackedBundle.getSymbolicName() + ":" + params.get("file")))
+                                        .inputStream(trackedBundle.getEntry(params.get("file")).openStream())
                                         .name(params.get(PsmModel.NAME))
                                         .version(trackedBundle.getVersion().toString())
-                                        .checksum(Optional.ofNullable(params.get(PsmModel.CHECKSUM)).orElse("notset"))
+                                        .checksum(ofNullable(params.get(PsmModel.CHECKSUM)).orElse("notset"))
+                                        .tags(Stream.of(ofNullable(params.get(PsmModel.TAGS)).orElse(config.tags()).split(",")).collect(Collectors.toSet()))
                                         .acceptedMetaVersionRange(Optional.of(versionRange.toString()).orElse("[0,99)")));
 
                                 log.info("Registering Psm model: " + psmModel);
@@ -99,9 +116,7 @@ public class PsmModelBundleTracker {
                                 psmModels.put(key, psmModel);
                                 psmModelRegistrations.put(key, modelServiceRegistration);
 
-                            } catch (IOException e) {
-                                log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId());
-                            } catch (PsmModel.PsmValidationException e) {
+                            } catch (IOException | PsmModel.PsmValidationException e) {
                                 log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId(), e);
                             }
                         }
