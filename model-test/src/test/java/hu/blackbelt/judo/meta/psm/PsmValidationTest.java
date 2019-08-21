@@ -1038,13 +1038,10 @@ class PsmValidationTest {
     void testValidRegex() throws Exception {
         log.info("Testing constraint: ValidRegex");
 
-        StringType invalidStringType = newStringTypeBuilder().withName("invalidRegexpyStringy").withMaxLength(100).build();
-        StringType stringType = newStringTypeBuilder().withName("regexpyStringy").withMaxLength(100).build();
+        StringType stringType = newStringTypeBuilder().withName("regexpyStringy").withMaxLength(100).withRegExp("árvíztűrőtükörfúrógép").build();
+        StringType invalidStringType = newStringTypeBuilder().withName("invalidRegexpyStringy").withMaxLength(100).withRegExp("[árvíztűrőtükörfúrógép").build();
 
-        stringType.setRegExp("árvíztűrőtükörfúrógép");
-        invalidStringType.setRegExp("[árvíztűrőtükörfúrógép");
-
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(invalidStringType, stringType)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(stringType, invalidStringType)).build();
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("ValidRegex|Invalid regular expression of invalidRegexpyStringy"), Collections.emptyList());

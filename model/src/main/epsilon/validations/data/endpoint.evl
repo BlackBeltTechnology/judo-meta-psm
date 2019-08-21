@@ -1,4 +1,4 @@
-//TODO: endcheck
+//TODO-endcheck
 context PSM!Endpoint {
 	// upper attribute must be at least 1    
     constraint UpperIsAtLeastOne {
@@ -19,7 +19,7 @@ context PSM!Endpoint {
     }
 }
 
-//TODO: endcheck
+//TODO-endcheck
 context PSM!Endpoint {
 
     guard: self.partner.isDefined()

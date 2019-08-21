@@ -1,5 +1,4 @@
 context PSM!Namespace {
-	//TODO-ask: shouldn't be validated on each PSM!NamedElement / ..!NamespaceElement?
 	// names of elements and packages must be unique in a given package
 	constraint NamespaceHasUniqueElementNames {
 		check {

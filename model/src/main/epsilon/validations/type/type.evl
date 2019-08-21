@@ -1,5 +1,5 @@
 context PSM!Primitive {
-    /* TODO: check if to be removed
+    /* TODO-ask: remove?
     // primitive type names should be unique
     critique TypeNamesAreUnique {
         check: not PSM!Primitive.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
@@ -9,7 +9,7 @@ context PSM!Primitive {
 }
 
 context PSM!EntityType {
-    /* TODO: check if to be removed
+    /* TODO-ask: remove?
     // entity type names should be unique
     critique TypeNamesAreUnique {
         check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
@@ -19,7 +19,7 @@ context PSM!EntityType {
 }
 
 context PSM!TransferObjectType {
-    /* TODO: check if to be removed
+    /* TODO-ask: remove?
     // transfer object type names should be unique
     critique TypeNamesAreUnique {
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
