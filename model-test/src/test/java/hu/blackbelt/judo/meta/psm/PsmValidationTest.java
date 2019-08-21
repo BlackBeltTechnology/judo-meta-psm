@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.meta.psm;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
@@ -1032,5 +1033,21 @@ class PsmValidationTest {
                         "AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound|At least one reference of a bidirectional association should have lower bound with zero: M::entity2.endpoint2 or M::entity1.endpoint1"
                 ));
     }
+
+    //TODO: remove: nem_ezen_a_szinten_validalando.mp3 (soulmate: ValidRegex in string.evl)
+    @Test
+    void testValidRegex() throws Exception {
+        log.info("Testing critique: ValidRegex");
+
+        StringType stringType = newStringTypeBuilder().withName("regexpyStringy").withMaxLength(100).build();
+        stringType.setRegExp("[silliness*");
+
+        Model m = newModelBuilder().withName("M").withElements(stringType).build();
+
+        psmModel.addContent(m);
+
+        runEpsilon(ImmutableList.of("ValidRegex|Invalid regular expression of regexpyStringy"), Collections.emptyList());
+    }
+
 
 }

@@ -10,6 +10,7 @@ import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.type.StringType;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -19,6 +20,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -288,6 +291,32 @@ public class PsmUtils {
         return termMeasures;
     }
 
+    public static Boolean isRegex(String regex) throws PatternSyntaxException {
+        Boolean isValid = true;
+        try {
+            Pattern.compile(regex);
+        } catch (PatternSyntaxException e) {
+            //fukd
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    /**
+     * Get all contents with a type from resource set of a given EObject.
+     *
+     * @param eObject EObject in the resource set
+     * @param clazz   type class for filtering
+     * @param <T>     type for filtering
+     * @return stream of contents
+     */
+    public static <T> Stream<T> getAllContents(final EObject eObject, final Class<T> clazz) {
+        final ResourceSet resourceSet = eObject.eResource().getResourceSet();
+        final Iterable<Notifier> psmContents = resourceSet::getAllContents;
+        return StreamSupport.stream(psmContents.spliterator(), true)
+                .filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
+    }
+
     /**
      * Add term measures of a given derived measure recursively to a list.
      *
@@ -308,21 +337,6 @@ public class PsmUtils {
                 .collect(Collectors.toSet());
         terms.addAll(newDerivedTerms);
         newDerivedTerms.forEach(s -> addTermMeasures(s, terms));
-    }
-
-    /**
-     * Get all contents with a type from resource set of a given EObject.
-     *
-     * @param eObject EObject in the resource set
-     * @param clazz   type class for filtering
-     * @param <T>     type for filtering
-     * @return stream of contents
-     */
-    public static <T> Stream<T> getAllContents(final EObject eObject, final Class<T> clazz) {
-        final ResourceSet resourceSet = eObject.eResource().getResourceSet();
-        final Iterable<Notifier> psmContents = resourceSet::getAllContents;
-        return StreamSupport.stream(psmContents.spliterator(), true)
-                .filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
     }
 
     /**
