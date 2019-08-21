@@ -76,31 +76,30 @@ class PsmValidationTest {
         psmModel.addContent(m1);
         psmModel.addContent(m2);
 
-        runEpsilon(ImmutableList.of("ModelNameIsUnique|Model name is not unique: A"),
-                ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
+        runEpsilon(ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"),
+                Collections.emptyList());
     }
 
     @Test
-    void testNamespaceIsUnique() throws Exception {
-        log.info("Testing constraint: NamespaceIsUnique");
+    void testNamespaceHasUniqueElementNames() throws Exception {
+        log.info("Testing constraint: NamespaceHasUniqueElementNames");
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
+                        newCustomTypeBuilder().withName("string").build(),
                         newStringTypeBuilder().withName("String").withMaxLength(255).build(),
-                        newCustomTypeBuilder().withName("String").build(),
-                        newEntityTypeBuilder().withName("E").build(),
+                        newEntityTypeBuilder().withName("e").build(),
                         newUnmappedTransferObjectTypeBuilder().withName("E").build()
                 ))
                 .withPackages(ImmutableList.of(
-                        newPackageBuilder().withName("P").build(),
+                        newPackageBuilder().withName("p").build(),
                         newPackageBuilder().withName("P").build()
                 ))
                 .build();
 
         psmModel.addContent(m);
 
-        runEpsilon(ImmutableList.of("NamespaceIsUnique|Names Set {P, E, String} are not unique in namespace M"),
-                ImmutableList.of("TypeNamesAreUnique|Type name is not unique: String"));
+        runEpsilon(ImmutableList.of("NamespaceHasUniqueElementNames|Names Set {P, E, String} are not unique in namespace M in a case-insensitive manner"), Collections.emptyList());
     }
 
     @Test
@@ -214,60 +213,6 @@ class PsmValidationTest {
     }
 
     @Test
-    void testAttributeNameIsNotReserved() throws Exception {
-        log.info("Testing constraint: AttributeNameIsNotReserved");
-
-        StringType string = newStringTypeBuilder()
-                .withName("String")
-                .withMaxLength(255)
-                .build();
-
-        Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        string,
-                        newEntityTypeBuilder()
-                                .withName("E")
-                                .withAttributes(newAttributeBuilder()
-                                        .withName("id")
-                                        .withDataType(string
-                                        ))
-                                .build()
-                ))
-                .build();
-
-        psmModel.addContent(m);
-
-        runEpsilon(ImmutableList.of("AttributeNameIsNotReserved|Name M::E.id is reserved"),
-                Collections.emptyList());
-    }
-
-    @Test
-    void testRelationNameIsNotReserved() throws Exception {
-        log.info("Testing constraint: RelationNameIsNotReserved");
-
-
-        EntityType E2 = newEntityTypeBuilder().withName("E2").build();
-
-        Model m = newModelBuilder().withName("M")
-                .withElements(ImmutableList.of(
-                        newEntityTypeBuilder()
-                                .withName("E1")
-                                .withRelations(newEndpointBuilder()
-                                        .withName("id")
-                                        .withTarget(E2)
-                                        .withCardinality(newCardinalityBuilder().build())
-                                        .build())
-                                .build(),
-                        E2
-                )).build();
-
-        psmModel.addContent(m);
-
-        runEpsilon(ImmutableList.of("RelationNameIsNotReserved|Name M::E1.id is reserved"),
-                Collections.emptyList());
-    }
-
-    @Test
     void testValidPartnerRelations() throws Exception {
         log.info("Testing constraint: ValidPartnerRelations");
 
@@ -314,32 +259,6 @@ class PsmValidationTest {
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("ValidPartnerType|Invalid partner type: M::E2.e1 for M::E1.e3", "ValidPartnerType|Invalid partner type: M::E1.e3 for M::E2.e1"),
                 Collections.emptyList());
-    }
-
-    @Test
-    void testOneToOneRelationsAreNotRecommended() throws Exception {
-        log.info("Testing constraint: OneToOneRelationsAreNotRecommended");
-
-        Cardinality c1 = newCardinalityBuilder().withLower(1).withUpper(1).build();
-        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(c1).build();
-        EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(e1).build();
-
-
-        Cardinality c2 = newCardinalityBuilder().withLower(1).withUpper(1).build();
-        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(c2).build();
-        EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e2).build();
-
-        e2.setTarget(E2);
-        e1.setTarget(E1);
-        e1.setPartner(e2);
-        e2.setPartner(e1);
-
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2)).build();
-
-        psmModel.addContent(m);
-
-        runEpsilon(Collections.emptyList(),
-                ImmutableList.of("OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: M::E1.e2 - M::E2.e1", "OneToOneRelationsAreNotRecommended|1-1 relations required on both sides are not recommended: M::E2.e1 - M::E1.e2"));
     }
 
     @Test
@@ -501,8 +420,8 @@ class PsmValidationTest {
 
         psmModel.addContent(a);
         psmModel.addContent(b);
-        runEpsilon(Collections.emptyList(),
-                ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
+        runEpsilon(ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"),
+                Collections.emptyList());
     }
 
     @Test
@@ -520,16 +439,18 @@ class PsmValidationTest {
     }
 
     @Test
-    void testNamespaceElementHasNamespace() throws Exception {
-        log.info("Testing constraint: NamespaceElementHasNamespace");
+    void testNamespaceElementBelongsToOneNamespace() throws Exception {
+        log.info("Testing constraint: NamespaceElementBelongsToOneNamespace");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        StringType orphanString = newStringTypeBuilder().withName("orphanString").withMaxLength(255).build();
         Model m = newModelBuilder().withName("M").build();
 
         psmModel.addContent(m);
         psmModel.addContent(string);
+        psmModel.addContent(orphanString);
 
-        runEpsilon(ImmutableList.of("NamespaceElementHasNamespace|Element String must have exactly 1 namespace"),
+        runEpsilon(ImmutableList.of("NamespaceElementBelongsToOneNamespace|Element String must belong to exactly 1 namespace","NamespaceElementBelongsToOneNamespace|Element orphanString must belong to exactly 1 namespace"),
                 Collections.emptyList());
     }
 
@@ -579,16 +500,15 @@ class PsmValidationTest {
     void testRelationBelongsToEntity() throws Exception {
         log.info("Testing constraint: RelationBelongsToEntity");
 
-        Endpoint r1 = newEndpointBuilder().withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
-        EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).build();
-        r1.setTarget(E);
+        Endpoint orphanEndpoint = newEndpointBuilder().withName("orphanEndpoint").withCardinality(newCardinalityBuilder().withUpper(1).withLower(1).build()).build();
+        EntityType entity1 = newEntityTypeBuilder().withName("entity1").build();
+        orphanEndpoint.setTarget(entity1);
 
-        Model m = newModelBuilder().withName("M").withElements(E).build();
-        Containment r2 = newContainmentBuilder().withName("r2").withTarget(E).withCardinality(newCardinalityBuilder().build()).build();
+        Model m = newModelBuilder().withName("M").withElements(entity1).build();
 
+        psmModel.addContent(orphanEndpoint);
         psmModel.addContent(m);
-        psmModel.addContent(r2);
-        runEpsilon(ImmutableList.of("RelationBelongsToEntity|Orphan relation: r2"),
+        runEpsilon(ImmutableList.of("RelationBelongsToEntity|Orphan relation: orphanEndpoint"),
                 Collections.emptyList());
     }
 
@@ -943,8 +863,8 @@ class PsmValidationTest {
 
         psmModel.addContent(m);
         psmModel.addContent(template);
-        runEpsilon(Collections.emptyList(),
-                ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"));
+        runEpsilon(ImmutableList.of("StandaloneModelLoadedOnly|Standalone models are supported only"),
+                Collections.emptyList());
     }
 
     @Test
@@ -966,7 +886,7 @@ class PsmValidationTest {
 
         StringType text = newStringTypeBuilder().withName("Text").withMaxLength(255).build();
         NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(10).build();
-        Endpoint a = newEndpointBuilder().withName("a").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
+        Endpoint a = newEndpointBuilder().withName("a").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).build();
 
         EntityType C = newEntityTypeBuilder().withName("C").withRelations(newEndpointBuilder().withName("a").withTarget(A).withCardinality(newCardinalityBuilder().withUpper(-1).build()).build()).build();
 
@@ -1003,5 +923,114 @@ class PsmValidationTest {
 
         psmModel.addContent(test);
         runEpsilon(null, null);
-   }
+    }
+
+    @Test
+    void testNamespaceElementNameNotEmpty() throws Exception {
+        log.info("Testing constraint: ElementNameContainsAtLeastOneCharacter");
+        StringType stringType = newStringTypeBuilder().withName("").withMaxLength(255).build();
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        stringType
+                ))
+                .build();
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("ElementNameContainsAtLeastOneCharacter|NamespaceElement name must contain at least one character. Zero length name found in M::"), Collections.emptyList());
+    }
+
+    @Test
+    void testNamespaceElementNameContainsValidCharacters() throws Exception {
+        log.info("Testing constraint: ElementNameContainsValidCharacters");
+        StringType stringType = newStringTypeBuilder().withName("string$string").withMaxLength(255).build();
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        stringType
+                ))
+                .build();
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("ElementNameContainsValidCharacters|NamespaceElement's name can only contain english letters (A-Z, a-z), digits (0-9) and underscore characters (_): string$string"), Collections.emptyList());
+    }
+
+    @Test
+    void testNamespaceElementNameContainsNoSubsequentUnderscores() throws Exception {
+        log.info("Testing constraint: ElementNameCannotContainSubsequentUnderscores");
+        StringType stringType = newStringTypeBuilder().withName("__string").withMaxLength(255).build();
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        stringType
+                ))
+                .build();
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("ElementNameCannotContainSubsequentUnderscores|NamespaceElement's name cannot contain two subsequent underscore characters: __string"), Collections.emptyList());
+    }
+
+    @Test
+    void testNamespaceElementNameFirstCharacterCannotBeDigit() throws Exception {
+        log.info("Testing constraint: ElementNameFirstCharacterCannotBeDigit");
+        StringType stringType = newStringTypeBuilder().withName("0string").withMaxLength(255).build();
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        stringType
+                ))
+                .build();
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("ElementNameFirstCharacterCannotBeDigit|NamespaceElement's name must start with an english letter or an underscore: 0string"), Collections.emptyList());
+    }
+
+    @Test
+    void testNamespaceElementNameLastCharacterCannotBeUnderscore() throws Exception {
+        log.info("Testing constraint: ElementNameLastCharacterCannotBeUnderscore");
+        StringType stringType = newStringTypeBuilder().withName("string_").withMaxLength(255).build();
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        stringType
+                ))
+                .build();
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("ElementNameLastCharacterCannotBeUnderscore|NamespaceElement's name must end with an english letter or a digit: string_"), Collections.emptyList());
+    }
+
+    @Test
+    void testCascadeDeleteOnlyAllowedIfUpperCardinalityIsOne() throws Exception {
+        log.info("Testing constraint: CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne");
+        Endpoint endpoint = newEndpointBuilder().withName("endpoint")
+                .withCardinality(
+                        newCardinalityBuilder().withLower(0).withUpper(2).build()
+                ).withCascadeDelete(true)
+                .build();
+        EntityType entity = newEntityTypeBuilder().withName("entity").withRelations(ImmutableList.of(endpoint)).build();
+        Model m = newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(
+                        entity
+                ))
+                .build();
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne|Cascade delete behavior only allowed on endpoints if their upper cardinality is 1: endpoint"), Collections.emptyList());
+    }
+
+    @Test
+    void testAtLeastOnePartnerInBidirectionalAssociationHasZeroLowerBound() throws Exception {
+        log.info("Testing critique: AtLeastOnePartnerInBidirectionalAssociationHasZeroLowerBound");
+
+        Endpoint endpoint1 = newEndpointBuilder().withName("endpoint1").withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
+        Endpoint endpoint2 = newEndpointBuilder().withName("endpoint2").withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
+
+        EntityType entity1 = newEntityTypeBuilder().withName("entity1").withRelations(ImmutableList.of(endpoint1)).build();
+        EntityType entity2 = newEntityTypeBuilder().withName("entity2").withRelations(ImmutableList.of(endpoint2)).build();
+
+        endpoint1.setPartner(endpoint2);
+        endpoint1.setTarget(entity2);
+        endpoint2.setPartner(endpoint1);
+        endpoint2.setTarget(entity1);
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity1, entity2)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound|At least one reference of a bidirectional association should have lower bound with zero: M::entity1.endpoint1 or M::entity2.endpoint2",
+                        "AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound|At least one reference of a bidirectional association should have lower bound with zero: M::entity2.endpoint2 or M::entity1.endpoint1"
+                ));
+    }
+
 }

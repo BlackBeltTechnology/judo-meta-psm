@@ -1,0 +1,18 @@
+//TODO: endcheck
+context PSM!Relation {
+    // relations must be attached to an entity
+    constraint RelationBelongsToEntity {
+        check: PSM!EntityType.all.select(et | et.relations.contains(self)).size() == 1
+        message: "Orphan relation: " + self.name
+    }
+
+    constraint CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne {
+        check {
+            if (self.cascadeDelete == true) {
+                return (self.cardinality.upper == 1);
+            }
+            return true;
+        }
+        message: "Cascade delete behavior only allowed on endpoints if their upper cardinality is 1: " + self.name
+    }
+}

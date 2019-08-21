@@ -1,19 +1,22 @@
 context PSM!Namespace {
-
+	//TODO-ask: shouldn't be validated on each PSM!NamedElement / ..!NamespaceElement?
 	// names of elements and packages must be unique in a given package
-	constraint NamespaceIsUnique {
+	constraint NamespaceHasUniqueElementNames {
 		check {
 			var notUniqueNames = new Set;
 			var names = new Set;
 			
 			for (p in self.elements.includingAll(self.packages)) {
-				if (names.includes(p.name)) {
-					notUniqueNames.add(p.name);
+				for (name in names) {
+				    if (name.toUpperCase() == p.name.toUpperCase()) {
+				        notUniqueNames.add(p.name);
+				    }
+
 				}
 				names.add(p.name);
 			}
 			return notUniqueNames.isEmpty();
 		}
-		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name
+		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name + " in a case-insensitive manner"
 	}
 }

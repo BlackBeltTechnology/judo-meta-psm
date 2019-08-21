@@ -1,5 +1,5 @@
 context PSM!EnumerationType {
-
+    //TODO: ask if should be replaced with context@NamedElement rule
     // enumeration member name must be unique
     constraint EnumerationMemberNameIsUnique {
         check: self.members.select(m1 | self.members.excluding(m1).select(m2 | m1.name = m2.name).size() > 0).size() = 0
@@ -10,6 +10,12 @@ context PSM!EnumerationType {
     constraint EnumerationMemberValueIsUnique {
         check: self.members.select(m1 | self.members.excluding(m1).select(m2 | m1.ordinal = m2.ordinal).size() > 0).size() = 0
         message: "Enum member numbers are not unique: " + self.name
+    }
+
+    // enumerations must have at least 1 members
+    constraint EnumerationContainsAtLeastOneMember {
+        check: self.members.size() > 0
+        message: "Enum " + self.name + " has no member"
     }
     
     // enumerations should have at least 2 members

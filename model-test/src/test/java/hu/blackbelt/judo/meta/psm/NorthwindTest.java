@@ -31,19 +31,13 @@ abstract class NorthwindTest {
 
         PsmModel psmModel = PsmModel.loadPsmModel(LoadArguments.psmLoadArgumentsBuilder()
                 .resourceSet(resourceSet)
-                .uri(URI.createFileURI(new File("src/test/model/northwind-judopsm.model").getAbsolutePath()))
+                .file(new File("src/test/model/northwind-judopsm.model"))
                 .tags(ImmutableSet.of("test"))
                 .name("test"));
         
         assertEquals(ImmutableSet.of("test"), psmModel.getTags());
     
         northwind = (Model) resourceSet.getResources().get(0).getEObject("/");
-    }
-
-    @AfterEach
-    public void tearDown() {
-        resourceSet = null;
-        northwind = null;
     }
 
     protected EntityType getEntityType(final String name) {

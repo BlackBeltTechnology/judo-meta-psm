@@ -1,26 +1,29 @@
 context PSM!Primitive {
-
+    /* TODO: check if to be removed
     // primitive type names should be unique
     critique TypeNamesAreUnique {
         check: not PSM!Primitive.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
+    */
 }
 
 context PSM!EntityType {
-
+    /* TODO: check if to be removed
     // entity type names should be unique
     critique TypeNamesAreUnique {
         check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
+    */
 }
 
 context PSM!TransferObjectType {
-
+    /* TODO: check if to be removed
     // transfer object type names should be unique
     critique TypeNamesAreUnique {
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
+    */
 }

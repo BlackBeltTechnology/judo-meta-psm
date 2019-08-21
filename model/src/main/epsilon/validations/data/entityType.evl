@@ -37,15 +37,6 @@ context PSM!EntityType {
     }
 }
 
-context PSM!Relation {
-
-    // relations must be attached to entities
-    constraint RelationBelongsToEntity {
-        check: PSM!EntityType.all.select(et | et.relations.contains(self)).size() == 1
-        message: "Orphan relation: " + self.name
-    }
-}
-
 context PSM!Attribute {
 
     // attributes must be attached to entities

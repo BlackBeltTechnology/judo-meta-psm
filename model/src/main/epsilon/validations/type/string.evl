@@ -6,6 +6,7 @@ context PSM!StringType {
 		message: "MaxLength must be greater than 0: " + self.name
 	}
 
+    //TODO-ask: dis juan nay ein shpeshifikater
     // maxLength <= 4000
 	constraint MaxLengthIsNotTooLarge {
 		check: self.maxLength <= 4000
