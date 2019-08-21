@@ -12,7 +12,6 @@ context PSM!StringType {
 		message: "MaxLength must be less than/equals to 4000: " + self.name
 	}
 
-    //TODO: remove: nem_ezen_a_szinten_validalando.mp3 (soulmate: testValidRegex() is PsmValidationTest.java)
 	constraint ValidRegex {
 	    check {
             var psmUtils = new Native("hu.blackbelt.judo.meta.psm.PsmUtils");
@@ -23,5 +22,4 @@ context PSM!StringType {
 	    }
 	    message: "Invalid regular expression of " + self.name
 	}
-	*/
 }

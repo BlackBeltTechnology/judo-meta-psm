@@ -104,7 +104,7 @@ class PsmValidationTest {
     }
 
     @Test
-    void testEnumerationMemberNameIsUnique() throws Exception {
+    void testEnumerationMemberNameIs() throws Exception {
         log.info("Testing constraint: EnumerationMemberNameIsUnique");
 
         Model m = newModelBuilder().withName("M")
@@ -1034,20 +1034,19 @@ class PsmValidationTest {
                 ));
     }
 
-    //TODO: remove: nem_ezen_a_szinten_validalando.mp3 (soulmate: ValidRegex in string.evl)
     @Test
     void testValidRegex() throws Exception {
-        log.info("Testing critique: ValidRegex");
+        log.info("Testing constraint: ValidRegex");
 
+        StringType invalidStringType = newStringTypeBuilder().withName("invalidRegexpyStringy").withMaxLength(100).build();
         StringType stringType = newStringTypeBuilder().withName("regexpyStringy").withMaxLength(100).build();
-        stringType.setRegExp("[silliness*");
 
-        Model m = newModelBuilder().withName("M").withElements(stringType).build();
+        stringType.setRegExp("árvíztűrőtükörfúrógép");
+        invalidStringType.setRegExp("[árvíztűrőtükörfúrógép");
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(invalidStringType, stringType)).build();
 
         psmModel.addContent(m);
-
-        runEpsilon(ImmutableList.of("ValidRegex|Invalid regular expression of regexpyStringy"), Collections.emptyList());
+        runEpsilon(ImmutableList.of("ValidRegex|Invalid regular expression of invalidRegexpyStringy"), Collections.emptyList());
     }
-
-
 }
