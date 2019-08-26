@@ -12,13 +12,12 @@ context PSM!StringType {
 		message: "MaxLength must be less than/equals to 4000: " + self.name
 	}
 
+    // regular expression must be syntactically correct
 	constraint ValidRegex {
+	    guard: self.regExp.isDefined()
 	    check {
-            var psmUtils = new Native("hu.blackbelt.judo.meta.psm.PsmUtils");
-            if (self.regExp.isDefined()) {
-                return psmUtils.isRegex(self.regExp);
-            }
-            return true;
+            var psmUtils = new Native("hu.blackbelt.judo.meta.psm.PsmUtils"); //TODO-ask: pbbly not the best place for isRegex(), ask where to put it
+            return psmUtils.isRegex(self.regExp);
 	    }
 	    message: "Invalid regular expression of " + self.name
 	}

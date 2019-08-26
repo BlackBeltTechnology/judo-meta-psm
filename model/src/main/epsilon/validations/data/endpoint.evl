@@ -11,12 +11,6 @@ context PSM!Endpoint {
         check: self.cardinality.lower <> -1 and (self.cardinality.upper == -1 or self.cardinality.lower <= self.cardinality.upper)
     	message: "Lower (" + self.cardinality.lower + ") must be less or equal to upper (" + self.cardinality.upper + ") of attribute: " + self
     }
-    
-    // partner of an endpoint must be a different one
-    constraint PartnerIsNotSelf {
-    	check: not self.partner.isDefined() or self.partner <> self
-    	message: "Self partner relation found: " + self
-    }
 }
 
 //TODO-endcheck
@@ -24,8 +18,15 @@ context PSM!Endpoint {
 
     guard: self.partner.isDefined()
 
-    // opposite partner must be defined if a partner if endpoint is already defined
+    // partner of an endpoint must be a different one
+    constraint PartnerIsNotSelf {
+        check: self.partner <> self
+        message: "Self partner relation found: " + self
+    }
+
+    // opposite partner must be defined if a partner in endpoint is already defined
     constraint OppositePartnerIsDefined {
+        guard: self.satisfiesAll("PartnerIsNotSelf")
     	check: self.partner.partner.isDefined()
     	message: "Missing opposite partner relation for " + self
     }
