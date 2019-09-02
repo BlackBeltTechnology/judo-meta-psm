@@ -185,6 +185,8 @@
           <details key="body" value="return super.toString();"/>
         </eAnnotations>
       </eOperations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseUnit" lowerBound="1"
+          eType="#//measure/DurationType" defaultValueLiteral="second"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="FlatPrimitiveType" abstract="true"
         eSuperTypes="#//type/Primitive"/>
@@ -278,13 +280,13 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Relation">
+    <eClassifiers xsi:type="ecore:EClass" name="AssociationEnd" eSuperTypes="#//data/Relation">
       <eOperations name="getOpposite" eType="#//data/Relation">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="body" value="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
         </eAnnotations>
       </eOperations>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/AssociationEnd"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="RelationCountConstraint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" lowerBound="2"

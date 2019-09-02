@@ -6,25 +6,25 @@
       <elements xsi:type="data:EntityType" xmi:id="A1-EntityType" name="A1" abstract="true"/>
       <elements xsi:type="data:EntityType" xmi:id="A-EntityType" name="A" superEntityTypes="A0-EntityType A1-EntityType">
         <attributes xmi:id="_mD22ULvrEeiOuYiCo6IbXQ" name="x" dataType="_U4jZoLaVEeiphaohSbmpfA" required="true" identifier="true"/>
-        <relations xsi:type="data:Endpoint" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" target="B-EntityType" partner="_6cnfMLvrEeiOuYiCo6IbXQ">
+        <relations xsi:type="data:AssociationEnd" xmi:id="_0lc3gLvrEeiOuYiCo6IbXQ" name="b" target="B-EntityType" partner="_6cnfMLvrEeiOuYiCo6IbXQ">
           <cardinality xmi:id="_TownkBTNEemVqaiCEVZg7g" lower="1"/>
         </relations>
-        <relations xsi:type="data:Endpoint" xmi:id="_Ke7FMLvsEeiOuYiCo6IbXQ" name="c" target="C-EntityType">
+        <relations xsi:type="data:AssociationEnd" xmi:id="_Ke7FMLvsEeiOuYiCo6IbXQ" name="c" target="C-EntityType">
           <cardinality xmi:id="_TownkRTNEemVqaiCEVZg7g"/>
         </relations>
       </elements>
       <elements xsi:type="data:EntityType" xmi:id="B-EntityType" name="B">
-        <relations xsi:type="data:Endpoint" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" partner="_0lc3gLvrEeiOuYiCo6IbXQ">
+        <relations xsi:type="data:AssociationEnd" xmi:id="_6cnfMLvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType" partner="_0lc3gLvrEeiOuYiCo6IbXQ">
           <cardinality xmi:id="_ToxOoBTNEemVqaiCEVZg7g" lower="1"/>
         </relations>
       </elements>
       <elements xsi:type="data:EntityType" xmi:id="C-EntityType" name="C">
-        <relations xsi:type="data:Endpoint" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
+        <relations xsi:type="data:AssociationEnd" xmi:id="_9KGZILvrEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
           <cardinality xmi:id="_ToxOoRTNEemVqaiCEVZg7g" upper="-1"/>
         </relations>
       </elements>
       <elements xsi:type="data:EntityType" xmi:id="_lGrKcLvtEeiOuYiCo6IbXQ" name="S1">
-        <relations xsi:type="data:Endpoint" xmi:id="_pR08QLvtEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
+        <relations xsi:type="data:AssociationEnd" xmi:id="_pR08QLvtEeiOuYiCo6IbXQ" name="a" target="A-EntityType">
           <cardinality xmi:id="_Tox1sBTNEemVqaiCEVZg7g"/>
         </relations>
         <relations xsi:type="data:Containment" xmi:id="_sGtesLvtEeiOuYiCo6IbXQ" name="s2" target="_mhVKkLvtEeiOuYiCo6IbXQ">
@@ -32,7 +32,7 @@
         </relations>
       </elements>
       <elements xsi:type="data:EntityType" xmi:id="_mhVKkLvtEeiOuYiCo6IbXQ" name="S2">
-        <relations xsi:type="data:Endpoint" xmi:id="_uPr9YLvtEeiOuYiCo6IbXQ" name="b" target="B-EntityType">
+        <relations xsi:type="data:AssociationEnd" xmi:id="_uPr9YLvtEeiOuYiCo6IbXQ" name="b" target="B-EntityType">
           <cardinality xmi:id="_ToycwBTNEemVqaiCEVZg7g"/>
         </relations>
       </elements>
