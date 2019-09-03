@@ -111,7 +111,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/EntityType/abstract"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/attributes"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/relations"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/relationCountConstraints"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/dataProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/navigationProperties"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllSuperEntityTypes"
@@ -147,11 +146,6 @@
             ecoreFeature="ecore:EReference psm.ecore#//data/AssociationEnd/partner"/>
         <genOperations ecoreOperation="psm.ecore#//data/AssociationEnd/getOpposite"
             body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
-      </genClasses>
-      <genClasses ecoreClass="psm.ecore#//data/RelationCountConstraint">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//data/RelationCountConstraint/relations"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/RelationCountConstraint/cardinality"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//data/ReferenceTypedElement">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"

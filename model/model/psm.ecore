@@ -239,8 +239,6 @@
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//data/Relation" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="relationCountConstraints"
-          upperBound="-1" eType="#//data/RelationCountConstraint" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataProperties" upperBound="-1"
           eType="#//derived/DataProperty" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="navigationProperties"
@@ -287,12 +285,6 @@
         </eAnnotations>
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/AssociationEnd"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="RelationCountConstraint" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" lowerBound="2"
-          upperBound="-1" eType="#//data/Relation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
-          eType="#//type/Cardinality" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceTypedElement" abstract="true"
         eSuperTypes="#//namespace/NamedElement">

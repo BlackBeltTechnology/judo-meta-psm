@@ -231,7 +231,6 @@ package data {
     attr boolean[1] ~abstract;
     val Attribute[*] attributes;
     val Relation[*] relations;
-    val RelationCountConstraint[*] relationCountConstraints;
     val ~derived.DataProperty[*] dataProperties;
     val ~derived.NavigationProperty[*] navigationProperties;
   }
@@ -264,11 +263,6 @@ package data {
     @GenModel(body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;")
     op Relation getOpposite();
     ref AssociationEnd partner;
-  }
-
-  class RelationCountConstraint extends namespace.NamedElement {
-    ref Relation[2..*] relations;
-    val type.Cardinality[1] cardinality;
   }
 
   abstract class ReferenceTypedElement extends namespace.NamedElement {

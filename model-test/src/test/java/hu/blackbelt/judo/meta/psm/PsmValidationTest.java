@@ -475,28 +475,6 @@ class PsmValidationTest {
     }
 
     @Test
-    void testRelationCountConstraintHasUniqueName () throws Exception {
-        log.info("Testing constraint: RelationCountConstraintHasUniqueName");
-
-        AssociationEnd e = newAssociationEndBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
-        Containment f = newContainmentBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
-
-        RelationCountConstraint c1_1 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(f, e)).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
-        RelationCountConstraint c1_2 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(e, f)).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
-
-        EntityType E = newEntityTypeBuilder().withName("E").withRelations(ImmutableList.of(e, f)).withRelationCountConstraints(ImmutableList.of(c1_1, c1_2)).build();
-
-        f.setTarget(E);
-        e.setTarget(E);
-
-        Model m = newModelBuilder().withName("M").withElements(E).build();
-
-        psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E", "RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
-                Collections.emptyList());
-    }
-
-    @Test
     void testRelationBelongsToEntity () throws Exception {
         log.info("Testing constraint: RelationBelongsToEntity");
 
