@@ -377,6 +377,7 @@ package service {
     ref TransferAttribute representation;
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
+    ref TransferObjectType[*] superTransferObjectTypes;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -416,27 +417,29 @@ package service {
   }
 
   class MappedTransferObjectType extends TransferObjectType {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);")
+    op boolean[1] isAbstract();
     ref data.EntityType[1] entityType;
     attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
     val BoundOperation[*] operations;
   }
 
-  abstract class Operation {
+  abstract class OperationDeclaration {
     val Parameter[*] faults;
-    attr boolean[1] undefined;
     val Parameter output;
     val Parameter input;
-    attr script.Script body;
-    attr boolean[1] stateful = true;
   }
 
   class UnmappedTransferObjectType extends TransferObjectType {
   }
 
-  class BoundOperation extends Operation, namespace.NamedElement {
+  class BoundOperation extends namespace.NamedElement, OperationDeclaration {
+    val OperationBody implementation;
   }
 
-  class UnboundOperation extends Operation, namespace.NamespaceElement {
+  class UnboundOperation extends namespace.NamespaceElement, OperationDeclaration {
+    val OperationBody[1] implementation;
   }
 
   class Parameter extends namespace.NamedElement {
@@ -448,6 +451,12 @@ package service {
     REQUIRED = 0;
     OPTIONAL = 1;
     NOT_SUPPORTED = 2;
+  }
+
+  class OperationBody {
+    attr boolean[1] stateful;
+    attr boolean[1] customImplementation;
+    attr script.Script body;
   }
 
 }
@@ -519,7 +528,7 @@ package view {
 
   class Action extends Component {
     ref Placeholder target;
-    ref service.Operation[1] operation;
+    ref service.OperationDeclaration[1] operation;
     ref ObjectView resultView;
     ref ObjectView[*] faultViews;
   }
@@ -586,7 +595,7 @@ package view {
   }
 
   class ActionMenuItem extends MenuItem {
-    ref service.Operation[1] exposedService;
+    ref service.OperationDeclaration[1] exposedService;
   }
 
   class UserInterface extends namespace.NamespaceElement {
@@ -631,7 +640,7 @@ package authentication {
 package authorization {
   class AuthorizationResource extends namespace.NamespaceElement {
     ref data.ReferenceTypedElement[*] referenceTypedElements;
-    ref service.Operation[*] operations;
+    ref service.OperationDeclaration[*] operations;
     ref AuthorizationResource[*] includedAuthorizationResources;
   }
 

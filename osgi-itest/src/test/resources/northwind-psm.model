@@ -94,12 +94,14 @@
         <cardinality xmi:id="_lzhbIcTSEemhIYNU2TIHqw" lower="1"/>
       </relations>
     </elements>
-    <elements xsi:type="service:UnboundOperation" xmi:id="_l2DxwMTSEemhIYNU2TIHqw" stateful="false" name="getAllOrders">
+    <elements xsi:type="service:UnboundOperation" xmi:id="_l2DxwMTSEemhIYNU2TIHqw" name="getAllOrders">
+      <implementation stateful="false"/>
       <output xmi:id="_l2EY0MTSEemhIYNU2TIHqw" name="output" type="_ly9acMTSEemhIYNU2TIHqw">
         <cardinality xmi:id="_l2EY0cTSEemhIYNU2TIHqw" upper="-1"/>
       </output>
     </elements>
     <elements xsi:type="service:UnboundOperation" xmi:id="_l2HcIMTSEemhIYNU2TIHqw" name="insertOrder">
+      <implementation stateful="true"/>
       <output xmi:id="_l2HcIcTSEemhIYNU2TIHqw" name="output" type="_ly5JAMTSEemhIYNU2TIHqw">
         <cardinality xmi:id="_l2HcIsTSEemhIYNU2TIHqw" lower="1"/>
       </output>
@@ -108,6 +110,7 @@
       </input>
     </elements>
     <elements xsi:type="service:UnboundOperation" xmi:id="_l2JRUMTSEemhIYNU2TIHqw" name="insertShipper">
+      <implementation stateful="true"/>
       <output xmi:id="_l2JRUcTSEemhIYNU2TIHqw" name="output" type="_lzaGYMTSEemhIYNU2TIHqw">
         <cardinality xmi:id="_l2J4YMTSEemhIYNU2TIHqw" lower="1"/>
       </output>
@@ -116,6 +119,7 @@
       </input>
     </elements>
     <elements xsi:type="service:UnboundOperation" xmi:id="_l2MUoMTSEemhIYNU2TIHqw" name="insertCategory">
+      <implementation stateful="true"/>
       <output xmi:id="_l2MUocTSEemhIYNU2TIHqw" name="output" type="_lzNSEMTSEemhIYNU2TIHqw">
         <cardinality xmi:id="_l2MUosTSEemhIYNU2TIHqw" lower="1"/>
       </output>
@@ -124,6 +128,7 @@
       </input>
     </elements>
     <elements xsi:type="service:UnboundOperation" xmi:id="_l2Ow4MTSEemhIYNU2TIHqw" name="insertProduct">
+      <implementation stateful="true"/>
       <output xmi:id="_l2Ow4cTSEemhIYNU2TIHqw" name="output" type="_lze-4MTSEemhIYNU2TIHqw">
         <cardinality xmi:id="_l2PX8MTSEemhIYNU2TIHqw" lower="1"/>
       </output>

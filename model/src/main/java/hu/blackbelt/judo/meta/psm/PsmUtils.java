@@ -8,6 +8,7 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.type.StringType;
@@ -291,15 +292,28 @@ public class PsmUtils {
         return termMeasures;
     }
 
-    public static Boolean isRegex(String regex) throws PatternSyntaxException {
-        Boolean isValid = true;
+    /**
+     * Check if a mapped transfer object type is abstract.
+     *
+     * A mapped transfer object type is abstract if it has (its own or inherited) transfer attribute or transfer object relation without binding or it has (its own or inherited)
+     * bound operation without operation body.
+     *
+     * @param mappedTransferObjectType mapped transfer object type
+     * @return <code>true</code> if mapped transfer object type is abstract
+     */
+    public static boolean isAbstractMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
+        // TODO
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public static boolean isRegex(String regex) throws PatternSyntaxException {
         try {
             Pattern.compile(regex);
+            return true;
         } catch (PatternSyntaxException e) {
             //fukd
-            isValid = false;
+            return false;
         }
-        return isValid;
     }
 
     /**
