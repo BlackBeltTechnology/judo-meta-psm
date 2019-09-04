@@ -295,13 +295,25 @@ public class PsmUtils {
     /**
      * Check if a mapped transfer object type is abstract.
      *
-     * A mapped transfer object type is abstract if it has (its own or inherited) transfer attribute or transfer object relation without binding or it has (its own or inherited)
-     * bound operation without operation body.
+     * A mapped transfer object type is abstract if and only if the referenced entity type is abstract.
      *
      * @param mappedTransferObjectType mapped transfer object type
-     * @return <code>true</code> if mapped transfer object type is abstract
+     * @return <code>true</code> if mapped transfer object type is abstract, <code>false</code> otherwise
      */
     public static boolean isAbstractMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
+        return mappedTransferObjectType.isAbstract();
+    }
+
+    /**
+     * Check if a mapped transfer object type is instantiable.
+     *
+     * A mapped transfer object type is not instantiable if it has (its own or inherited) transfer attribute or transfer object relation without binding or it has (its own or inherited)
+     * bound operation without operation body or referenced entity type is abstract.
+     *
+     * @param mappedTransferObjectType mapped transfer object type
+     * @return <code>true</code> if mapped transfer object type is instantiable, <code>false</code> otherwise
+     */
+    public static boolean isInstantiableMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
         // TODO
         throw new UnsupportedOperationException("Not implemented yet");
     }

@@ -273,6 +273,8 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isAbstract"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isInstantiable"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/OperationDeclaration">
         <genFeatures children="true" createChild="true" propertySortChoices="true"

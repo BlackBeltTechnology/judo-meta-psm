@@ -420,6 +420,9 @@ package service {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);")
     op boolean[1] isAbstract();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);")
+    op boolean[1] isInstantiable();
     ref data.EntityType[1] entityType;
     attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
     val BoundOperation[*] operations;
