@@ -1,23 +1,15 @@
 //TODO-ask: Should NamedElements' name be unique in whole model? (pbbly not)
 context PSM!NamedElement {
-/*
-    constraint NamedElementsNameIsUnique {
-        check {
- 			var notUniqueNames = new Set;
- 			var names = new Set;
 
- 			for (p in PSM!NamedElement.all) {
- 				for (name in names) {
- 				    if (name.toUpperCase() == p.name.toUpperCase()) {
- 				        notUniqueNames.add(p.name);
- 				    }
-
- 				}
- 				names.add(p.name);
- 			}
- 			return notUniqueNames.isEmpty();
- 		}
- 		message: "Names " + notUniqueNames + " are not unique in namespace " + self.name + " in a case-insensitive manner"
+    constraint NamedElementHasContainer {
+        guard: not self.isKindOf(PSM!Model)
+        check: self.eContainer.isDefined()
+        message: "Named element " + self.name + " has no container"
     }
-    */
+    
+    constraint NamedElementIsUniqueInItsContainer {
+        guard: self.eContainer.isDefined()
+        check: not self.eContainer.eContents.select(c | c.isKindOf(PSM!NamedElement) and c <> self).exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
+        message: "Named element " + self.name + " is not unique in its container"
+    }
 }

@@ -82,7 +82,7 @@ class PsmValidationTest {
 
     @Test
     void testNamespaceHasUniqueElementNames () throws Exception {
-        log.info("Testing constraint: NamespaceHasUniqueElementNames");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(
@@ -99,12 +99,18 @@ class PsmValidationTest {
 
         psmModel.addContent(m);
 
-        runEpsilon(ImmutableList.of("NamespaceHasUniqueElementNames|Names Set {P, E, String} are not unique in namespace M in a case-insensitive manner"), Collections.emptyList());
+        runEpsilon(ImmutableList.of(
+        		"NamedElementIsUniqueInItsContainer|Named element string is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element String is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element E is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"), Collections.emptyList());
     }
 
     @Test
     void testEnumerationMemberNameIs () throws Exception {
-        log.info("Testing constraint: EnumerationMemberNameIsUnique");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         Model m = newModelBuilder().withName("M")
                 .withElements(ImmutableList.of(newEnumerationTypeBuilder()
@@ -124,7 +130,8 @@ class PsmValidationTest {
 
         psmModel.addContent(m);
 
-        runEpsilon(ImmutableList.of("EnumerationMemberNameIsUnique|Enum member names are not unique: E"),
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element A is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element A is not unique in its container"),
                 Collections.emptyList());
     }
 
@@ -299,7 +306,7 @@ class PsmValidationTest {
 
     @Test
     void testAttributeNameIsUnique () throws Exception {
-        log.info("Testing constraint: AttributeNameIsUnique");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255)
                 .build();
@@ -319,13 +326,14 @@ class PsmValidationTest {
                 )).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("AttributeNameIsUnique|Multiple attributes are added to entity E with the same name"),
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element a is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element a is not unique in its container"),
                 Collections.emptyList());
     }
 
     @Test
     void testRelationNameIsUnique () throws Exception {
-        log.info("Testing constraint: RelationNameIsUnique");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         Endpoint endpoint = newEndpointBuilder()
                 .withName("e")
@@ -347,13 +355,14 @@ class PsmValidationTest {
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("RelationNameIsUnique|Multiple relations are added to entity E with the same name"),
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element e is not unique in its container"),
                 Collections.emptyList());
     }
 
     @Test
     void testNoAttributeAndRelationAreWithTheSameName () throws Exception {
-        log.info("Testing constraint: NoAttributeAndRelationAreWithTheSameName");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
 
@@ -371,7 +380,8 @@ class PsmValidationTest {
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(string, E)).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("NoAttributeAndRelationAreWithTheSameName|Entity E has attributes and relations with the same name"),
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element x is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element x is not unique in its container"),
                 Collections.emptyList());
     }
 
@@ -426,7 +436,7 @@ class PsmValidationTest {
 
     @Test
     void testPackageHasNamespace () throws Exception {
-        log.info("Testing constraint: PackageHasNamespace");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         Package pkg = newPackageBuilder().withName("pkg").build();
         Model m = newModelBuilder().withName("M").build();
@@ -434,13 +444,13 @@ class PsmValidationTest {
         psmModel.addContent(m);
         psmModel.addContent(pkg);
 
-        runEpsilon(ImmutableList.of("PackageBelongsToOneNamespace|Package pkg must have exactly 1 namespace"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element pkg has no container"),
                 Collections.emptyList());
     }
 
     @Test
     void testNamespaceElementBelongsToOneNamespace () throws Exception {
-        log.info("Testing constraint: NamespaceElementBelongsToOneNamespace");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
         StringType orphanString = newStringTypeBuilder().withName("orphanString").withMaxLength(255).build();
@@ -450,13 +460,13 @@ class PsmValidationTest {
         psmModel.addContent(string);
         psmModel.addContent(orphanString);
 
-        runEpsilon(ImmutableList.of("NamespaceElementBelongsToOneNamespace|Element String must belong to exactly 1 namespace", "NamespaceElementBelongsToOneNamespace|Element orphanString must belong to exactly 1 namespace"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element String has no container", "NamedElementHasContainer|Named element orphanString has no container"),
                 Collections.emptyList());
     }
 
     @Test
     void testEnumerationMemberHasEnumerationType () throws Exception {
-        log.info("Testing constraint: EnumerationMemberHasEnumerationType");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         Model m = newModelBuilder().withName("M")
                 .withElements(newEnumerationTypeBuilder().withName("E")
@@ -470,35 +480,13 @@ class PsmValidationTest {
         EnumerationMember enumMemb = newEnumerationMemberBuilder().withName("m1").withOrdinal(1).build();
         psmModel.addContent(m);
         psmModel.addContent(enumMemb);
-        runEpsilon(ImmutableList.of("EnumerationMemberHasEnumerationType|Enumeration member m1 must have exactly 1 enumeration"),
-                Collections.emptyList());
-    }
-
-    @Test
-    void testRelationCountConstraintHasUniqueName () throws Exception {
-        log.info("Testing constraint: RelationCountConstraintHasUniqueName");
-
-        Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
-        Containment f = newContainmentBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
-
-        RelationCountConstraint c1_1 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(f, e)).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
-        RelationCountConstraint c1_2 = newRelationCountConstraintBuilder().withName("c1").withRelations(ImmutableList.of(e, f)).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
-
-        EntityType E = newEntityTypeBuilder().withName("E").withRelations(ImmutableList.of(e, f)).withRelationCountConstraints(ImmutableList.of(c1_1, c1_2)).build();
-
-        f.setTarget(E);
-        e.setTarget(E);
-
-        Model m = newModelBuilder().withName("M").withElements(E).build();
-
-        psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("RelationCountConstraintHasUniqueName|Relation count constraints are not unique: E", "RelationCountConstraintsAreNotSupportedYet|Relation count constraints are not supported yet"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element m1 has no container"),
                 Collections.emptyList());
     }
 
     @Test
     void testRelationBelongsToEntity () throws Exception {
-        log.info("Testing constraint: RelationBelongsToEntity");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         Endpoint orphanEndpoint = newEndpointBuilder().withName("orphanEndpoint").withCardinality(newCardinalityBuilder().withUpper(1).withLower(1).build()).build();
         EntityType entity1 = newEntityTypeBuilder().withName("entity1").build();
@@ -508,13 +496,13 @@ class PsmValidationTest {
 
         psmModel.addContent(orphanEndpoint);
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("RelationBelongsToEntity|Orphan relation: orphanEndpoint"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element orphanEndpoint has no container"),
                 Collections.emptyList());
     }
 
     @Test
     void testAttributeBelongsToEntity () throws Exception {
-        log.info("Testing constraint: AttributeBelongsToEntity");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
 
@@ -529,7 +517,7 @@ class PsmValidationTest {
         psmModel.addContent(m);
         psmModel.addContent(b);
 
-        runEpsilon(ImmutableList.of("AttributeBelongsToEntity|Orphan attribute: b"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element b has no container"),
                 Collections.emptyList());
     }
 
@@ -550,7 +538,7 @@ class PsmValidationTest {
 
     @Test
     void testDataPropertyNameIsUnique () throws Exception {
-        log.info("Testing constraint: DataPropertyNameIsUnique");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
 
@@ -567,13 +555,14 @@ class PsmValidationTest {
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E, string)).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("DataPropertyNameIsUnique|Multiple data properties are added to entity E with the same name"),
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"),
                 Collections.emptyList());
     }
 
     @Test
     void testNavigationPropertyNameIsUnique () throws Exception {
-        log.info("Testing constraint: NavigationPropertyNameIsUnique");
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
         NavigationProperty n1 = newNavigationPropertyBuilder().withName("n").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
@@ -594,13 +583,14 @@ class PsmValidationTest {
         Model m = newModelBuilder().withName("M").withElements(E).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("NavigationPropertyNameIsUnique|Multiple navigation properties are added to entity E with the same name"),
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element n is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element n is not unique in its container"),
                 Collections.emptyList());
     }
 
     @Test
     void testDataPropertyBelongsToEntity () throws Exception {
-        log.info("Testing constraint: DataPropertyBelongsToEntity");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
         EntityType E = newEntityTypeBuilder().withName("E").withAttributes(newAttributeBuilder().withName("a").withDataType(string).build()).build();
@@ -610,13 +600,13 @@ class PsmValidationTest {
 
         psmModel.addContent(m);
         psmModel.addContent(p);
-        runEpsilon(ImmutableList.of("DataPropertyBelongsToEntity|Orphan data property: p"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element p has no container"),
                 Collections.emptyList());
     }
 
     @Test
     void testNavigationPropertyBelongsToEntity () throws Exception {
-        log.info("Testing constraint: NavigationPropertyBelongsToEntity");
+        log.info("Testing constraint: NamedElementHasContainer");
 
         Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
         EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).build();
@@ -629,7 +619,7 @@ class PsmValidationTest {
         psmModel.addContent(m);
         psmModel.addContent(n);
 
-        runEpsilon(ImmutableList.of("NavigationPropertyBelongsToEntity|Orphan navigation property: n"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element n has no container"),
                 Collections.emptyList());
     }
 
@@ -1085,5 +1075,32 @@ class PsmValidationTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("InheritedAndNonInheritedNamesAreUnique|Entity entityType has inherited or non inherited members with the same name, member overriding is not allowed: Sequence {negtest_Member, negtest_member, negtest_member}","InheritedAndNonInheritedNamesAreUnique|Entity superEntityType has inherited or non inherited members with the same name, member overriding is not allowed: Sequence {negtest_member}"), Collections.emptyList());
+    }
+    
+    @Test
+    void testNamedElementHasContainer() throws Exception {
+        log.info("Testing constraint: NamedElementHasContainer");
+        
+        Model m = newModelBuilder().withName("M").build();
+        Package p = newPackageBuilder().withName("p").build();
+
+        psmModel.addContent(m);
+        psmModel.addContent(p);
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element p has no container"), Collections.emptyList());
+    }
+    
+    @Test
+    void testNamedElementIsUniqueInItsContainer() throws Exception {
+        log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
+        
+        Model m = newModelBuilder().withName("M")
+        		.withPackages(ImmutableList.of(
+        				newPackageBuilder().withName("p").build(),
+        				newPackageBuilder().withName("P").build()))
+        		.build();
+
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element P is not unique in its container",
+        		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"), Collections.emptyList());
     }
 }

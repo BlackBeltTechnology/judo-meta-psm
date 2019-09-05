@@ -1,10 +1,5 @@
 //TODO-endcheck
 context PSM!Relation {
-    // relations must be attached to an entity
-    constraint RelationBelongsToEntity {
-        check: PSM!EntityType.all.select(et | et.relations.contains(self)).size() == 1
-        message: "Orphan relation: " + self.name
-    }
 
     constraint CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne {
         guard: self.cascadeDelete == true
