@@ -1,9 +1,9 @@
 context PSM!EnumerationType {
     // enumeration member name must be unique
-    constraint EnumerationMemberNameIsUnique {
+  /*  constraint EnumerationMemberNameIsUnique {
         check: self.members.select(m1 | self.members.excluding(m1).select(m2 | m1.name = m2.name).size() > 0).size() = 0
         message: "Enum member names are not unique: " + self.name
-    }
+    }*/
 
     // enumeration member value must be unique
     constraint EnumerationMemberValueIsUnique {
@@ -27,8 +27,8 @@ context PSM!EnumerationType {
 context PSM!EnumerationMember {
 
     // enumeration member is not standalone
-    constraint EnumerationMemberHasEnumerationType {
+    /*constraint EnumerationMemberHasEnumerationType {
         check: PSM!EnumerationType.all.select(et | et.members.contains(self)).size() == 1
         message: "Enumeration member " + self.name + " must have exactly 1 enumeration"
-    }
+    }*/
 }

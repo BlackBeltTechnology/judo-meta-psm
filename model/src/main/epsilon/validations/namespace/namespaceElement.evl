@@ -1,10 +1,10 @@
 //TODO-endcheck
 context PSM!NamespaceElement {
     // namespace element must have exactly one namespace
-    constraint NamespaceElementBelongsToOneNamespace {
+    /*constraint NamespaceElementBelongsToOneNamespace {
         check: PSM!Namespace.all.select(n | n.elements.contains(self)).size() == 1
         message: "Element " + self.name + " must belong to exactly 1 namespace"
-    }
+    }*/
 
     constraint ElementNameNotEmpty {
         check: self.name.length() > 0

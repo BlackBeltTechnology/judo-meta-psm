@@ -1,7 +1,0 @@
-context PSM!Package {
-	// package must have exactly one namespace
-	constraint PackageBelongsToOneNamespace {
-		check: PSM!Namespace.all.select(n | n.packages.contains(self)).size() == 1
-		message: "Package " + self.name + " must have exactly 1 namespace"
-	}
-}
