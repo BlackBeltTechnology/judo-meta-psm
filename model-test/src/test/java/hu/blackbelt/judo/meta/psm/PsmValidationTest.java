@@ -496,7 +496,7 @@ class PsmValidationTest {
 
         psmModel.addContent(orphanAssociationEnd);
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element orphanEndpoint has no container"),
+        runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element orphanAssociationEnd has no container"),
                 Collections.emptyList());
     }
 
