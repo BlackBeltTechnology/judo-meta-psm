@@ -1,5 +1,5 @@
 //TODO-endcheck
-context PSM!Endpoint {
+context PSM!AssociationEnd {
 	// upper attribute must be at least 1    
     constraint UpperIsAtLeastOne {
     	check: self.cardinality.upper > 0 or self.cardinality.upper == -1
@@ -14,7 +14,7 @@ context PSM!Endpoint {
 }
 
 //TODO-endcheck
-context PSM!Endpoint {
+context PSM!AssociationEnd {
 
     guard: self.partner.isDefined()
 

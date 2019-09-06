@@ -24,7 +24,6 @@ context PSM!EntityType {
             for (entity in entities) {
                 members.addAll(entity.attributes);
                 members.addAll(entity.relations);
-                members.addAll(entity.relationCountConstraints);
                 members.addAll(entity.dataProperties);
                 members.addAll(entity.navigationProperties);
                 //TODO-suspended: Sequence [after entity.Sequence becomes supported] & newficsorz
@@ -61,36 +60,10 @@ context PSM!EntityType {
 		check: self.relations.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
 		message: "Entity " + self.name + " has attributes and relations with the same name"
 	}*/
-
-	//TODO-suspended: junit test [after RelCC becomes supported]
-	// name of relation count constraints must be unique
-   /* constraint RelationCountConstraintHasUniqueName {
-        check: self.relationCountConstraints.select(rcc1 | self.relationCountConstraints.excluding(rcc1).select(rcc2 | rcc2.name = rcc1.name).size() > 0).size() = 0
-        message: "Relation count constraints are not unique: " + self.name
-    }*/
-
-    //TODO-suspended: junit test [after RelCC becomes supported]
-    constraint NoAttributeAndRelationCountConstraintWithTheSameName {
-        check: self.attributes.select(e | self.relationCountConstraints.select(a | e.name == a.name).size() > 0).size() == 0
-        message: "Entity " + self.name + " has attributes and relation count constraints with the same name"
-    }
-
-    //TODO-suspended: junit test [after RelCC becomes supported]
-    constraint NoRelationAndRelationCountConstraintWithTheSameName {
-        check: self.relations.select(e | self.relationCountConstraints.select(a | e.name == a.name).size() > 0).size() == 0
-        message: "Entity " + self.name + " has relations and relation count constraints with the same name"
-    }
-
+  
     //TODO-suspended: Sequence (duplicate name check) [after Sequence becomes supported]
 
     //TODO-suspended: Seq & Attr, Seq & Rel, Se & RelCC (duplicate name check) [after Sequence becomes supported]
-
-	//TODO-suspended: remove constraint below [after RelCC becomes supported]
-	// relation count constraints are not supported yet
-    constraint RelationCountConstraintsAreNotSupportedYet {
-        check: self.relationCountConstraints.size() == 0
-        message: "Relation count constraints are not supported yet"
-    }
 }
 
 /*context PSM!Attribute {

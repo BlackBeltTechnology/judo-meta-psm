@@ -223,9 +223,9 @@ class PsmValidationTest {
     void testValidPartnerRelations () throws Exception {
         log.info("Testing constraint: ValidPartnerRelations");
 
-        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
-        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
-        Endpoint e3 = newEndpointBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e3 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
         EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e1, e2, e3)).build();
 
@@ -247,9 +247,9 @@ class PsmValidationTest {
     void testValidPartnerType () throws Exception {
         log.info("Testing constraint: ValidPartnerType");
 
-        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
-        Endpoint e2 = newEndpointBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
-        Endpoint e3 = newEndpointBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e3 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
         EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(ImmutableList.of(e2, e3)).build();
         EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(e1).build();
@@ -291,7 +291,7 @@ class PsmValidationTest {
     void testPartnerIsNotSelf () throws Exception {
         log.info("Testing constraint: PartnerIsNotSelf");
 
-        Endpoint e1 = newEndpointBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
         EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e1).build();
 
         e1.setTarget(E1);
@@ -335,7 +335,7 @@ class PsmValidationTest {
     void testRelationNameIsUnique () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
-        Endpoint endpoint = newEndpointBuilder()
+        AssociationEnd endpoint = newAssociationEndBuilder()
                 .withName("e")
                 .withCardinality(newCardinalityBuilder().build())
                 .build();
@@ -366,7 +366,7 @@ class PsmValidationTest {
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
 
-        Endpoint x = newEndpointBuilder()
+        AssociationEnd x = newAssociationEndBuilder()
                 .withName("x")
                 .withCardinality(newCardinalityBuilder().build()).build();
 
@@ -389,8 +389,8 @@ class PsmValidationTest {
     void testOppositePartnerIsDefined () throws Exception {
         log.info("Testing constraint: OppositePartnerIsDefined");
 
-        Endpoint e = newEndpointBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
-        Endpoint f = newEndpointBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e = newAssociationEndBuilder().withName("e").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd f = newAssociationEndBuilder().withName("f").withCardinality(newCardinalityBuilder().build()).build();
 
         EntityType E1 = newEntityTypeBuilder().withName("E1").withRelations(e).build();
         EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(f).build();
@@ -488,13 +488,13 @@ class PsmValidationTest {
     void testRelationBelongsToEntity () throws Exception {
         log.info("Testing constraint: NamedElementHasContainer");
 
-        Endpoint orphanEndpoint = newEndpointBuilder().withName("orphanEndpoint").withCardinality(newCardinalityBuilder().withUpper(1).withLower(1).build()).build();
+        AssociationEnd orphanAssociationEnd = newAssociationEndBuilder().withName("orphanAssociationEnd").withCardinality(newCardinalityBuilder().withUpper(1).withLower(1).build()).build();
         EntityType entity1 = newEntityTypeBuilder().withName("entity1").build();
-        orphanEndpoint.setTarget(entity1);
+        orphanAssociationEnd.setTarget(entity1);
 
         Model m = newModelBuilder().withName("M").withElements(entity1).build();
 
-        psmModel.addContent(orphanEndpoint);
+        psmModel.addContent(orphanAssociationEnd);
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element orphanEndpoint has no container"),
                 Collections.emptyList());
@@ -832,10 +832,10 @@ class PsmValidationTest {
                 .withAttributes(
                         newAttributeBuilder().withName("weight").withDataType(massStoredInQ).build()
                 ).withRelations(ImmutableList.of(
-                        newEndpointBuilder().withName("passengers").withTarget(person).withCardinality(
+                        newAssociationEndBuilder().withName("passengers").withTarget(person).withCardinality(
                                 newCardinalityBuilder().withUpper(4).withLower(0).build()
                         ).build(),
-                        newEndpointBuilder().withName("driver").withTarget(person).withCardinality(
+                        newAssociationEndBuilder().withName("driver").withTarget(person).withCardinality(
                                 newCardinalityBuilder().withLower(1).withUpper(1).build()
                         ).build())
                 ).withDataProperties(
@@ -864,8 +864,8 @@ class PsmValidationTest {
         EntityType E10 = newEntityTypeBuilder().withName("E10").build(); //inherited BY E1
         EntityType E11 = newEntityTypeBuilder().withName("E11").withAbstract_(true).build(); //inherited BY E1
 
-        Endpoint b = newEndpointBuilder().withName("ep2").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
-        Endpoint c = newEndpointBuilder().withName("ep3").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).build();
+        AssociationEnd b = newAssociationEndBuilder().withName("ep2").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
+        AssociationEnd c = newAssociationEndBuilder().withName("ep3").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).build();
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
 
         //inheriting: E10, E11
@@ -877,19 +877,19 @@ class PsmValidationTest {
 
         StringType text = newStringTypeBuilder().withName("Text").withMaxLength(255).build();
         NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(10).build();
-        Endpoint a = newEndpointBuilder().withName("ep1").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).build();
+        AssociationEnd a = newAssociationEndBuilder().withName("ep1").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).build();
 
-        EntityType E3 = newEntityTypeBuilder().withName("E3").withRelations(newEndpointBuilder().withName("ep4").withTarget(E1).withCardinality(newCardinalityBuilder().withUpper(-1).build()).build()).build();
+        EntityType E3 = newEntityTypeBuilder().withName("E3").withRelations(newAssociationEndBuilder().withName("ep4").withTarget(E1).withCardinality(newCardinalityBuilder().withUpper(-1).build()).build()).build();
 
         EntityType E2 = newEntityTypeBuilder().withName("E2").withRelations(a).build();
 
         EntityType S2 = newEntityTypeBuilder().withName("S2").withRelations(
-                newEndpointBuilder().withName("endpoint").withTarget(E2).withCardinality(newCardinalityBuilder().build()).build()
+                newAssociationEndBuilder().withName("endpoint").withTarget(E2).withCardinality(newCardinalityBuilder().build()).build()
         ).build();
 
         EntityType S1 = newEntityTypeBuilder().withName("S1").withRelations(ImmutableList.of(
-                newEndpointBuilder().withName("ep5").withTarget(E1).withCardinality(newCardinalityBuilder().build()).build(),
-                newEndpointBuilder().withName("s2").withTarget(S2).withCardinality(newCardinalityBuilder().build()).build()
+                newAssociationEndBuilder().withName("ep5").withTarget(E1).withCardinality(newCardinalityBuilder().build()).build(),
+                newAssociationEndBuilder().withName("s2").withTarget(S2).withCardinality(newCardinalityBuilder().build()).build()
         )).build();
 
         a.setTarget(E1);
@@ -984,7 +984,7 @@ class PsmValidationTest {
     @Test
     void testCascadeDeleteOnlyAllowedIfUpperCardinalityIsOne () throws Exception {
         log.info("Testing constraint: CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne");
-        Endpoint endpoint = newEndpointBuilder().withName("endpoint")
+        AssociationEnd endpoint = newAssociationEndBuilder().withName("endpoint")
                 .withCardinality(
                         newCardinalityBuilder().withLower(0).withUpper(2).build()
                 ).withCascadeDelete(true)
@@ -1003,8 +1003,8 @@ class PsmValidationTest {
     void testAtLeastOnePartnerInBidirectionalAssociationHasZeroLowerBound () throws Exception {
         log.info("Testing critique: AtLeastOnePartnerInBidirectionalAssociationHasZeroLowerBound");
 
-        Endpoint endpoint1 = newEndpointBuilder().withName("endpoint1").withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
-        Endpoint endpoint2 = newEndpointBuilder().withName("endpoint2").withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
+        AssociationEnd endpoint1 = newAssociationEndBuilder().withName("endpoint1").withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
+        AssociationEnd endpoint2 = newAssociationEndBuilder().withName("endpoint2").withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build();
 
         EntityType entity1 = newEntityTypeBuilder().withName("entity1").withRelations(ImmutableList.of(endpoint1)).build();
         EntityType entity2 = newEntityTypeBuilder().withName("entity2").withRelations(ImmutableList.of(endpoint2)).build();
@@ -1050,7 +1050,7 @@ class PsmValidationTest {
         Attribute negtest_member2 = newAttributeBuilder().withName("negtest_Member").withDataType(string).build();
 
         Attribute attribute3 = newAttributeBuilder().withName("attribute3").withDataType(string).build();
-        Endpoint negtest_member3 = newEndpointBuilder().withName("negtest_member").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        AssociationEnd negtest_member3 = newAssociationEndBuilder().withName("negtest_member").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
 
         EntityType superSuperEntityType = newEntityTypeBuilder().withName("superEntityType")
                 .withAttributes(

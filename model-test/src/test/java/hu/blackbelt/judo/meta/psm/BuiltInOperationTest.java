@@ -86,7 +86,7 @@ public class BuiltInOperationTest {
                 .withName("entity1")
                 .withTarget(entityType1)
                 .build();
-        final Relation entity1Endpoint = newEndpointBuilder()
+        final Relation entity1AssociationEnd = newAssociationEndBuilder()
                 .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build())
                 .withName("entity1List")
                 .withTarget(entityType1)
@@ -94,7 +94,7 @@ public class BuiltInOperationTest {
 
         final EntityType entityType2 = newEntityTypeBuilder()
                 .withName("EntityType2")
-                .withRelations(Arrays.asList(entity1Containment, entity1Endpoint))
+                .withRelations(Arrays.asList(entity1Containment, entity1AssociationEnd))
                 .build();
 
         final Package types = newPackageBuilder()
@@ -143,6 +143,6 @@ public class BuiltInOperationTest {
         Assertions.assertEquals("Model::pkg2::pkg3::EntityType1.string", PsmUtils.attributeToString(stringAttribute));
         Assertions.assertEquals("Model::pkg2::pkg3::EntityType2", entityType2.toString());
         Assertions.assertEquals("Model::pkg2::pkg3::EntityType2.entity1", PsmUtils.relationToString(entity1Containment));
-        Assertions.assertEquals("Model::pkg2::pkg3::EntityType2.entity1List", PsmUtils.relationToString(entity1Endpoint));
+        Assertions.assertEquals("Model::pkg2::pkg3::EntityType2.entity1List", PsmUtils.relationToString(entity1AssociationEnd));
     }
 }

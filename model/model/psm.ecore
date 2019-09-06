@@ -185,6 +185,8 @@
           <details key="body" value="return super.toString();"/>
         </eAnnotations>
       </eOperations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseUnit" lowerBound="1"
+          eType="#//measure/DurationType" defaultValueLiteral="second"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="FlatPrimitiveType" abstract="true"
         eSuperTypes="#//type/Primitive"/>
@@ -237,8 +239,6 @@
           eType="#//data/Attribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//data/Relation" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="relationCountConstraints"
-          upperBound="-1" eType="#//data/RelationCountConstraint" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataProperties" upperBound="-1"
           eType="#//derived/DataProperty" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="navigationProperties"
@@ -278,19 +278,13 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Endpoint" eSuperTypes="#//data/Relation">
+    <eClassifiers xsi:type="ecore:EClass" name="AssociationEnd" eSuperTypes="#//data/Relation">
       <eOperations name="getOpposite" eType="#//data/Relation">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="body" value="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
         </eAnnotations>
       </eOperations>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/Endpoint"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="RelationCountConstraint" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="relations" lowerBound="2"
-          upperBound="-1" eType="#//data/Relation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
-          eType="#//type/Cardinality" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/AssociationEnd"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceTypedElement" abstract="true"
         eSuperTypes="#//namespace/NamedElement">
@@ -394,6 +388,8 @@
           eType="#//service/TransferObjectRelation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//service/TransferAttribute" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="superTransferObjectTypes"
+          upperBound="-1" eType="#//service/TransferObjectType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -441,6 +437,16 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
+      <eOperations name="isAbstract" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
+        </eAnnotations>
+      </eOperations>
+      <eOperations name="isInstantiable" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
+        </eAnnotations>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="entityReferencePresence"
@@ -448,23 +454,23 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/BoundOperation" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true">
+    <eClassifiers xsi:type="ecore:EClass" name="OperationDeclaration" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"
           eType="#//service/Parameter" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="undefined" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//service/Parameter"
           containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//service/Parameter"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-          defaultValueLiteral="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UnmappedTransferObjectType" eSuperTypes="#//service/TransferObjectType"/>
-    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//service/Operation #//namespace/NamedElement"/>
-    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//service/Operation #//namespace/NamespaceElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//namespace/NamedElement #//service/OperationDeclaration">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" eType="#//service/OperationBody"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//namespace/NamespaceElement #//service/OperationDeclaration">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" lowerBound="1"
+          eType="#//service/OperationBody" containment="true"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
@@ -475,6 +481,13 @@
       <eLiterals name="REQUIRED"/>
       <eLiterals name="OPTIONAL" value="1"/>
       <eLiterals name="NOT_SUPPORTED" value="2"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="OperationBody">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="customImplementation"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
@@ -547,7 +560,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//view/Component">
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//view/Placeholder"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
-          eType="#//service/Operation"/>
+          eType="#//service/OperationDeclaration"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="resultView" eType="#//view/ObjectView"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="faultViews" upperBound="-1"
           eType="#//view/ObjectView"/>
@@ -606,7 +619,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ActionMenuItem" eSuperTypes="#//view/MenuItem">
       <eStructuralFeatures xsi:type="ecore:EReference" name="exposedService" lowerBound="1"
-          eType="#//service/Operation"/>
+          eType="#//service/OperationDeclaration"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="UserInterface" eSuperTypes="#//namespace/NamespaceElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mainView" lowerBound="1"
@@ -647,7 +660,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="referenceTypedElements"
           upperBound="-1" eType="#//data/ReferenceTypedElement"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
-          eType="#//service/Operation"/>
+          eType="#//service/OperationDeclaration"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="includedAuthorizationResources"
           upperBound="-1" eType="#//authorization/AuthorizationResource"/>
     </eClassifiers>
