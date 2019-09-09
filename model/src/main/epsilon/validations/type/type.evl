@@ -25,6 +25,7 @@ context PSM!TransferObjectType {
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
+    */
 }
 
 context PSM!TransferObjectRelation {
