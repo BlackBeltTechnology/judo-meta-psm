@@ -25,5 +25,13 @@ context PSM!TransferObjectType {
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
         message: "Type name is not unique: " + self.name
     }
-    */
 }
+
+context PSM!TransferObjectRelation {
+    constraint TransferObjectRelationIsEmbedded {
+		guard: self.target.isKindOf(PSM!UnmappedTransferObjectType)
+		check: self.embedded
+		message: "Transfer object relation " + self.name + " is referencing to unembedded unmapped transfer object type: " + self.target.name
+	}
+}
+

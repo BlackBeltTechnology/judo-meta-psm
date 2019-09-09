@@ -11,6 +11,9 @@ import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.*;
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +30,9 @@ import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
 class PsmValidationTest {
@@ -1102,5 +1107,21 @@ class PsmValidationTest {
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element P is not unique in its container",
         		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"), Collections.emptyList());
+    }
+    
+    @Test
+    void testTransferObjectRelationIsEmbedded() throws Exception {
+        log.info("Testing constraint: TransferObjectRelationIsEmbedded");
+        
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").build();
+        UnmappedTransferObjectType o = newUnmappedTransferObjectTypeBuilder().withName("O").withRelations(r).build();
+        r.setTarget(o);
+        
+        Model m = newModelBuilder().withName("M").withElements(o).build();
+
+        psmModel.addContent(m);
+        
+        runEpsilon(ImmutableList.of("TransferObjectRelationIsEmbedded|Transfer object relation R is referencing to unembedded unmapped transfer object type: O"),
+        		Collections.emptyList());
     }
 }
