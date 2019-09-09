@@ -27,3 +27,12 @@ context PSM!TransferObjectType {
     }
     */
 }
+
+context PSM!TransferObjectRelation {
+    constraint TransferObjectRelationIsEmbedded {
+		guard: self.target.isKindOf(PSM!UnmappedTransferObjectType)
+		check: self.embedded
+		message: "Transfer object relation " + self.name + " is referencing to unembedded unmapped transfer object type: " + self.target.name
+	}
+}
+
