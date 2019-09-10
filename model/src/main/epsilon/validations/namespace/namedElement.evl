@@ -13,3 +13,21 @@ context PSM!NamedElement {
         message: "Named element " + self.name + " is not unique in its container"
     }
 }
+
+context PSM!TransferObjectRelation {
+
+	constraint UnmappedTransferObjectTypeHasNoRelationBinding {
+		guard: self.eContainer.isDefined() and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
+		check: not self.binding.isDefined()
+		message: "Transfer object relation " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."	
+	}
+}
+
+context PSM!TransferAttribute {
+
+	constraint UnmappedTransferObjectTypeHasNoAttributeBinding {
+		guard: self.eContainer.isDefined() and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
+		check: not self.binding.isDefined()
+		message: "Transfer object attribute " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."
+	}
+}

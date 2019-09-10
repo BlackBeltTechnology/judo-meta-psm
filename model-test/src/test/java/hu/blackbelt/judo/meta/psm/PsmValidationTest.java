@@ -7,6 +7,8 @@ import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
+import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
+import hu.blackbelt.judo.meta.psm.derived.StaticData;
 import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
@@ -27,6 +29,8 @@ import java.util.Collections;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticDataBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
@@ -1122,6 +1126,44 @@ class PsmValidationTest {
         psmModel.addContent(m);
         
         runEpsilon(ImmutableList.of("TransferObjectRelationIsEmbedded|Transfer object relation R is referencing to unembedded unmapped transfer object type: O"),
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testUnmappedTransferObjectTypeHasNoRelationBinding() throws Exception {
+        log.info("Testing constraint: UnmappedTransferObjectTypeHasNoRelationBinding");
+        
+        StaticNavigation n = newStaticNavigationBuilder().withName("N").withCardinality(newCardinalityBuilder().build()).build();
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).build();
+        
+        UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withRelations(r).build();
+
+        Model m = newModelBuilder().withName("M").withElements(t).build();
+        
+        psmModel.addContent(m);
+        
+        runEpsilon(ImmutableList.of(
+        		"UnmappedTransferObjectTypeHasNoRelationBinding|Transfer object relation R of unmapped transfer object T must not have binding."),
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testUnmappedTransferObjectTypeHasNoAttributeBinding() throws Exception {
+        log.info("Testing constraint: UnmappedTransferObjectTypeHasNoAttributeBinding");
+        
+        StringType string = newStringTypeBuilder().withName("Str").withMaxLength(255).build();
+        StaticData d = newStaticDataBuilder().withName("D").withDataType(string).withGetterExpression(
+        		newDataExpressionTypeBuilder().withExpression("exp").build()).build();
+
+        TransferAttribute a = newTransferAttributeBuilder().withName("A").withBinding(d).build();
+        UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withAttributes(a).build();
+        
+        Model m = newModelBuilder().withName("M").withElements(t).build();
+
+        psmModel.addContent(m);
+        
+        runEpsilon(ImmutableList.of(
+        		"UnmappedTransferObjectTypeHasNoAttributeBinding|Transfer object attribute A of unmapped transfer object T must not have binding."),
         		Collections.emptyList());
     }
 }
