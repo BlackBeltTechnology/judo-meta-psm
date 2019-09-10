@@ -17,17 +17,17 @@ context PSM!NamedElement {
 context PSM!TransferObjectRelation {
 
 	constraint UnmappedTransferObjectTypeHasNoRelationBinding {
-		guard: self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
+		guard: self.eContainer.isDefined() and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
 		check: not self.binding.isDefined()
-		message: "Relation " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."	
+		message: "Transfer object relation " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."	
 	}
 }
 
 context PSM!TransferAttribute {
 
 	constraint UnmappedTransferObjectTypeHasNoAttributeBinding {
-		guard: self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
+		guard: self.eContainer.isDefined() and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
 		check: not self.binding.isDefined()
-		message: "Attribute " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."
+		message: "Transfer object attribute " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."
 	}
 }

@@ -7,6 +7,8 @@ import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
+import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
+import hu.blackbelt.judo.meta.psm.derived.StaticData;
 import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
@@ -27,6 +29,8 @@ import java.util.Collections;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticDataBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
@@ -1129,15 +1133,17 @@ class PsmValidationTest {
     void testUnmappedTransferObjectTypeHasNoRelationBinding() throws Exception {
         log.info("Testing constraint: UnmappedTransferObjectTypeHasNoRelationBinding");
         
-        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(newNavigationPropertyBuilder().build()).build();
-        UnmappedTransferObjectType o = newUnmappedTransferObjectTypeBuilder().withName("O").withRelations(r).build();
+        StaticNavigation n = newStaticNavigationBuilder().withName("N").withCardinality(newCardinalityBuilder().build()).build();
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).build();
         
-        Model m = newModelBuilder().withName("M").withElements(o).build();
+        UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withRelations(r).build();
 
+        Model m = newModelBuilder().withName("M").withElements(t).build();
+        
         psmModel.addContent(m);
         
         runEpsilon(ImmutableList.of(
-        		"UnmappedTransferObjectTypeHasNoRelationBinding|Relation R of unmapped transfer object O must not have binding."),
+        		"UnmappedTransferObjectTypeHasNoRelationBinding|Transfer object relation R of unmapped transfer object T must not have binding."),
         		Collections.emptyList());
     }
     
@@ -1145,16 +1151,19 @@ class PsmValidationTest {
     void testUnmappedTransferObjectTypeHasNoAttributeBinding() throws Exception {
         log.info("Testing constraint: UnmappedTransferObjectTypeHasNoAttributeBinding");
         
-        TransferAttribute a = newTransferAttributeBuilder().withName("A").withBinding(newAttributeBuilder().build()).build();
-        UnmappedTransferObjectType o = newUnmappedTransferObjectTypeBuilder().withName("O").withAttributes(a).build();
+        StringType string = newStringTypeBuilder().withName("Str").withMaxLength(255).build();
+        StaticData d = newStaticDataBuilder().withName("D").withDataType(string).withGetterExpression(
+        		newDataExpressionTypeBuilder().withExpression("exp").build()).build();
+
+        TransferAttribute a = newTransferAttributeBuilder().withName("A").withBinding(d).build();
+        UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withAttributes(a).build();
         
-        Model m = newModelBuilder().withName("M").withElements(o).build();
+        Model m = newModelBuilder().withName("M").withElements(t).build();
 
         psmModel.addContent(m);
         
         runEpsilon(ImmutableList.of(
-        		"UnmappedTransferObjectTypeHasNoAttributeBinding|Attribute A of unmapped transfer object O must not have binding."),
+        		"UnmappedTransferObjectTypeHasNoAttributeBinding|Transfer object attribute A of unmapped transfer object T must not have binding."),
         		Collections.emptyList());
     }
-    
 }
