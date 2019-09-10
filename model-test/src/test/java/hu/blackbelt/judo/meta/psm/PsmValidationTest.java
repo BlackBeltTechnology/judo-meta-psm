@@ -1166,4 +1166,23 @@ class PsmValidationTest {
         		"UnmappedTransferObjectTypeHasNoAttributeBinding|Transfer object attribute A of unmapped transfer object T must not have binding."),
         		Collections.emptyList());
     }
+    
+    @Test
+    void testTimeStampBaseUnitIsValid() throws Exception {
+        log.info("Testing constraint: TimeStampBaseUnitIsValid");
+        
+        TimestampType weekTimestamp = newTimestampTypeBuilder().withName("weekTimestamp").withBaseUnit(DurationType.WEEK).build();
+        TimestampType monthTimestamp = newTimestampTypeBuilder().withName("monthTimestamp").withBaseUnit(DurationType.MONTH).build();
+        TimestampType yearTimestamp = newTimestampTypeBuilder().withName("yearTimestamp").withBaseUnit(DurationType.YEAR).build();
+                
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(weekTimestamp,monthTimestamp,yearTimestamp)).build();
+
+        psmModel.addContent(m);
+        
+        runEpsilon(ImmutableList.of(
+        		"TimeStampBaseUnitIsValid|Base unit of timestamp type: weekTimestamp is invalid.",
+        		"TimeStampBaseUnitIsValid|Base unit of timestamp type: monthTimestamp is invalid.",
+        		"TimeStampBaseUnitIsValid|Base unit of timestamp type: yearTimestamp is invalid."),
+        		Collections.emptyList());
+    }
 }
