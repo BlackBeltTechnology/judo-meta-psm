@@ -13,6 +13,7 @@ import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
@@ -1183,6 +1184,66 @@ class PsmValidationTest {
         		"TimeStampBaseUnitIsValid|Base unit of timestamp type: weekTimestamp is invalid.",
         		"TimeStampBaseUnitIsValid|Base unit of timestamp type: monthTimestamp is invalid.",
         		"TimeStampBaseUnitIsValid|Base unit of timestamp type: yearTimestamp is invalid."),
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testTransferAttributeBindingIsValid() throws Exception {
+        log.info("Testing constraint: TransferAttributeBindingIsValid");
+        
+        NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(10).withScale(1).build();
+        Attribute attribute1 = newAttributeBuilder().withName("Attribute1").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("Attribute2").withDataType(integer).build();
+        EntityType entity1 = newEntityTypeBuilder().withName("Entity1").withAttributes(attribute1).build();
+        EntityType entity2 = newEntityTypeBuilder().withName("Entity2").withAttributes(attribute2).build();
+
+        TransferAttribute transferAttribute = newTransferAttributeBuilder().withName("TransferAttribute").withBinding(attribute2).build();
+
+        MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
+							.withName("TransferObject").withAttributes(transferAttribute).build();
+        transferObject.setEntityType(entity1);
+        
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+        			integer,
+        			entity1,
+        			entity2,
+        			transferObject
+        		)).build();
+
+        psmModel.addContent(model);
+        
+        runEpsilon(ImmutableList.of(
+        		"TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute of mapped transfer object TransferObject "
+        		+ "must either match the entity type of the mapped tranfer object or be StaticData."),
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testTransferObjectRelationBindingIsValid() throws Exception {
+        log.info("Testing constraint: TransferObjectRelationBindingIsValid");
+
+        Containment containment1 = newContainmentBuilder().withName("Containment1").withCardinality(newCardinalityBuilder().build()).build();
+        Containment containment2 = newContainmentBuilder().withName("Containment2").withCardinality(newCardinalityBuilder().build()).build();
+        EntityType entity1 = newEntityTypeBuilder().withName("Entity1").withRelations(containment1).build();
+        EntityType entity2 = newEntityTypeBuilder().withName("Entity2").withRelations(containment2).build();
+
+        TransferObjectRelation transferObjectRelation = newTransferObjectRelationBuilder().withName("TransferObjectRelation").withBinding(containment2).build();
+
+        MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
+							.withName("TransferObject").withRelations(transferObjectRelation).build();
+        transferObject.setEntityType(entity1);
+        
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+        			entity1,
+        			entity2,
+        			transferObject
+        		)).build();
+
+        psmModel.addContent(model);
+        
+        runEpsilon(ImmutableList.of(
+        		"TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferObjectRelation of mapped transfer object TransferObject "
+        		+ "must either match the entity type of the mapped tranfer object or be StaticNavigation."),
         		Collections.emptyList());
     }
 }
