@@ -37,11 +37,9 @@ context PSM!TransferObjectRelation {
 	}
 	
 	constraint TransferObjectRelationBindingIsValid {
-		guard: self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined() and self.eContainer().isDefined()
-		check: 	self.eContainer.entityType.isDefined() and
-				(self.binding.eContainer() == self.eContainer().entityType or
-				self.binding.isKindOf(PSM!StaticNavigation) or
-				self.binding.eContainer().isKindOf(PSM!Namespace))
+		guard: self.eContainer().isDefined() and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+		check: 	self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
+				self.binding.isKindOf(PSM!StaticNavigation)	
 		message: "Binding of transfer object relation " + self.name + " of mapped transfer object " + self.eContainer().name +
 				" must either match the entity type of the mapped tranfer object or be StaticNavigation."
 	}	
@@ -50,11 +48,9 @@ context PSM!TransferObjectRelation {
 context PSM!TransferAttribute {
 	
 	constraint TransferAttributeBindingIsValid {
-		guard: self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined() and self.eContainer().isDefined()
-		check: 	self.eContainer.entityType.isDefined() and 
-				(self.binding.eContainer() == self.eContainer().entityType or
-				self.binding.isKindOf(PSM!StaticData) or
-				self.binding.eContainer().isKindOf(PSM!Namespace))
+		guard: self.eContainer().isDefined() and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+		check: self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
+				self.binding.isKindOf(PSM!StaticData)
 		message: "Binding of transfer attribute " + self.name + " of mapped transfer object " + self.eContainer().name +
 				" must either match the entity type of the mapped tranfer object or be StaticData."
 	}

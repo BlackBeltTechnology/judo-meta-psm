@@ -1191,29 +1191,76 @@ class PsmValidationTest {
     void testTransferAttributeBindingIsValid() throws Exception {
         log.info("Testing constraint: TransferAttributeBindingIsValid");
         
-        NumericType integer = newNumericTypeBuilder().withName("Integer").withPrecision(10).withScale(1).build();
-        Attribute attribute1 = newAttributeBuilder().withName("Attribute1").withDataType(integer).build();
-        Attribute attribute2 = newAttributeBuilder().withName("Attribute2").withDataType(integer).build();
-        EntityType entity1 = newEntityTypeBuilder().withName("Entity1").withAttributes(attribute1).build();
-        EntityType entity2 = newEntityTypeBuilder().withName("Entity2").withAttributes(attribute2).build();
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        Attribute attribute0 = newAttributeBuilder().withName("attribute0").withDataType(integer).build();
+        Attribute attribute1 = newAttributeBuilder().withName("attribute1").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute2").withDataType(integer).build();
+        
+        DataProperty property0 = newDataPropertyBuilder().withName("property0").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute0").build()
+        ).build();
+        DataProperty property1 = newDataPropertyBuilder().withName("property1").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
+        ).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("property2").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute2").build()
+        ).build();
+        StaticData staticData = newStaticDataBuilder().withName("staticData").withDataType(integer)
+        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("10").build()
+        ).build();
+        
+        EntityType parent = newEntityTypeBuilder().withName("parent")
+        					.withAttributes(attribute0)
+        					.withDataProperties(property0)
+        					.build();
+        EntityType child = newEntityTypeBuilder().withName("child")
+        					.withSuperEntityTypes(parent)
+        					.withAttributes(attribute1)
+        					.withDataProperties(property1)
+        					.build();
+        EntityType friend = newEntityTypeBuilder().withName("friend")
+        					.withAttributes(attribute2)
+        					.withDataProperties(property2)
+        					.build();
 
-        TransferAttribute transferAttribute = newTransferAttributeBuilder().withName("TransferAttribute").withBinding(attribute2).build();
+        TransferAttribute transferAttribute0 = newTransferAttributeBuilder().withName("TransferAttribute0").withBinding(attribute0).build();
+        TransferAttribute transferAttribute1 = newTransferAttributeBuilder().withName("TransferAttribute1").withBinding(attribute1).build();
+        TransferAttribute transferAttribute2 = newTransferAttributeBuilder().withName("TransferAttribute2").withBinding(attribute2).build();
+        TransferAttribute transferAttribute3 = newTransferAttributeBuilder().withName("TransferAttribute3").withBinding(property0).build();
+        TransferAttribute transferAttribute4 = newTransferAttributeBuilder().withName("TransferAttribute4").withBinding(property1).build();
+        TransferAttribute transferAttribute5 = newTransferAttributeBuilder().withName("TransferAttribute5").withBinding(property2).build();
+        TransferAttribute transferAttribute6 = newTransferAttributeBuilder().withName("TransferAttribute6").withBinding(staticData).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
-							.withName("TransferObject").withAttributes(transferAttribute).build();
-        transferObject.setEntityType(entity1);
+							.withName("TransferObject").withAttributes(ImmutableList.of(
+									transferAttribute0,
+									transferAttribute1,
+									transferAttribute2,
+									transferAttribute3,
+									transferAttribute4,
+									transferAttribute5,
+									transferAttribute6
+									))
+							.withEntityType(child)
+							.build();
         
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
         			integer,
-        			entity1,
-        			entity2,
+        			parent,
+        			child,
+        			friend,
         			transferObject
         		)).build();
+        
+        
 
         psmModel.addContent(model);
         
         runEpsilon(ImmutableList.of(
-        		"TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute of mapped transfer object TransferObject "
+        		"TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute2 of mapped transfer object TransferObject "
+        		+ "must either match the entity type of the mapped tranfer object or be StaticData.",
+        		"TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute5 of mapped transfer object TransferObject "
         		+ "must either match the entity type of the mapped tranfer object or be StaticData."),
         		Collections.emptyList());
     }
@@ -1221,29 +1268,82 @@ class PsmValidationTest {
     @Test
     void testTransferObjectRelationBindingIsValid() throws Exception {
         log.info("Testing constraint: TransferObjectRelationBindingIsValid");
+        
+        AssociationEnd e0 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e0").build()
+        ).build();
+        NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+        
+        StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav")
+        		.withCardinality(newCardinalityBuilder().build())
+        		.withGetterExpression(
+                        newReferenceExpressionTypeBuilder().withExpression("child").build()
+        		).build();
+        
+        EntityType parent = newEntityTypeBuilder().withName("parent")
+				.withRelations(e0)
+				.withNavigationProperties(n0)
+				.build();
+        EntityType child = newEntityTypeBuilder().withName("child")
+				.withSuperEntityTypes(parent)
+				.withRelations(e1)
+				.withNavigationProperties(n1)
+				.build();
+        EntityType friend = newEntityTypeBuilder().withName("friend")
+        		.withRelations(e2)
+        		.withNavigationProperties(n2)
+				.build();
 
-        Containment containment1 = newContainmentBuilder().withName("Containment1").withCardinality(newCardinalityBuilder().build()).build();
-        Containment containment2 = newContainmentBuilder().withName("Containment2").withCardinality(newCardinalityBuilder().build()).build();
-        EntityType entity1 = newEntityTypeBuilder().withName("Entity1").withRelations(containment1).build();
-        EntityType entity2 = newEntityTypeBuilder().withName("Entity2").withRelations(containment2).build();
-
-        TransferObjectRelation transferObjectRelation = newTransferObjectRelationBuilder().withName("TransferObjectRelation").withBinding(containment2).build();
+        e0.setTarget(friend);
+        e1.setTarget(friend);
+        e1.setPartner(e2);
+        e2.setTarget(child);
+        e2.setPartner(e1);
+        
+        TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0").withBinding(e0).build();
+        TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1").withBinding(e1).build();
+        TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2").withBinding(e2).build();
+        TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3").withBinding(n0).build();
+        TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4").withBinding(n1).build();
+        TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5").withBinding(n2).build();
+        TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder().withName("TransferRelation6").withBinding(staticNav).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
-							.withName("TransferObject").withRelations(transferObjectRelation).build();
-        transferObject.setEntityType(entity1);
+							.withName("TransferObject").withRelations(ImmutableList.of(
+									transferRelation0,
+									transferRelation1,
+									transferRelation2,
+									transferRelation3,
+									transferRelation4,
+									transferRelation5,
+									transferRelation6
+									))
+							.withEntityType(child)
+							.build();
         
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-        			entity1,
-        			entity2,
+        			parent,
+        			child,
+        			friend,
         			transferObject
         		)).build();
 
         psmModel.addContent(model);
         
         runEpsilon(ImmutableList.of(
-        		"TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferObjectRelation of mapped transfer object TransferObject "
-        		+ "must either match the entity type of the mapped tranfer object or be StaticNavigation."),
+        		"TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation2 of mapped transfer object TransferObject "
+        		+ "must either match the entity type of the mapped tranfer object or be StaticNavigation.",
+        		"TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation5 of mapped transfer object TransferObject "
+                + "must either match the entity type of the mapped tranfer object or be StaticNavigation."),
         		Collections.emptyList());
     }
 }
