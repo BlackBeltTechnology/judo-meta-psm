@@ -115,7 +115,11 @@ class PsmValidationTest {
         		"NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
         		"NamedElementIsUniqueInItsContainer|Named element E is not unique in its container",
         		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"), Collections.emptyList());
+        		"NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"),
+        		ImmutableList.of(
+				"PrimitiveTypeNamesAreUnique|Primitive type name is not unique: String",
+				"PrimitiveTypeNamesAreUnique|Primitive type name is not unique: string"
+        		));
     }
 
     @Test
@@ -1346,4 +1350,81 @@ class PsmValidationTest {
                 + "must either match the entity type of the mapped tranfer object or be StaticNavigation."),
         		Collections.emptyList());
     }
+    
+    @Test
+    void testPrimitiveTypeNamesAreUnique() throws Exception {
+        log.info("Testing critique: PrimitiveTypeNamesAreUnique");
+
+        NumericType type1 = newNumericTypeBuilder().withName("integer").withPrecision(18).build();
+        NumericType type2 = newNumericTypeBuilder().withName("INTEGER").withPrecision(18).build();
+        CustomType type3 = newCustomTypeBuilder().withName("type").build();
+        StringType type4 = newStringTypeBuilder().withName("Type").withMaxLength(255).build();
+        PasswordType type5 = newPasswordTypeBuilder().withName("pw").build();
+        BooleanType type6 = newBooleanTypeBuilder().withName("PW").build();
+        DateType type7 = newDateTypeBuilder().withName("time").build();
+        TimestampType type8 = newTimestampTypeBuilder().withName("Time").build();
+
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(ImmutableList.of(type1,type3,type5,type7)).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(ImmutableList.of(type2,type4,type6,type8)).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: integer",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: INTEGER",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: type",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: Type",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: pw",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: PW",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: time",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: Time"
+                ));
+    }
+    
+    @Test
+    void testEntityTypeNamesAreUnique() throws Exception {
+        log.info("Testing critique: EntityTypeNamesAreUnique");
+
+        EntityType entity1 = newEntityTypeBuilder().withName("entity").build();
+        EntityType entity2 = newEntityTypeBuilder().withName("Entity").build();
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(entity1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(entity2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "EntityTypeNamesAreUnique|Entity type name is not unique: entity",
+                        "EntityTypeNamesAreUnique|Entity type name is not unique: Entity"
+                ));
+    }
+    
+    @Test
+    void testTransferObjectTypeNamesAreUnique() throws Exception {
+        log.info("Testing critique: TransferObjectTypeNamesAreUnique");
+
+        MappedTransferObjectType transferObject1 = newMappedTransferObjectTypeBuilder().withName("TransferObject").build();
+        UnmappedTransferObjectType transferObject2 = newUnmappedTransferObjectTypeBuilder().withName("transferObject").build();
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(transferObject1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(transferObject2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: TransferObject",
+                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: transferObject"
+                ));
+    }
+    
 }
