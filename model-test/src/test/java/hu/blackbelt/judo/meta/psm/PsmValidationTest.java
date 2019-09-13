@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
+import hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccessPointBuilder;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
@@ -16,6 +18,7 @@ import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.*;
 import org.eclipse.emf.common.util.URI;
@@ -1427,4 +1430,109 @@ class PsmValidationTest {
                 ));
     }
     
+    @Test
+    void testStaticNavigationNamesAreUnique() throws Exception {
+        log.info("Testing critique: StaticNavigationNamesAreUnique");
+
+        StaticNavigation staticNavigation1 = newStaticNavigationBuilder().withName("staticNavigation")
+        		.withTarget(newEntityTypeBuilder().withName("entity"))
+        		.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1))
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
+        		.build();
+        StaticNavigation staticNavigation2 = newStaticNavigationBuilder().withName("staticnavigation")
+        		.withTarget(newEntityTypeBuilder().withName("entity"))
+        		.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1))
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
+        		.build();
+
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(staticNavigation1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(staticNavigation2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "StaticNavigationNamesAreUnique|Static navigation name is not unique: staticNavigation",
+                        "StaticNavigationNamesAreUnique|Static navigation name is not unique: staticnavigation"
+                ));
+    }
+    
+    @Test
+    void testStaticDataNamesAreUnique() throws Exception {
+        log.info("Testing critique: StaticDataNamesAreUnique");
+
+        StaticData staticData1 = newStaticDataBuilder().withName("staticData")
+        		.withDataType(newCustomTypeBuilder().withName("custom").build())
+        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("5").build())
+        		.build();
+        StaticData staticData2 = newStaticDataBuilder().withName("StaticData")
+        		.withDataType(newCustomTypeBuilder().withName("custom").build())
+        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("5").build())
+        		.build();
+
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(staticData1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(staticData2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "StaticDataNamesAreUnique|Static data name is not unique: staticData",
+                        "StaticDataNamesAreUnique|Static data name is not unique: StaticData"
+                ));
+    }
+    
+    @Test
+    void testUnboundOperationNamesAreUnique() throws Exception {
+        log.info("Testing critique: UnboundOperationNamesAreUnique");
+
+        UnboundOperation unboundOp1 = newUnboundOperationBuilder().withName("unboundoperation")
+        		.withImplementation(newOperationBodyBuilder().withBody("body").build())
+        		.build();
+        UnboundOperation unboundOp2 = newUnboundOperationBuilder().withName("UNBOUNDOPERATION")
+        		.withImplementation(newOperationBodyBuilder().withBody("body").build())
+        		.build();
+        
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(unboundOp1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(unboundOp2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "UnboundOperationNamesAreUnique|Unbound operation name is not unique: unboundoperation",
+                        "UnboundOperationNamesAreUnique|Unbound operation name is not unique: UNBOUNDOPERATION"
+                ));
+    }
+
+    @Test
+    void testAccessPointNamesAreUnique() throws Exception {
+        log.info("Testing critique: AccessPointNamesAreUnique");
+
+        AccessPoint accessPoint1 = AccessPointBuilder.create().withName("accessPoint").build();
+        AccessPoint accessPoint2 = AccessPointBuilder.create().withName("AccessPoint").build();
+        
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(accessPoint1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(accessPoint2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "AccessPointNamesAreUnique|Access point name is not unique: accessPoint",
+                        "AccessPointNamesAreUnique|Access point name is not unique: AccessPoint"
+                ));
+    }
 }
