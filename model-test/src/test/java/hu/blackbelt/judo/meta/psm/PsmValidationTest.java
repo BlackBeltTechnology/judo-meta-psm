@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
+import hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccessPointBuilder;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
@@ -16,6 +18,7 @@ import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.*;
 import org.eclipse.emf.common.util.URI;
@@ -115,7 +118,11 @@ class PsmValidationTest {
         		"NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
         		"NamedElementIsUniqueInItsContainer|Named element E is not unique in its container",
         		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"), Collections.emptyList());
+        		"NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"),
+        		ImmutableList.of(
+				"PrimitiveTypeNamesAreUnique|Primitive type name is not unique: String",
+				"PrimitiveTypeNamesAreUnique|Primitive type name is not unique: string"
+        		));
     }
 
     @Test
@@ -1345,5 +1352,187 @@ class PsmValidationTest {
         		"TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation5 of mapped transfer object TransferObject "
                 + "must either match the entity type of the mapped tranfer object or be StaticNavigation."),
         		Collections.emptyList());
+    }
+    
+    @Test
+    void testPrimitiveTypeNamesAreUnique() throws Exception {
+        log.info("Testing critique: PrimitiveTypeNamesAreUnique");
+
+        NumericType type1 = newNumericTypeBuilder().withName("integer").withPrecision(18).build();
+        NumericType type2 = newNumericTypeBuilder().withName("INTEGER").withPrecision(18).build();
+        CustomType type3 = newCustomTypeBuilder().withName("type").build();
+        StringType type4 = newStringTypeBuilder().withName("Type").withMaxLength(255).build();
+        PasswordType type5 = newPasswordTypeBuilder().withName("pw").build();
+        BooleanType type6 = newBooleanTypeBuilder().withName("PW").build();
+        DateType type7 = newDateTypeBuilder().withName("time").build();
+        TimestampType type8 = newTimestampTypeBuilder().withName("Time").build();
+
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(ImmutableList.of(type1,type3,type5,type7)).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(ImmutableList.of(type2,type4,type6,type8)).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: integer",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: INTEGER",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: type",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: Type",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: pw",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: PW",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: time",
+                        "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: Time"
+                ));
+    }
+    
+    @Test
+    void testEntityTypeNamesAreUnique() throws Exception {
+        log.info("Testing critique: EntityTypeNamesAreUnique");
+
+        EntityType entity1 = newEntityTypeBuilder().withName("entity").build();
+        EntityType entity2 = newEntityTypeBuilder().withName("Entity").build();
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(entity1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(entity2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "EntityTypeNamesAreUnique|Entity type name is not unique: entity",
+                        "EntityTypeNamesAreUnique|Entity type name is not unique: Entity"
+                ));
+    }
+    
+    @Test
+    void testTransferObjectTypeNamesAreUnique() throws Exception {
+        log.info("Testing critique: TransferObjectTypeNamesAreUnique");
+
+        MappedTransferObjectType transferObject1 = newMappedTransferObjectTypeBuilder().withName("TransferObject").build();
+        UnmappedTransferObjectType transferObject2 = newUnmappedTransferObjectTypeBuilder().withName("transferObject").build();
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(transferObject1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(transferObject2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: TransferObject",
+                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: transferObject"
+                ));
+    }
+    
+    @Test
+    void testStaticNavigationNamesAreUnique() throws Exception {
+        log.info("Testing critique: StaticNavigationNamesAreUnique");
+
+        StaticNavigation staticNavigation1 = newStaticNavigationBuilder().withName("staticNavigation")
+        		.withTarget(newEntityTypeBuilder().withName("entity"))
+        		.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1))
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
+        		.build();
+        StaticNavigation staticNavigation2 = newStaticNavigationBuilder().withName("staticnavigation")
+        		.withTarget(newEntityTypeBuilder().withName("entity"))
+        		.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1))
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
+        		.build();
+
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(staticNavigation1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(staticNavigation2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "StaticNavigationNamesAreUnique|Static navigation name is not unique: staticNavigation",
+                        "StaticNavigationNamesAreUnique|Static navigation name is not unique: staticnavigation"
+                ));
+    }
+    
+    @Test
+    void testStaticDataNamesAreUnique() throws Exception {
+        log.info("Testing critique: StaticDataNamesAreUnique");
+
+        StaticData staticData1 = newStaticDataBuilder().withName("staticData")
+        		.withDataType(newCustomTypeBuilder().withName("custom").build())
+        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("5").build())
+        		.build();
+        StaticData staticData2 = newStaticDataBuilder().withName("StaticData")
+        		.withDataType(newCustomTypeBuilder().withName("custom").build())
+        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("5").build())
+        		.build();
+
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(staticData1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(staticData2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "StaticDataNamesAreUnique|Static data name is not unique: staticData",
+                        "StaticDataNamesAreUnique|Static data name is not unique: StaticData"
+                ));
+    }
+    
+    @Test
+    void testUnboundOperationNamesAreUnique() throws Exception {
+        log.info("Testing critique: UnboundOperationNamesAreUnique");
+
+        UnboundOperation unboundOp1 = newUnboundOperationBuilder().withName("unboundoperation")
+        		.withImplementation(newOperationBodyBuilder().withBody("body").build())
+        		.build();
+        UnboundOperation unboundOp2 = newUnboundOperationBuilder().withName("UNBOUNDOPERATION")
+        		.withImplementation(newOperationBodyBuilder().withBody("body").build())
+        		.build();
+        
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(unboundOp1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(unboundOp2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "UnboundOperationNamesAreUnique|Unbound operation name is not unique: unboundoperation",
+                        "UnboundOperationNamesAreUnique|Unbound operation name is not unique: UNBOUNDOPERATION"
+                ));
+    }
+
+    @Test
+    void testAccessPointNamesAreUnique() throws Exception {
+        log.info("Testing critique: AccessPointNamesAreUnique");
+
+        AccessPoint accessPoint1 = AccessPointBuilder.create().withName("accessPoint").build();
+        AccessPoint accessPoint2 = AccessPointBuilder.create().withName("AccessPoint").build();
+        
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(accessPoint1).build();
+        Package p2 = newPackageBuilder().withName("pkg2").withElements(accessPoint2).build();
+        
+        Model m = newModelBuilder().withName("M")
+                .withPackages(ImmutableList.of(p1,p2))
+                .build();
+
+        psmModel.addContent(m);
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of(
+                        "AccessPointNamesAreUnique|Access point name is not unique: accessPoint",
+                        "AccessPointNamesAreUnique|Access point name is not unique: AccessPoint"
+                ));
     }
 }

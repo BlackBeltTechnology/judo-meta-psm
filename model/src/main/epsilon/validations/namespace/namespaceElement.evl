@@ -37,4 +37,44 @@ context PSM!NamespaceElement {
         check: not self.name.endsWith("_")
         message: "NamespaceElement's name must end with an english letter or a digit: " + self.name
     }
+ }
+ 
+context PSM!StaticNavigation {
+    
+    // static navigation type names should be unique
+    critique StaticNavigationNamesAreUnique {
+        check: not PSM!StaticNavigation.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Static navigation name is not unique: " + self.name
+    }
 }
+
+context PSM!StaticData {
+    
+    // static navigation type names should be unique
+    critique StaticDataNamesAreUnique {
+        check: not PSM!StaticData.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Static data name is not unique: " + self.name
+    }
+}
+
+context PSM!UnboundOperation {
+    
+    // static navigation type names should be unique
+    critique UnboundOperationNamesAreUnique {
+        check: not PSM!UnboundOperation.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Unbound operation name is not unique: " + self.name
+    }
+}
+
+context PSM!AccessPoint {
+    
+    // static navigation type names should be unique
+    critique AccessPointNamesAreUnique {
+        check: not PSM!AccessPoint.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Access point name is not unique: " + self.name
+    }
+}
+
+
+
+

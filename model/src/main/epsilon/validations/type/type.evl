@@ -1,31 +1,25 @@
 context PSM!Primitive {
-    /* TODO-ask: remove?
     // primitive type names should be unique
-    critique TypeNamesAreUnique {
-        check: not PSM!Primitive.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
-        message: "Type name is not unique: " + self.name
+    critique PrimitiveTypeNamesAreUnique {
+        check: not PSM!Primitive.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Primitive type name is not unique: " + self.name
     }
-    */
 }
 
 context PSM!EntityType {
-    /* TODO-ask: remove?
     // entity type names should be unique
-    critique TypeNamesAreUnique {
-        check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
-        message: "Type name is not unique: " + self.name
+    critique EntityTypeNamesAreUnique {
+        check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Entity type name is not unique: " + self.name
     }
-    */
 }
 
 context PSM!TransferObjectType {
-    /* TODO-ask: remove?
     // transfer object type names should be unique
-    critique TypeNamesAreUnique {
-        check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name == self.name).isDefined()
-        message: "Type name is not unique: " + self.name
+    critique TransferObjectTypeNamesAreUnique {
+        check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Transfer object type name is not unique: " + self.name
     }
-    */
 }
 
 context PSM!TransferObjectRelation {
