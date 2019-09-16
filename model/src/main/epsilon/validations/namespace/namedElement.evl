@@ -21,6 +21,13 @@ context PSM!TransferObjectRelation {
 		check: not self.binding.isDefined()
 		message: "Transfer object relation " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."	
 	}
+	
+	constraint TargetMatchesBindingTarget{
+        guard:  self.target.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+        check:  self.target.entityType.getAllSuperEntityTypes().including(self.target.entityType).contains(self.binding.target)
+        message: "EntityType of mapped transfer object type " + self.target.name + " (target of transfer object relation " + self.name
+        			+ ") must match the target of the binding of transfer object relation " + self.name + "."  
+    }
 }
 
 context PSM!TransferAttribute {
