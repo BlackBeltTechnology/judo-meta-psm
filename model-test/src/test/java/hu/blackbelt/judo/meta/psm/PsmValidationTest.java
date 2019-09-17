@@ -1535,4 +1535,117 @@ class PsmValidationTest {
                         "AccessPointNamesAreUnique|Access point name is not unique: AccessPoint"
                 ));
     }
+    
+    @Test
+    void testTargetMatchesBindingTarget() throws Exception {
+        log.info("Testing constraint: TargetMatchesBindingTarget");
+        
+        AssociationEnd e0 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e0").build()
+        ).build();
+        NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+        
+        StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
+        		.withCardinality(newCardinalityBuilder().build())
+        		.withGetterExpression(
+                        newReferenceExpressionTypeBuilder().withExpression("targetChild").build()
+        		).build();
+        StaticNavigation staticNav2 = newStaticNavigationBuilder().withName("staticNav2")
+        		.withCardinality(newCardinalityBuilder().build())
+        		.withGetterExpression(
+                        newReferenceExpressionTypeBuilder().withExpression("friend").build()
+        		).build();
+        
+        
+        EntityType parent = newEntityTypeBuilder().withName("parent")
+				.withRelations(e0)
+				.withNavigationProperties(n0)
+				.build();
+        EntityType child = newEntityTypeBuilder().withName("child")
+				.withSuperEntityTypes(parent)
+				.withRelations(ImmutableList.of(e1,e2))
+				.withNavigationProperties(ImmutableList.of(n1,n2))
+				.build();
+        
+        EntityType targetParent = newEntityTypeBuilder().withName("targetParent").build();
+        EntityType targetChild = newEntityTypeBuilder().withName("targetChild")
+        		.withSuperEntityTypes(targetParent).build();
+        
+        EntityType friend = newEntityTypeBuilder().withName("friend").build();
+        
+        e0.setTarget(targetParent);
+        e1.setTarget(targetChild);
+        e2.setTarget(friend);
+        n0.setTarget(targetParent);
+        n1.setTarget(targetChild);
+        n2.setTarget(friend);
+        staticNav1.setTarget(targetChild);
+        staticNav2.setTarget(friend);
+        
+        MappedTransferObjectType targetTransferObject = newMappedTransferObjectTypeBuilder().withName("TargetTransferObject")
+        		.withEntityType(targetChild).build();
+        
+        TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0")
+        		.withBinding(e0).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1")
+        		.withBinding(e1).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2")
+        		.withBinding(e2).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3")
+        		.withBinding(n0).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4")
+        		.withBinding(n1).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
+        		.withBinding(n2).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder().withName("TransferRelation6")
+        		.withBinding(staticNav1).withTarget(targetTransferObject).build();
+        TransferObjectRelation transferRelation7 = newTransferObjectRelationBuilder().withName("TransferRelation7")
+        		.withBinding(staticNav2).withTarget(targetTransferObject).build();
+
+        MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
+							.withName("TransferObject").withRelations(ImmutableList.of(
+									transferRelation0,
+									transferRelation1,
+									transferRelation2,
+									transferRelation3,
+									transferRelation4,
+									transferRelation5,
+									transferRelation6,
+									transferRelation7
+									))
+							.withEntityType(child)
+							.build();
+        
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+        			parent,
+        			child,
+        			targetParent,
+        			targetChild,
+        			friend,
+        			transferObject,
+        			targetTransferObject,
+        			staticNav1,
+        			staticNav2
+        		)).build();
+
+        psmModel.addContent(model);
+        
+        runEpsilon(ImmutableList.of(
+        		"TargetMatchesBindingTarget|EntityType of mapped transfer object type TargetTransferObject "
+        		+ "(target of transfer object relation TransferRelation2) must match the target of the binding of transfer object relation TransferRelation2.",
+        		"TargetMatchesBindingTarget|EntityType of mapped transfer object type TargetTransferObject "
+        		+ "(target of transfer object relation TransferRelation5) must match the target of the binding of transfer object relation TransferRelation5.",
+        		"TargetMatchesBindingTarget|EntityType of mapped transfer object type TargetTransferObject "
+        		+ "(target of transfer object relation TransferRelation7) must match the target of the binding of transfer object relation TransferRelation7."),
+        		Collections.emptyList());
+    }
 }
