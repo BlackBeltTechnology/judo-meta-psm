@@ -28,6 +28,14 @@ context PSM!TransferObjectRelation {
         message: "EntityType of mapped transfer object type " + self.target.name + " (target of transfer object relation " + self.name
         			+ ") must match the target of the binding of transfer object relation " + self.name + "."  
     }
+    
+    constraint CardinalityMatchesBindingCardinality {
+        guard:  self.binding.isDefined()
+        check:  (self.cardinality.lower == self.binding.cardinality.lower) and
+                (self.cardinality.upper == self.binding.cardinality.upper)
+        message: "Transfer object relation " + self.name + " and its binding must have the same cardinality."
+    }
+    
 }
 
 context PSM!TransferAttribute {
