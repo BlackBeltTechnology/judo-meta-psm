@@ -57,3 +57,11 @@ context PSM!TransferAttribute {
         message: "Required flag of transfer attribute " + self.name + " must equal required flag of its binding."
     }
 }
+
+context PSM!ExposedGraph {
+
+    constraint SelectorTargetIsValid {
+        check: self.selector.target == self.mappedTransferObjectType.entityType
+        message: "Target of selector of exposed graph " + self.name + " must match the entity type of the exposed graph's mapped transfer object."
+    }
+}

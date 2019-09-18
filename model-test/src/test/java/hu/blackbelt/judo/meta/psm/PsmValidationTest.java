@@ -5,6 +5,7 @@ import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
+import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
@@ -42,6 +43,7 @@ import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.ne
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.ExposedGraphBuilder.*;
 
 class PsmValidationTest {
 
@@ -1919,4 +1921,36 @@ class PsmValidationTest {
                    "RequiredFlagMatchesBindingRequiredFlag|Required flag of transfer attribute TransferAttribute4 must equal required flag of its binding."),
                    Collections.emptyList());
    }
+    
+    @Test
+    void testSelectorTargetIsValid() throws Exception {
+    	log.info("Testing constraint: SelectorTargetIsValid");
+       
+    	EntityType mapped = newEntityTypeBuilder().withName("mapped").build();
+    	EntityType separate = newEntityTypeBuilder().withName("separate").build();
+
+    	MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject").withEntityType(mapped).build();
+
+    	StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(separate).build();
+
+    	ExposedGraph graph = newExposedGraphBuilder().withName("graph").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    			.withSelector(staticNav).withMappedTransferObjectType(transferObject).build();
+
+        AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint").withExposedGraphs(graph).build();
+    	
+    	Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+    	                    mapped,
+    	                    separate,
+    	                    transferObject,
+    	                    staticNav,
+    	                    accessPoint
+    	                ))
+    					.build();
+
+    	        psmModel.addContent(model);
+    	        
+    	        runEpsilon(ImmutableList.of(
+    	                "SelectorTargetIsValid|Target of selector of exposed graph graph must match the entity type of the exposed graph's mapped transfer object."),
+    	                Collections.emptyList());
+    }
 }
