@@ -35,7 +35,6 @@ context PSM!TransferObjectRelation {
                 (self.cardinality.upper == self.binding.cardinality.upper)
         message: "Transfer object relation " + self.name + " and its binding must have the same cardinality."
     }
-    
 }
 
 context PSM!TransferAttribute {
@@ -45,4 +44,10 @@ context PSM!TransferAttribute {
 		check: not self.binding.isDefined()
 		message: "Transfer object attribute " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."
 	}
+	
+    constraint DataTypeMatchesBindingDataType {
+        guard:  self.binding.isDefined()
+        check:  self.dataType == self.binding.dataType
+        message: "DataType of transfer attribute " + self.name + " must match the dataType of its binding."
+    }
 }
