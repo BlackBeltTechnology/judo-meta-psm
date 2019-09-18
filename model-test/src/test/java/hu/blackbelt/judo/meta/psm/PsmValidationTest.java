@@ -1734,4 +1734,66 @@ class PsmValidationTest {
                 "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation5 and its binding must have the same cardinality."),
                 Collections.emptyList());
     }
+    
+    @Test
+    void testDataTypeMatchesBindingDataType() throws Exception {
+        log.info("Testing constraint: DataTypeMatchesBindingDataType");
+        
+        NumericType integerType = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        StringType stringType = newStringTypeBuilder().withName("string").withMaxLength(255).build(); 
+        
+        Attribute attribute0 = newAttributeBuilder().withName("attribute0").withDataType(integerType).build();
+        Attribute attribute1 = newAttributeBuilder().withName("attribute1").withDataType(stringType).build();
+
+        DataProperty property0 = newDataPropertyBuilder().withName("property0").withDataType(integerType).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute0").build()
+        ).build();
+        DataProperty property1 = newDataPropertyBuilder().withName("property1").withDataType(stringType).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
+        ).build();
+
+        StaticData staticData0 = newStaticDataBuilder().withName("staticData0").withDataType(integerType)
+                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("10").build()).build();
+        StaticData staticData1 = newStaticDataBuilder().withName("staticData1").withDataType(stringType)
+                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("exp").build()).build();
+
+        EntityType entity = newEntityTypeBuilder().withName("entity")
+            .withAttributes(ImmutableList.of(attribute0,attribute1))
+            .withDataProperties(ImmutableList.of(property0,property1))
+            .build();
+
+        TransferAttribute transferAttribute0 = newTransferAttributeBuilder().withName("TransferAttribute0").withDataType(integerType).withBinding(attribute0).build();
+        TransferAttribute transferAttribute1 = newTransferAttributeBuilder().withName("TransferAttribute1").withDataType(integerType).withBinding(attribute1).build();
+        TransferAttribute transferAttribute2 = newTransferAttributeBuilder().withName("TransferAttribute2").withDataType(integerType).withBinding(property0).build();
+        TransferAttribute transferAttribute3 = newTransferAttributeBuilder().withName("TransferAttribute3").withDataType(integerType).withBinding(property1).build();
+        TransferAttribute transferAttribute4 = newTransferAttributeBuilder().withName("TransferAttribute4").withDataType(integerType).withBinding(staticData0).build();
+        TransferAttribute transferAttribute5 = newTransferAttributeBuilder().withName("TransferAttribute5").withDataType(integerType).withBinding(staticData1).build();
+
+        MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
+                            .withName("TransferObject").withAttributes(ImmutableList.of(
+                                    transferAttribute0,
+                                    transferAttribute1,
+                                    transferAttribute2,
+                                    transferAttribute3,
+                                    transferAttribute4,
+                                    transferAttribute5    
+                                    ))
+                            .withEntityType(entity)
+                            .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                    entity,
+                    transferObject,
+                    staticData0,
+                    staticData1
+                )).build();
+
+        psmModel.addContent(model);
+        
+        runEpsilon(ImmutableList.of(
+                "DataTypeMatchesBindingDataType|DataType of transfer attribute transferAttribute1 must match the dataType of its binding.",
+                "DataTypeMatchesBindingDataType|DataType of transfer attribute transferAttribute3 must match the dataType of its binding.",
+                "DataTypeMatchesBindingDataType|DataType of transfer attribute transferAttribute5 must match the dataType of its binding."),
+                Collections.emptyList());
+    }
 }
