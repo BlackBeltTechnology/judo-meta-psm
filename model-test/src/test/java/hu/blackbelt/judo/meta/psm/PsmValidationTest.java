@@ -1931,7 +1931,8 @@ class PsmValidationTest {
 
     	MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject").withEntityType(mapped).build();
 
-    	StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(separate).build();
+    	StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav")
+    			.withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).withTarget(separate).build();
 
     	ExposedGraph graph = newExposedGraphBuilder().withName("graph").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
     			.withSelector(staticNav).withMappedTransferObjectType(transferObject).build();
@@ -1952,5 +1953,32 @@ class PsmValidationTest {
     	        runEpsilon(ImmutableList.of(
     	                "SelectorTargetIsValid|Target of selector of exposed graph graph must match the entity type of the exposed graph's mapped transfer object."),
     	                Collections.emptyList());
+    }
+    
+    @Test
+    void testSelectorCardinalityIsValid() throws Exception {
+        log.info("Testing constraint: SelectorTargetIsValid");
+       
+        EntityType entity = newEntityTypeBuilder().withName("entity").build();
+        MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject").withEntityType(entity).build();
+        StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
+
+        ExposedGraph graph = newExposedGraphBuilder().withName("graph").withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build())
+                .withSelector(staticNav).withMappedTransferObjectType(transferObject).build();
+        AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint").withExposedGraphs(graph).build();
+        
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            entity,
+                            transferObject,
+                            staticNav,
+                            accessPoint
+                        )).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+            "SelectorCardinalityIsValid|Cardinality of exposed graph graph must match cardinality of the exposed graph's selector."),
+            Collections.emptyList());
     }
 }
