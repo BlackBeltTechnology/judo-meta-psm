@@ -5,7 +5,6 @@ import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
-import hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccessPointBuilder;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
@@ -42,6 +41,7 @@ import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
 
 class PsmValidationTest {
 
@@ -1142,7 +1142,7 @@ class PsmValidationTest {
         log.info("Testing constraint: UnmappedTransferObjectTypeHasNoRelationBinding");
         
         StaticNavigation n = newStaticNavigationBuilder().withName("N").withCardinality(newCardinalityBuilder().build()).build();
-        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).build();
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).withCardinality(newCardinalityBuilder().build()).build();
         
         UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withRelations(r).build();
 
@@ -1257,7 +1257,8 @@ class PsmValidationTest {
         			parent,
         			child,
         			friend,
-        			transferObject
+        			transferObject,
+        			staticData
         		)).build();
         
         
@@ -1316,13 +1317,20 @@ class PsmValidationTest {
         e2.setTarget(child);
         e2.setPartner(e1);
         
-        TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0").withBinding(e0).build();
-        TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1").withBinding(e1).build();
-        TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2").withBinding(e2).build();
-        TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3").withBinding(n0).build();
-        TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4").withBinding(n1).build();
-        TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5").withBinding(n2).build();
-        TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder().withName("TransferRelation6").withBinding(staticNav).build();
+        TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation0").withCardinality(newCardinalityBuilder().build()).withBinding(e0).build();
+        TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation1").withBinding(e1).withCardinality(newCardinalityBuilder().build()).build();
+        TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation2").withCardinality(newCardinalityBuilder().build()).withBinding(e2).build();
+        TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation3").withCardinality(newCardinalityBuilder().build()).withBinding(n0).build();
+        TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation4").withCardinality(newCardinalityBuilder().build()).withBinding(n1).build();
+        TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation5").withCardinality(newCardinalityBuilder().build()).withBinding(n2).build();
+        TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder()
+        		.withName("TransferRelation6").withCardinality(newCardinalityBuilder().build()).withBinding(staticNav).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
 							.withName("TransferObject").withRelations(ImmutableList.of(
@@ -1341,7 +1349,8 @@ class PsmValidationTest {
         			parent,
         			child,
         			friend,
-        			transferObject
+        			transferObject,
+        			staticNav
         		)).build();
 
         psmModel.addContent(model);
@@ -1518,8 +1527,8 @@ class PsmValidationTest {
     void testAccessPointNamesAreUnique() throws Exception {
         log.info("Testing critique: AccessPointNamesAreUnique");
 
-        AccessPoint accessPoint1 = AccessPointBuilder.create().withName("accessPoint").build();
-        AccessPoint accessPoint2 = AccessPointBuilder.create().withName("AccessPoint").build();
+        AccessPoint accessPoint1 = newAccessPointBuilder().withName("accessPoint").build();
+        AccessPoint accessPoint2 = newAccessPointBuilder().withName("AccessPoint").build();
         
         Package p1 = newPackageBuilder().withName("pkg1").withElements(accessPoint1).build();
         Package p2 = newPackageBuilder().withName("pkg2").withElements(accessPoint2).build();
@@ -1565,7 +1574,6 @@ class PsmValidationTest {
                         newReferenceExpressionTypeBuilder().withExpression("friend").build()
         		).build();
         
-        
         EntityType parent = newEntityTypeBuilder().withName("parent")
 				.withRelations(e0)
 				.withNavigationProperties(n0)
@@ -1595,21 +1603,21 @@ class PsmValidationTest {
         		.withEntityType(targetChild).build();
         
         TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0")
-        		.withBinding(e0).withTarget(targetTransferObject).build();
+        		.withBinding(e0).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1")
-        		.withBinding(e1).withTarget(targetTransferObject).build();
+        		.withBinding(e1).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2")
-        		.withBinding(e2).withTarget(targetTransferObject).build();
+        		.withBinding(e2).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3")
-        		.withBinding(n0).withTarget(targetTransferObject).build();
+        		.withBinding(n0).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4")
-        		.withBinding(n1).withTarget(targetTransferObject).build();
+        		.withBinding(n1).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
-        		.withBinding(n2).withTarget(targetTransferObject).build();
+        		.withBinding(n2).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder().withName("TransferRelation6")
-        		.withBinding(staticNav1).withTarget(targetTransferObject).build();
+        		.withBinding(staticNav1).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation7 = newTransferObjectRelationBuilder().withName("TransferRelation7")
-        		.withBinding(staticNav2).withTarget(targetTransferObject).build();
+        		.withBinding(staticNav2).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
 							.withName("TransferObject").withRelations(ImmutableList.of(
@@ -1647,5 +1655,83 @@ class PsmValidationTest {
         		"TargetMatchesBindingTarget|EntityType of mapped transfer object type TargetTransferObject "
         		+ "(target of transfer object relation TransferRelation7) must match the target of the binding of transfer object relation TransferRelation7."),
         		Collections.emptyList());
+    }
+    
+    @Test
+    void testCardinalityMatchesBindingCardinality() throws Exception {
+        log.info("Testing constraint: CardinalityMatchesBindingCardinality");
+
+        AssociationEnd end0 = newAssociationEndBuilder().withName("end0")
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build())
+                .build();
+        TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0")
+                .withBinding(end0).withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build()).build();
+        
+        AssociationEnd end1 = newAssociationEndBuilder().withName("end1")
+                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                .build();
+        TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1")
+                .withBinding(end1).withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build()).build();
+        
+        Containment containment = newContainmentBuilder().withName("containment")
+                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .build();
+        TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2")
+                .withBinding(containment).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
+        
+        NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation")
+                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.containment").build())
+                .build();
+        TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3")
+                .withBinding(navigation).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
+        
+        StaticNavigation staticNav0 = newStaticNavigationBuilder().withName("staticNav0")
+                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withGetterExpression(
+                        newReferenceExpressionTypeBuilder().withExpression("entity").build()
+                ).build();
+        TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4")
+                .withBinding(staticNav0).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
+        
+        StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
+                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                .withGetterExpression(
+                        newReferenceExpressionTypeBuilder().withExpression("entity").build()
+                ).build();
+        TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
+                .withBinding(staticNav1).withCardinality(newCardinalityBuilder().withLower(3).withUpper(4).build()).build();
+
+        EntityType entity = newEntityTypeBuilder().withName("entity")
+                .withRelations(ImmutableList.of(end0,end1,containment))
+                .withNavigationProperties(navigation)
+                .build();
+
+        MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
+                            .withName("TransferObject").withRelations(ImmutableList.of(
+                                    transferRelation0,
+                                    transferRelation1,
+                                    transferRelation2,
+                                    transferRelation3,
+                                    transferRelation4,
+                                    transferRelation5
+                                    ))
+                            .withEntityType(entity)
+                            .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                    entity,
+                    transferObject,
+                    staticNav0,
+                    staticNav1
+                )).build();
+
+        psmModel.addContent(model);
+        
+        runEpsilon(ImmutableList.of(
+                "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation1 and its binding must have the same cardinality.",
+                "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation3 and its binding must have the same cardinality.",
+                "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation5 and its binding must have the same cardinality."),
+                Collections.emptyList());
     }
 }
