@@ -1206,16 +1206,20 @@ class PsmValidationTest {
         
         DataProperty property0 = newDataPropertyBuilder().withName("property0").withDataType(integer).withGetterExpression(
                 newDataExpressionTypeBuilder().withExpression("self.attribute0").build()
-        ).build();
+        )
+        .build();
         DataProperty property1 = newDataPropertyBuilder().withName("property1").withDataType(integer).withGetterExpression(
                 newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
-        ).build();
+        )
+        .build();
         DataProperty property2 = newDataPropertyBuilder().withName("property2").withDataType(integer).withGetterExpression(
                 newDataExpressionTypeBuilder().withExpression("self.attribute2").build()
-        ).build();
+        )
+        .build();
         StaticData staticData = newStaticDataBuilder().withName("staticData").withDataType(integer)
         		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("10").build()
-        ).build();
+        )
+        .build();
         
         EntityType parent = newEntityTypeBuilder().withName("parent")
         					.withAttributes(attribute0)
@@ -1266,7 +1270,8 @@ class PsmValidationTest {
         			friend,
         			transferObject,
         			staticData
-        		)).build();
+        		))
+        		.build();
 
         psmModel.addContent(model);
         
@@ -1288,19 +1293,23 @@ class PsmValidationTest {
         
         NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.e0").build()
-        ).build();
+        )
+        .build();
         NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
-        ).build();
+        )
+        .build();
         NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
-        ).build();
+        )
+        .build();
         
         StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav")
         		.withCardinality(newCardinalityBuilder().build())
         		.withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("child").build()
-        		).build();
+        		)
+        		.build();
         
         EntityType parent = newEntityTypeBuilder().withName("parent")
 				.withRelations(e0)
@@ -1356,7 +1365,8 @@ class PsmValidationTest {
         			friend,
         			transferObject,
         			staticNav
-        		)).build();
+        		))
+        		.build();
 
         psmModel.addContent(model);
         
@@ -1560,24 +1570,29 @@ class PsmValidationTest {
         
         NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.e0").build()
-        ).build();
+        )
+        .build();
         NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
-        ).build();
+        )
+        .build();
         NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
-        ).build();
+        )
+        .build();
         
         StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
         		.withCardinality(newCardinalityBuilder().build())
         		.withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("targetChild").build()
-        		).build();
+        		)
+        		.build();
         StaticNavigation staticNav2 = newStaticNavigationBuilder().withName("staticNav2")
         		.withCardinality(newCardinalityBuilder().build())
         		.withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("friend").build()
-        		).build();
+        		)
+        		.build();
         
         EntityType parent = newEntityTypeBuilder().withName("parent")
 				.withRelations(e0)
@@ -1634,7 +1649,7 @@ class PsmValidationTest {
 									transferRelation5,
 									transferRelation6,
 									transferRelation7
-									))
+							))
 							.withEntityType(child)
 							.build();
         
@@ -1648,7 +1663,8 @@ class PsmValidationTest {
         			targetTransferObject,
         			staticNav1,
         			staticNav2
-        		)).build();
+        		))
+        		.build();
 
         psmModel.addContent(model);
         
@@ -1667,45 +1683,75 @@ class PsmValidationTest {
         log.info("Testing constraint: CardinalityMatchesBindingCardinality");
 
         AssociationEnd end0 = newAssociationEndBuilder().withName("end0")
-                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build())
+                .withCardinality(
+                		newCardinalityBuilder().withLower(0).withUpper(5).build()
+                )
                 .build();
         TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0")
-                .withBinding(end0).withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build()).build();
+                .withBinding(end0).withCardinality(
+                		newCardinalityBuilder().withLower(0).withUpper(5).build()
+                )
+                .build();
         
         AssociationEnd end1 = newAssociationEndBuilder().withName("end1")
-                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                .withCardinality(
+                		newCardinalityBuilder().withLower(1).withUpper(1).build()
+                )
                 .build();
         TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1")
-                .withBinding(end1).withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build()).build();
+                .withBinding(end1).withCardinality(
+                		newCardinalityBuilder().withLower(0).withUpper(5).build()
+                )
+                .build();
         
         Containment containment = newContainmentBuilder().withName("containment")
-                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withCardinality(
+                		newCardinalityBuilder().withLower(2).withUpper(3).build()
+                )
                 .build();
         TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2")
-                .withBinding(containment).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
+                .withBinding(containment).withCardinality(
+                		newCardinalityBuilder().withLower(2).withUpper(3).build()
+                )
+                .build();
         
         NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation")
-                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
-                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.containment").build())
+                .withCardinality(
+                		newCardinalityBuilder().withLower(2).withUpper(3).build()
+                )
+                .withGetterExpression(
+                		newReferenceExpressionTypeBuilder().withExpression("self.containment").build()
+                )
                 .build();
         TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3")
-                .withBinding(navigation).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build();
+                .withBinding(navigation).withCardinality(
+                		newCardinalityBuilder().withLower(1).withUpper(1).build()
+                		)
+                .build();
         
         StaticNavigation staticNav0 = newStaticNavigationBuilder().withName("staticNav0")
                 .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
                 .withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("entity").build()
-                ).build();
+                )
+                .build();
         TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4")
-                .withBinding(staticNav0).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build()).build();
+                .withBinding(staticNav0).withCardinality(
+                		newCardinalityBuilder().withLower(2).withUpper(3).build()
+                )
+                .build();
         
         StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
                 .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
                 .withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("entity").build()
-                ).build();
+                )
+                .build();
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
-                .withBinding(staticNav1).withCardinality(newCardinalityBuilder().withLower(3).withUpper(4).build()).build();
+                .withBinding(staticNav1).withCardinality(
+                		newCardinalityBuilder().withLower(3).withUpper(4).build()
+                )
+                .build();
 
         EntityType entity = newEntityTypeBuilder().withName("entity")
                 .withRelations(ImmutableList.of(end0,end1,containment))
@@ -1720,7 +1766,7 @@ class PsmValidationTest {
                                     transferRelation3,
                                     transferRelation4,
                                     transferRelation5
-                                    ))
+                            ))
                             .withEntityType(entity)
                             .build();
 
@@ -1729,7 +1775,8 @@ class PsmValidationTest {
                     transferObject,
                     staticNav0,
                     staticNav1
-                )).build();
+                ))
+        		.build();
 
         psmModel.addContent(model);
         
@@ -1781,8 +1828,8 @@ class PsmValidationTest {
                                     transferAttribute2,
                                     transferAttribute3,
                                     transferAttribute4,
-                                    transferAttribute5    
-                                    ))
+                                    transferAttribute5
+                            ))
                             .withEntityType(entity)
                             .build();
 
@@ -1793,7 +1840,8 @@ class PsmValidationTest {
                     transferObject,
                     staticData0,
                     staticData1
-                )).build();
+                ))
+        		.build();
 
         psmModel.addContent(model);
         
@@ -1803,4 +1851,72 @@ class PsmValidationTest {
                 "DataTypeMatchesBindingDataType|DataType of transfer attribute TransferAttribute5 must match the dataType of its binding."),
                 Collections.emptyList());
     }
+
+    @Test
+    void testRequiredFlagMatchesBindingRequiredFlag() throws Exception {
+       log.info("Testing constraint: DataTypeMatchesBindingDataType");
+       
+       NumericType integerType = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+       
+       Attribute attribute0 = newAttributeBuilder().withName("attribute0").withDataType(integerType).withRequired(false).build();
+       Attribute attribute1 = newAttributeBuilder().withName("attribute1").withDataType(integerType).withRequired(true).build();
+
+       DataProperty property0 = newDataPropertyBuilder().withName("property0").withDataType(integerType).withGetterExpression(
+                   newDataExpressionTypeBuilder().withExpression("self.attribute0").build()
+           ).withRequired(false).build();
+       DataProperty property1 = newDataPropertyBuilder().withName("property1").withDataType(integerType).withGetterExpression(
+                   newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
+           ).withRequired(true).build();
+
+       StaticData staticData0 = newStaticDataBuilder().withName("staticData0").withDataType(integerType)
+               .withGetterExpression(newDataExpressionTypeBuilder().withExpression("1").build()).withRequired(false).build();
+       StaticData staticData1 = newStaticDataBuilder().withName("staticData1").withDataType(integerType)
+               .withGetterExpression(newDataExpressionTypeBuilder().withExpression("1").build()).withRequired(true).build();
+
+       EntityType entity = newEntityTypeBuilder().withName("entity")
+               .withAttributes(ImmutableList.of(attribute0,attribute1))
+               .withDataProperties(ImmutableList.of(property0,property1))
+               .build();
+
+       TransferAttribute transferAttribute0 = newTransferAttributeBuilder().withName("TransferAttribute0").withDataType(integerType)
+               .withBinding(attribute0).withRequired(true).build();
+       TransferAttribute transferAttribute1 = newTransferAttributeBuilder().withName("TransferAttribute1").withDataType(integerType)
+               .withBinding(attribute1).withRequired(true).build();
+       TransferAttribute transferAttribute2 = newTransferAttributeBuilder().withName("TransferAttribute2").withDataType(integerType)
+               .withBinding(property0).withRequired(true).build();
+       TransferAttribute transferAttribute3 = newTransferAttributeBuilder().withName("TransferAttribute3").withDataType(integerType)
+               .withBinding(property1).withRequired(true).build();
+       TransferAttribute transferAttribute4 = newTransferAttributeBuilder().withName("TransferAttribute4").withDataType(integerType)
+               .withBinding(staticData0).withRequired(true).build();
+       TransferAttribute transferAttribute5 = newTransferAttributeBuilder().withName("TransferAttribute5").withDataType(integerType)
+               .withBinding(staticData1).withRequired(true).build();
+
+       MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
+                               .withName("TransferObject").withAttributes(ImmutableList.of(
+                                       transferAttribute0,
+                                       transferAttribute1,
+                                       transferAttribute2,
+                                       transferAttribute3,
+                                       transferAttribute4,
+                                       transferAttribute5
+                               ))
+                               .withEntityType(entity)
+                               .build();
+
+       Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                       entity,
+                       transferObject,
+                       staticData0,
+                       staticData1
+               ))
+    		   .build();
+
+           psmModel.addContent(model);
+           
+           runEpsilon(ImmutableList.of(
+                   "RequiredFlagMatchesBindingRequiredFlag|Required flag of transfer attribute TransferAttribute0 must equal required flag of its binding.",
+                   "RequiredFlagMatchesBindingRequiredFlag|Required flag of transfer attribute TransferAttribute2 must equal required flag of its binding.",
+                   "RequiredFlagMatchesBindingRequiredFlag|Required flag of transfer attribute TransferAttribute4 must equal required flag of its binding."),
+                   Collections.emptyList());
+   }
 }
