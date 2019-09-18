@@ -50,4 +50,10 @@ context PSM!TransferAttribute {
         check:  self.dataType == self.binding.dataType
         message: "DataType of transfer attribute " + self.name + " must match the dataType of its binding."
     }
+    
+    constraint RequiredFlagMatchesBindingRequiredFlag {
+        guard:  self.binding.isDefined()
+        check:  self.required == self.binding.required
+        message: "Required flag of transfer attribute " + self.name + " must equal required flag of its binding."
+    }
 }
