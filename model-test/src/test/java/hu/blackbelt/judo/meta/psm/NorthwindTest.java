@@ -4,6 +4,7 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
 
 import org.eclipse.emf.common.util.URI;
@@ -43,6 +44,15 @@ abstract class NorthwindTest {
     protected EntityType getEntityType(final String name) {
         return (EntityType) northwind.getPackages().stream()
                 .filter(p -> "entities".equals(p.getName()))
+                .findFirst().get()
+                .getElements().stream()
+                .filter(e -> name.equals(e.getName()))
+                .findFirst().get();
+    }
+    
+    protected MappedTransferObjectType getMappedTransferObjectType(final String name) {
+        return (MappedTransferObjectType) northwind.getPackages().stream()
+                .filter(p -> "services".equals(p.getName()))
                 .findFirst().get()
                 .getElements().stream()
                 .filter(e -> name.equals(e.getName()))

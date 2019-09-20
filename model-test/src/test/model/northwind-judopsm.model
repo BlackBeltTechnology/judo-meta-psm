@@ -480,13 +480,13 @@
       <attributes xmi:id="_zGRTkCVxEemLpvUY7MQgng" name="discount" required="true" dataType="_VDVVQIUcEeipmMyz9cMCRA" binding="_9jb2ACVxEemLpvUY7MQgng"/>
       <attributes xmi:id="_ACqnYCYIEemLpvUY7MQgng" name="discountedItemsWithSingleManufacturer" required="true" dataType="_TXtg8IUcEeipmMyz9cMCRA" binding="_LL8B4CYIEemLpvUY7MQgng"/>
       <operations xmi:id="_PwEewEWhEemHs64O5EYsyQ" name="get">
-        <implementation stateful="false"/>
         <output xmi:id="_VNvBUEWhEemHs64O5EYsyQ" name="output" type="_ETGEYCVQEemLpvUY7MQgng">
           <cardinality xmi:id="_uxAnQEWhEemHs64O5EYsyQ"/>
         </output>
         <input xmi:id="_R3rEcEWhEemHs64O5EYsyQ" name="input" type="_nlfRMEWgEemHs64O5EYsyQ">
           <cardinality xmi:id="_vhr2QEWhEemHs64O5EYsyQ" lower="1"/>
         </input>
+        <implementation xmi:id="_HsUX8NuEEemhRqjlDInmVg"/>
       </operations>
       <operations xmi:id="_3cvWQF0kEemy96upLHyphg" name="changeShipment">
         <output xmi:id="_MgrqIF0lEemy96upLHyphg" name="output" type="_ETGEYCVQEemLpvUY7MQgng">
@@ -495,6 +495,7 @@
         <input xmi:id="_Llf0QF0lEemy96upLHyphg" name="input" type="_XvKUwF0lEemy96upLHyphg">
           <cardinality xmi:id="_26UTwF0mEemy96upLHyphg" lower="1"/>
         </input>
+        <implementation xmi:id="_JEcPMNuJEemhRqjlDInmVg" stateful="true"/>
       </operations>
     </elements>
     <elements xsi:type="service:MappedTransferObjectType" xmi:id="_ZliLoCVuEemLpvUY7MQgng" name="OrderItemProduct" entityType="__XzocINkEeiLE-B2bbL0fg" entityReferencePresence="REQUIRED">
@@ -519,13 +520,13 @@
       </relations>
       <attributes xmi:id="_s0y9wEWXEemHs64O5EYsyQ" name="productName" dataType="_Nppx8IUcEeipmMyz9cMCRA" binding="_LhnHUINvEeiLE-B2bbL0fg"/>
       <operations xmi:id="_adE0AEWhEemHs64O5EYsyQ" name="get">
-        <implementation stateful="false"/>
         <output xmi:id="_dvBF4EWhEemHs64O5EYsyQ" name="output" type="_o7IkkEWXEemHs64O5EYsyQ">
           <cardinality xmi:id="_1nBc0EWhEemHs64O5EYsyQ"/>
         </output>
         <input xmi:id="_b3UkcEWhEemHs64O5EYsyQ" name="input" type="_Z5o3IEWeEemHs64O5EYsyQ">
           <cardinality xmi:id="_2EOWMEWhEemHs64O5EYsyQ" lower="1"/>
         </input>
+        <implementation xmi:id="_HsXbQNuEEemhRqjlDInmVg"/>
       </operations>
     </elements>
     <elements xsi:type="service:MappedTransferObjectType" xmi:id="_xxeTIEWXEemHs64O5EYsyQ" name="CategoryInfo" entityType="_43ZPcINkEeiLE-B2bbL0fg">
@@ -534,23 +535,23 @@
       </relations>
       <attributes xmi:id="_zWg-UEWXEemHs64O5EYsyQ" name="categoryName" dataType="_Nppx8IUcEeipmMyz9cMCRA" binding="_v7k5EINmEeiLE-B2bbL0fg"/>
       <operations xmi:id="_ZXOmQEWhEemHs64O5EYsyQ" name="get">
-        <implementation stateful="false"/>
         <output xmi:id="_ifLpQEWhEemHs64O5EYsyQ" name="output" type="_xxeTIEWXEemHs64O5EYsyQ">
           <cardinality xmi:id="_56mx4EWhEemHs64O5EYsyQ"/>
         </output>
         <input xmi:id="_g_di8EWhEemHs64O5EYsyQ" name="input" type="_ai3aUEWeEemHs64O5EYsyQ">
           <cardinality xmi:id="_5Raq8EWhEemHs64O5EYsyQ" lower="1"/>
         </input>
+        <implementation xmi:id="_HsYCUNuEEemhRqjlDInmVg"/>
       </operations>
     </elements>
     <elements xsi:type="service:MappedTransferObjectType" xmi:id="_Z5o3IEWeEemHs64O5EYsyQ" name="ProductLink" entityType="_6XH80INkEeiLE-B2bbL0fg" entityReferencePresence="REQUIRED"/>
     <elements xsi:type="service:MappedTransferObjectType" xmi:id="_ai3aUEWeEemHs64O5EYsyQ" name="CategoryLink" entityType="_43ZPcINkEeiLE-B2bbL0fg" entityReferencePresence="REQUIRED"/>
     <elements xsi:type="service:MappedTransferObjectType" xmi:id="_nlfRMEWgEemHs64O5EYsyQ" name="OrderLink" entityType="_-H4RoINkEeiLE-B2bbL0fg" entityReferencePresence="REQUIRED"/>
     <elements xsi:type="service:UnboundOperation" xmi:id="_mr1P4EWhEemHs64O5EYsyQ" name="getAllOrders">
-      <implementation stateful="false"/>
       <output xmi:id="_oxIvgEWhEemHs64O5EYsyQ" name="output" type="_ETGEYCVQEemLpvUY7MQgng">
         <cardinality xmi:id="_rFrlAEWhEemHs64O5EYsyQ" upper="-1"/>
       </output>
+      <implementation xmi:id="_HsYCUduEEemhRqjlDInmVg"/>
     </elements>
     <elements xsi:type="service:UnmappedTransferObjectType" xmi:id="_XvKUwF0lEemy96upLHyphg" name="ShipmentChange">
       <attributes xmi:id="_ayUjwF0lEemy96upLHyphg" name="shippperName" dataType="_Nppx8IUcEeipmMyz9cMCRA"/>

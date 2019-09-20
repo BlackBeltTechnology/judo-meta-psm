@@ -8,10 +8,10 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
-import hu.blackbelt.judo.meta.psm.type.StringType;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -301,21 +302,44 @@ public class PsmUtils {
      * @return <code>true</code> if mapped transfer object type is abstract, <code>false</code> otherwise
      */
     public static boolean isAbstractMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
-        return mappedTransferObjectType.isAbstract();
+        return mappedTransferObjectType.getEntityType().isAbstract();
     }
 
     /**
      * Check if a mapped transfer object type is instantiable.
      *
-     * A mapped transfer object type is not instantiable if it has (its own or inherited) transfer attribute or transfer object relation without binding or it has (its own or inherited)
-     * bound operation without operation body or referenced entity type is abstract.
+     * A mapped transfer object type is not instantiable if it has (its own or inherited) bound operation without operation body
+     * or referenced entity type is abstract.
      *
      * @param mappedTransferObjectType mapped transfer object type
      * @return <code>true</code> if mapped transfer object type is instantiable, <code>false</code> otherwise
      */
     public static boolean isInstantiableMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
-        // TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+    	if(mappedTransferObjectType.getEntityType().isAbstract()) return false;
+    	
+    	Set<String> operationNames = mappedTransferObjectType.getOperations().stream()
+        	    .map(o -> o.getName())
+        	    .collect(Collectors.toSet());
+    	
+    	operationNames.addAll(mappedTransferObjectType.getSuperTransferObjectTypes().stream()
+    	    .filter(to -> to instanceof MappedTransferObjectType)
+    	    .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
+    	    .map(o -> o.getName())
+    	    .collect(Collectors.toSet()));
+    	
+    	Set<String> operationNamesWithImplementation = mappedTransferObjectType.getOperations().stream()
+        	    .filter(o -> o.getImplementation() != null)
+        	    .map(o -> o.getName())
+        	    .collect(Collectors.toSet());
+    	
+    	operationNamesWithImplementation.addAll(mappedTransferObjectType.getSuperTransferObjectTypes().stream()
+    	    .filter(to -> to instanceof MappedTransferObjectType)
+    	    .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
+    	    .filter(o -> o.getImplementation() != null)
+    	    .map(o -> o.getName())
+    	    .collect(Collectors.toSet()));
+   
+    	return operationNames.equals(operationNamesWithImplementation);
     }
 
     public static boolean isRegex(String regex) throws PatternSyntaxException {
