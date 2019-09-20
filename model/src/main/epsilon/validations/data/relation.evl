@@ -1,5 +1,5 @@
 //TODO-endcheck
-context PSM!Relation {
+context PSM!AssociationEnd {
 
     constraint CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne {
         guard: self.cascadeDelete == true
