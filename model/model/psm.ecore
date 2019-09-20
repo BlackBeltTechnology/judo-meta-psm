@@ -255,9 +255,6 @@
           <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfRelation(this).get();"/>
         </eAnnotations>
       </eOperations>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-          defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//data/PrimitiveTypedElement">
       <eOperations name="toString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -285,6 +282,9 @@
         </eAnnotations>
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/AssociationEnd"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceTypedElement" abstract="true"
         eSuperTypes="#//namespace/NamedElement">
@@ -314,8 +314,6 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Relation"/>
   </eSubpackages>
-  <eSubpackages name="behavior" nsURI="http://blackbelt.hu/judo/meta/psm/behavior"
-      nsPrefix="behavior"/>
   <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"
       nsPrefix="constraint">
     <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
@@ -453,6 +451,8 @@
           lowerBound="1" eType="#//service/EntityReferenceType" defaultValueLiteral="OPTIONAL"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/BoundOperation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//derived/LogicalExpressionType"
+          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OperationDeclaration" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"

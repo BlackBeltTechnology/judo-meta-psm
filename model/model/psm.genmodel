@@ -131,7 +131,6 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isContainment(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//data/Relation">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/Relation/cascadeDelete"/>
         <genOperations ecoreOperation="psm.ecore#//data/Relation/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/Relation/getEntityType" body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfRelation(this).get();"/>
       </genClasses>
@@ -144,6 +143,7 @@
       <genClasses ecoreClass="psm.ecore#//data/AssociationEnd">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//data/AssociationEnd/partner"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/AssociationEnd/cascadeDelete"/>
         <genOperations ecoreOperation="psm.ecore#//data/AssociationEnd/getOpposite"
             body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
       </genClasses>
@@ -165,8 +165,6 @@
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//data/Containment"/>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Behavior" basePackage="hu.blackbelt.judo.meta.psm"
-        disposableProviderFactory="true" ecorePackage="psm.ecore#//behavior"/>
     <nestedGenPackages prefix="Constraint" basePackage="hu.blackbelt.judo.meta.psm"
         resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
         extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-constraint"
@@ -271,6 +269,7 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/entityType"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/MappedTransferObjectType/entityReferencePresence"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/filter"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isAbstract"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isInstantiable"
@@ -479,6 +478,7 @@
         disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
         childCreationExtenders="true" fileExtensions="judo-meta-psm-measure" ecorePackage="psm.ecore#//measure">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//measure/DurationType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/nanosecond"/>
         <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/millisecond"/>
         <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/second"/>
         <genEnumLiterals ecoreEnumLiteral="psm.ecore#//measure/DurationType/minute"/>
