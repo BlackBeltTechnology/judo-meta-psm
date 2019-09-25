@@ -583,7 +583,7 @@ class PsmValidationTest {
     void testNavigationPropertyNameIsUnique () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
-        Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
+        Containment r1 = newContainmentBuilder().withName("r1").withCardinality(newCardinalityBuilder().build()).build();
         NavigationProperty n1 = newNavigationPropertyBuilder().withName("n").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                 newReferenceExpressionTypeBuilder().withExpression("self.r1.r1").build()
         ).build();
@@ -627,7 +627,7 @@ class PsmValidationTest {
     void testNavigationPropertyBelongsToEntity () throws Exception {
         log.info("Testing constraint: NamedElementHasContainer");
 
-        Containment r1 = newContainmentBuilder().withName("r1").withCascadeDelete(true).withCardinality(newCardinalityBuilder().build()).build();
+        Containment r1 = newContainmentBuilder().withName("r1").withCardinality(newCardinalityBuilder().build()).build();
         EntityType E = newEntityTypeBuilder().withName("E").withRelations(r1).build();
         r1.setTarget(E);
         Model m = newModelBuilder().withName("M").withElements(E).build();
