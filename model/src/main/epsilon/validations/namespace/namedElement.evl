@@ -35,6 +35,20 @@ context PSM!TransferObjectRelation {
                 (self.cardinality.upper == self.binding.cardinality.upper)
         message: "Transfer object relation " + self.name + " and its binding must have the same cardinality."
     }
+
+    constraint TransferObjectRelationIsEmbedded {
+        guard: self.target.isKindOf(PSM!UnmappedTransferObjectType)
+        check: self.embedded
+        message: "Transfer object relation " + self.name + " is referencing to unembedded unmapped transfer object type: " + self.target.name
+    }
+    
+    constraint TransferObjectRelationBindingIsValid {
+        guard: self.eContainer().isDefined() and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+        check:  self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
+                self.binding.isKindOf(PSM!StaticNavigation) 
+        message: "Binding of transfer object relation " + self.name + " of mapped transfer object " + self.eContainer().name +
+                " must either match the entity type of the mapped tranfer object or be StaticNavigation."
+    }   
 }
 
 context PSM!TransferAttribute {
@@ -56,6 +70,14 @@ context PSM!TransferAttribute {
         check:  self.required == self.binding.required
         message: "Required flag of transfer attribute " + self.name + " must equal required flag of its binding."
     }
+    
+    constraint TransferAttributeBindingIsValid {
+        guard: self.eContainer().isDefined() and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+        check: self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
+                self.binding.isKindOf(PSM!StaticData)
+        message: "Binding of transfer attribute " + self.name + " of mapped transfer object " + self.eContainer().name +
+                " must either match the entity type of the mapped tranfer object or be StaticData."
+    }
 }
 
 context PSM!ExposedGraph {
@@ -69,5 +91,95 @@ context PSM!ExposedGraph {
         check:  (self.selector.cardinality.lower == self.cardinality.lower) and
                 (self.selector.cardinality.upper == self.cardinality.upper)
         message: "Cardinality of exposed graph " + self.name + " must match cardinality of the exposed graph's selector."
+    }
+}
+
+context PSM!BoundOperation {
+
+    /*constraint BoundOperationOverloadingIsNotSupported {
+        guard: self.eContainer().isDefined() and 
+               self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                    .select(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase())).size() == 0
+        check {
+               var op = self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                   .selectOne(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase()))
+                   .operations.selectOne(o | o.name.toLowerCase() == self.name.toLowerCase());
+               var inputIsValid : Boolean = true;
+                   
+               return self.input.isDefined() == op.input.isDefined() and
+                   self.output.isDefined() == op.output.isDefined() and
+                   self.faults.size() == op.faults.size()       
+            }
+        message: 
+    }*/
+
+    constraint BoundOperationInputOverridingIsValid {
+        guard: self.eContainer().isDefined() and 
+               self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                    .select(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase())).size() == 1
+        check {
+            var op = self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                .selectOne(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase()))
+                .operations.selectOne(o | o.name.toLowerCase() == self.name.toLowerCase());
+            var inputIsValid : Boolean = true;
+
+            if (self.input.isDefined()) {
+                if (not op.input.isDefined()) {
+                    inputIsValid = false;
+                } else if (not op.input.type.superTransferObjectTypes.including(op.input.type).contains(self.input.type)) {
+                    inputIsValid = false;
+                }
+            } else if (op.input.isDefined()) inputIsValid = false;
+            
+            return inputIsValid;
+        }
+        message: "Overriding of bound operation: " + self.name + " is not valid. Input parameter type of the overriden operation must match or derive from the input parameter."
+    }
+    
+  constraint BoundOperationOutputOverridingIsValid {
+        guard: self.eContainer().isDefined() and 
+                self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                    .select(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase())).size() == 1
+        check {
+            var op = self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                .selectOne(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase()))
+                .operations.selectOne(o | o.name.toLowerCase() == self.name.toLowerCase());
+            var inputIsValid : Boolean = true;
+                
+            if (self.output.isDefined()){
+                if (not op.output.isDefined()) inputIsValid = false;
+                    else if (not self.output.type.superTransferObjectTypes.including(self.output.type).contains(op.output.type)) inputIsValid = false;
+            } else if (op.output.isDefined()) inputIsValid = false;
+            
+            return inputIsValid;
+        }
+        message: "Overriding of bound operation: " + self.name + " is not valid. Output parameter type must match or derive from the output parameter of the overriden operation." 
+    }
+
+    constraint BoundOperationFaultsOverridingIsValid {
+        guard: self.eContainer().isDefined() and 
+                self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                    .select(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase())).size() == 1
+        check {
+            var op = self.eContainer().superTransferObjectTypes.select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                .selectOne(t | t.operations.exists(o | o.name.toLowerCase() == self.name.toLowerCase()))
+                .operations.selectOne(o | o.name.toLowerCase() == self.name.toLowerCase());
+            var inputIsValid : Boolean = true;
+                
+            if (self.faults.isDefined()) {
+                if (not op.faults.isDefined()) { inputIsValid = false; }
+                else if (self.faults.size() <> op.faults.size()) { inputIsValid = false;  } 
+                else {
+                    for (selfFault in self.faults) {
+                        if (not op.faults.exists(f | selfFault.type.superTransferObjectTypes.including(selfFault.type).contains(f.type))) { inputIsValid = false; }
+                    }
+                 }
+             } else if (op.faults.isDefined()) {
+                inputIsValid = false;
+             } 
+            
+            return inputIsValid;
+        }
+        message: "Overriding of bound operation: " + self.name + " is not valid. Fault parameter type must match or derive from the fault parameter of the overriden operation." 
     }
 }
