@@ -12,6 +12,8 @@ import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
+
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -251,6 +253,31 @@ public class PsmUtils {
         final Set<EntityType> newSuperTypes = entityType.getSuperEntityTypes().stream().filter(s -> !foundSuperTypes.contains(s)).collect(Collectors.toSet());
         foundSuperTypes.addAll(newSuperTypes);
         newSuperTypes.forEach(s -> addSuperTypes(s, foundSuperTypes));
+    }
+    
+    /**
+     * Get list of all super transfer object types of a given transfer object type. The given transfer object type is included in case of circular references.
+     *
+     * @param transferObjectType transfer object type
+     * @return list of super transfer object types
+     */
+    public static EList<TransferObjectType> getAllSuperTransferObjectTypes(final TransferObjectType transferObjectType) {
+        final EList<TransferObjectType> foundSuperTransferObjectTypes = new UniqueEList<>();
+        addSuperTransferObjectTypes(transferObjectType, foundSuperTransferObjectTypes);
+        return foundSuperTransferObjectTypes;
+    }
+
+    /**
+     * Add super transfer object types of a given transfer object type recursively to a list.
+     *
+     * @param transferObjectType transfer object type
+     * @param foundSuperTransferObjectTypes list that super transfer object types added to
+     */
+    private static void addSuperTransferObjectTypes(final TransferObjectType transferObjectType, final EList<TransferObjectType> foundSuperTransferObjectTypes) {
+        final Set<TransferObjectType> newSuperTransferObjectTypes = transferObjectType.getSuperTransferObjectTypes().stream()
+        		.filter(s -> !foundSuperTransferObjectTypes.contains(s)).collect(Collectors.toSet());
+        foundSuperTransferObjectTypes.addAll(newSuperTransferObjectTypes);
+        newSuperTransferObjectTypes.forEach(s -> addSuperTransferObjectTypes(s, foundSuperTransferObjectTypes));
     }
 
     /**

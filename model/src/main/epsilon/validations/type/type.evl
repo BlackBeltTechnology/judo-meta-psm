@@ -6,47 +6,26 @@ context PSM!Primitive {
     }
 }
 
-context PSM!EntityType {
-    // entity type names should be unique
-    critique EntityTypeNamesAreUnique {
-        check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
-        message: "Entity type name is not unique: " + self.name
-    }
-}
-
 context PSM!TransferObjectType {
     // transfer object type names should be unique
     critique TransferObjectTypeNamesAreUnique {
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
         message: "Transfer object type name is not unique: " + self.name
     }
+    
+    constraint BoundOperationInheritanceIsValid {
+    //In cases of multiple inheritance, the constraint checks, whether each inherited operation can be traced back to exactly one mapped transfer object type where it was first declared.
+    //The rule collects all operations of all super mapped transfer object types, then checks whether all operations (op) fulfill the following: there is exactly one super transfer object type (of self),
+    //which (1) contains an operation with the same name and (2) has no super transfer object type containing an operation with the same name.
+    
+        guard: self.isKindOf(PSM!MappedTransferObjectType)
+        check: self.getAllSuperTransferObjectTypes().select(s | s.isKindOf(PSM!MappedTransferObjectType))
+                .collect(s | s.operations.collect(n | n.name.toLowerCase())).flatten()
+                    .forAll(op | self.getAllSuperTransferObjectTypes().select(
+                                t | t.operations.exists(o | o.name.toLowerCase() == op) and
+                                not t.getAllSuperTransferObjectTypes().exists(t2 | t2.operations.exists(o | o.name.toLowerCase() == op))
+                               ).size() == 1 
+                           )
+        message: "Mapped transfer object type: " + self.name + " is inheriting operation(s) having the same name from unrelated mapped transfer object."
+    }
 }
-
-context PSM!TransferObjectRelation {
-
-    constraint TransferObjectRelationIsEmbedded {
-		guard: self.target.isKindOf(PSM!UnmappedTransferObjectType)
-		check: self.embedded
-		message: "Transfer object relation " + self.name + " is referencing to unembedded unmapped transfer object type: " + self.target.name
-	}
-	
-	constraint TransferObjectRelationBindingIsValid {
-		guard: self.eContainer().isDefined() and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
-		check: 	self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
-				self.binding.isKindOf(PSM!StaticNavigation)	
-		message: "Binding of transfer object relation " + self.name + " of mapped transfer object " + self.eContainer().name +
-				" must either match the entity type of the mapped tranfer object or be StaticNavigation."
-	}	
-}
-
-context PSM!TransferAttribute {
-	
-	constraint TransferAttributeBindingIsValid {
-		guard: self.eContainer().isDefined() and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
-		check: self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
-				self.binding.isKindOf(PSM!StaticData)
-		message: "Binding of transfer attribute " + self.name + " of mapped transfer object " + self.eContainer().name +
-				" must either match the entity type of the mapped tranfer object or be StaticData."
-	}
-}
-

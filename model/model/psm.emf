@@ -242,7 +242,6 @@ package data {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfRelation(this).get();")
     op EntityType[1] getEntityType();
-    attr boolean[1] cascadeDelete = false;
   }
 
   class Attribute extends PrimitiveTypedElement {
@@ -263,6 +262,7 @@ package data {
     @GenModel(body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;")
     op Relation getOpposite();
     ref AssociationEnd partner;
+    attr boolean[1] cascadeDelete = false;
   }
 
   abstract class ReferenceTypedElement extends namespace.NamedElement {
@@ -290,10 +290,6 @@ package data {
   class Containment extends Relation {
   }
 
-}
-
-@namespace(uri="http://blackbelt.hu/judo/meta/psm/behavior", prefix="behavior")
-package behavior {
 }
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/constraint", prefix="constraint")
@@ -374,6 +370,9 @@ package ~derived {
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/service", prefix="service")
 package service {
   abstract class TransferObjectType extends type.DataType {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);")
+    !ordered op TransferObjectType[*] getAllSuperTransferObjectTypes();
     ref TransferAttribute representation;
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
@@ -426,6 +425,7 @@ package service {
     ref data.EntityType[1] entityType;
     attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
     val BoundOperation[*] operations;
+    val ~derived.LogicalExpressionType filter;
   }
 
   abstract class OperationDeclaration {
@@ -678,6 +678,7 @@ package measure {
   }
 
   enum DurationType {
+    nanosecond = 8;
     millisecond = 0;
     second = 1;
     minute = 2;

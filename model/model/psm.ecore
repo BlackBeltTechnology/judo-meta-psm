@@ -381,6 +381,12 @@
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectType" abstract="true"
         eSuperTypes="#//type/DataType">
+      <eOperations name="getAllSuperTransferObjectTypes" ordered="false" upperBound="-1"
+          eType="#//service/TransferObjectType">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
+        </eAnnotations>
+      </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//service/TransferAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//service/TransferObjectRelation" containment="true"/>

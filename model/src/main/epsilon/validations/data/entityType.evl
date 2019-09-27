@@ -1,4 +1,10 @@
 context PSM!EntityType {
+    // entity type names should be unique
+    critique EntityTypeNamesAreUnique {
+        check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Entity type name is not unique: " + self.name
+    }
+
     // recursive inheritance is not supported
 	constraint InheritanceIsNotRecursive {
 		check: not self.getAllSuperEntityTypes().contains(self)
