@@ -2015,7 +2015,7 @@ class PsmValidationTest {
         
         EntityType parentEntityType2 = newEntityTypeBuilder().withName("parentEntityType2").build();
         MappedTransferObjectType parentTransferObject2 = newMappedTransferObjectTypeBuilder().withName("parentTransferObject2").withEntityType(parentEntityType2)
-                .withOperations(operation1).build();
+                .withOperations(operation2).build();
         
         EntityType childEntityType1 = newEntityTypeBuilder().withName("childEntityType").withSuperEntityTypes(parentEntityType2).build();
         MappedTransferObjectType childTransferObject = newMappedTransferObjectTypeBuilder().withName("childTransferObject").withEntityType(childEntityType1)
@@ -2326,5 +2326,4 @@ class PsmValidationTest {
             "OverridingWithValidFaults|Overriding of bound operation: operation4 of mapped transfer object type: transferObjectType3 cannot change the type of faults."),
             Collections.emptyList());
     }
-    
 }
