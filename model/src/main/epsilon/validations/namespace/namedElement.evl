@@ -97,66 +97,45 @@ context PSM!ExposedGraph {
 context PSM!BoundOperation {
     
     constraint OverridingWithValidInput {
-        guard: self.eContainer().isDefined()
-        check {
-            var inputIsValid : new Boolean = true;
-            var operations : new Sequence;
-            for (t in self.eContainer().getAllSuperTransferObjectTypes()) {
-                operations.addAll(t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase()));
-            }
-            for (o in operations) {
-                if (o.input.isDefined()) {
-                    if (not self.input.isDefined()) inputIsValid = false;
-                    else if (o.input.type <> self.input.type) inputIsValid = false; 
-                    }
-                else if (self.input.isDefined()) inputIsValid = false;
-            }
-            return inputIsValid;
-        }
+        guard: self.eContainer().isDefined() and self.input.isDefined()
+        check: self.eContainer().getAllSuperTransferObjectTypes().collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | o.input.isDefined() and o.input.type == self.input.type)
+        message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change input type."
+    }
+    
+    constraint OverridingWithValidInput {
+        guard: self.eContainer().isDefined() and (not self.input.isDefined())
+        check: self.eContainer().getAllSuperTransferObjectTypes().collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | not o.input.isDefined())
         message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change input type."
     }
     
     constraint OverridingWithValidOutput {
-        guard: self.eContainer().isDefined()
-        check {
-            var outputIsValid : new Boolean = true;
-            var operations : new Sequence;
-            for (t in self.eContainer().getAllSuperTransferObjectTypes()) {
-                operations.addAll(t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase()));
-            }
-            for (o in operations) {
-                if (o.output.isDefined()) {
-                    if (not self.output.isDefined()) outputIsValid = false;
-                    else if (o.output.type <> self.output.type) outputIsValid = false; 
-                    }
-                else if (self.output.isDefined()) outputIsValid = false;
-            }
-            return outputIsValid;
-        }
+        guard: self.eContainer().isDefined() and self.output.isDefined()
+        check: self.eContainer().getAllSuperTransferObjectTypes().collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | o.output.isDefined() and o.output.type == self.output.type)
+        message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change output type."
+    }
+    
+    constraint OverridingWithValidOutput {
+        guard: self.eContainer().isDefined() and (not self.output.isDefined())
+        check: self.eContainer().getAllSuperTransferObjectTypes().collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | not o.output.isDefined())
         message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change output type."
     }
     
     constraint OverridingWithValidFaults {
-        guard: self.eContainer().isDefined()
-        check {
-            var faultsAreValid : new Boolean = true;
-            var types : new Sequence;
-            types.addAll(self.faults.collect(f | f.type));
-            var operations : new Sequence;
-            for (t in self.eContainer().getAllSuperTransferObjectTypes()) {
-                operations.addAll(t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase()));
-            }
-            for (o in operations) {
-                if (o.faults.size() <> self.faults.size()) faultsAreValid = false;
-                else {
-                    var oTypes : new Sequence;
-                    oTypes.addAll(o.faults.collect(f | f.type));
-                    for (t in types)  oTypes.remove(t);
-                    if(not oTypes.isEmpty()) faultsAreValid = false;             
-                }
-            }
-            return faultsAreValid;
-        }
+        guard: self.eContainer().isDefined() and self.faults.size() == 0
+        check: self.eContainer().getAllSuperTransferObjectTypes().collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | o.faults.size() == 0)
         message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change the type of faults."
-    }
+     }
+     
+     constraint OverridingWithValidFaults {
+        guard: self.eContainer().isDefined() and self.faults.size() > 0
+        check: self.eContainer().getAllSuperTransferObjectTypes().collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | self.faults.size() == o.faults.size() and 
+                            o.faults.collect(f | f.type.name).sortBy(n | n).equals(self.faults.collect(f | f.type.name).sortBy(n | n)) )
+        message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change the type of faults."
+     }
 }
