@@ -138,4 +138,15 @@ context PSM!BoundOperation {
                             o.faults.collect(f | f.type.name).sortBy(n | n).equals(self.faults.collect(f | f.type.name).sortBy(n | n)) )
         message: "Overriding of bound operation: " + self.name + " of mapped transfer object type: " + self.eContainer().name + " cannot change the type of faults."
      }
+     
+     constraint InheritedBoundOperationHasNoImplementation {
+        guard: self.eContainer().isDefined()
+        check: (not self.implementation.isDefined()) implies
+               (not self.eContainer().getAllSuperTransferObjectTypes()
+                    .select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                    .collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                    .exists(o | o.implementation.isDefined()))
+        message: "Bases of bound operation: " + self.name + " cannot have implementation, if " + self.name + " in mapped transfer object type: "
+                    + self.eContainer().name + " doesn't have one."
+    }
 }
