@@ -142,10 +142,7 @@ context PSM!BoundOperation {
      constraint InheritedBoundOperationHasNoImplementation {
         guard: self.eContainer().isDefined()
         check: (not self.implementation.isDefined()) implies
-               (not self.eContainer().getAllSuperTransferObjectTypes()
-                    .select(t | t.isKindOf(PSM!MappedTransferObjectType))
-                    .collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                    .exists(o | o.implementation.isDefined()))
+               self.eContainer().getOperationImplementationsByName(self.name).size() == 0
         message: "Bases of bound operation: " + self.name + " cannot have implementation, if " + self.name + " in mapped transfer object type: "
                     + self.eContainer().name + " doesn't have one."
     }
