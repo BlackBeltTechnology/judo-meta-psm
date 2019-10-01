@@ -2408,14 +2408,14 @@ class PsmValidationTest {
         runEpsilon(ImmutableList.of(
             "InheritedBoundOperationHasNoImplementation|Bases of bound operation: operation cannot have implementation, if operation in"
             + " mapped transfer object type: transferObjectType4 doesn't have one.",
-            "InheritedOperationImplementationsAreValid|Mapped transfer object type: transferObjectType4 has inherited operations without implementation, "
+            "NeedToOverrideMultipleOperationImplementations|Mapped transfer object type: transferObjectType4 has inherited operations without implementation, "
                     + "but their bases have more than one implementation."),
             Collections.emptyList());
     }
     
     @Test
-    void testInheritedOperationImplementationsAreValid() throws Exception {
-        log.info("Testing constraint: InheritedOperationImplementationsAreValid");
+    void testNeedToOverrideMultipleOperationImplementations() throws Exception {
+        log.info("Testing constraint: NeedToOverrideMultipleOperationImplementations");
         
         UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
        
@@ -2511,7 +2511,7 @@ class PsmValidationTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-            "InheritedOperationImplementationsAreValid|Mapped transfer object type: transferObjectType6 has inherited operations without implementation, "
+            "NeedToOverrideMultipleOperationImplementations|Mapped transfer object type: transferObjectType6 has inherited operations without implementation, "
                     + "but their bases have more than one implementation."),
             Collections.emptyList());
     }

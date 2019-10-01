@@ -304,24 +304,45 @@ public class PsmUtils {
     }
     
     /**
-     * Get list of all inherited implementations of a given operation.
+     * Get list of all implementations of a given inherited operation.
      *
      * @param MappedtransferObjectType transfer object type
      * @param String name
-     * @return set of the names of all operations
+     * @return list of the implementations of a given inherited operation
      */
-    public static EList<OperationBody> getOperationImplementation(final MappedTransferObjectType transferObjectType, String name) {
-        EList<OperationBody> implementation = new UniqueEList<>();
-        transferObjectType.getSuperTransferObjectTypes().stream().filter(to -> to instanceof MappedTransferObjectType)
-        	.map(mto -> (MappedTransferObjectType) mto).forEach(s -> {
-        		if(s.getOperations().stream().anyMatch(o -> o.getName().toLowerCase() == name.toLowerCase() && o.getImplementation() != null)) {
-            		implementation.addAll( s.getOperations().stream()
-            				.filter(o -> o.getName().toLowerCase() == name.toLowerCase()).map(o -> o.getImplementation()).collect(Collectors.toList()));
-            	} else {
-            		implementation.addAll(getOperationImplementation(s, name));
-            	}
-        	});
-        return implementation;
+    public static EList<OperationBody> getOperationImplementationsByName(final MappedTransferObjectType transferObjectType, final String name) {
+        EList<OperationBody> implementations = new UniqueEList<>();
+        transferObjectType.getSuperTransferObjectTypes().stream()
+                .filter(to -> to instanceof MappedTransferObjectType)
+                .map(mto -> (MappedTransferObjectType) mto)
+                .forEach(s -> {
+                    final Optional<BoundOperation> boundOperation = s.getOperations().stream()
+                    		.filter(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null).findAny();
+                    if (boundOperation.isPresent()) {
+                        implementations.add(boundOperation.get().getImplementation());
+                    } else {
+                        implementations.addAll(getOperationImplementationsByName(s, name));
+                    }
+                });
+        return implementations;
+    }
+    
+    /**
+     * Get the implementation of a given inherited operation.
+     *
+     * @param MappedtransferObjectType transfer object type
+     * @param String name
+     * @return OperationBody implementation of a given inherited operation
+     */
+    public static OperationBody getOperationImplementationByName(final MappedTransferObjectType transferObjectType, final String name) {
+        EList<OperationBody> implementations = getOperationImplementationsByName(transferObjectType, name);
+        if (implementations.size() > 1) {
+            throw new IllegalStateException("Multiple implementation found and not overriden by transfer object type");
+        } else if (implementations.isEmpty()) {
+            return null;
+        } else {
+            return implementations.get(0);
+        }
     }
 
     /**
@@ -390,8 +411,8 @@ public class PsmUtils {
     	
     	return getAllOperationNames(mappedTransferObjectType).stream().allMatch(
     			name -> mappedTransferObjectType.getOperations().stream()
-    					.anyMatch(o -> o.getName().toLowerCase().equals(name.toLowerCase()) && o.getImplementation() != null)
-    			|| getOperationImplementation(mappedTransferObjectType,name).size() == 1);
+    					.anyMatch(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null)
+    			|| getOperationImplementationsByName(mappedTransferObjectType,name).size() == 1);
     }
 
     public static boolean isRegex(String regex) throws PatternSyntaxException {

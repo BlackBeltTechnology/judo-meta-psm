@@ -278,9 +278,13 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getAllOperationNames"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);"/>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getOperationImplementation"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementation(this,name);">
-          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getOperationImplementation/name"/>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationsByName"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationsByName(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationsByName/name"/>
+        </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationByName"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationByName/name"/>
         </genOperations>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/OperationDeclaration">

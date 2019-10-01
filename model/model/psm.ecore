@@ -453,7 +453,12 @@
       </eOperations>
       <eOperations name="getAllOperationNames" ordered="false" unique="false" upperBound="-1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eOperations name="getOperationImplementation" upperBound="-1" eType="#//service/OperationBody">
+      <eOperations name="getOperationImplementationsByName" unique="false" upperBound="-1"
+          eType="#//service/OperationBody">
+        <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      </eOperations>
+      <eOperations name="getOperationImplementationByName" unique="false" lowerBound="1"
+          eType="#//service/OperationBody">
         <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"

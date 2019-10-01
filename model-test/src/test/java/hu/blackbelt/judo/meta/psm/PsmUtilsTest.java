@@ -216,8 +216,8 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		psmModel.addContent(m);
 		
-		Assertions.assertTrue(PsmUtils.getOperationImplementation(grandChild, "operation").size() == 0);
-		Assertions.assertTrue(PsmUtils.getOperationImplementation(grandChild, "ownOperation").size() == 0);
+		Assertions.assertTrue(PsmUtils.getOperationImplementationsByName(grandChild, "operation").size() == 0);
+		Assertions.assertTrue(PsmUtils.getOperationImplementationsByName(grandChild, "ownOperation").size() == 0);
 	}
 	
 	@Test
@@ -251,7 +251,7 @@ public class PsmUtilsTest extends NorthwindTest {
 		EList<OperationBody> expected = new UniqueEList<>();
 		expected.add(implementation2);
 		
-		Assertions.assertEquals(expected,PsmUtils.getOperationImplementation(grandChild, "operation"));
+		Assertions.assertEquals(expected,PsmUtils.getOperationImplementationsByName(grandChild, "operation"));
 	}
 	
 	@Test
@@ -288,7 +288,7 @@ public class PsmUtilsTest extends NorthwindTest {
 		expected.add(implementation1);
 		expected.add(implementation2);
 		
-		Assertions.assertEquals(expected,PsmUtils.getOperationImplementation(grandChild, "operation"));
+		Assertions.assertEquals(expected,PsmUtils.getOperationImplementationsByName(grandChild, "operation"));
 	}
 	
 	@Test
@@ -332,8 +332,6 @@ public class PsmUtilsTest extends NorthwindTest {
 		expected.add(implementation2);
 		expected.add(implementation3);
 		
-		Assertions.assertEquals(expected,PsmUtils.getOperationImplementation(grandChild, "operation"));
+		Assertions.assertEquals(expected,PsmUtils.getOperationImplementationsByName(grandChild, "operation"));
 	}
-	
-	
 }
