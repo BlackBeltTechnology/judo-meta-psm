@@ -29,3 +29,14 @@ context PSM!TransferObjectType {
         message: "Mapped transfer object type: " + self.name + " is inheriting operation(s) having the same name from unrelated mapped transfer object."
     }
 }
+
+context PSM!MappedTransferObjectType{   
+    constraint InheritedOperationImplementationsAreValid {
+        guard: self.getAllSuperTransferObjectTypes().select(t | t.isKindOf(PSM!MappedTransferObjectType))
+            .forAll(s | s.satisfies("InheritedOperationImplementationsAreValid"))
+        check: self.getAllOperationNames().forAll(opName | self.getOperationImplementation(opName).asSet().size() > 1 implies 
+                        self.operations.exists(o | o.name.toLowerCase() == opName.toLowerCase() and o.implementation.isDefined()))
+        message: "Mapped transfer object type: " + self.name + " has inherited operations without implementation, "
+                + "but their bases have more than one implementation."
+    }
+}

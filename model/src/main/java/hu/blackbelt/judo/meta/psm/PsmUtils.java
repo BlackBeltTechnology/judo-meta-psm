@@ -10,6 +10,7 @@ import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.OperationBody;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
@@ -279,6 +280,49 @@ public class PsmUtils {
         foundSuperTransferObjectTypes.addAll(newSuperTransferObjectTypes);
         newSuperTransferObjectTypes.forEach(s -> addSuperTransferObjectTypes(s, foundSuperTransferObjectTypes));
     }
+    
+    /**
+     * Get set of all operation names (inherited and not inherited) of a given mapped transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return set of the names of all operations
+     */
+    public static EList<String> getAllOperationNames(final MappedTransferObjectType transferObjectType) {
+        EList<String> operationNames = new UniqueEList<>();
+        Set<String> operationNamesSet = transferObjectType.getOperations().stream()
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+        
+        operationNamesSet.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
+            .filter(to -> to instanceof MappedTransferObjectType)
+            .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
+            .map(o -> o.getName())
+            .collect(Collectors.toSet()));
+        
+        operationNames.addAll(operationNamesSet);
+        return operationNames;
+    }
+    
+    /**
+     * Get list of all inherited implementations of a given operation.
+     *
+     * @param MappedtransferObjectType transfer object type
+     * @param String name
+     * @return set of the names of all operations
+     */
+    public static EList<OperationBody> getOperationImplementation(final MappedTransferObjectType transferObjectType, String name) {
+        EList<OperationBody> implementation = new UniqueEList<>();
+        transferObjectType.getSuperTransferObjectTypes().stream().filter(to -> to instanceof MappedTransferObjectType)
+        	.map(mto -> (MappedTransferObjectType) mto).forEach(s -> {
+        		if(s.getOperations().stream().anyMatch(o -> o.getName().toLowerCase() == name.toLowerCase() && o.getImplementation() != null)) {
+            		implementation.addAll( s.getOperations().stream()
+            				.filter(o -> o.getName().toLowerCase() == name.toLowerCase()).map(o -> o.getImplementation()).collect(Collectors.toList()));
+            	} else {
+            		implementation.addAll(getOperationImplementation(s, name));
+            	}
+        	});
+        return implementation;
+    }
 
     /**
      * Get measure of a given unit.
@@ -344,29 +388,10 @@ public class PsmUtils {
     public static boolean isInstantiableMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
     	if(mappedTransferObjectType.getEntityType().isAbstract()) return false;
     	
-    	Set<String> operationNames = mappedTransferObjectType.getOperations().stream()
-        	    .map(o -> o.getName())
-        	    .collect(Collectors.toSet());
-    	
-    	operationNames.addAll(mappedTransferObjectType.getSuperTransferObjectTypes().stream()
-    	    .filter(to -> to instanceof MappedTransferObjectType)
-    	    .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
-    	    .map(o -> o.getName())
-    	    .collect(Collectors.toSet()));
-    	
-    	Set<String> operationNamesWithImplementation = mappedTransferObjectType.getOperations().stream()
-        	    .filter(o -> o.getImplementation() != null)
-        	    .map(o -> o.getName())
-        	    .collect(Collectors.toSet());
-    	
-    	operationNamesWithImplementation.addAll(mappedTransferObjectType.getSuperTransferObjectTypes().stream()
-    	    .filter(to -> to instanceof MappedTransferObjectType)
-    	    .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
-    	    .filter(o -> o.getImplementation() != null)
-    	    .map(o -> o.getName())
-    	    .collect(Collectors.toSet()));
-   
-    	return operationNames.equals(operationNamesWithImplementation);
+    	return getAllOperationNames(mappedTransferObjectType).stream().allMatch(
+    			name -> mappedTransferObjectType.getOperations().stream()
+    					.anyMatch(o -> o.getName().toLowerCase().equals(name.toLowerCase()) && o.getImplementation() != null)
+    			|| getOperationImplementation(mappedTransferObjectType,name).size() == 1);
     }
 
     public static boolean isRegex(String regex) throws PatternSyntaxException {

@@ -2407,7 +2407,112 @@ class PsmValidationTest {
 
         runEpsilon(ImmutableList.of(
             "InheritedBoundOperationHasNoImplementation|Bases of bound operation: operation cannot have implementation, if operation in"
-            + " mapped transfer object type: transferObjectType4 doesn't have one."),
+            + " mapped transfer object type: transferObjectType4 doesn't have one.",
+            "InheritedOperationImplementationsAreValid|Mapped transfer object type: transferObjectType4 has inherited operations without implementation, "
+                    + "but their bases have more than one implementation."),
+            Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritedOperationImplementationsAreValid() throws Exception {
+        log.info("Testing constraint: InheritedOperationImplementationsAreValid");
+        
+        UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
+       
+        BoundOperation correctOperation1 = newBoundOperationBuilder().withName("correctOperation")
+                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        BoundOperation correctOperation2 = newBoundOperationBuilder().withName("correctOperation")
+                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+
+        EntityType correctEntityType0 = newEntityTypeBuilder().withName("correctEntityType0").build();
+        MappedTransferObjectType correctTransferObjectType0 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType0").withEntityType(correctEntityType0)
+                .withOperations(correctOperation1)
+                .build();
+        
+        EntityType correctEntityType1 = newEntityTypeBuilder().withName("correctEntityType1").withSuperEntityTypes(correctEntityType0).build();
+        MappedTransferObjectType correctTransferObjectType1 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType1").withEntityType(correctEntityType1)
+                .withSuperTransferObjectTypes(correctTransferObjectType0)
+                .withOperations(correctOperation2)
+                .build();
+        
+        EntityType correctEntityType2 = newEntityTypeBuilder().withName("correctEntityType2").withSuperEntityTypes(correctEntityType1).build();
+        MappedTransferObjectType correctTransferObjectType2 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType2").withEntityType(correctEntityType2)
+                .withSuperTransferObjectTypes(correctTransferObjectType1)
+                .build();
+        
+        BoundOperation withImplementation1 = newBoundOperationBuilder().withName("operation")
+                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        BoundOperation withImplementation2 = newBoundOperationBuilder().withName("operation")
+                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        BoundOperation withImplementation3 = newBoundOperationBuilder().withName("operation")
+                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        
+        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
+        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
+                .withOperations(withImplementation1)
+                .build();
+        
+        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
+                .withSuperTransferObjectTypes(transferObjectType0)
+                .withOperations(withImplementation2)
+                .build();
+        
+        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
+                .withSuperTransferObjectTypes(transferObjectType0)
+                .withOperations(correctOperation2)
+                .build();
+        
+        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
+                .withSuperTransferObjectTypes(transferObjectType0)
+                .withOperations(withImplementation3)
+                .build();
+        
+        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(entityType1).build();
+        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
+                .withSuperTransferObjectTypes(transferObjectType1)
+                .withOperations(withImplementation3)
+                .build();
+        
+        EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(entityType2).build();
+        MappedTransferObjectType transferObjectType5 = newMappedTransferObjectTypeBuilder().withName("transferObjectType5").withEntityType(entityType5)
+                .withSuperTransferObjectTypes(transferObjectType2)
+                .build();
+        
+        EntityType entityType6 = newEntityTypeBuilder().withName("entityType6").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4,entityType5)).build();
+        MappedTransferObjectType transferObjectType6 = newMappedTransferObjectTypeBuilder().withName("transferObjectType6").withEntityType(entityType6)
+                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType3,transferObjectType4,transferObjectType5))
+                .build();
+        
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            type,
+                            correctEntityType0,correctEntityType1,correctEntityType2,
+                            correctTransferObjectType0,correctTransferObjectType1,correctTransferObjectType2,
+                            entityType0,entityType1,entityType2,entityType3,entityType4,entityType5,entityType6,
+                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4,transferObjectType5,transferObjectType6
+                        )).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+            "InheritedOperationImplementationsAreValid|Mapped transfer object type: transferObjectType6 has inherited operations without implementation, "
+                    + "but their bases have more than one implementation."),
             Collections.emptyList());
     }
 }

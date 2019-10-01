@@ -276,6 +276,12 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isInstantiable"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getAllOperationNames"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getOperationImplementation"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementation(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getOperationImplementation/name"/>
+        </genOperations>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/OperationDeclaration">
         <genFeatures children="true" createChild="true" propertySortChoices="true"
