@@ -39,4 +39,11 @@ context PSM!MappedTransferObjectType{
         message: "Mapped transfer object type: " + self.name + " has inherited operations without implementation, "
                 + "but their bases have more than one implementation."
     }
+    
+    constraint EntityTypeMatchesEntityTypeOfBaseMappedTransferObject {
+        check: self.getAllSuperTransferObjectTypes().select(t | t.isKindOf(PSM!MappedTransferObjectType)).including(self)
+            .forAll(to | to.getSuperTransferObjectTypes()
+                            .forAll(sto | to.entityType.getSuperEntityTypes().contains(sto.entityType)))
+        message: "Entity type of mapped transfer object type: " + self.name + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: " + self.name
+    }
 }
