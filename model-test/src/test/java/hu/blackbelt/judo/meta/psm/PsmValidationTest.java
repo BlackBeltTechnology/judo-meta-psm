@@ -2559,8 +2559,6 @@ class PsmValidationTest {
        psmModel.addContent(model);
 
        runEpsilon(ImmutableList.of(
-           "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: parentTransferObject4"
-           + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: parentTransferObject4",
            "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: childTransferObject1"
             + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: childTransferObject1",
             "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: childTransferObject2"
