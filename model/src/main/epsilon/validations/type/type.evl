@@ -42,7 +42,7 @@ context PSM!MappedTransferObjectType{
     
     constraint EntityTypeMatchesEntityTypeOfBaseMappedTransferObject {
         check: self.getAllSuperTransferObjectTypes().select(t | t.isKindOf(PSM!MappedTransferObjectType))
-                            .forAll(sto | self.entityType.getAllSuperEntityTypes().contains(sto.entityType))
+                            .forAll(sto | self.entityType.getAllSuperEntityTypes().including(self.entityType).contains(sto.entityType))
         message: "Entity type of mapped transfer object type: " + self.name + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: " + self.name
     }
 }

@@ -2521,13 +2521,18 @@ class PsmValidationTest {
        log.info("Testing constraint: EntityTypeMatchesEntityTypeOfBaseMappedTransferObject");
        
        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
-       EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").build();
+       EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+       EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").build();
        
        MappedTransferObjectType parentTransferObject1 = newMappedTransferObjectTypeBuilder().withName("parentTransferObject1").withEntityType(entityType1)
                .build();
        MappedTransferObjectType parentTransferObject2 = newMappedTransferObjectTypeBuilder().withName("parentTransferObject2").withEntityType(entityType2)
                .build();
        MappedTransferObjectType childTransferObject1 = newMappedTransferObjectTypeBuilder().withName("childTransferObject1").withEntityType(entityType2)
+               .withSuperTransferObjectTypes(ImmutableList.of(
+                       parentTransferObject1,parentTransferObject2))
+               .build();
+       MappedTransferObjectType childTransferObject2 = newMappedTransferObjectTypeBuilder().withName("childTransferObject2").withEntityType(entityType3)
                .withSuperTransferObjectTypes(ImmutableList.of(
                        parentTransferObject1,parentTransferObject2))
                .build();
@@ -2540,29 +2545,31 @@ class PsmValidationTest {
                .build();
        MappedTransferObjectType parentTransferObject4 = newMappedTransferObjectTypeBuilder().withName("parentTransferObject4").withEntityType(childEntityType)
                 .withSuperTransferObjectTypes(parentTransferObject3).build();
-       MappedTransferObjectType childTransferObject2 = newMappedTransferObjectTypeBuilder().withName("childTransferObject2").withEntityType(parentEntityType4)
+       MappedTransferObjectType childTransferObject3 = newMappedTransferObjectTypeBuilder().withName("childTransferObject3").withEntityType(parentEntityType4)
                .withSuperTransferObjectTypes(parentTransferObject4)
                .build();
        
        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
                            entityType1,
                            entityType2,
+                           entityType3,
                            childEntityType,
                            parentTransferObject1,
                            parentTransferObject2,
                            parentTransferObject3,
                            parentTransferObject4,
                            childTransferObject1,
-                           childTransferObject2
+                           childTransferObject2,
+                           childTransferObject3
                        )).build();
 
        psmModel.addContent(model);
 
        runEpsilon(ImmutableList.of(
-           "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: childTransferObject1"
-            + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: childTransferObject1",
-            "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: childTransferObject2"
-            + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: childTransferObject2"),
+           "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: childTransferObject2"
+            + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: childTransferObject2",
+            "EntityTypeMatchesEntityTypeOfBaseMappedTransferObject|Entity type of mapped transfer object type: childTransferObject3"
+            + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: childTransferObject3"),
            Collections.emptyList());
    }
 }
