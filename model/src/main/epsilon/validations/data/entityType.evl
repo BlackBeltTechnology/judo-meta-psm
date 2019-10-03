@@ -1,4 +1,5 @@
 context PSM!EntityType {
+
     // entity type names should be unique
     critique EntityTypeNamesAreUnique {
         check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
@@ -48,34 +49,5 @@ context PSM!EntityType {
         message: "Entity " + self.name + " has inherited or non inherited members with the same name, member overriding is not allowed: " + duplicateNames
     }
 
-
-	// entity has no multiple attributes with the same name
-	/*constraint AttributeNameIsUnique {
-		check: self.attributes.select(a | self.attributes.excluding(a).select(a2 | a2.name == a.name).size() > 0).size() == 0
-		message: "Multiple attributes are added to entity " + self.name + " with the same name"
-	}*/
-
-	// entity has nomultiple relations with the same name
-	/*constraint RelationNameIsUnique {
-		check: self.relations.select(e | self.relations.excluding(e).select(e2 | e2.name == e.name).size() > 0).size() == 0
-		message: "Multiple relations are added to entity " + self.name + " with the same name"
-	}*/
-
-	// entity has no attribute(s) and relations(s) with the same name
-	/*constraint NoAttributeAndRelationAreWithTheSameName {
-		check: self.relations.select(e | self.attributes.select(a | e.name == a.name).size() > 0).size() == 0
-		message: "Entity " + self.name + " has attributes and relations with the same name"
-	}*/
-  
-    //TODO-suspended: Sequence (duplicate name check) [after Sequence becomes supported]
-
     //TODO-suspended: Seq & Attr, Seq & Rel, Se & RelCC (duplicate name check) [after Sequence becomes supported]
 }
-
-/*context PSM!Attribute {
-    // attributes must be attached to entities
-    constraint AttributeBelongsToEntity {
-        check: PSM!EntityType.all.select(et | et.attributes.contains(self)).size() == 1
-        message: "Orphan attribute: " + self.name
-    }
-}*/

@@ -1,0 +1,8 @@
+context PSM!StaticNavigation {
+    
+    // static navigation type names should be unique
+    critique StaticNavigationNamesAreUnique {
+        check: not PSM!StaticNavigation.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Static navigation name is not unique: " + self.name
+    }
+}

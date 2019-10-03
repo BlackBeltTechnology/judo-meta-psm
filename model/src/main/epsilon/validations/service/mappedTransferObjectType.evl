@@ -1,0 +1,33 @@
+context PSM!MappedTransferObjectType{
+  
+    constraint NeedToOverrideMultipleOperationImplementations {
+        guard: self.getAllSuperTransferObjectTypes().select(t | t.isKindOf(PSM!MappedTransferObjectType))
+            .forAll(s | s.satisfies("NeedToOverrideMultipleOperationImplementations"))
+        check: self.getAllOperationNames().forAll(opName | self.getOperationImplementationsByName(opName).size() > 1 implies 
+                        self.operations.exists(o | o.name.toLowerCase() == opName.toLowerCase() and o.implementation.isDefined()))
+        message: "Mapped transfer object type: " + self.name + " has inherited operations without implementation, "
+                + "but their bases have more than one implementation."
+    }
+    
+    constraint EntityTypeMatchesEntityTypeOfBaseMappedTransferObject {
+        check: self.getAllSuperTransferObjectTypes().select(t | t.isKindOf(PSM!MappedTransferObjectType))
+                            .forAll(sto | self.entityType.getAllSuperEntityTypes().including(self.entityType).contains(sto.entityType))
+        message: "Entity type of mapped transfer object type: " + self.name + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: " + self.name
+    }
+    
+    /*In cases of multiple inheritance, the constraint checks, whether each inherited operation can be traced back to exactly one mapped transfer object type where it was first declared.
+    The rule collects all operations of all super mapped transfer object types, then checks whether all operations (op) fulfill the following: there is exactly one super transfer object type (of self),
+    which (1) contains an operation with the same name and (2) has no super transfer object type containing an operation with the same name.*/
+    constraint BoundOperationInheritanceIsValid {
+        check: self.getAllSuperTransferObjectTypes()
+                    .select(s | s.isKindOf(PSM!MappedTransferObjectType))
+                    .collect(s | s.operations.collect(n | n.name.toLowerCase()))
+                    .flatten()
+                    .forAll(op | self.getAllSuperTransferObjectTypes()
+                                    .select(t | t.operations
+                                              .exists(o | o.name.toLowerCase() == op) and
+                                                          not t.getAllSuperTransferObjectTypes().exists(t2 | t2.operations.exists(o | o.name.toLowerCase() == op)))
+                                 .size() == 1)
+        message: "Mapped transfer object type: " + self.name + " is inheriting operation(s) having the same name from unrelated mapped transfer object."
+    }
+}

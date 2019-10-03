@@ -1,9 +1,0 @@
-//TODO-endcheck
-context PSM!AssociationEnd {
-
-    constraint CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne {
-        guard: self.cascadeDelete == true
-        check : self.cardinality.upper == 1
-        message: "Cascade delete behavior only allowed on endpoints if their upper cardinality is 1: " + self.name
-    }
-}
