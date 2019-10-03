@@ -1,0 +1,28 @@
+context PSM!TransferAttribute {
+
+    constraint UnmappedTransferObjectTypeHasNoAttributeBinding {
+        guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
+        check: not self.binding.isDefined()
+        message: "Transfer object attribute " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."
+    }
+    
+    constraint DataTypeMatchesBindingDataType {
+        guard:  self.binding.isDefined()
+        check:  self.dataType == self.binding.dataType
+        message: "DataType of transfer attribute " + self.name + " must match the dataType of its binding."
+    }
+    
+    constraint RequiredFlagMatchesBindingRequiredFlag {
+        guard:  self.binding.isDefined()
+        check:  self.required == self.binding.required
+        message: "Required flag of transfer attribute " + self.name + " must equal required flag of its binding."
+    }
+    
+    constraint TransferAttributeBindingIsValid {
+        guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+        check: self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
+                self.binding.isKindOf(PSM!StaticData)
+        message: "Binding of transfer attribute " + self.name + " of mapped transfer object " + self.eContainer().name +
+                " must either match the entity type of the mapped tranfer object or be StaticData."
+    }
+}

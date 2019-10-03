@@ -3,7 +3,6 @@ context PSM!DurationUnit {
     // rate of second unit to smaller temporal unit(s) must be valid
     constraint SecondRateIsValid {
         guard: self.unitType = PSM!DurationType#second
-        
         check {
         	var rateToMillisecond = psmUtils.getRate(self, PSM!DurationType#millisecond);
             return not rateToMillisecond.isPresent() or rateToMillisecond.get().dividend == rateToMillisecond.get().divisor * 1000.0;
@@ -14,7 +13,6 @@ context PSM!DurationUnit {
     // rate of minute unit to smaller temporal unit(s) must be valid
     constraint MinuteRateIsValid {
         guard: self.unitType = PSM!DurationType#minute
-        
         check {
         	var rateToMillisecond = psmUtils.getRate(self, PSM!DurationType#millisecond);
         	var rateToSecond = psmUtils.getRate(self, PSM!DurationType#second);
@@ -27,7 +25,6 @@ context PSM!DurationUnit {
     // rate of hour unit to smaller temporal unit(s) must be valid
     constraint HourRateIsValid {
         guard: self.unitType = PSM!DurationType#hour
-        
         check {
         	var rateToMillisecond = psmUtils.getRate(self, PSM!DurationType#millisecond);
         	var rateToSecond = psmUtils.getRate(self, PSM!DurationType#second);
@@ -42,7 +39,6 @@ context PSM!DurationUnit {
     // rate of day unit to smaller temporal unit(s) must be valid
     constraint DayRateIsValid {
         guard: self.unitType = PSM!DurationType#day
-        
         check {
         	var rateToMillisecond = psmUtils.getRate(self, PSM!DurationType#millisecond);
         	var rateToSecond = psmUtils.getRate(self, PSM!DurationType#second);
@@ -59,7 +55,6 @@ context PSM!DurationUnit {
     // rate of week unit to smaller temporal unit(s) must be valid
     constraint WeekRateIsValid {
         guard: self.unitType = PSM!DurationType#week
-        
         check {
         	var rateToMillisecond = psmUtils.getRate(self, PSM!DurationType#millisecond);
         	var rateToSecond = psmUtils.getRate(self, PSM!DurationType#second);
@@ -78,7 +73,6 @@ context PSM!DurationUnit {
     // rate of year unit to smaller temporal unit(s) must be valid
     constraint YearRateIsValid {
         guard: self.unitType = PSM!DurationType#year
-        
         check {
         	var rateToMonth = psmUtils.getRate(self, PSM!DurationType#month);
             return not rateToMonth.isPresent() or rateToMonth.get().dividend == rateToMonth.get().divisor * 12.0;

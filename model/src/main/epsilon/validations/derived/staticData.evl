@@ -1,0 +1,8 @@
+context PSM!StaticData {
+    
+    // static navigation type names should be unique
+    critique StaticDataNamesAreUnique {
+        check: not PSM!StaticData.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Static data name is not unique: " + self.name
+    }
+}

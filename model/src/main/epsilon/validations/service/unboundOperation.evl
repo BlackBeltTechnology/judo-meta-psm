@@ -1,0 +1,8 @@
+context PSM!UnboundOperation {
+    
+    // static navigation type names should be unique
+    critique UnboundOperationNamesAreUnique {
+        check: not PSM!UnboundOperation.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Unbound operation name is not unique: " + self.name
+    }
+}

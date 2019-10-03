@@ -1,0 +1,8 @@
+context PSM!Primitive {
+
+    // primitive type names should be unique
+    critique PrimitiveTypeNamesAreUnique {
+        check: not PSM!Primitive.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "Primitive type name is not unique: " + self.name
+    }
+}

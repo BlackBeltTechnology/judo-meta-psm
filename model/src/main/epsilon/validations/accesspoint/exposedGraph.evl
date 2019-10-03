@@ -1,0 +1,13 @@
+context PSM!ExposedGraph {
+
+    constraint SelectorTargetIsValid {
+        check: self.selector.target == self.mappedTransferObjectType.entityType
+        message: "Target of selector of exposed graph " + self.name + " must match the entity type of the exposed graph's mapped transfer object."
+    }
+
+    constraint SelectorCardinalityIsValid {
+        check:  (self.selector.cardinality.lower == self.cardinality.lower) and
+                (self.selector.cardinality.upper == self.cardinality.upper)
+        message: "Cardinality of exposed graph " + self.name + " must match cardinality of the exposed graph's selector."
+    }
+}
