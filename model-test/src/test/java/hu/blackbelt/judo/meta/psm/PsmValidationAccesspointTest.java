@@ -6,12 +6,15 @@ import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionExcep
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
 import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
+import hu.blackbelt.judo.meta.psm.accesspoint.ExposedService;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
+
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -147,5 +150,43 @@ class PsmValidationAccesspointTest {
         runEpsilon(ImmutableList.of(
             "SelectorCardinalityIsValid|Cardinality of exposed graph graph must match cardinality of the exposed graph's selector."),
             Collections.emptyList());
+    }
+    
+    @Test
+    void testAccessPointUnboundOperationsAreUnique() throws Exception {
+       log.info("Testing constraint: AccessPointUnboundOperationsAreUnique");
+       
+       UnboundOperation unboundOperation1 = newUnboundOperationBuilder().withName("unboundOperation1")
+               .withImplementation(newOperationBodyBuilder().build())
+               .build();
+       ExposedService exposedService1 = newExposedServiceBuilder().withOperation(unboundOperation1).build();
+       
+       UnboundOperation unboundOperation2 = newUnboundOperationBuilder().withName("unboundOperation2")
+               .withImplementation(newOperationBodyBuilder().build())
+               .build();
+       ExposedService exposedService2 = newExposedServiceBuilder().withOperation(unboundOperation2).build();
+       
+       ExposedService exposedService3 = newExposedServiceBuilder().withOperation(unboundOperation2).build();
+       
+       AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint")
+               .withExposedServices(ImmutableList.of(
+                       exposedService1,
+                       exposedService2,
+                       exposedService3
+                       ))
+               .build();
+       
+       
+       Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                        unboundOperation1,
+                        unboundOperation2,
+                        accessPoint
+                       )).build();
+    
+       psmModel.addContent(model);
+    
+       runEpsilon(ImmutableList.of(
+           "AccessPointUnboundOperationsAreUnique|Exposed services of access point accessPoint are referencing to the same unbound operation."),
+           Collections.emptyList());
     }
 }
