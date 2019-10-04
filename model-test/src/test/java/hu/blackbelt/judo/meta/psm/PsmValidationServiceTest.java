@@ -1312,4 +1312,37 @@ class PsmValidationServiceTest {
                ));
    }
 
+   @Test
+   void testUnmappedTransferObjectTypeHasNoMappedSuperTransferObjectType() throws Exception {
+      log.info("Testing constraint: UnmappedTransferObjectTypeHasNoMappedSuperTransferObjectType");
+      
+      UnmappedTransferObjectType unmappedParent1 = newUnmappedTransferObjectTypeBuilder().withName("unmappedParent1").build();
+      UnmappedTransferObjectType unmappedParent2 = newUnmappedTransferObjectTypeBuilder().withName("unmappedParent2").withSuperTransferObjectTypes(unmappedParent1).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withSuperTransferObjectTypes(unmappedParent2)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent").withEntityType(entityType2)
+              .withSuperTransferObjectTypes(unmappedParent1)
+              .build();
+      
+      UnmappedTransferObjectType unmappedChild = newUnmappedTransferObjectTypeBuilder().withName("unmappedChild").withSuperTransferObjectTypes(mappedParent2).build();
+      
+      
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                          unmappedParent1,unmappedParent2,
+                          entityType1,entityType2,
+                          mappedParent1,mappedParent2,
+                          unmappedChild
+                      )).build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "UnmappedTransferObjectTypeHasNoMappedSuperTransferObjectType|Unmapped transfer object type: unmappedChild cannot derive from mapped transfer object type."),
+          Collections.emptyList());
+   }
 }
