@@ -66,7 +66,7 @@ public class PsmEpsilonValidator {
         }
     }
 
-    public static URI getValidationScriptURI() throws URISyntaxException {
+    public static URI calculatePsmValidationScriptURI() throws URISyntaxException {
         URI psmRoot = PsmModel.class.getProtectionDomain().getCodeSource().getLocation().toURI();
         if (psmRoot.toString().endsWith(".jar")) {
             psmRoot = new URI("jar:" + psmRoot.toString() + "!/validations/");

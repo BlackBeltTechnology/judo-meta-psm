@@ -65,7 +65,7 @@ class PsmValidationTest {
         try {
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,
-                    PsmEpsilonValidator.getValidationScriptURI(),
+                    PsmEpsilonValidator.calculatePsmValidationScriptURI(),
                     expectedErrors,
                     expectedWarnings);
         } catch (EvlScriptExecutionException ex) {
