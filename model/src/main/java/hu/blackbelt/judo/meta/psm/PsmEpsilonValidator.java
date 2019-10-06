@@ -66,4 +66,19 @@ public class PsmEpsilonValidator {
         }
     }
 
+    public static URI calculatePsmValidationScriptURI() throws URISyntaxException {
+        URI psmRoot = PsmModel.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        if (psmRoot.toString().endsWith(".jar")) {
+            psmRoot = new URI("jar:" + psmRoot.toString() + "!/validations/");
+        } else if (psmRoot.toString().startsWith("jar:bundle:")) {
+            // bundle://37.0:0/validations/
+            // jar:bundle://37.0:0/!/validations/psm.evl
+            psmRoot = new URI(psmRoot.toString().substring(4, psmRoot.toString().indexOf("!")) + "validations/");
+        } else {
+            psmRoot = new URI(psmRoot.toString() + "/validations/");
+        }
+        return psmRoot;
+
+    }
+
 }

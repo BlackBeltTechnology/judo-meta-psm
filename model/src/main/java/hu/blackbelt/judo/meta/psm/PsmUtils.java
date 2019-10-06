@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * Utils for PSM models.
  */
@@ -68,6 +70,9 @@ public class PsmUtils {
      * @return namespace element as string
      */
     public static String namespaceElementToString(final NamespaceElement namespaceElement) {
+        if (namespaceElement.eContainer() == null) {
+            throw new IllegalStateException("NameSpaceElement container not set (not added to resource?) - " + namespaceElement.getName());
+        }
         final Optional<Namespace> namespace = getNamespaceOfNamespaceElement(namespaceElement);
         if (namespace.isPresent()) {
             return namespaceToString(namespace.get()) + NAMESPACE_SEPARATOR + namespaceElement.getName();
@@ -306,8 +311,8 @@ public class PsmUtils {
     /**
      * Get list of all implementations of a given inherited operation.
      *
-     * @param MappedtransferObjectType transfer object type
-     * @param String name
+     * @param transferObjectType object type
+     * @param name
      * @return list of the implementations of a given inherited operation
      */
     public static EList<OperationBody> getOperationImplementationsByName(final MappedTransferObjectType transferObjectType, final String name) {
@@ -330,8 +335,8 @@ public class PsmUtils {
     /**
      * Get the implementation of a given inherited operation.
      *
-     * @param MappedtransferObjectType transfer object type
-     * @param String name
+     * @param transferObjectType transfer object type
+     * @param name
      * @return OperationBody implementation of a given inherited operation
      */
     public static OperationBody getOperationImplementationByName(final MappedTransferObjectType transferObjectType, final String name) {
@@ -434,7 +439,13 @@ public class PsmUtils {
      * @return stream of contents
      */
     public static <T> Stream<T> getAllContents(final EObject eObject, final Class<T> clazz) {
+        if (eObject.eResource() == null) {
+            throw new IllegalStateException("No object added to resource - " + eObject.eClass().toString());
+        }
         final ResourceSet resourceSet = eObject.eResource().getResourceSet();
+        if (resourceSet == null) {
+            throw new IllegalStateException("No resource in resourceset");
+        }
         final Iterable<Notifier> psmContents = resourceSet::getAllContents;
         return StreamSupport.stream(psmContents.spliterator(), true)
                 .filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
