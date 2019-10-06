@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -66,7 +65,7 @@ class PsmValidationTest {
         try {
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,
-                    new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
+                    PsmEpsilonValidator.getValidationScriptURI(),
                     expectedErrors,
                     expectedWarnings);
         } catch (EvlScriptExecutionException ex) {

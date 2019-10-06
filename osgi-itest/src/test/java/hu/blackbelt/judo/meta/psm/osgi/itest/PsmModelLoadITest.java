@@ -1,7 +1,11 @@
 package hu.blackbelt.judo.meta.psm.osgi.itest;
 
+import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
+import hu.blackbelt.epsilon.runtime.execution.impl.StringBuilderLogger;
+import hu.blackbelt.judo.meta.psm.PsmEpsilonValidator;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -15,8 +19,10 @@ import org.osgi.service.log.LogService;
 
 import javax.inject.Inject;
 import java.io.*;
+import java.net.URISyntaxException;
 
 import static hu.blackbelt.judo.meta.psm.osgi.itest.PsmKarafFeatureProvider.*;
+import static org.junit.Assert.assertFalse;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.tinybundles.core.TinyBundles.bundle;
@@ -69,6 +75,16 @@ public class PsmModelLoadITest {
     }
 
     @Test
-    public void testModelLoaded() {
+    public void testModelValidation() {
+        StringBuilderLogger logger = new StringBuilderLogger(StringBuilderLogger.LogLevel.DEBUG);
+        try {
+            PsmEpsilonValidator.validatePsm(logger,
+                    psmModel,
+                    PsmEpsilonValidator.getValidationScriptURI());
+
+        } catch (Exception e) {
+            log.log(LogService.LOG_ERROR, logger.getBuffer());
+            assertFalse(true);
+        }
     }
 }
