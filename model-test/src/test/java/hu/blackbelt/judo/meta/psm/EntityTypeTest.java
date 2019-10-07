@@ -56,10 +56,10 @@ public class EntityTypeTest extends NorthwindTest {
 
     @Test
     public void testOrderDataProperty() {
-        final PrimitiveTypedElement totalPrice = getEntityType("Order").getAttribute("totalPrice");
-        assertThat(totalPrice, instanceOf(DataProperty.class));
+        final PrimitiveTypedElement shipperName = getEntityType("Order").getAttribute("shipperName");
+        assertThat(shipperName, instanceOf(DataProperty.class));
 
-        assertThat(totalPrice.getDataType(), instanceOf(NumericType.class));
+        assertThat(shipperName.getDataType(), instanceOf(StringType.class));
     }
 
     @Test
@@ -73,10 +73,10 @@ public class EntityTypeTest extends NorthwindTest {
 
     @Test
     public void testOrderNavigationProperty() {
-        final ReferenceTypedElement itemsWithCategoryPicture = getEntityType("Order").getReference("itemsWithCategoryPicture");
-        assertThat(itemsWithCategoryPicture, instanceOf(NavigationProperty.class));
+        final ReferenceTypedElement categories = getEntityType("Order").getReference("categories");
+        assertThat(categories, instanceOf(NavigationProperty.class));
 
-        assertThat(itemsWithCategoryPicture.getTarget(), is(getEntityType("OrderDetail")));
-        assertThat(itemsWithCategoryPicture.isCollection(), is(Boolean.TRUE));
+        assertThat(categories.getTarget(), is(getEntityType("Category")));
+        assertThat(categories.isCollection(), is(Boolean.TRUE));
     }
 }

@@ -3,6 +3,7 @@ package hu.blackbelt.judo.meta.psm.osgi.itest;
 import hu.blackbelt.epsilon.runtime.execution.impl.StringBuilderLogger;
 import hu.blackbelt.judo.meta.psm.PsmEpsilonValidator;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.model.northwind.Demo;
 import hu.blackbelt.osgi.utils.osgi.api.BundleTrackerManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import org.osgi.service.log.LogService;
 
 import javax.inject.Inject;
 import java.io.*;
+import java.nio.charset.Charset;
 
 import static hu.blackbelt.judo.meta.psm.osgi.itest.PsmKarafFeatureProvider.*;
 import static org.junit.Assert.assertFalse;
@@ -44,26 +46,33 @@ public class PsmModelLoadITest {
     PsmModel psmModel;
 
     @Configuration
-    public Option[] config() throws FileNotFoundException {
+    public Option[] config() throws FileNotFoundException, UnsupportedEncodingException {
 
         return combine(getRuntimeFeaturesForMetamodel(this.getClass()),
                 mavenBundle(maven()
                         .groupId("hu.blackbelt.judo.meta")
                         .artifactId("hu.blackbelt.judo.meta.psm.osgi")
                         .versionAsInProject()),
+                mavenBundle(maven()
+                        .groupId("hu.blackbelt.model")
+                        .artifactId("hu.blackbelt.model.northwind.model")
+                        .versionAsInProject()),
                 getProvisonModelBundle());
     }
 
-    public Option getProvisonModelBundle() throws FileNotFoundException {
+    public Option getProvisonModelBundle() throws FileNotFoundException, UnsupportedEncodingException {
         return provision(
                 getPsmModelBundle()
         );
     }
 
-    private InputStream getPsmModelBundle() throws FileNotFoundException {
+    private InputStream getPsmModelBundle() throws FileNotFoundException, UnsupportedEncodingException {
+        Demo demModel = new Demo();
+        PsmModel psmModel = demModel.fullDemo();
+
         return bundle()
                 .add( "model/" + DEMO + ".judo-meta-psm",
-                        new FileInputStream(new File(testTargetDir(getClass()).getAbsolutePath(),  "northwind-psm.model")))
+                        new ByteArrayInputStream(psmModel.asString().getBytes("UTF-8")))
                 .set( Constants.BUNDLE_MANIFESTVERSION, "2")
                 .set( Constants.BUNDLE_SYMBOLICNAME, DEMO + "-psm" )
                 //set( Constants.IMPORT_PACKAGE, "meta/psm;version=\"" + getConfiguration(META_PSM_IMPORT_RANGE) +"\"")
