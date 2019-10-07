@@ -28,20 +28,12 @@ public class PsmUtilsTest extends NorthwindTest {
 	public void testIsInstantiableMappedTransferObjectType() {
 		Assertions
 				.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderInfo")));
-		Assertions.assertTrue(
-				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderItemProduct")));
 		Assertions
 				.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderItem")));
 		Assertions.assertTrue(
 				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("ProductInfo")));
 		Assertions.assertTrue(
 				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("CategoryInfo")));
-		Assertions.assertTrue(
-				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("ProductLink")));
-		Assertions.assertTrue(
-				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("CategoryLink")));
-		Assertions
-				.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderLink")));
 	}
 
 	@Test

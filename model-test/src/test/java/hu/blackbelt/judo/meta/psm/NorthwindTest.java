@@ -7,6 +7,7 @@ import hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
 
+import hu.blackbelt.model.northwind.Demo;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.junit.jupiter.api.AfterEach;
@@ -28,16 +29,18 @@ abstract class NorthwindTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-    	resourceSet = PsmModelResourceSupport.createPsmResourceSet();
+    	//resourceSet = PsmModelResourceSupport.createPsmResourceSet();
 
+    	/*
         PsmModel psmModel = PsmModel.loadPsmModel(LoadArguments.psmLoadArgumentsBuilder()
                 .resourceSet(resourceSet)
                 .file(new File("src/test/model/northwind-judopsm.model"))
                 .tags(ImmutableSet.of("test"))
                 .name("test"));
-        
-        assertEquals(ImmutableSet.of("test"), psmModel.getTags());
-    
+        */
+    	PsmModel psmModel = new Demo().fullDemo();
+    	resourceSet = psmModel.getResourceSet();
+
         northwind = (Model) resourceSet.getResources().get(0).getEObject("/");
     }
 
