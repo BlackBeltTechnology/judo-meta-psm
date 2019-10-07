@@ -117,6 +117,7 @@
 		<apache-poi-karaf-features-version>1.0.2</apache-poi-karaf-features-version>
 		<apache-httpclient-karaf-features-version>1.0.1.develop_15</apache-httpclient-karaf-features-version>
 		<pax-exam-version>4.13.1</pax-exam-version>
+		<log4j.configuration>log4j.properties</log4j.configuration>
 	</properties>
 
 	<build>
@@ -584,6 +585,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.0.0-M3</version>
+					<configuration>
+						<argLine>-Dfile.encoding=UTF-8</argLine>
+						<trimStackTrace>false</trimStackTrace>
+						<systemPropertyVariables>
+							<log4j.configuration>${log4j.configuration}</log4j.configuration>
+						</systemPropertyVariables>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
