@@ -231,6 +231,11 @@
           <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.isContainment(this);"/>
         </eAnnotations>
       </eOperations>
+      <eOperations name="getAllRelations" ordered="false" upperBound="-1" eType="#//data/Relation"/>
+      <eOperations name="getAllAttributes" ordered="false" upperBound="-1" eType="#//data/Attribute"/>
+      <eOperations name="getAllDataProperties" ordered="false" upperBound="-1" eType="#//derived/DataProperty"/>
+      <eOperations name="getAllNavigationProperties" ordered="false" upperBound="-1"
+          eType="#//derived/NavigationProperty"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="superEntityTypes" upperBound="-1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
@@ -387,6 +392,10 @@
           <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
         </eAnnotations>
       </eOperations>
+      <eOperations name="getInheritedTransferAttributeNames" ordered="false" upperBound="-1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eOperations name="getInheritedTransferObjectRelationNames" ordered="false"
+          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//service/TransferAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//service/TransferObjectRelation" containment="true"/>
@@ -451,16 +460,16 @@
           <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
         </eAnnotations>
       </eOperations>
-      <eOperations name="getAllOperationNames" ordered="false" unique="false" upperBound="-1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eOperations name="getOperationImplementationsByName" unique="false" upperBound="-1"
-          eType="#//service/OperationBody">
+      <eOperations name="getAllOperationNames" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eOperations name="getInheritedOperationImplementationsByName" unique="false"
+          upperBound="-1" eType="#//service/OperationBody">
         <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eOperations>
-      <eOperations name="getOperationImplementationByName" unique="false" lowerBound="1"
-          eType="#//service/OperationBody">
+      <eOperations name="getInheritedOperationImplementationByName" unique="false"
+          lowerBound="1" eType="#//service/OperationBody">
         <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eOperations>
+      <eOperations name="getInheritedOperationNames" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="entityReferencePresence"

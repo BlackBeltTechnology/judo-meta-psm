@@ -7,10 +7,23 @@ import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.OperationBody;
+import hu.blackbelt.judo.meta.psm.type.NumericType;
 import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.derived.DataProperty;
+import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 
@@ -216,8 +229,8 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		psmModel.addContent(m);
 		
-		Assertions.assertTrue(PsmUtils.getOperationImplementationsByName(grandChild, "operation").size() == 0);
-		Assertions.assertTrue(PsmUtils.getOperationImplementationsByName(grandChild, "ownOperation").size() == 0);
+		Assertions.assertTrue(PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation").size() == 0);
+		Assertions.assertTrue(PsmUtils.getInheritedOperationImplementationsByName(grandChild, "ownOperation").size() == 0);
 	}
 	
 	@Test
@@ -247,11 +260,10 @@ public class PsmUtilsTest extends NorthwindTest {
 				.build();
 
 		psmModel.addContent(m);
+				
+		EList<OperationBody> expected = new UniqueEList<>(Arrays.asList(implementation2));
 		
-		EList<OperationBody> expected = new UniqueEList<>();
-		expected.add(implementation2);
-		
-		Assertions.assertEquals(expected,PsmUtils.getOperationImplementationsByName(grandChild, "operation"));
+		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation"));
 	}
 	
 	@Test
@@ -284,11 +296,9 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		psmModel.addContent(m);
 		
-		EList<OperationBody> expected = new UniqueEList<>();
-		expected.add(implementation1);
-		expected.add(implementation2);
+		EList<OperationBody> expected = new UniqueEList<>(Arrays.asList(implementation1,implementation2));
 		
-		Assertions.assertEquals(expected,PsmUtils.getOperationImplementationsByName(grandChild, "operation"));
+		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation"));
 	}
 	
 	@Test
@@ -327,11 +337,175 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		psmModel.addContent(m);
 		
-		EList<OperationBody> expected = new UniqueEList<>();
-		expected.add(implementation1);
-		expected.add(implementation2);
-		expected.add(implementation3);
+		EList<OperationBody> expected = new UniqueEList<>(Arrays.asList(implementation1,implementation2,implementation3));
 		
-		Assertions.assertEquals(expected,PsmUtils.getOperationImplementationsByName(grandChild, "operation"));
+		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation"));
 	}
+	
+	@Test
+	public void testGetAllRelations() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+        AssociationEnd relation1 = newAssociationEndBuilder().withName("r1").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        AssociationEnd relation2 = newAssociationEndBuilder().withName("r2").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        AssociationEnd relation3 = newAssociationEndBuilder().withName("r3").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        AssociationEnd relation4= newAssociationEndBuilder().withName("r4").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withRelations(relation1).build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withRelations(relation2).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withRelations(relation3).build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4)).withRelations(relation4).build();
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5))
+				.build();
+
+		psmModel.addContent(m);
+		
+		Set<Relation> expected = new HashSet<>(new UniqueEList<>(Arrays.asList(relation1,relation2,relation3,relation4)));
+		Set<Relation> actual = new HashSet<>(PsmUtils.getAllRelations(entityType5));
+		
+		Assertions.assertEquals(expected,actual);
+	}
+	
+	@Test
+	public void testGetAllAttributes() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("a1").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("a2").withDataType(integer).build();
+        Attribute attribute3 = newAttributeBuilder().withName("a3").withDataType(integer).build();
+        Attribute attribute4 = newAttributeBuilder().withName("a4").withDataType(integer).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAttributes(attribute1).build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withAttributes(attribute2).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withAttributes(attribute3).build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4)).withAttributes(attribute4).build();
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5,integer))
+				.build();
+
+		psmModel.addContent(m);
+		
+		Set<Attribute> expected = new HashSet<>(new UniqueEList<>(Arrays.asList(attribute1,attribute2,attribute3,attribute4)));
+		Set<Attribute> actual = new HashSet<>(PsmUtils.getAllAttributes(entityType5));
+		
+		Assertions.assertEquals(expected,actual);
+	}
+	
+	@Test
+	public void testGetAllDataProperties() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("a1").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("a2").withDataType(integer).build();
+        Attribute attribute3 = newAttributeBuilder().withName("a3").withDataType(integer).build();
+        Attribute attribute4 = newAttributeBuilder().withName("a4").withDataType(integer).build();
+        
+        DataProperty property1 = newDataPropertyBuilder().withName("property1").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.a1").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("property2").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.a2").build()
+        		).build();
+        DataProperty property3 = newDataPropertyBuilder().withName("property3").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.a3").build()
+        		).build();
+        DataProperty property4 = newDataPropertyBuilder().withName("property4").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.a4").build()
+        		).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withAttributes(attribute1)
+				.withDataProperties(property1)
+				.build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withAttributes(attribute2)
+				.withDataProperties(property2)
+				.build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withAttributes(attribute3)
+				.withDataProperties(property3)
+				.build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4))
+				.withDataProperties(property4)
+				.withAttributes(attribute4)
+				.build();
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5,integer))
+				.build();
+
+		psmModel.addContent(m);
+		
+		Set<DataProperty> expected = new HashSet<>(new UniqueEList<>(Arrays.asList(property1,property2,property3,property4)));
+		Set<DataProperty> actual = new HashSet<>(PsmUtils.getAllDataProperties(entityType5));
+		
+		Assertions.assertEquals(expected,actual);
+	}
+	
+	@Test
+	public void testGetAllNavigationProperties() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e3 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e4 = newAssociationEndBuilder().withName("e4").withCardinality(newCardinalityBuilder().build()).build();
+
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation1").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("navigation2").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+        NavigationProperty navigation3 = newNavigationPropertyBuilder().withName("navigation3").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e3").build()
+        ).build();
+        NavigationProperty navigation4 = newNavigationPropertyBuilder().withName("navigation4").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e4").build()
+        ).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withRelations(e1)
+				.withNavigationProperties(navigation1)
+				.build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withRelations(e2)
+				.withNavigationProperties(navigation2)
+				.build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withRelations(e3)
+				.withNavigationProperties(navigation3)
+				.build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4))
+				.withRelations(e4)
+				.withNavigationProperties(navigation4)
+				.build();
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5))
+				.build();
+
+		psmModel.addContent(m);
+		
+		Set<NavigationProperty> expected = new HashSet<>(new UniqueEList<>(Arrays.asList(navigation1,navigation2,navigation3,navigation4)));
+		Set<NavigationProperty> actual = new HashSet<>(PsmUtils.getAllNavigationProperties(entityType5));
+		
+		Assertions.assertEquals(expected,actual);
+	}
+	
 }

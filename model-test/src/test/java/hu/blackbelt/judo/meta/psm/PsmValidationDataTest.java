@@ -5,9 +5,12 @@ import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.derived.DataProperty;
+import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.type.NumericType;
 import hu.blackbelt.judo.meta.psm.type.StringType;
 
 import org.eclipse.emf.common.util.URI;
@@ -21,6 +24,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
@@ -280,8 +287,8 @@ class PsmValidationDataTest {
     }
     
     @Test
-    void testInheritedAndNonInheritedNamesAreUnique () throws Exception {
-        log.info("Testing constraint: InheritedAndNonInheritedNamesAreUnique");
+    void testInheritedAndOwnAttributeNameIsUniqueInEntityType () throws Exception {
+        log.info("Testing constraint: InheritedAndOwnAttributeNameIsUniqueInEntityType");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
 
@@ -294,7 +301,7 @@ class PsmValidationDataTest {
         Attribute attribute3 = newAttributeBuilder().withName("attribute3").withDataType(string).build();
         AssociationEnd negtest_member3 = newAssociationEndBuilder().withName("negtest_member").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
 
-        EntityType superSuperEntityType = newEntityTypeBuilder().withName("superEntityType")
+        EntityType superSuperEntityType = newEntityTypeBuilder().withName("superSuperEntityType")
                 .withAttributes(
                         ImmutableList.of(attribute3)
                 ).withRelations(
@@ -313,10 +320,580 @@ class PsmValidationDataTest {
                         ImmutableList.of(superEntityType)
                 ).build();
 
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, superEntityType)).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, superEntityType, superSuperEntityType, string)).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("InheritedAndNonInheritedNamesAreUnique|Entity entityType has inherited or non inherited members with the same name, member overriding is not allowed: Sequence {negtest_Member, negtest_member, negtest_member}","InheritedAndNonInheritedNamesAreUnique|Entity superEntityType has inherited or non inherited members with the same name, member overriding is not allowed: Sequence {negtest_member}"), Collections.emptyList());
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritedAndOwnAttributeNameIsUniqueInEntityType|"
+        				+ "Attribute: negtest_member has the same name as inherited content(s) of entity type: entityType",
+        				"InheritedAndOwnAttributeNameIsUniqueInEntityType|"
+        				+ "Attribute: negtest_Member has the same name as inherited content(s) of entity type: superEntityType",
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited attribute(s) and inherited relation(s) of the same name."), 
+        		Collections.emptyList());
     }
+    
+    @Test
+    void testInheritedAndOwnRelationNameIsUniqueInEntityType () throws Exception {
+        log.info("Testing constraint: InheritedAndOwnRelationNameIsUniqueInEntityType");
 
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("attribute2").withDataType(string).build();
+        AssociationEnd relation1 = newAssociationEndBuilder().withName("member").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        
+        Attribute attribute2 = newAttributeBuilder().withName("MEMBER").withDataType(string).build();
+        AssociationEnd relation2 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        
+        Attribute attribute3 = newAttributeBuilder().withName("attribute3").withDataType(string).build();
+        AssociationEnd relation3 = newAssociationEndBuilder().withName("Member").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+
+        EntityType superSuperEntityType = newEntityTypeBuilder().withName("superSuperEntityType")
+                .withAttributes(
+                        ImmutableList.of(attribute3)
+                ).withRelations(
+                        ImmutableList.of(relation3)
+                ).build();
+        EntityType superEntityType = newEntityTypeBuilder().withName("superEntityType")
+                .withAttributes(
+                        ImmutableList.of(attribute2)
+                ).withRelations(
+                        ImmutableList.of(relation2)
+                ).withSuperEntityTypes(
+                        ImmutableList.of(superSuperEntityType)
+                ).build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+                .withAttributes(
+                        ImmutableList.of(attribute1)
+                ).withRelations(
+                        ImmutableList.of(relation1)
+                ).withSuperEntityTypes(
+                        ImmutableList.of(superEntityType)
+                ).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, superEntityType, superSuperEntityType, string)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritedAndOwnRelationNameIsUniqueInEntityType|"
+        				+ "Relation: member has the same name as inherited content(s) of entity type: entityType",
+        				"InheritedAndOwnAttributeNameIsUniqueInEntityType|"
+        				+ "Attribute: MEMBER has the same name as inherited content(s) of entity type: superEntityType",
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited attribute(s) and inherited relation(s) of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueAttributeNamesLowerCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueAttributeNames");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("attribute").withDataType(string).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute").withDataType(string).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(
+                        ImmutableList.of(attribute1)
+                ).build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(
+                        ImmutableList.of(attribute2)
+                ).build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, string)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueAttributeNames|"
+        				+ "Entity type: entityType has inherited attributes of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueAttributeNamesMixedCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueAttributeNames");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("attribute").withDataType(string).build();
+        Attribute attribute2 = newAttributeBuilder().withName("Attribute").withDataType(string).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(
+                        ImmutableList.of(attribute1)
+                ).build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(
+                        ImmutableList.of(attribute2)
+                ).build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, string)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueAttributeNames|"
+        				+ "Entity type: entityType has inherited attributes of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueRelationNamesLowerCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueRelationNames");
+
+        AssociationEnd relation1 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        AssociationEnd relation2 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withRelations(
+                        ImmutableList.of(relation1)
+                ).build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withRelations(
+                        ImmutableList.of(relation2)
+                ).build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueRelationNames|"
+        				+ "Entity type: entityType has inherited relations of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueRelationNamesMixedCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueAttributeNames");
+
+        AssociationEnd relation1 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+        AssociationEnd relation2 = newAssociationEndBuilder().withName("Relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withRelations(
+                        ImmutableList.of(relation1)
+                ).build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withRelations(
+                        ImmutableList.of(relation2)
+                ).build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueRelationNames|"
+        				+ "Entity type: entityType has inherited relations of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueDataPropertyNamesLowerCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueDataPropertyNames");
+
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("member").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute").withDataType(integer).build();
+
+        DataProperty property1 = newDataPropertyBuilder().withName("property").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("property").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(
+                        ImmutableList.of(attribute1)
+                ).withDataProperties(property1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(
+                        ImmutableList.of(attribute2)
+                ).withDataProperties(property2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueDataPropertyNames|"
+        				+ "Entity type: entityType has inherited data properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueDataPropertyNamesMixedCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueDataPropertyNames");
+
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("member").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute").withDataType(integer).build();
+
+        DataProperty property1 = newDataPropertyBuilder().withName("property").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("PROPERTY").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(
+                        ImmutableList.of(attribute1)
+                ).withDataProperties(property1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(
+                        ImmutableList.of(attribute2)
+                ).withDataProperties(property2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2,integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueDataPropertyNames|"
+        				+ "Entity type: entityType has inherited data properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueNavigationPropertyNamesLowerCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueNavigationPropertyNames");
+        
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withRelations(ImmutableList.of(e1))
+                .withNavigationProperties(ImmutableList.of(navigation1))
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withRelations(ImmutableList.of(e2))
+                .withNavigationProperties(ImmutableList.of(navigation2))
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+                .withSuperEntityTypes(ImmutableList.of(parent1,parent2))
+                .build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueNavigationPropertyNames|"
+        				+ "Entity type: entityType has inherited navigation properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingUniqueNavigationPropertyNamesMixedCase() throws Exception {
+        log.info("Testing constraint: InheritingUniqueNavigationPropertyNames");
+
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("Navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withRelations(ImmutableList.of(e1))
+                .withNavigationProperties(ImmutableList.of(navigation1))
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withRelations(ImmutableList.of(e2))
+                .withNavigationProperties(ImmutableList.of(navigation2))
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+                .withSuperEntityTypes(ImmutableList.of(parent1,parent2))
+                .build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingUniqueNavigationPropertyNames|"
+        				+ "Entity type: entityType has inherited navigation properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingNamedElementsOfTheSameNameIsNotAllowedAttributesAndRelations() throws Exception {
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+
+        StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("member").withDataType(string).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute").withDataType(string).build();
+        AssociationEnd relation1 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd relation2 = newAssociationEndBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(ImmutableList.of(attribute1))
+                .withRelations(relation1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(ImmutableList.of(attribute2))
+                .withRelations(relation2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, string)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited attribute(s) and inherited relation(s) of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingNamedElementsOfTheSameNameIsNotAllowedAttributesAndDataProperties() throws Exception {
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("member").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute").withDataType(integer).build();
+
+        DataProperty property1 = newDataPropertyBuilder().withName("property").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("MEMBER").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(ImmutableList.of(attribute1))
+                .withDataProperties(property1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(ImmutableList.of(attribute2))
+                .withDataProperties(property2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited attribute(s) and inherited data properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingNamedElementsOfTheSameNameIsNotAllowedAttributesAndNavigationProperties() throws Exception {
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+        
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("attribute").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("member").withDataType(integer).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(ImmutableList.of(attribute1))
+                .withRelations(e1)
+                .withNavigationProperties(navigation1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(ImmutableList.of(attribute2))
+                .withRelations(e2)
+                .withNavigationProperties(navigation2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited attribute(s) and inherited navigation properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingNamedElementsOfTheSameNameIsNotAllowedRelationsAndDataProperties() throws Exception {
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        AssociationEnd relation1 = newAssociationEndBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd relation2 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().build()).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("attribute1").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute2").withDataType(integer).build();
+
+        DataProperty property1 = newDataPropertyBuilder().withName("property").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("MEMBER").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute2").build()
+        		).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(ImmutableList.of(attribute1))
+                .withDataProperties(property1)
+                .withRelations(relation1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(ImmutableList.of(attribute2))
+                .withDataProperties(property2)
+                .withRelations(relation2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited relation(s) and inherited data properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingNamedElementsOfTheSameNameIsNotAllowedRelationsAndNavigationProperties() throws Exception {
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+        
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        AssociationEnd e1 = newAssociationEndBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.member").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+        
+        Attribute attribute1 = newAttributeBuilder().withName("attribute1").withDataType(integer).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute2").withDataType(integer).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withAttributes(ImmutableList.of(attribute1))
+                .withRelations(e1)
+                .withNavigationProperties(navigation1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+                .withAttributes(ImmutableList.of(attribute2))
+                .withRelations(e2)
+                .withNavigationProperties(navigation2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited relation(s) and inherited navigation properties of the same name."), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritingNamedElementsOfTheSameNameIsNotAllowedDataPropertiesAndNavigationProperties() throws Exception {
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+        
+        NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        
+        AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+        
+        DataProperty property1 = newDataPropertyBuilder().withName("MEMBER").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("property").withDataType(integer).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute2").build()
+        		).build();
+
+        EntityType parent1 = newEntityTypeBuilder().withName("parent1")
+                .withDataProperties(property1)
+                .withRelations(e1)
+                .withNavigationProperties(navigation1)
+                .build();
+        EntityType parent2 = newEntityTypeBuilder().withName("parent2")
+        		.withDataProperties(property2)
+                .withRelations(e2)
+                .withNavigationProperties(navigation2)
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withSuperEntityTypes(ImmutableList.of(parent1,parent2)).build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited data properties and inherited navigation properties of the same name."), 
+        		Collections.emptyList());
+    }
 }

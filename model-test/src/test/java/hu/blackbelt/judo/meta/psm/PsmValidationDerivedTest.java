@@ -5,10 +5,17 @@ import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
+import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
+import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.derived.DataProperty;
+import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.derived.StaticData;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.type.StringType;
+
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +28,6 @@ import java.util.Collections;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticDataBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
@@ -119,5 +124,85 @@ class PsmValidationDerivedTest {
                         "StaticNavigationNamesAreUnique|Static navigation name is not unique: staticNavigation",
                         "StaticNavigationNamesAreUnique|Static navigation name is not unique: staticnavigation"
                 ));
+    }
+    
+    @Test
+    void testInheritedAndOwnDataPropertyNameIsUniqueInEntityType () throws Exception {
+        log.info("Testing constraint: InheritedAndOwnDataPropertyNameIsUniqueInEntityType");
+        
+        StringType string = newStringTypeBuilder().withName("string").withMaxLength(255).build(); 
+        
+        Attribute attribute1 = newAttributeBuilder().withName("member").withDataType(string).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute").withDataType(string).build();
+
+        DataProperty property1 = newDataPropertyBuilder().withName("property").withDataType(string).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("Member").withDataType(string).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute").build()
+        		).build();
+
+        EntityType superSuperEntityType = newEntityTypeBuilder().withName("superSuperEntityType")
+                .withAttributes(ImmutableList.of(attribute1))
+                .build();
+        EntityType superEntityType = newEntityTypeBuilder().withName("superEntityType")
+                .withAttributes(ImmutableList.of(attribute2))
+                .withDataProperties(ImmutableList.of(property1))
+                .withSuperEntityTypes(ImmutableList.of(superSuperEntityType))
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+                .withDataProperties(ImmutableList.of(property2))
+                .withSuperEntityTypes(ImmutableList.of(superEntityType))
+                .build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
+        		entityType, superEntityType, superSuperEntityType, string)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritedAndOwnDataPropertyNameIsUniqueInEntityType|"
+        				+ "Data property: Member has the same name as inherited content(s) of entity type: entityType"), 
+        		Collections.emptyList());
+    }
+    
+    @Test
+    void testInheritedAndOwnNavigationPropertyNameIsUniqueInEntityType () throws Exception {
+        log.info("Testing constraint: InheritedAndOwnNavigationPropertyNameIsUniqueInEntityType");
+        
+        StringType string = newStringTypeBuilder().withName("string").withMaxLength(255).build();
+        
+        AssociationEnd e1 = newAssociationEndBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).build();
+        AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
+        
+        NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.member").build()
+        ).build();
+        NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("member").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
+                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
+        ).build();
+
+        EntityType superSuperEntityType = newEntityTypeBuilder().withName("superSuperEntityType")
+                .withRelations(ImmutableList.of(e1))
+                .build();
+        EntityType superEntityType = newEntityTypeBuilder().withName("superEntityType")
+                .withRelations(ImmutableList.of(e2))
+                .withNavigationProperties(ImmutableList.of(navigation1))
+                .withSuperEntityTypes(ImmutableList.of(superSuperEntityType))
+                .build();
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+                .withNavigationProperties(ImmutableList.of(navigation2))
+                .withSuperEntityTypes(ImmutableList.of(superEntityType))
+                .build();
+
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(
+        		entityType, superEntityType, superSuperEntityType, string)).build();
+
+        psmModel.addContent(m);
+        runEpsilon(
+        		ImmutableList.of(
+        				"InheritedAndOwnNavigationPropertyNameIsUniqueInEntityType|"
+        				+ "Navigation property: member has the same name as inherited content(s) of entity type: entityType"), 
+        		Collections.emptyList());
     }
 }

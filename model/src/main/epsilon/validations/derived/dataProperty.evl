@@ -1,0 +1,11 @@
+context PSM!DataProperty {
+    
+    constraint InheritedAndOwnDataPropertyNameIsUniqueInEntityType {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer().getAllSuperEntityTypes()
+                    .collect(c | c.eContents()).flatten()
+                    .select(c | c.isKindOf(PSM!NamedElement))
+                    .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
+        message: "Data property: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
+    } 
+}

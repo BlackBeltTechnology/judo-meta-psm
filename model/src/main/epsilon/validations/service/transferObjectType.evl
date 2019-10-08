@@ -5,4 +5,27 @@ context PSM!TransferObjectType {
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
         message: "Transfer object type name is not unique: " + self.name
     }
+    
+    // check if transfer object type is inheriting unique transfer attributes
+    constraint InheritingUniqueAttributeNames {
+        check: self.getInheritedTransferAttributeNames()
+                    .forAll(n | self.getAllSuperTransferObjectTypes().collect(s | s.getAttributes()).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Transfer object type: " + self.name + " has inherited transfer attributes of the same name."
+    }
+    
+    // check if transfer object type is inheriting unique transfer object relations
+    constraint InheritingUniqueRelationNames {
+        check: self.getInheritedTransferObjectRelationNames()
+                    .forAll(n | self.getAllSuperTransferObjectTypes().collect(s | s.getRelations()).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Transfer object type: " + self.name + " has inherited transfer object relations of the same name."
+    }
+    
+    // check if transfer object type is inheriting unique transfer attribute and transfer object relation names
+    constraint InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed {
+        check: not self.getInheritedTransferAttributeNames()
+                .exists(name | self.getInheritedTransferObjectRelationNames().exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Transfer object type: " + self.name + " has inherited transfer object relation(s) and inherited transfer attribute(s) of the same name."
+    }
 }
