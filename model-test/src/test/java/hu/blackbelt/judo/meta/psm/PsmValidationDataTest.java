@@ -330,7 +330,7 @@ class PsmValidationDataTest {
         				"InheritedAndOwnAttributeNameIsUniqueInEntityType|"
         				+ "Attribute: negtest_Member has the same name as inherited content(s) of entity type: superEntityType",
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited attribute(s) and inherited relation(s) of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -382,13 +382,13 @@ class PsmValidationDataTest {
         				"InheritedAndOwnAttributeNameIsUniqueInEntityType|"
         				+ "Attribute: MEMBER has the same name as inherited content(s) of entity type: superEntityType",
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited attribute(s) and inherited relation(s) of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueAttributeNamesLowerCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueAttributeNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
         
@@ -411,14 +411,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueAttributeNames|"
-        				+ "Entity type: entityType has inherited attributes of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueAttributeNamesMixedCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueAttributeNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         StringType string = newStringTypeBuilder().withName("String").withMaxLength(255).build();
         
@@ -441,14 +441,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueAttributeNames|"
-        				+ "Entity type: entityType has inherited attributes of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueRelationNamesLowerCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueRelationNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         AssociationEnd relation1 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
         AssociationEnd relation2 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
@@ -469,14 +469,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueRelationNames|"
-        				+ "Entity type: entityType has inherited relations of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueRelationNamesMixedCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueAttributeNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         AssociationEnd relation1 = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
         AssociationEnd relation2 = newAssociationEndBuilder().withName("Relation").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
@@ -497,14 +497,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueRelationNames|"
-        				+ "Entity type: entityType has inherited relations of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueDataPropertyNamesLowerCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueDataPropertyNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
         
@@ -536,14 +536,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueDataPropertyNames|"
-        				+ "Entity type: entityType has inherited data properties of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueDataPropertyNamesMixedCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueDataPropertyNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
         
@@ -575,14 +575,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueDataPropertyNames|"
-        				+ "Entity type: entityType has inherited data properties of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueNavigationPropertyNamesLowerCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueNavigationPropertyNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
         
         NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
         
@@ -613,14 +613,14 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueNavigationPropertyNames|"
-        				+ "Entity type: entityType has inherited navigation properties of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
     @Test
     void testInheritingUniqueNavigationPropertyNamesMixedCase() throws Exception {
-        log.info("Testing constraint: InheritingUniqueNavigationPropertyNames");
+        log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
 
         NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
         
@@ -651,8 +651,8 @@ class PsmValidationDataTest {
         psmModel.addContent(m);
         runEpsilon(
         		ImmutableList.of(
-        				"InheritingUniqueNavigationPropertyNames|"
-        				+ "Entity type: entityType has inherited navigation properties of the same name."), 
+        				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -684,7 +684,7 @@ class PsmValidationDataTest {
         runEpsilon(
         		ImmutableList.of(
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited attribute(s) and inherited relation(s) of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -721,7 +721,7 @@ class PsmValidationDataTest {
         runEpsilon(
         		ImmutableList.of(
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited attribute(s) and inherited data properties of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -763,7 +763,7 @@ class PsmValidationDataTest {
         runEpsilon(
         		ImmutableList.of(
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited attribute(s) and inherited navigation properties of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -805,7 +805,7 @@ class PsmValidationDataTest {
         runEpsilon(
         		ImmutableList.of(
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited relation(s) and inherited data properties of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -847,7 +847,7 @@ class PsmValidationDataTest {
         runEpsilon(
         		ImmutableList.of(
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited relation(s) and inherited navigation properties of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
     
@@ -893,7 +893,7 @@ class PsmValidationDataTest {
         runEpsilon(
         		ImmutableList.of(
         				"InheritingNamedElementsOfTheSameNameIsNotAllowed|"
-        				+ "Entity type: entityType has inherited data properties and inherited navigation properties of the same name."), 
+        				+ "Entity type: entityType has inherited named elements of the same name."), 
         		Collections.emptyList());
     }
 }

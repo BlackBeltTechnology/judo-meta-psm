@@ -5,6 +5,7 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
@@ -365,6 +366,21 @@ public class PsmUtils {
             .flatMap(to -> to.getNavigationProperties().stream())
             .map(n -> n.getName())
             .collect(Collectors.toSet());
+    }
+    
+    /**
+     * Get set of all inherited named element names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited named elements
+     */
+    public static Set<String> getInheritedNamedElementNames(final EntityType entityType) {
+    	return Stream.of(getInheritedAttributeNames(entityType),
+    			getInheritedRelationNames(entityType),
+    			getInheritedDataPropertyNames(entityType),
+    			getInheritedNavigationPropertyNames(entityType))
+            .flatMap(s -> s.stream())
+    		.collect(Collectors.toSet());
     }
     
     /**

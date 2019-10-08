@@ -12,78 +12,14 @@ context PSM!EntityType {
 		message: "Entity type " + self.name + " is recursive"
 	}
 
-    // entity type is inheriting unique attribute names
-    constraint InheritingUniqueAttributeNames {
-        check: psmUtils.getInheritedAttributeNames(self)
-                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.getAttributes()).flatten()
-                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
-        message: "Entity type: " + self.name + " has inherited attributes of the same name."
-    }
-    
-    // entity type is inheriting unique relation names
-    constraint InheritingUniqueRelationNames {
-        check: psmUtils.getInheritedRelationNames(self)
-                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.getRelations()).flatten()
-                                    .select(r | r.name.toLowerCase() == n.toLowerCase()).size() == 1)
-        message: "Entity type: " + self.name + " has inherited relations of the same name."
-    }
-
-    // entity type is inheriteing unique data property names
-    constraint InheritingUniqueDataPropertyNames {
-        check: psmUtils.getInheritedDataPropertyNames(self)
-                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.getDataProperties()).flatten()
-                                    .select(d | d.name.toLowerCase() == n.toLowerCase()).size() == 1)
-        message: "Entity type: " + self.name + " has inherited data properties of the same name."
-    }
-    
-    // entity type is inheriting unique navigation property names
-    constraint InheritingUniqueNavigationPropertyNames {
-        check: psmUtils.getInheritedNavigationPropertyNames(self)
-                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.getNavigationProperties()).flatten()
-                                    .select(np | np.name.toLowerCase() == n.toLowerCase()).size() == 1)
-        message: "Entity type: " + self.name + " has inherited navigation properties of the same name."
-    }
-    
-    //  entity type is not inheriting attributes and relations of the same name
+    // entity type is inheriting unique named element names
     constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: not psmUtils.getInheritedAttributeNames(self)
-                .exists(name | psmUtils.getInheritedRelationNames(self).exists(r | r.toLowerCase() == name.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited attribute(s) and inherited relation(s) of the same name."
-    }
-    
-    // entity type is not inheriting attributes and data properties of the same name
-    constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: not psmUtils.getInheritedAttributeNames(self)
-                .exists(name | psmUtils.getInheritedDataPropertyNames(self).exists(d | d.toLowerCase() == name.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited attribute(s) and inherited data properties of the same name."
-    }
-    
-    // entity type is not inheriting attributes and navigation properties of the same name
-    constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: not psmUtils.getInheritedAttributeNames(self)
-                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(np | np.toLowerCase() == name.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited attribute(s) and inherited navigation properties of the same name."
-    }
-
-    // entity type is not inheriting relations and data properties of the same name
-    constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: not psmUtils.getInheritedRelationNames(self)
-                .exists(name | psmUtils.getInheritedDataPropertyNames(self).exists(d | d.toLowerCase() == name.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited relation(s) and inherited data properties of the same name."
-    }
-    
-    // entity type is not inheriting relations and navigation properties of the same name
-    constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: not psmUtils.getInheritedRelationNames(self)
-                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(np | np.toLowerCase() == name.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited relation(s) and inherited navigation properties of the same name."
-    }
-
-    // entity type is not inheriting data properties and navigation properties of the same name
-    constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: not psmUtils.getInheritedDataPropertyNames(self)
-                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(np | np.toLowerCase() == name.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited data properties and inherited navigation properties of the same name."
+        check: psmUtils.getInheritedNamedElementNames(self)
+                    .forAll(n | self.getAllSuperEntityTypes()
+                                    .collect(s | s.eContents()).flatten()
+                                    .select(c | c.isKindOf(PSM!NamedElement))
+                                    .select(e | e.name.toLowerCase() == n.toLowerCase()).size() == 1 )
+        message: "Entity type: " + self.name + " has inherited named elements of the same name."
     }
 
     //TODO-suspended: Seq & Attr, Seq & Rel, Se & RelCC (duplicate name check) [after Sequence becomes supported]
