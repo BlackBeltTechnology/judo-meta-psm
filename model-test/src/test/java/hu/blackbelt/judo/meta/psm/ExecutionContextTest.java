@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.meta.psm;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
@@ -25,7 +26,6 @@ class ExecutionContextTest {
 
     @Test
     void testReflectiveCreated() throws Exception {
-
 
         String createdSourceModelName = "urn:psm.judo-meta-psm";
 
@@ -60,9 +60,8 @@ class ExecutionContextTest {
                 .build();
 
         psmResource.getContents().add(model);
-
-
-        // Executrion context
+        		
+        // Execution context
         ExecutionContext executionContext = executionContextBuilder()
                 .log(log)
                 .resourceSet(executionResourceSet)
@@ -74,6 +73,7 @@ class ExecutionContextTest {
                                 .validateModel(false)
                                 .resource(psmResource)
                                 .build()))
+                .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils()))
                 .build();
 
         // run the model / metadata loading
@@ -85,11 +85,7 @@ class ExecutionContextTest {
                         .source(new File("../model/src/main/epsilon/validations/psm.evl").toURI())
                         .build());
 
-
-
         executionContext.commit();
         executionContext.close();
-
     }
-
 }

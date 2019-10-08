@@ -19,6 +19,7 @@ import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.*;
+
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -931,9 +932,9 @@ class PsmValidationServiceTest {
    void testTargetMatchesBindingTarget() throws Exception {
        log.info("Testing constraint: TargetMatchesBindingTarget");
        
-       AssociationEnd e0 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
-       AssociationEnd e1 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
-       AssociationEnd e2 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
+       AssociationEnd e0 = newAssociationEndBuilder().withName("e0").withCardinality(newCardinalityBuilder().build()).build();
+       AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
+       AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
        
        NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
                newReferenceExpressionTypeBuilder().withExpression("self.e0").build()
@@ -1344,5 +1345,591 @@ class PsmValidationServiceTest {
       runEpsilon(ImmutableList.of(
           "UnmappedTransferObjectTypeHasNoMappedSuperTransferObjectType|Unmapped transfer object type: unmappedChild cannot derive from mapped transfer object type."),
           Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritedAndOwnTransferAttributeNameIsUniqueInTransferObjectType() throws Exception {
+      log.info("Testing constraint: InheritedAndOwnTransferAttributeNameIsUniqueInTransferObjectType");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      TransferAttribute attribute1 = newTransferAttributeBuilder().withName("attribute").withDataType(string).build();
+      TransferAttribute attribute2 = newTransferAttributeBuilder().withName("attr").withDataType(string).build();
+      
+      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("element").withTarget(target)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      UnmappedTransferObjectType parent1 = newUnmappedTransferObjectTypeBuilder().withName("parent1")
+    		  .withAttributes(ImmutableList.of(attribute1,attribute2)).build();
+      UnmappedTransferObjectType parent2 = newUnmappedTransferObjectTypeBuilder().withName("parent2").withRelations(relation).build();
+      
+      TransferAttribute wrongAttribute1 = newTransferAttributeBuilder().withName("element").withDataType(string).build();
+      TransferAttribute wrongAttribute2 = newTransferAttributeBuilder().withName("ATTR").withDataType(string).build();
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withEntityType(entityType1)
+              .withSuperTransferObjectTypes(ImmutableList.of(parent1,parent2))
+              .withAttributes(ImmutableList.of(wrongAttribute1,wrongAttribute2))
+              .build();
+      
+      TransferAttribute correctAttribute = newTransferAttributeBuilder().withName("own").withDataType(string).build();
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").build();
+      MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType2)
+              .withSuperTransferObjectTypes(ImmutableList.of(parent1,parent2))
+              .withAttributes(correctAttribute)
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			target,
+              			parent1,parent2,
+                        entityType1,
+                        child1,
+                        entityType2,
+                        child2
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritedAndOwnTransferAttributeNameIsUniqueInTransferObjectType|"
+          + "Transfer attribute: element has the same name as inherited content(s) of transfer object type: child1",
+          "InheritedAndOwnTransferAttributeNameIsUniqueInTransferObjectType|"
+          + "Transfer attribute: ATTR has the same name as inherited content(s) of transfer object type: child1"
+    		  ),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritedAndOwnTransferObjectRelationNameIsUniqueInTransferObjectType() throws Exception {
+      log.info("Testing constraint: InheritedAndOwnTransferObjectRelationNameIsUniqueInTransferObjectType");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      TransferAttribute attribute = newTransferAttributeBuilder().withName("element").withDataType(string).build();
+      
+      UnmappedTransferObjectType target11 = newUnmappedTransferObjectTypeBuilder().withName("target11").build();
+      TransferObjectRelation relation1 = newTransferObjectRelationBuilder().withName("relation").withTarget(target11)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      UnmappedTransferObjectType target12 = newUnmappedTransferObjectTypeBuilder().withName("target12").build();
+      TransferObjectRelation relation2 = newTransferObjectRelationBuilder().withName("rel").withTarget(target12)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      UnmappedTransferObjectType parent1 = newUnmappedTransferObjectTypeBuilder().withName("parent1").withAttributes(attribute).build();
+      UnmappedTransferObjectType parent2 = newUnmappedTransferObjectTypeBuilder().withName("parent2")
+    		  .withRelations(ImmutableList.of(relation1,relation2)).build();
+     
+      UnmappedTransferObjectType target21 = newUnmappedTransferObjectTypeBuilder().withName("target21").build();
+      TransferObjectRelation wrongRelation1 = newTransferObjectRelationBuilder().withName("element").withTarget(target21)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      UnmappedTransferObjectType target22 = newUnmappedTransferObjectTypeBuilder().withName("target22").build();
+      TransferObjectRelation wrongRelation2 = newTransferObjectRelationBuilder().withName("REL").withTarget(target22)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withEntityType(entityType1)
+              .withSuperTransferObjectTypes(ImmutableList.of(parent1,parent2))
+              .withRelations(ImmutableList.of(wrongRelation1,wrongRelation2))
+              .build();
+      
+      UnmappedTransferObjectType target3 = newUnmappedTransferObjectTypeBuilder().withName("target3").build();
+      TransferObjectRelation correctRelation = newTransferObjectRelationBuilder().withName("own").withTarget(target3)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").build();
+      MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child2").withEntityType(entityType2)
+              .withSuperTransferObjectTypes(ImmutableList.of(parent1,parent2))
+              .withRelations(correctRelation)
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			target11,target12,target21,target22,target3,
+              			parent1,parent2,
+                        entityType1,entityType2,
+                        child1,child2
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritedAndOwnTransferObjectRelationNameIsUniqueInTransferObjectType|"
+                  + "Transfer object relation: element has the same name as inherited content(s) of transfer object type: child1",
+          "InheritedAndOwnTransferObjectRelationNameIsUniqueInTransferObjectType|"
+                  + "Transfer object relation: REL has the same name as inherited content(s) of transfer object type: child1"),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritingUniqueAttributeNamesLowerCase() throws Exception {
+      log.info("Testing constraint: InheritingUniqueAttributeNames");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      TransferAttribute attribute1= newTransferAttributeBuilder().withName("attribute").withDataType(string).build();
+      TransferAttribute attribute2 = newTransferAttributeBuilder().withName("attribute").withDataType(string).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withAttributes(attribute1)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute2).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritingUniqueAttributeNames|Transfer object type: child has inherited transfer attributes of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritingUniqueAttributeNamesMixedCase() throws Exception {
+      log.info("Testing constraint: InheritingUniqueAttributeNames");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      TransferAttribute attribute1 = newTransferAttributeBuilder().withName("attribute").withDataType(string).build();
+      TransferAttribute attribute2 = newTransferAttributeBuilder().withName("ATTRIBUTE").withDataType(string).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withAttributes(attribute1)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute2).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritingUniqueAttributeNames|Transfer object type: child has inherited transfer attributes of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritingUniqueRelationNamesLowerCase() throws Exception {
+      log.info("Testing constraint: InheritingUniqueRelationNames");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      UnmappedTransferObjectType target1 = newUnmappedTransferObjectTypeBuilder().withName("target1").build();
+      TransferObjectRelation relation1 = newTransferObjectRelationBuilder().withName("relation").withTarget(target1)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      UnmappedTransferObjectType target2 = newUnmappedTransferObjectTypeBuilder().withName("target2").build();
+      TransferObjectRelation relation2 = newTransferObjectRelationBuilder().withName("relation").withTarget(target2)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withRelations(relation1)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+      
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation2).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritingUniqueRelationNames|Transfer object type: child has inherited transfer object relations of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritingUniqueRelationNamesMixedCase() throws Exception {
+      log.info("Testing constraint: InheritingUniqueRelationNames");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      UnmappedTransferObjectType target1 = newUnmappedTransferObjectTypeBuilder().withName("target1").build();
+      TransferObjectRelation relation1 = newTransferObjectRelationBuilder().withName("relation").withTarget(target1)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      UnmappedTransferObjectType target2 = newUnmappedTransferObjectTypeBuilder().withName("target2").build();
+      TransferObjectRelation relation2 = newTransferObjectRelationBuilder().withName("RELATION").withTarget(target2)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withRelations(relation1)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+      
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation2).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritingUniqueRelationNames|Transfer object type: child has inherited transfer object relations of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritingAttributesAndRelationsOfTheSameNameIsNotAllowedLowerCase() throws Exception {
+      log.info("Testing constraint: InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      TransferAttribute attribute1 = newTransferAttributeBuilder().withName("content").withDataType(string).build();
+      TransferAttribute attribute2 = newTransferAttributeBuilder().withName("attribute").withDataType(string).build();
+      
+      UnmappedTransferObjectType target1 = newUnmappedTransferObjectTypeBuilder().withName("target1").build();
+      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("content").withTarget(target1)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withAttributes(attribute1)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+    		  .withAttributes(attribute2)
+              .build();
+      
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed|Transfer object type: child has inherited transfer object relation(s) and inherited transfer attribute(s) of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritingAttributesAndRelationsOfTheSameNameIsNotAllowedMixedCase() throws Exception {
+      log.info("Testing constraint: InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      
+      TransferAttribute attribute1 = newTransferAttributeBuilder().withName("CONTENT").withDataType(string).build();
+      TransferAttribute attribute2 = newTransferAttributeBuilder().withName("attribute").withDataType(string).build();
+      
+      UnmappedTransferObjectType target1 = newUnmappedTransferObjectTypeBuilder().withName("target1").build();
+      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("content").withTarget(target1)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withAttributes(attribute1)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+    		  .withAttributes(attribute2)
+              .build();
+      
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,            
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed|Transfer object type: child has inherited transfer object relation(s) and inherited transfer attribute(s) of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritedOperationAndTransferAttributeNamesAreUniqueLowerCase() throws Exception {
+      log.info("Testing constraint: InheritedOperationAndTransferAttributeNamesAreUnique");
+      
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+      
+      TransferAttribute attribute = newTransferAttributeBuilder().withName("content").withDataType(string).build();
+      
+      BoundOperation operation = newBoundOperationBuilder().withName("content")
+              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withOperations(operation)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+      
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,type,          
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritedOperationAndTransferAttributeNamesAreUnique|"
+          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer attribute(s) of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritedOperationAndTransferAttributeNamesAreUniqueMixedCase() throws Exception {
+	      log.info("Testing constraint: InheritedOperationAndTransferAttributeNamesAreUnique");
+	      
+	      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+	      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+	      
+	      TransferAttribute attribute = newTransferAttributeBuilder().withName("content").withDataType(string).build();
+	      
+	      BoundOperation operation = newBoundOperationBuilder().withName("Content")
+	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .build();
+	      
+	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+	      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+	              .withOperations(operation)
+	              .build();
+	      
+	      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+	      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+	    		  .withSuperTransferObjectTypes(mappedParent1)
+	              .build();
+	      
+	      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute).build();
+	      
+	      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+	      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+	              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+	              .build();
+	            
+	      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+	              			string,type,           
+	              			entityType1,entityType2,entityType3,
+	              			mappedParent1,mappedParent2,parent,
+	              			child
+	                      ))
+	    		  .build();
+	   
+	      psmModel.addContent(model);
+	   
+	      runEpsilon(ImmutableList.of(
+	          "InheritedOperationAndTransferAttributeNamesAreUnique|"
+	          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer attribute(s) of the same name."),
+	          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritedOperationAndTransferObjectRelationNamesAreUniqueLowerCase() throws Exception {
+      log.info("Testing constraint: InheritedOperationAndTransferObjectRelationNamesAreUnique");
+      
+      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+      
+      BoundOperation operation = newBoundOperationBuilder().withName("content")
+              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .build();
+      
+      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("content").withTarget(target)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+      
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withOperations(operation)
+              .build();
+      
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+      
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
+      
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+            
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			type,
+    		  			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+   
+      psmModel.addContent(model);
+   
+      runEpsilon(ImmutableList.of(
+          "InheritedOperationAndTransferObjectRelationNamesAreUnique|"
+          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer object relation(s) of the same name."),
+          Collections.emptyList());
+   }
+   
+   @Test
+   void testInheritedOperationAndTransferObjectRelationNamesAreUniqueMixedCase() throws Exception {
+	      log.info("Testing constraint: InheritedOperationAndTransferObjectRelationNamesAreUnique");
+	      
+	      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+	      
+	      BoundOperation operation = newBoundOperationBuilder().withName("content")
+	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .build();
+	      
+	      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+	      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("CONTENT").withTarget(target)
+	    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+	    		  .withEmbedded(true).build();
+	      
+	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+	      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+	              .withOperations(operation)
+	              .build();
+	      
+	      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+	      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+	    		  .withSuperTransferObjectTypes(mappedParent1)
+	              .build();
+	      
+	      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
+	      
+	      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+	      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+	              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+	              .build();
+	            
+	      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+	              			type,
+	    		  			entityType1,entityType2,entityType3,
+	              			mappedParent1,mappedParent2,parent,
+	              			child
+	                      ))
+	    		  .build();
+	   
+	      psmModel.addContent(model);
+	   
+	      runEpsilon(ImmutableList.of(
+	          "InheritedOperationAndTransferObjectRelationNamesAreUnique|"
+	          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer object relation(s) of the same name."),
+	          Collections.emptyList());
    }
 }

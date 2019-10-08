@@ -5,6 +5,7 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
@@ -259,6 +260,133 @@ public class PsmUtils {
     }
     
     /**
+     * Get unique list of all (inherited and not inherited) relations of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited and own relations of an entity type
+     */
+    public static EList<Relation> getAllRelations(final EntityType entityType) {
+    	final EList<Relation> relations = new UniqueEList<>();
+    	relations.addAll(entityType.getRelations());
+    	relations.addAll(entityType.getAllSuperEntityTypes().stream()
+    			.flatMap(e -> e.getRelations().stream())
+                .collect(Collectors.toSet()));
+    	return relations;
+    }
+
+    /**
+     * Get unique list of all (inherited and not inherited) attributes of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited and own attributes of an entity type
+     */
+    public static EList<Attribute> getAllAttributes(final EntityType entityType) {
+    	final EList<Attribute> attributes = new UniqueEList<>();
+    	attributes.addAll(entityType.getAttributes());
+    	attributes.addAll(entityType.getAllSuperEntityTypes().stream()
+    			.flatMap(e -> e.getAttributes().stream())
+                .collect(Collectors.toSet()));
+    	return attributes;
+    }
+    
+    /**
+     * Get unique list of all (inherited and not inherited) data properties of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited and own data properties of an entity type
+     */
+    public static EList<DataProperty> getAllDataProperties(final EntityType entityType) {
+    	final EList<DataProperty> dataProperties = new UniqueEList<>();
+    	dataProperties.addAll(entityType.getDataProperties());
+    	dataProperties.addAll(entityType.getAllSuperEntityTypes().stream()
+    			.flatMap(e -> e.getDataProperties().stream())
+                .collect(Collectors.toSet()));
+    	return dataProperties;
+    }
+
+    /**
+     * Get unique list of all (inherited and not inherited) navigation properties of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited and own navigation properties of an entity type
+     */
+    public static EList<NavigationProperty> getAllNavigationProperties(final EntityType entityType) {
+    	final EList<NavigationProperty> navigationProperties = new UniqueEList<>();
+    	navigationProperties.addAll(entityType.getNavigationProperties());
+    	navigationProperties.addAll(entityType.getAllSuperEntityTypes().stream()
+    			.flatMap(e -> e.getNavigationProperties().stream())
+                .collect(Collectors.toSet()));
+    	return navigationProperties;
+    }
+    
+    /**
+     * Get set of all inherited attribute names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited attributes
+     */
+    public static Set<String> getInheritedAttributeNames(final EntityType entityType) {
+    	return entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getAttributes().stream())
+                .map(a -> a.getName())
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get set of all inherited relation names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited relations
+     */
+    public static Set<String> getInheritedRelationNames(final EntityType entityType) {
+        return entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getRelations().stream())
+                .map(r -> r.getName())
+                .collect(Collectors.toSet());
+    }
+    
+    /**
+     * Get set of all inherited data property names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited data properties
+     */
+    public static Set<String> getInheritedDataPropertyNames(final EntityType entityType) {
+        return entityType.getAllSuperEntityTypes().stream()
+            .flatMap(e -> e.getDataProperties().stream())
+            .map(d -> d.getName())
+            .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get set of all inherited navigation property names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited navigation properties
+     */
+    public static Set<String> getInheritedNavigationPropertyNames(final EntityType entityType) {
+        return entityType.getAllSuperEntityTypes().stream()
+            .flatMap(to -> to.getNavigationProperties().stream())
+            .map(n -> n.getName())
+            .collect(Collectors.toSet());
+    }
+    
+    /**
+     * Get set of all inherited named element names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited named elements
+     */
+    public static Set<String> getInheritedNamedElementNames(final EntityType entityType) {
+    	return Stream.of(getInheritedAttributeNames(entityType),
+    			getInheritedRelationNames(entityType),
+    			getInheritedDataPropertyNames(entityType),
+    			getInheritedNavigationPropertyNames(entityType))
+            .flatMap(s -> s.stream())
+    		.collect(Collectors.toSet());
+    }
+    
+    /**
      * Get list of all super transfer object types of a given transfer object type. The given transfer object type is included in case of circular references.
      *
      * @param transferObjectType transfer object type
@@ -284,23 +412,68 @@ public class PsmUtils {
     }
     
     /**
-     * Get set of all operation names (inherited and not inherited) of a given mapped transfer object type.
+     * Get unique list of all inherited transfer attribute names of a given mapped transfer object type.
      *
      * @param transferObjectType transfer object type
-     * @return set of the names of all operations
+     * @return unique list of the names of inherited transfer attributes
      */
-    public static EList<String> getAllOperationNames(final MappedTransferObjectType transferObjectType) {
+    public static EList<String> getInheritedTransferAttributeNames(final TransferObjectType transferObjectType) {
+        EList<String> attributeNames = new UniqueEList<>();
+        attributeNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
+            .flatMap(to -> to.getAttributes().stream())
+            .map(a -> a.getName())
+            .collect(Collectors.toSet()));
+        return attributeNames;
+    }
+
+    /**
+     * Get unique list of all inherited transfer object relation names of a given mapped transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the names of inherited transfer object relations
+     */
+    public static EList<String> getInheritedTransferObjectRelationNames(final TransferObjectType transferObjectType) {
+        EList<String> relationNames = new UniqueEList<>();
+        relationNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
+            .flatMap(to -> to.getRelations().stream())
+            .map(r -> r.getName())
+            .collect(Collectors.toSet()));
+        return relationNames;
+    }
+    
+    /**
+     * Get unique list of all inherited operation names of a given mapped transfer object type.
+     *
+     * @param mappedTransferObjectType mapped transfer object type
+     * @return unique list of the names of inherited operations
+     */
+    public static EList<String> getInheritedOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
         EList<String> operationNames = new UniqueEList<>();
-        Set<String> operationNamesSet = transferObjectType.getOperations().stream()
-                .map(o -> o.getName())
-                .collect(Collectors.toSet());
         
-        operationNamesSet.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
+        Set<String> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
             .filter(to -> to instanceof MappedTransferObjectType)
             .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
             .map(o -> o.getName())
-            .collect(Collectors.toSet()));
+            .collect(Collectors.toSet());
         
+        operationNames.addAll(operationNamesSet);
+        return operationNames;
+    }
+    
+    /**
+     * Get unique list of all operation names (inherited and not inherited) of a given mapped transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the names of all operations
+     */
+    public static EList<String> getAllOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
+        EList<String> operationNames = new UniqueEList<>();
+        
+        Set<String> operationNamesSet = mappedTransferObjectType.getOperations().stream()
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+        
+        operationNamesSet.addAll(getInheritedOperationNames(mappedTransferObjectType));
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
@@ -312,9 +485,9 @@ public class PsmUtils {
      * @param name
      * @return list of the implementations of a given inherited operation
      */
-    public static EList<OperationBody> getOperationImplementationsByName(final MappedTransferObjectType transferObjectType, final String name) {
+    public static EList<OperationBody> getInheritedOperationImplementationsByName(final MappedTransferObjectType mappedTransferObjectType, final String name) {
         EList<OperationBody> implementations = new UniqueEList<>();
-        transferObjectType.getSuperTransferObjectTypes().stream()
+        mappedTransferObjectType.getSuperTransferObjectTypes().stream()
                 .filter(to -> to instanceof MappedTransferObjectType)
                 .map(mto -> (MappedTransferObjectType) mto)
                 .forEach(s -> {
@@ -323,7 +496,7 @@ public class PsmUtils {
                     if (boundOperation.isPresent()) {
                         implementations.add(boundOperation.get().getImplementation());
                     } else {
-                        implementations.addAll(getOperationImplementationsByName(s, name));
+                        implementations.addAll(getInheritedOperationImplementationsByName(s, name));
                     }
                 });
         return implementations;
@@ -336,8 +509,8 @@ public class PsmUtils {
      * @param name
      * @return OperationBody implementation of a given inherited operation
      */
-    public static OperationBody getOperationImplementationByName(final MappedTransferObjectType transferObjectType, final String name) {
-        EList<OperationBody> implementations = getOperationImplementationsByName(transferObjectType, name);
+    public static OperationBody getInheritedOperationImplementationByName(final MappedTransferObjectType mappedTransferObjectType, final String name) {
+        EList<OperationBody> implementations = getInheritedOperationImplementationsByName(mappedTransferObjectType, name);
         if (implementations.size() > 1) {
             throw new IllegalStateException("Multiple implementation found and not overriden by transfer object type");
         } else if (implementations.isEmpty()) {
@@ -414,7 +587,7 @@ public class PsmUtils {
     	return getAllOperationNames(mappedTransferObjectType).stream().allMatch(
     			name -> mappedTransferObjectType.getOperations().stream()
     					.anyMatch(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null)
-    			|| getOperationImplementationsByName(mappedTransferObjectType,name).size() == 1);
+    			|| getInheritedOperationImplementationsByName(mappedTransferObjectType,name).size() == 1);
     }
 
     public static boolean isRegex(String regex) throws PatternSyntaxException {

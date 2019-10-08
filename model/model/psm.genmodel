@@ -129,6 +129,14 @@
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/isContainer" body="return getRelations().stream().anyMatch(r -> r instanceof hu.blackbelt.judo.meta.psm.data.Containment);"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/isContainment"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isContainment(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllRelations"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllRelations(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllAttributes"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllAttributes(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllDataProperties"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllDataProperties(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllNavigationProperties"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllNavigationProperties(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//data/Relation">
         <genOperations ecoreOperation="psm.ecore#//data/Relation/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);"/>
@@ -234,6 +242,10 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/superTransferObjectTypes"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getAllSuperTransferObjectTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferAttributeNames"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedTransferAttributeNames(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferObjectRelationNames"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedTransferObjectRelationNames(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/TransferObjectRelation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/cardinality"/>
@@ -278,14 +290,16 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getAllOperationNames"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);"/>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationsByName"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationsByName(this,name);">
-          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationsByName/name"/>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationsByName"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationsByName(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationsByName/name"/>
         </genOperations>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationByName"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(this,name);">
-          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getOperationImplementationByName/name"/>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationByName"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationByName(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationByName/name"/>
         </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationNames"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationNames(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/OperationDeclaration">
         <genFeatures children="true" createChild="true" propertySortChoices="true"
