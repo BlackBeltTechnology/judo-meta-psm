@@ -81,7 +81,8 @@ class PsmValidationTypeTest {
 
         psmModel.addContent(m);
 
-        runEpsilon(ImmutableList.of("EnumerationMemberValueIsUnique|Enum member numbers are not unique: E"),
+        runEpsilon(ImmutableList.of("EnumerationMemberValueIsUnique|Enum member number of enum member: A is not unique in enum: E",
+        		"EnumerationMemberValueIsUnique|Enum member number of enum member: B is not unique in enum: E"),
                 Collections.emptyList());
     }
     

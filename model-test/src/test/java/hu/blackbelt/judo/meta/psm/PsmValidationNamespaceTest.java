@@ -393,7 +393,7 @@ class PsmValidationNamespaceTest {
     
 
     @Test
-    void testEnumerationMemberNameIs () throws Exception {
+    void testEnumerationMemberNameIsUnique () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
 
         Model m = newModelBuilder().withName("M")

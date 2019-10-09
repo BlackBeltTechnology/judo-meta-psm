@@ -1,0 +1,9 @@
+context PSM!EnumerationMember {
+    
+    // enumeration member value must be unique
+    constraint EnumerationMemberValueIsUnique {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer().members.excluding(self).exists(m | self.ordinal = m.ordinal)
+        message: "Enum member number of enum member: " + self.name + " is not unique in enum: " + self.eContainer().name
+    }
+}
