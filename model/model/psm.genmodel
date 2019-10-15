@@ -151,7 +151,7 @@
       <genClasses ecoreClass="psm.ecore#//data/AssociationEnd">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//data/AssociationEnd/partner"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/AssociationEnd/cascadeDelete"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/AssociationEnd/reverseCascadeDelete"/>
         <genOperations ecoreOperation="psm.ecore#//data/AssociationEnd/getOpposite"
             body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
       </genClasses>

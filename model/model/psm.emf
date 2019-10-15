@@ -227,6 +227,10 @@ package data {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isContainment(this);")
     op boolean[1] isContainment();
+    !ordered op Relation[*] getAllRelations();
+    !ordered op Attribute[*] getAllAttributes();
+    !ordered op ~derived.DataProperty[*] getAllDataProperties();
+    !ordered op ~derived.NavigationProperty[*] getAllNavigationProperties();
     ref EntityType[*] superEntityTypes;
     attr boolean[1] ~abstract;
     val Attribute[*] attributes;
@@ -262,7 +266,7 @@ package data {
     @GenModel(body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;")
     op Relation getOpposite();
     ref AssociationEnd partner;
-    attr boolean[1] cascadeDelete = false;
+    attr boolean[1] reverseCascadeDelete = false;
   }
 
   abstract class ReferenceTypedElement extends namespace.NamedElement {
@@ -373,6 +377,8 @@ package service {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);")
     !ordered op TransferObjectType[*] getAllSuperTransferObjectTypes();
+    !ordered op String[*] getInheritedTransferAttributeNames();
+    !ordered op String[*] getInheritedTransferObjectRelationNames();
     ref TransferAttribute representation;
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
@@ -422,6 +428,10 @@ package service {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);")
     op boolean[1] isInstantiable();
+    op String[*] getAllOperationNames();
+    !unique op OperationBody[*] getInheritedOperationImplementationsByName(String name);
+    !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
+    op String[*] getInheritedOperationNames();
     ref data.EntityType[1] entityType;
     attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
     val BoundOperation[*] operations;
