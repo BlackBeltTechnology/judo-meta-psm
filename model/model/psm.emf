@@ -237,9 +237,10 @@ package data {
     val Relation[*] relations;
     val ~derived.DataProperty[*] dataProperties;
     val ~derived.NavigationProperty[*] navigationProperties;
+    val EntitySequence[*] sequences;
   }
 
-  abstract class Relation extends ReferenceTypedElement {
+  abstract class Relation extends ReferenceTypedElement, EntityMember {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);")
     op String[1] toString();
@@ -248,7 +249,7 @@ package data {
     op EntityType[1] getEntityType();
   }
 
-  class Attribute extends PrimitiveTypedElement {
+  class Attribute extends PrimitiveTypedElement, EntityMember {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.attributeToString(this);")
     op String[1] toString();
@@ -292,6 +293,22 @@ package data {
   }
 
   class Containment extends Relation {
+  }
+
+  abstract interface EntityMember {
+  }
+
+  abstract class Sequence {
+    attr long[1] initialValue = "0";
+    attr long[1] increment = "1";
+    attr long maximumValue;
+    attr boolean cyclic = false;
+  }
+
+  class EntitySequence extends EntityMember, Sequence {
+  }
+
+  class NamespaceSequence extends namespace.NamedElement, Sequence {
   }
 
 }
