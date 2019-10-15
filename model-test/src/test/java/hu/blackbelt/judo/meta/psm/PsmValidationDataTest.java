@@ -121,7 +121,7 @@ class PsmValidationDataTest {
         AssociationEnd endpoint = newAssociationEndBuilder().withName("endpoint")
                 .withCardinality(
                         newCardinalityBuilder().withLower(0).withUpper(2).build()
-                ).withCascadeDelete(true)
+                ).withReverseCascadeDelete(true)
                 .build();
         EntityType entity = newEntityTypeBuilder().withName("entity").withRelations(ImmutableList.of(endpoint)).build();
         Model m = newModelBuilder().withName("M")

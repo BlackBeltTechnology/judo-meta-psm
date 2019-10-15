@@ -248,8 +248,10 @@
           eType="#//derived/DataProperty" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="navigationProperties"
           upperBound="-1" eType="#//derived/NavigationProperty" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="sequences" upperBound="-1"
+          eType="#//data/EntitySequence" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/ReferenceTypedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/ReferenceTypedElement #//data/EntityMember">
       <eOperations name="toString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);"/>
@@ -261,7 +263,7 @@
         </eAnnotations>
       </eOperations>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//data/PrimitiveTypedElement">
+    <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//data/PrimitiveTypedElement #//data/EntityMember">
       <eOperations name="toString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.attributeToString(this);"/>
@@ -287,8 +289,8 @@
         </eAnnotations>
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="partner" eType="#//data/AssociationEnd"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeDelete" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="reverseCascadeDelete"
+          lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ReferenceTypedElement" abstract="true"
@@ -318,6 +320,19 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Containment" eSuperTypes="#//data/Relation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="EntityMember" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Sequence" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" defaultValueLiteral="0"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="increment" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" defaultValueLiteral="1"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="maximumValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cyclic" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EntitySequence" eSuperTypes="#//data/EntityMember #//data/Sequence #//namespace/NamedElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="NamespaceSequence" eSuperTypes="#//data/Sequence #//namespace/Namespace"/>
   </eSubpackages>
   <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"
       nsPrefix="constraint">
@@ -726,7 +741,8 @@
           eType="#//measure/Unit"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="DurationType">
-      <eLiterals name="nanosecond" value="8" literal="nanosecond"/>
+      <eLiterals name="nanosecond" value="8"/>
+      <eLiterals name="microsecond" value="9"/>
       <eLiterals name="millisecond"/>
       <eLiterals name="second" value="1"/>
       <eLiterals name="minute" value="2"/>
