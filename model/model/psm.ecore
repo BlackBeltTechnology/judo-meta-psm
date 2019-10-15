@@ -726,7 +726,8 @@
           eType="#//measure/Unit"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="DurationType">
-      <eLiterals name="nanosecond" value="8" literal="nanosecond"/>
+      <eLiterals name="nanosecond" value="8"/>
+      <eLiterals name="microsecond" value="9"/>
       <eLiterals name="millisecond"/>
       <eLiterals name="second" value="1"/>
       <eLiterals name="minute" value="2"/>
