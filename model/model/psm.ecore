@@ -331,7 +331,7 @@
           defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EntitySequence" eSuperTypes="#//data/EntityMember #//data/Sequence"/>
-    <eClassifiers xsi:type="ecore:EClass" name="NamespaceSequence" eSuperTypes="#//namespace/NamedElement #//data/Sequence"/>
+    <eClassifiers xsi:type="ecore:EClass" name="NamespaceSequence" eSuperTypes="#//data/Sequence #//namespace/Namespace"/>
   </eSubpackages>
   <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"
       nsPrefix="constraint">

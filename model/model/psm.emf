@@ -308,7 +308,7 @@ package data {
   class EntitySequence extends EntityMember, Sequence {
   }
 
-  class NamespaceSequence extends namespace.NamedElement, Sequence {
+  class NamespaceSequence extends Sequence, namespace.Namespace {
   }
 
 }
