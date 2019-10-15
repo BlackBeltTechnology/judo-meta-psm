@@ -327,10 +327,11 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="increment" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" defaultValueLiteral="1"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="maximumValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cyclic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cyclic" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="EntitySequence" eSuperTypes="#//data/EntityMember #//data/Sequence"/>
+    <eClassifiers xsi:type="ecore:EClass" name="EntitySequence" eSuperTypes="#//data/EntityMember #//data/Sequence #//namespace/NamedElement"/>
     <eClassifiers xsi:type="ecore:EClass" name="NamespaceSequence" eSuperTypes="#//data/Sequence #//namespace/Namespace"/>
   </eSubpackages>
   <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"

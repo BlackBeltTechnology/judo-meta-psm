@@ -302,10 +302,10 @@ package data {
     attr long[1] initialValue = "0";
     attr long[1] increment = "1";
     attr long maximumValue;
-    attr boolean cyclic = false;
+    attr boolean[1] cyclic = false;
   }
 
-  class EntitySequence extends EntityMember, Sequence {
+  class EntitySequence extends EntityMember, Sequence, namespace.NamedElement {
   }
 
   class NamespaceSequence extends Sequence, namespace.Namespace {
