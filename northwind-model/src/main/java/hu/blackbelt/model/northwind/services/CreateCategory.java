@@ -29,7 +29,7 @@ public class CreateCategory {
         useUnboundOperation($)
                 .withName("createCategory")
                 .withImplementation(newOperationBodyBuilder()
-                        .withStateful(false)
+                        .withStateful(true)
                         .withCustomImplementation(true)
                 )
                 .withInput(newParameterBuilder()

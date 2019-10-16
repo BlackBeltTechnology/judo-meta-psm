@@ -5,6 +5,7 @@ import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.model.northwind.types.Date;
 import hu.blackbelt.model.northwind.types.String;
+import hu.blackbelt.model.northwind.types.TimeStamp;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
@@ -25,7 +26,7 @@ public class ShipmentChange {
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
 
 
-    public void init(Package $package, String $string, Date $date) {
+    public void init(Package $package, String $string, TimeStamp $timeStamp) {
         useUnmappedTransferObjectType($)
                 .withName("ShipmentChange")
                 .withAttributes(useTransferAttribute(shipperName)
@@ -35,7 +36,7 @@ public class ShipmentChange {
                 )
                 .withAttributes(useTransferAttribute(orderDate)
                         .withName("orderDate")
-                        .withDataType($date.$)
+                        .withDataType($timeStamp.$)
                 )
                 .build();
 

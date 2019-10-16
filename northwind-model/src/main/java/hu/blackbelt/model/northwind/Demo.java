@@ -319,7 +319,7 @@ public class Demo {
         territory.init(entities.$, string, employee, region, shipper);
 
         // Unmaped transfer object type
-        shipmentChange.init(services.$, string, date);
+        shipmentChange.init(services.$, string, timeStamp);
         comment.init(services.$, string, text, timeStamp);
 
         // Mapped transfer objects

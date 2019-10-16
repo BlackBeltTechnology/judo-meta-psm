@@ -29,7 +29,7 @@ public class CreateInternationalOrder {
         useUnboundOperation($)
                 .withName("createInternationalOrder")
                 .withImplementation(newOperationBodyBuilder()
-                        .withStateful(false)
+                        .withStateful(true)
                         .withCustomImplementation(true)
                 )
                 .withInput(newParameterBuilder()

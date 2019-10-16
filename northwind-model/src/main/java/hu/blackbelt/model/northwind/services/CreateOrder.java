@@ -29,7 +29,7 @@ public class CreateOrder {
         useUnboundOperation($)
                 .withName("createOrder")
                 .withImplementation(newOperationBodyBuilder()
-                        .withStateful(false)
+                        .withStateful(true)
                         .withCustomImplementation(true)
                 )
                 .withInput(newParameterBuilder()

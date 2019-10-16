@@ -29,7 +29,7 @@ public class CreateShipper {
         useUnboundOperation($)
                 .withName("createShipper")
                 .withImplementation(newOperationBodyBuilder()
-                        .withStateful(false)
+                        .withStateful(true)
                         .withCustomImplementation(true)
                 )
                 .withInput(newParameterBuilder()
