@@ -238,11 +238,6 @@
     <nestedGenPackages prefix="Service" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
         disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
         childCreationExtenders="true" fileExtensions="judo-meta-psm-service" ecorePackage="psm.ecore#//service">
-      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//service/EntityReferenceType">
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/EntityReferenceType/REQUIRED"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/EntityReferenceType/OPTIONAL"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/EntityReferenceType/NOT_SUPPORTED"/>
-      </genEnums>
       <genClasses image="false" ecoreClass="psm.ecore#//service/TransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/representation"/>
@@ -291,7 +286,6 @@
       <genClasses ecoreClass="psm.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/entityType"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/MappedTransferObjectType/entityReferencePresence"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/filter"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isAbstract"
