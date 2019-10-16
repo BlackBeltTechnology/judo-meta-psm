@@ -450,7 +450,6 @@ package service {
     !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
     op String[*] getInheritedOperationNames();
     ref data.EntityType[1] entityType;
-    attr EntityReferenceType[1] entityReferencePresence = "OPTIONAL";
     val BoundOperation[*] operations;
     val ~derived.LogicalExpressionType filter;
   }
@@ -475,12 +474,6 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
-  }
-
-  enum EntityReferenceType {
-    REQUIRED = 0;
-    OPTIONAL = 1;
-    NOT_SUPPORTED = 2;
   }
 
   class OperationBody {

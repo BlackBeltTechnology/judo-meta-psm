@@ -54,8 +54,8 @@ public class PsmModelLoadITest {
                         .artifactId("hu.blackbelt.judo.meta.psm.osgi")
                         .versionAsInProject()),
                 mavenBundle(maven()
-                        .groupId("hu.blackbelt.model")
-                        .artifactId("hu.blackbelt.model.northwind.model")
+                        .groupId("hu.blackbelt.judo.meta")
+                        .artifactId("hu.blackbelt.judo.meta.psm.model.northwind")
                         .versionAsInProject()),
                 getProvisonModelBundle());
     }
