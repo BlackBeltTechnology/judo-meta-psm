@@ -21,15 +21,23 @@ steps:
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      - echo "Opts: $MAVEN_OPTS"
-      - mvn clean package -B
+      # Import PGP keys
+      - export GPG_TTY=$(tty)
+      - echo "$GPG_KEYS_SECRETKEYS" | base64 --decode | gpg --import --batch
+      - echo "$GPG_KEYS_OWNERTRUST" | base64 --decode | gpg --import-ownertrust
+
+      # Run maven build
+      - mvn -B -s /drone/src/.maven.xml clean package
     environment:
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
       MAVEN_OPTS:
-        -Dorg.apache.maven.user-settings=/drone/.maven.xml
+        -Dstyle.color=always
+        -Djansi.force=true
+        -Dorg.apache.maven.user-settings=/drone/src/.maven.xml
         -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-        -Dorg.ops4j.pax.url.mvn.settings=/drone/.maven.xml
+        -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
+        -DuseCustomSettings=true
 
     secrets:
       - sonatype_username
