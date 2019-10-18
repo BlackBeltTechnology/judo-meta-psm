@@ -35,6 +35,10 @@ steps:
     environment:
       SONATYPE_USERNAME:
         from_secret: sonatype_username
+      GPG_SECRET_KEYS:
+        from_secret: gpg_secret_keys
+      GPG_OWNERTRUST:
+        from_secret: gpg_ownertrust
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
       MAVEN_OPTS:
