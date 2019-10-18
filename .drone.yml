@@ -25,7 +25,11 @@ steps:
     environment:
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
-      MAVEN_OPTS: -Dorg.apache.maven.user-settings=.maven.xml --no-transfer-progress -Dorg.ops4j.pax.url.mvn.settings=/drone/.maven.xml
+      MAVEN_OPTS:
+        -Dorg.apache.maven.user-settings=.maven.xml
+        -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        -Dorg.ops4j.pax.url.mvn.settings=/drone/.maven.xml
+
     secrets:
       - sonatype_username
       - sonatype_password
