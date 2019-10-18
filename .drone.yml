@@ -33,6 +33,8 @@ steps:
       # Run maven build
       - mvn -B -s /drone/src/.maven.xml clean package
     environment:
+      SONATYPE_USERNAME:
+        from_secret: sonatype_username
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
       MAVEN_OPTS:
@@ -43,17 +45,7 @@ steps:
         -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
         -DuseCustomSettings=true
 
-    secrets:
-      - sonatype_username
-      - sonatype_password
-      - gpg_keyname
-      - gpg_executable
-      - gpg_passphrase
-      - gpg_secret_keys
-      - gpg_ownertrust
-      - github_access_token
-      - blackbelt_nexus_username
-      - blackbelt_nexus_password
+    secrets: [ sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password]
     when:
       event:
         - push
