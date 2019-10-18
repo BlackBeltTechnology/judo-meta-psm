@@ -5,11 +5,12 @@ name: default
 steps:
   - name: restore-cache
     image: homerovalle/drone-gcs-cache
-    pull: true
-    bucket: drone-agent-m2-cache
-    secrets: [ GCS_CACHE_JSON_KEY ]
-    restore: true
-    debug: true
+    settings:
+      pull: true
+      bucket: drone-agent-m2-cache
+      secrets: [ GCS_CACHE_JSON_KEY ]
+      restore: true
+      debug: true
     
   - name: build-artifacts
     pull: default
