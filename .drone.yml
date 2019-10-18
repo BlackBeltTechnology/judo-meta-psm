@@ -3,24 +3,29 @@ kind: pipeline
 name: default
 
 steps:
-  - name: restore-cache
+  ## Pull the last build .m2 from GCloud bucket
+  - &cache
+    name: restore-cache
     image: homerovalle/drone-gcs-cache
     settings:
+      &cache-settings
       pull: true
       bucket: drone-agent-m2-cache
       json_key:
         from_secret: gcloud_bucket_access_key_json
       restore: true
       debug: true
-    
+
+  ## Run the build
   - name: build-artifacts
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      - mvn -s .maven.xml --no-transfer-progress clean package
+      - mvn clean package
     environment:
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
+      MAVEN_OPTS: -Dorg.apache.maven.user-settings=.maven.xml --no-transfer-progress -Dorg.ops4j.pax.url.mvn.settings=/drone/.maven.xml
     secrets:
       - sonatype_username
       - sonatype_password
@@ -35,22 +40,24 @@ steps:
         - push
         - pull_request
 
-  - name: rebuild-cache
-    image: homerovalle/drone-gcs-cache
-    pull: true
-    bucket: drone-agent-m2-cache
-    secrets: [ GCS_CACHE_JSON_KEY ]
-    rebuild: true
-    mount:
-      - .m2
-    when:
-      event: push
+  ## Push the current .m2 cache to GCloud bucker
+  - <<: *cache
+    name: rebuild-cache
+    settings:
+      <<: *cache-settings
+      rebuild: true
+      restore: false
+      mount:
+        - .m2
+      when:
+        event: push
 
-  - name: flush_cache
-    image: homerovalle/drone-gcs-cache
-    pull: true
-    bucket: drone-agent-m2-cache
-    secrets: [ GCS_CACHE_JSON_KEY ]
-    flush: true
-    flush_age: 31
+  ## Flush the old .m2 cache from GCloud bucker
+  - <<: *cache
+    name: flush_cache
+    settings:
+      <<: *cache-settings
+      restore: false
+      flush: true
+      flush_age: 31
 
