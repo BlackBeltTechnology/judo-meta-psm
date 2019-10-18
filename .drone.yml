@@ -22,22 +22,20 @@ steps:
     image: maven:3.6.2-jdk-8
     commands:
       # Import PGP keys
-      - >
-        export GPG_TTY=/dev/console ||
-        echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch ||
-        echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
+      - export GPG_TTY=/dev/console
+      - echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch
+      - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
       
       # Calculate version number
-      - >
-        export VERSION_FROM_POM_FULL_VERSION=$$(python -c "import xml.etree.ElementTree as ET; print(ET.parse(open('/drone/src/pom.xml')).getroot().find('{http://maven.apache.org/POM/4.0.0}version').text)") ||
-        echo "Version in POM (VERSION_FROM_POM_FULL_VERSION): $${VERSION_FROM_POM_FULL_VERSION}" ||
-        export VERSION_FROM_POM_BASE_VERSION=$(echo "$${VERSION_FROM_POM_FULL_VERSION}" | cut -d'-' -f 1) ||
-        echo "Base version from POM (VERSION_FROM_POM_BASE_VERSION): $${VERSION_FROM_POM_BASE_VERSION}" ||
-        export CI_SHORT_COMMIT_SHA= $(git rev-parse --short $${CI_COMMIT_SHA}) ||
-        export VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME=$(echo "$${CI_COMMIT_BRANCH}" | cut -d ' ' -f2 | tr '\/\.-' '_') ||
-        echo "Current branch name (VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME): $${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}" ||
-        export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$$(date +%Y%m%d_%H%M%S)_$${CI_SHORT_COMMIT_SHA}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME} ||
-        echo "Building version: $${VERSION_NUMBER}"
+      - export VERSION_FROM_POM_FULL_VERSION=$$(python -c "import xml.etree.ElementTree as ET; print(ET.parse(open('/drone/src/pom.xml')).getroot().find('{http://maven.apache.org/POM/4.0.0}version').text)")
+      - echo "Version in POM (VERSION_FROM_POM_FULL_VERSION) - $${VERSION_FROM_POM_FULL_VERSION}"
+      - export VERSION_FROM_POM_BASE_VERSION=$(echo "$${VERSION_FROM_POM_FULL_VERSION}" | cut -d'-' -f 1)
+      - echo "Base version from POM (VERSION_FROM_POM_BASE_VERSION) - $${VERSION_FROM_POM_BASE_VERSION}"
+      - export CI_SHORT_COMMIT_SHA= $(git rev-parse --short $${CI_COMMIT_SHA})
+      - export VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME=$(echo "$${CI_COMMIT_BRANCH}" | cut -d ' ' -f2 | tr '\/\.-' '_')
+      - echo "Current branch name (VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME) - $${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}"
+      - export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$$(date +%Y%m%d_%H%M%S)_$${CI_SHORT_COMMIT_SHA}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}
+      - echo "Building version - $${VERSION_NUMBER}"
 
       # Run maven build
       - mvn -B -s /drone/src/.maven.xml clean package
