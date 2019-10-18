@@ -41,7 +41,7 @@ steps:
       - echo "Building version - $${VERSION_NUMBER}"
 
       # Set versions
-      - mvn -B -s .maven.xml -Dtycho.mode=maven -DnewVersion=${VERSION_NUMBER} versions:set
+      - mvn -B -s .maven.xml -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
 
       # Update target definition version
       - mvn -B -s .maven.xml -Dtycho.mode=maven  -f ./targetdefinition/pom.xml -P update-target-versions validate
