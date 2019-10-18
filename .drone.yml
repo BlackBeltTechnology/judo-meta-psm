@@ -1,0 +1,48 @@
+---
+kind: pipeline
+name: default
+
+steps:
+#  - name: restore-cache
+#    image: homerovalle/drone-gcs-cache
+#    pull: true
+#    bucket: drone-agent-m2-cache
+#    secrets: [ GCS_CACHE_JSON_KEY ]
+#    restore: true
+
+  - name: build-artifacts
+    pull: default
+    image: maven:3.6.0-jdk-8-alpine
+    commands:
+      - mvn -s .maven.xml clean package
+    environment:
+      M2_HOME: /drone/.m2
+      MAVEN_HOME: /drone/.m2
+    secrets:
+      - sonatype_username
+      - sonatype_password
+      - gpg_keyname
+      - gpg_executable
+      - gpg_passphrase
+      - github_access_token
+      - blackbelt_nexus_username
+      - blackbelt_nexus_username
+
+#  - name: rebuild-cache
+#    image: homerovalle/drone-gcs-cache
+#    pull: true
+#    bucket: drone-agent-m2-cache
+#    secrets: [ GCS_CACHE_JSON_KEY ]
+#    rebuild: true
+#    mount:
+#      - .m2
+#    when:
+#      event: push
+
+#  - name: flush_cache
+#    image: homerovalle/drone-gcs-cache
+#    pull: true
+#    bucket: drone-agent-m2-cache
+#    secrets: [ GCS_CACHE_JSON_KEY ]
+#    flush: true
+#    flush_age: 31
