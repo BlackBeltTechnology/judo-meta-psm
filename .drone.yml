@@ -23,11 +23,11 @@ steps:
     commands:
       # Import PGP keys
       - export GPG_TTY=/dev/console
-      - echo "$${GPG_KEYS_SECRETKEYS}"
-      - echo "$${GPG_KEYS_OWNERTRUST}"
+      - echo "$${GPG_SECRETKEYS}"
+      - echo "$${GPG_OWNERTRUST}"
 
-      - echo "$${GPG_KEYS_SECRETKEYS}" | base64 --decode | gpg --import --batch
-      - echo "$${GPG_KEYS_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
+      - echo "$${GPG_SECRETKEYS}" | base64 --decode | gpg --import --batch
+      - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
 
       # Run maven build
       - mvn -B -s /drone/src/.maven.xml clean package
@@ -48,6 +48,8 @@ steps:
       - gpg_keyname
       - gpg_executable
       - gpg_passphrase
+      - gpg_secret_keys
+      - gpg_ownertrust
       - github_access_token
       - blackbelt_nexus_username
       - blackbelt_nexus_username
