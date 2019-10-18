@@ -23,6 +23,9 @@ steps:
     commands:
       # Import PGP keys
       - export GPG_TTY=/dev/console
+      - echo "$$GPG_KEYS_SECRETKEYS"
+      - echo "$$GPG_KEYS_OWNERTRUST" 
+
       - echo "$$GPG_KEYS_SECRETKEYS" | base64 --decode | gpg --import --batch
       - echo "$$GPG_KEYS_OWNERTRUST" | base64 --decode | gpg --import-ownertrust
 
