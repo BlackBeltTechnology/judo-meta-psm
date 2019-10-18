@@ -21,7 +21,7 @@ steps:
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      - mvn clean package -B
+      - mvn clean package -B -X
     environment:
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
