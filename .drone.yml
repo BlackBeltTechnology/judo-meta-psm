@@ -35,7 +35,7 @@ steps:
       - echo "Short commit SHA (CI_SHORT_COMMIT_SHA) - $${CI_SHORT_COMMIT_SHA}"
       - export VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME=$(echo "$${CI_COMMIT_BRANCH}" | cut -d ' ' -f2 | tr '\/\.-' '_')
       - echo "Current branch name (VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME) - $${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}"
-      - export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$$(date +%Y%m%d_%H%M%S)_$${CI_SHORT_COMMIT_SHA}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}
+      - export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$(date +%Y%m%d_%H%M%S)_$${CI_SHORT_COMMIT_SHA}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}
       - echo "Building version - $${VERSION_NUMBER}"
 
       # Run maven build
