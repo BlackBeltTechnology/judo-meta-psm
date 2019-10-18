@@ -324,7 +324,7 @@ public class Demo {
 
         // Mapped transfer objects
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
-        internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItemQuery, shipperInfo);
+        internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
         internationalOrderInfoQuery.init(services.$, string, timeStamp, order, internationalOrder, orderItemQuery, categoryInfo);
         shipperInfo.init(services.$, string, shipper, company);
         productInfo.init(services.$, string, double_, product, categoryInfo, allCategories);

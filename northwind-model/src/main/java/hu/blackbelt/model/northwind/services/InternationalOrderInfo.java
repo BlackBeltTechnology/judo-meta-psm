@@ -47,7 +47,7 @@ public class InternationalOrderInfo {
 
     public void init(Package $package, String $string, Double $double, TimeStamp $timeStamp, Order $order,
                      InternationalOrder $internationalOrder,
-                     OrderItemQuery $orderItemQuery, ShipperInfo $shipperInfo) {
+                     OrderItem $orderItem, ShipperInfo $shipperInfo) {
         useMappedTransferObjectType($)
                 .withName("InternationalOrderInfo")
                 .withEntityType($internationalOrder.$)
@@ -83,7 +83,7 @@ public class InternationalOrderInfo {
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")
                         .withBinding($order.orderDetails)
-                        .withTarget($orderItemQuery.$)
+                        .withTarget($orderItem.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withLower(1).withUpper(-1)
                         )

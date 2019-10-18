@@ -76,6 +76,7 @@ public class Order {
     public Containment shipAddress = newContainmentBuilder().build();
     public Containment orderDetails = newContainmentBuilder().build();
     public DataProperty shipperName = newDataPropertyBuilder().build();
+
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double,

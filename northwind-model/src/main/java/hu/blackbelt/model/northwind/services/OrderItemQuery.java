@@ -39,6 +39,7 @@ public class OrderItemQuery {
     public TransferAttribute quantity = newTransferAttributeBuilder().build();
     public TransferAttribute discount = newTransferAttributeBuilder().build();
     public TransferAttribute productName = newTransferAttributeBuilder().build();
+    public TransferAttribute price = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation product = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
@@ -71,6 +72,12 @@ public class OrderItemQuery {
                         .withRequired(true)
                         .withDataType($string.$)
                         .withBinding($orderDetail.productName)
+                )
+                .withAttributes(useTransferAttribute(price)
+                        .withName("price")
+                        .withRequired(true)
+                        .withDataType($double.$)
+                        .withBinding($orderDetail.price)
                 )
                 .withRelations(useTransferObjectRelation(product)
                         .withName("product")

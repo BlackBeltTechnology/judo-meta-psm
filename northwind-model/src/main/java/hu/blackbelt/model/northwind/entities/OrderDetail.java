@@ -105,6 +105,7 @@ public class OrderDetail {
                 )
                 .withDataProperties(useDataProperty(price)
                         .withName("price")
+                        .withRequired(true)
                         .withDataType($double.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.quantity * self.unitPrice * (1 - self.discount)")
