@@ -3,12 +3,12 @@ kind: pipeline
 name: default
 
 steps:
-#  - name: restore-cache
-#    image: homerovalle/drone-gcs-cache
-#    pull: true
-#    bucket: drone-agent-m2-cache
-#    secrets: [ GCS_CACHE_JSON_KEY ]
-#    restore: true
+  - name: restore-cache
+    image: homerovalle/drone-gcs-cache
+    pull: true
+    bucket: drone-agent-m2-cache
+    secrets: [ GCS_CACHE_JSON_KEY ]
+    restore: true
 
   - name: build-artifacts
     pull: default
@@ -27,22 +27,26 @@ steps:
       - github_access_token
       - blackbelt_nexus_username
       - blackbelt_nexus_username
+    when:
+      event:
+        - push
+        - pull_request
 
-#  - name: rebuild-cache
-#    image: homerovalle/drone-gcs-cache
-#    pull: true
-#    bucket: drone-agent-m2-cache
-#    secrets: [ GCS_CACHE_JSON_KEY ]
-#    rebuild: true
-#    mount:
-#      - .m2
-#    when:
-#      event: push
+  - name: rebuild-cache
+    image: homerovalle/drone-gcs-cache
+    pull: true
+    bucket: drone-agent-m2-cache
+    secrets: [ GCS_CACHE_JSON_KEY ]
+    rebuild: true
+    mount:
+      - .m2
+    when:
+      event: push
 
-#  - name: flush_cache
-#    image: homerovalle/drone-gcs-cache
-#    pull: true
-#    bucket: drone-agent-m2-cache
-#    secrets: [ GCS_CACHE_JSON_KEY ]
-#    flush: true
-#    flush_age: 31
+  - name: flush_cache
+    image: homerovalle/drone-gcs-cache
+    pull: true
+    bucket: drone-agent-m2-cache
+    secrets: [ GCS_CACHE_JSON_KEY ]
+    flush: true
+    flush_age: 31
