@@ -41,19 +41,19 @@ steps:
       - echo "Building version - $${VERSION_NUMBER}"
 
       # Set versions
-      - mvn -B -s .maven.xml -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
+      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
 
       # Update target definition version
-      - mvn -B -s .maven.xml -Dtycho.mode=maven  -f ./targetdefinition/pom.xml -P update-target-versions validate
+      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./targetdefinition/pom.xml -P update-target-versions validate
 
       # Update site version
-      - mvn -B -s .maven.xml -Dtycho.mode=maven  -f ./site/pom.xml -P update-category-versions validate
+      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./site/pom.xml -P update-category-versions validate
 
       # Update tycho versions
-      - mvn -B -s .maven.xml -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
+      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
 
       # Run maven build
-      - mvn -B -s .maven.xml clean package
+      - mvn -B -s .maven.xml -Dstyle.color=always -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml clean package
 
     environment:
       GPG_SECRET_KEYS:
@@ -63,9 +63,7 @@ steps:
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
       MAVEN_OPTS:
-        -Dstyle.color=always
         -Djansi.force=true
-        -Dorg.apache.maven.user-settings=/drone/src/.maven.xml
         -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
         -DuseCustomSettings=true
