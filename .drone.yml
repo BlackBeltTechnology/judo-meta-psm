@@ -8,7 +8,8 @@ steps:
     settings:
       pull: true
       bucket: drone-agent-m2-cache
-      secrets: [ GCS_CACHE_JSON_KEY ]
+      json_key:
+        from_secret: gcloud_bucket_access_key_json
       restore: true
       debug: true
     
