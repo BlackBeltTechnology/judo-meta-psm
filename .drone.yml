@@ -63,6 +63,34 @@ steps:
       - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=$${CI_COMMIT_SHA} -P $${DEPLOY_PROFILES} deploy
 
     environment:
+      JUDONG_NEXUS_USERNAME:
+         from secret: judong_nexus_username
+      JUDONG_NEXUS_PASSWORD:
+         from secret: judong_nexus_password
+      JUDONG_NEXUS_DISTRIBUTION_URL:
+         from secret: judong_nexus_distribution_url
+      JUDONG_NEXUS_MIRROR_URL:
+         from secret: judong_nexus_mirror_url
+      SONATYPE_USERNAME:
+         from secret: sonatype_username
+      SONATYPE_PASSWORD:
+         from secret sonatype_password
+      GPG_KEYNAME:
+         from secret: gpg_keyname
+      GPG_EXECUTABLE:
+         from secret: gpg_executable
+      GPG_PASSPHRASE:
+         from secret: gpg_passphrase
+      GPG_SECRET_KEYS:
+        from_secret: gpg_secret_keys
+      GPG_OWNERTRUST:
+        from_secret: gpg_ownertrust
+      GITHUB_ACCESS_TOKEN:
+        from secret: github_access_token
+      BLACKBELT_NEXUS_USERNAME:
+        from secret: blackbelt_nexus_username
+      BLACKBELT_NEXUS_PASSWORD:
+        from secret: blackbelt_nexus_password
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
       MAVEN_OPTS:
