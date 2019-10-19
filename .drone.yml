@@ -74,7 +74,7 @@ steps:
       SONATYPE_USERNAME:
          from secret: sonatype_username
       SONATYPE_PASSWORD:
-         from secret sonatype_password
+         from secret: sonatype_password
       GPG_KEYNAME:
          from secret: gpg_keyname
       GPG_EXECUTABLE:
