@@ -30,10 +30,10 @@ steps:
       - echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch
       - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
 
-      - echo "Nexus: $${JUDONG_NEXUS_USERNAME}"
-      - echo "Nexus: $${JUDONG_NEXUS_PASSWORD}"
-      - echo "Nexus: $${JUDONG_NEXUS_MIRROR_URL}"
-      - echo "Nexus: $${JUDONG_NEXUS_DISTRIBUTION_URL}"
+      - echo "Nexus  $${JUDONG_NEXUS_USERNAME}"
+      - echo "Nexus  $${JUDONG_NEXUS_PASSWORD}"
+      - echo "Nexus  $${JUDONG_NEXUS_MIRROR_URL}"
+      - echo "Nexus  $${JUDONG_NEXUS_DISTRIBUTION_URL}"
 
       # Calculate version number
       - export VERSION_FROM_POM_FULL_VERSION=$$(python -c "import xml.etree.ElementTree as ET; print(ET.parse(open('/drone/src/pom.xml')).getroot().find('{http://maven.apache.org/POM/4.0.0}version').text)")
