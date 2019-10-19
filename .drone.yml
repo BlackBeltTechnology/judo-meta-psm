@@ -43,7 +43,7 @@ steps:
       - echo "Short commit SHA (CI_SHORT_COMMIT_SHA) - $${CI_SHORT_COMMIT_SHA}"
       - echo "Current branch name (VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME) - $${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}"
       - echo "Building version - $${VERSION_NUMBER}"
-
+      - env
       # Set versions
       - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
 
