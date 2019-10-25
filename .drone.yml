@@ -30,7 +30,6 @@ steps:
       - echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch
       - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
 
-
       - echo "Nexus  $${JUDONG_NEXUS_USERNAME}"
       - echo "Nexus  $${JUDONG_NEXUS_PASSWORD}"
       - echo "Nexus  $${JUDONG_NEXUS_MIRROR_URL}"
