@@ -104,7 +104,7 @@ steps:
         -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
         -DuseCustomSettings=true
 
-    secrets: [ judong_nexus_username, judong_nexus_password, judong_nexus_distribution_url, judong_nexus_mirror_url, sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password ]
+    # secrets: [ judong_nexus_username, judong_nexus_password, judong_nexus_distribution_url, judong_nexus_mirror_url, sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password ]
     when:
       event:
         - push
