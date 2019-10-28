@@ -6,13 +6,12 @@ steps:
   ## Pull the last build .m2 from GCloud bucket
   - &cache
     name: restore-cache
-    image: homerovalle/drone-gcs-cache
+      image: homerovalle/drone-gcs-cache
     settings:
       &cache-settings
       pull: true
       bucket: drone-agent-m2-cache
-      json_key:
-        from_secret: gcloud_bucket_access_key_json
+      secrets: [ GCS_CACHE_JSON_KEY ]
       restore: true
       debug: true
 
@@ -69,33 +68,33 @@ steps:
 
     environment:
       JUDONG_NEXUS_USERNAME:
-         from secret: judong_nexus_username
+         from_secret: judong_nexus_username
       JUDONG_NEXUS_PASSWORD:
-         from secret: judong_nexus_password
+         from_secret: judong_nexus_password
       JUDONG_NEXUS_DISTRIBUTION_URL:
-         from secret: judong_nexus_distribution_url
+         from_secret: judong_nexus_distribution_url
       JUDONG_NEXUS_MIRROR_URL:
-         from secret: judong_nexus_mirror_url
+         from_secret: judong_nexus_mirror_url
       SONATYPE_USERNAME:
-         from secret: sonatype_username
+         from_secret: sonatype_username
       SONATYPE_PASSWORD:
-         from secret: sonatype_password
+         from_secret: sonatype_password
       GPG_KEYNAME:
-         from secret: gpg_keyname
+         from_secret: gpg_keyname
       GPG_EXECUTABLE:
-         from secret: gpg_executable
+         from_secret: gpg_executable
       GPG_PASSPHRASE:
-         from secret: gpg_passphrase
+         from_secret: gpg_passphrase
       GPG_SECRET_KEYS:
         from_secret: gpg_secret_keys
       GPG_OWNERTRUST:
         from_secret: gpg_ownertrust
       GITHUB_ACCESS_TOKEN:
-        from secret: github_access_token
+        from_secret: github_access_token
       BLACKBELT_NEXUS_USERNAME:
-        from secret: blackbelt_nexus_username
+        from_secret: blackbelt_nexus_username
       BLACKBELT_NEXUS_PASSWORD:
-        from secret: blackbelt_nexus_password
+        from_secret: blackbelt_nexus_password
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
       MAVEN_OPTS:
@@ -104,7 +103,7 @@ steps:
         -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
         -DuseCustomSettings=true
 
-    # secrets: [ judong_nexus_username, judong_nexus_password, judong_nexus_distribution_url, judong_nexus_mirror_url, sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password ]
+    ## secrets: [ judong_nexus_username, judong_nexus_password, judong_nexus_distribution_url, judong_nexus_mirror_url, sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password ]
     when:
       event:
         - push
