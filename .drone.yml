@@ -31,10 +31,10 @@ steps:
       - echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch
       - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
 
-      - echo "Nexus  $${JUDONG_NEXUS_USERNAME}"
-      - echo "Nexus  $${JUDONG_NEXUS_PASSWORD}"
-      - echo "Nexus  $${JUDONG_NEXUS_MIRROR_URL}"
-      - echo "Nexus  $${JUDONG_NEXUS_DISTRIBUTION_URL}"
+#      - echo "Nexus  $${JUDONG_NEXUS_USERNAME}"
+#      - echo "Nexus  $${JUDONG_NEXUS_PASSWORD}"
+#      - echo "Nexus  $${JUDONG_NEXUS_MIRROR_URL}"
+#      - echo "Nexus  $${JUDONG_NEXUS_DISTRIBUTION_URL}"
 
       # Calculate version number
       - export VERSION_FROM_POM_FULL_VERSION=$$(python -c "import xml.etree.ElementTree as ET; print(ET.parse(open('/drone/src/pom.xml')).getroot().find('{http://maven.apache.org/POM/4.0.0}version').text)")
@@ -49,7 +49,8 @@ steps:
       - echo "Short commit SHA (CI_SHORT_COMMIT_SHA) - $${CI_SHORT_COMMIT_SHA}"
       - echo "Current branch name (VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME) - $${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}"
       - echo "Building version - $${VERSION_NUMBER}"
-      - env
+
+#      - env
       # Set versions
       - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
 
@@ -62,8 +63,9 @@ steps:
       # Update tycho versions
       - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
 
+      # DaltDeploymentRepository=id::layout::url
       # Run maven build and deploy to nexus
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml -DuseCustomSettings=true  -P $${RELEASE_PROFILES} clean deploy
+      - mvn -B -s .maven.xml -Dstyle.color=always -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml -DuseCustomSettings=true  -P $${BUILD_PROFILES} clean deploy
 
       # Run maven deploy p2 and github
       - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=$${CI_COMMIT_SHA} -P $${DEPLOY_PROFILES} deploy
@@ -112,6 +114,7 @@ steps:
         - pull_request
 
   ## Push the current .m2 cache to GCloud bucket
+  ## The failed build also push the cache
   - <<: *cache
     name: rebuild-cache
     settings:
@@ -120,10 +123,10 @@ steps:
       restore: false
       mount:
         - .m2
-      when:
-        status:
-        - success
-        - failure
+    when:
+      status:
+      - success
+      - failure
 
   ## Flush the old .m2 cache from GCloud bucket
   - <<: *cache
