@@ -6,7 +6,7 @@ steps:
   ## Pull the last build .m2 from GCloud bucket
   - &cache
     name: restore-cache
-      image: homerovalle/drone-gcs-cache
+    image: homerovalle/drone-gcs-cache
     settings:
       &cache-settings
       pull: true
