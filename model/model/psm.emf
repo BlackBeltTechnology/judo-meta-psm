@@ -308,7 +308,7 @@ package data {
   class EntitySequence extends EntityMember, Sequence, namespace.NamedElement {
   }
 
-  class NamespaceSequence extends Sequence, namespace.Namespace {
+  class NamespaceSequence extends Sequence, namespace.NamespaceElement {
   }
 
 }
@@ -422,8 +422,8 @@ package service {
     op boolean[1] isNavigable();
     val type.Cardinality[1] cardinality;
     ref data.ReferenceTypedElement binding;
-    ref data.ReferenceTypedElement defaultValue;
-    ref data.ReferenceTypedElement range;
+    ref ~derived.ReferenceAccessor defaultValue;
+    ref ~derived.ReferenceAccessor range;
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
   }
@@ -433,7 +433,7 @@ package service {
     @GenModel(body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;")
     op boolean[1] isPrimitive();
     attr boolean[1] required;
-    ref data.PrimitiveTypedElement defaultValue;
+    ref ~derived.PrimitiveAccessor defaultValue;
     ref type.Primitive[1] dataType;
     ref data.PrimitiveTypedElement binding;
   }

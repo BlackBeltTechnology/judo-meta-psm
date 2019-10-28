@@ -332,7 +332,7 @@
           defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EntitySequence" eSuperTypes="#//data/EntityMember #//data/Sequence #//namespace/NamedElement"/>
-    <eClassifiers xsi:type="ecore:EClass" name="NamespaceSequence" eSuperTypes="#//data/Sequence #//namespace/Namespace"/>
+    <eClassifiers xsi:type="ecore:EClass" name="NamespaceSequence" eSuperTypes="#//data/Sequence #//namespace/NamespaceElement"/>
   </eSubpackages>
   <eSubpackages name="constraint" nsURI="http://blackbelt.hu/judo/meta/psm/constraint"
       nsPrefix="constraint">
@@ -443,8 +443,8 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//data/ReferenceTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/ReferenceAccessor"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//derived/ReferenceAccessor"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="embedded" lowerBound="1"
@@ -459,7 +459,7 @@
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//data/PrimitiveTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/PrimitiveAccessor"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/Primitive"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
