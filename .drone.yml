@@ -122,7 +122,7 @@ steps:
       rebuild: true
       restore: false
       mount:
-        - .m2
+        - /drone/.m2
     when:
       status:
       - success
