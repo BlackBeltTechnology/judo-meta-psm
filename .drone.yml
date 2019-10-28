@@ -7,12 +7,15 @@ steps:
   - &cache
     name: restore-cache
     image: homerovalle/drone-gcs-cache
-    pull: true
-    bucket: drone-agent-m2-cache
-    json_key:
-      from_secret: gcloud_bucket_access_key_json
-    restore: true
-    debug: true
+    settings:
+      &cache-settings
+      pull: true
+      bucket: drone-agent-m2-cache
+      json_key:
+        from_secret: gcloud_bucket_access_key_json
+      restore: true
+      debug: true
+    secrets: [gcloud_bucket_access_key_json]
 
   ## Run the build
   - name: build-artifacts
@@ -67,23 +70,23 @@ steps:
 
     environment:
       JUDONG_NEXUS_USERNAME:
-        from_secret: judong_nexus_username
+         from_secret: judong_nexus_username
       JUDONG_NEXUS_PASSWORD:
-        from_secret: judong_nexus_password
+         from_secret: judong_nexus_password
       JUDONG_NEXUS_DISTRIBUTION_URL:
-        from_secret: judong_nexus_distribution_url
+         from_secret: judong_nexus_distribution_url
       JUDONG_NEXUS_MIRROR_URL:
-        from_secret: judong_nexus_mirror_url
+         from_secret: judong_nexus_mirror_url
       SONATYPE_USERNAME:
-        from_secret: sonatype_username
+         from_secret: sonatype_username
       SONATYPE_PASSWORD:
-        from_secret: sonatype_password
+         from_secret: sonatype_password
       GPG_KEYNAME:
-        from_secret: gpg_keyname
+         from_secret: gpg_keyname
       GPG_EXECUTABLE:
-        from_secret: gpg_executable
+         from_secret: gpg_executable
       GPG_PASSPHRASE:
-        from_secret: gpg_passphrase
+         from_secret: gpg_passphrase
       GPG_SECRET_KEYS:
         from_secret: gpg_secret_keys
       GPG_OWNERTRUST:
@@ -96,7 +99,7 @@ steps:
         from_secret: blackbelt_nexus_password
       M2_HOME: /drone/.m2
       MAVEN_HOME: /drone/.m2
-      MAVEN_OPTS: >
+      MAVEN_OPTS:
         -Djansi.force=true
         -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
@@ -111,19 +114,23 @@ steps:
   ## Push the current .m2 cache to GCloud bucket
   - <<: *cache
     name: rebuild-cache
-    rebuild: true
-    restore: false
-    mount:
-      - .m2
-    when:
-      status:
+    settings:
+      <<: *cache-settings
+      rebuild: true
+      restore: false
+      mount:
+        - .m2
+      when:
+        status:
         - success
         - failure
 
   ## Flush the old .m2 cache from GCloud bucket
   - <<: *cache
     name: flush_cache
-    restore: false
-    flush: true
-    flush_age: 31
+    settings:
+      <<: *cache-settings
+      restore: false
+      flush: true
+      flush_age: 31
 
