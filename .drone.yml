@@ -52,23 +52,23 @@ steps:
 
 #      - env
       # Set versions
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
 
       # Update target definition version
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./targetdefinition/pom.xml -P update-target-versions validate
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./targetdefinition/pom.xml -P update-target-versions validate
 
       # Update site version
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./site/pom.xml -P update-category-versions validate
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./site/pom.xml -P update-category-versions validate
 
       # Update tycho versions
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
 
       # DaltDeploymentRepository=id::layout::url
       # Run maven build and deploy to nexus
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml -DuseCustomSettings=true  -P $${BUILD_PROFILES} clean deploy
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml -DuseCustomSettings=true  -P $${BUILD_PROFILES} clean deploy
 
       # Run maven deploy p2 and github
-      - mvn -B -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=$${CI_COMMIT_SHA} -P $${DEPLOY_PROFILES} deploy
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=$${CI_COMMIT_SHA} -P $${DEPLOY_PROFILES} deploy
 
     environment:
       JUDONG_NEXUS_USERNAME:
@@ -103,9 +103,9 @@ steps:
       MAVEN_HOME: /root/.m2
       MAVEN_OPTS:
         -Djansi.force=true
-        -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
         -DuseCustomSettings=true
+#        -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
     secrets: [ judong_nexus_username, judong_nexus_password, judong_nexus_distribution_url, judong_nexus_mirror_url, sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password ]
     when:
