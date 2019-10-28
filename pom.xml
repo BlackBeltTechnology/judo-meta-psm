@@ -833,11 +833,11 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>judo-ng-distribution</id>
-                    <url>${env.MAVEN_DISTRIBUTION_URL}</url>
+                    <url>${env.JUDONG_NEXUS_DISTRIBUTION_URL}</url>
                 </snapshotRepository>
                 <repository>
                     <id>judo-ng-distribution</id>
-                    <url>${env.MAVEN_DISTRIBUTION_URL}</url>
+                    <url>${env.JUDONG_NEXUS_DISTRIBUTION_URL}</url>
                 </repository>
             </distributionManagement>
         </profile>

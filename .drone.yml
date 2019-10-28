@@ -99,8 +99,8 @@ steps:
         from_secret: blackbelt_nexus_username
       BLACKBELT_NEXUS_PASSWORD:
         from_secret: blackbelt_nexus_password
-      M2_HOME: /drone/.m2
-      MAVEN_HOME: /drone/.m2
+      M2_HOME: /root/.m2
+      MAVEN_HOME: /root/.m2
       MAVEN_OPTS:
         -Djansi.force=true
         -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
@@ -122,7 +122,7 @@ steps:
       rebuild: true
       restore: false
       mount:
-        - /drone/.m2
+        - /root/.m2
     when:
       status:
       - success
