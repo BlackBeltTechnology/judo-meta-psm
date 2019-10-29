@@ -82,26 +82,21 @@ steps:
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      # Calculate version number
       - export VERSION_FROM_POM_BASE_VERSION=$(echo "$(mvn help:evaluate -Dexpression=project.version -Dtycho.mode=maven -q -DforceStdout )" | cut -d'-' -f 1)
       - export VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME=$(echo "$${CI_COMMIT_BRANCH}" | cut -d ' ' -f2 | tr '\/\.-' '_')
       - export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$(date +%Y%m%d_%H%M%S)_${CI_COMMIT_SHA:0:8}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}
-
-      # Set versions
       - >-
-        ${MAVEN_EXEC}
+        $${MAVEN_EXEC}
         -Dtycho.mode=maven
         -DnewVersion=$${VERSION_NUMBER}
         -DgenerateBackupPoms=false
         versions:set
-
     environment:
       <<: *maven-env
     secrets: *maven-secrets
     when:
       event:
         - push
-        - pull_request
 
   - name: update-eclipse-version
     pull: default
@@ -109,7 +104,7 @@ steps:
     commands:
       # Update target definition version
       - >-
-        ${MAVEN_EXEC}
+        $${MAVEN_EXEC}
         -Dtycho.mode=maven
         -f ./targetdefinition/pom.xml
         -P update-target-versions
@@ -130,48 +125,39 @@ steps:
     when:
       event:
         - push
-        - pull_request
 
   - name: build-and-deploy-artifacts
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      # Import PGP keys
       - export GPG_TTY=/dev/console
       - echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch
       - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
-
-      # Run maven build and deploy to nexus
       - >-
-        ${MAVEN_EXEC}
-        -P $${MAVEN_PROFILES}
+        $${MAVEN_EXEC}
+        -P test-judo-psm,sign-artifacts,release-judo-ng
         clean deploy
-
     environment:
-      MAVEN_PROFILES: test-judo-psm,sign-artifacts,release-judo-ng
       <<: [*maven-env, *gpg-env]
     secrets: [*maven-secrets, *gpg-secrets]
     when:
       event:
         - push
 
-  ## Release to github
   - name: release-to-github
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
       - >-
-        ${MAVEN_EXEC}
+        $${MAVEN_EXEC}
         -Dtycho.mode=maven
         -DdeployOnly
         -Dgithub_release=true
         -Dgithub.prerelease=true
         -Dgithub.commitish=$${CI_COMMIT_SHA}
-        -P $${MAVEN_PROFILES}
+        -P release-dummy,release-github
         deploy
-
     environment:
-      MAVEN_PROFILES: release-dummy,release-github
       <<: [*maven-env, *github-env]
     secrets: [*maven-secrets, *github-secrets]
     when:
@@ -179,21 +165,19 @@ steps:
         - push
 
 
-  ## Release to P2
   - name: release-to-p2
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      # Run maven deploy p2 and github
       - >-
-        ${MAVEN_EXEC}
+        $#{MAVEN_EXEC}
         -Dtycho.mode=maven
         -DdeployOnly
         -P release-dummy,release-p2-blackbelt
         deploy
     environment:
-      <<: [*maven-env, *gpg-env]
-    secrets: [*maven-secrets, *gpg-secrets]
+      <<: *maven-env
+    secrets: *maven-secrets
     when:
       event:
         - push
