@@ -2,8 +2,7 @@
 kind: pipeline
 name: default
 
-anchor-maven-secrets:
-  &maven-secrets
+anchor-maven-secrets: &maven-secrets
   - judong_nexus_username
   - judong_nexus_password
   - sonatype_username
@@ -11,20 +10,17 @@ anchor-maven-secrets:
   - blackbelt_nexus_username
   - blackbelt_nexus_password
 
-anchor-gpg-secrets:
-  &gpg-secrets
+anchor-gpg-secrets: &gpg-secrets
   - gpg_keyname
   - gpg_executable
   - gpg_passphrase
   - gpg_secret_keys
   - gpg_ownertrust
 
-anchor-github-secrets:
-  &github-secrets
+anchor-github-secrets: &github-secrets
   - github_access_token
 
-anchor-maven-env:
-  &maven-env
+anchor-maven-env: &maven-env
   JUDONG_NEXUS_DISTRIBUTION_URL: https://nexus.judo.technology/repository/maven-judong-snapshots/
   JUDONG_NEXUS_MIRROR_URL: https://nexus.judo.technology/repository/maven-judong/
   JUDONG_NEXUS_USERNAME:
@@ -41,16 +37,16 @@ anchor-maven-env:
     from_secret: blackbelt_nexus_password
   M2_HOME: /drone/src/.m2
   MAVEN_EXEC: >-
-    mvn -ntp -s .maven.xml
+    mvn
     -Djansi.force=true
     -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
     -DuseCustomSettings=true
     -Dstyle.color=always
-    -Dtycho.mode=maven
     -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+    -ntp 
+    -s .maven.xml
 
-anchor-gpg-env:
-  &gpg-env
+anchor-gpg-env: &gpg-env
   GPG_KEYNAME:
     from_secret: gpg_keyname
   GPG_PASSPHRASE:
@@ -60,8 +56,7 @@ anchor-gpg-env:
   GPG_OWNERTRUST:
     from_secret: gpg_ownertrust
 
-anchor-github-env:
-  &github-env
+anchor-github-env: &github-env
   GITHUB_ACCESS_TOKEN:
     from_secret: github_access_token
 
@@ -109,16 +104,18 @@ steps:
         -f ./targetdefinition/pom.xml
         -P update-target-versions
         validate
-
       # Update site version
       - >-
-        ${MAVEN_EXEC}
+        $${MAVEN_EXEC}
         -Dtycho.mode=maven
         -f ./site/pom.xml
         -P update-category-versions
         validate
       # Update tycho versions
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
+      - >-
+        $${MAVEN_EXEC}
+        -Dtycho.mode=maven
+        tycho-versions:update-eclipse-metadata
     environment:
       <<: *maven-env
     secrets: *maven-secrets
@@ -163,7 +160,6 @@ steps:
     when:
       event:
         - push
-
 
   - name: release-to-p2
     pull: default
