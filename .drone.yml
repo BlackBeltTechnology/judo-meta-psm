@@ -31,10 +31,10 @@ anchor-maven-env: &maven-env
 #    from_secret: sonatype_username
 #  SONATYPE_PASSWORD:
 #    from_secret: sonatype_password
-#  BLACKBELT_NEXUS_USERNAME:
-#    from_secret: blackbelt_nexus_username
-#  BLACKBELT_NEXUS_PASSWORD:
-#    from_secret: blackbelt_nexus_password
+  BLACKBELT_NEXUS_USERNAME:
+    from_secret: blackbelt_nexus_username
+  BLACKBELT_NEXUS_PASSWORD:
+    from_secret: blackbelt_nexus_password
   M2_HOME: /drone/src/.m2
   MAVEN_EXEC: >-
     mvn
