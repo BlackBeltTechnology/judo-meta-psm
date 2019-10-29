@@ -2,13 +2,74 @@
 kind: pipeline
 name: default
 
+anchor-maven-secrets:
+  &maven-secrets
+  - judong_nexus_username
+  - judong_nexus_password
+  - sonatype_username
+  - sonatype_password
+  - blackbelt_nexus_username
+  - blackbelt_nexus_password
+
+anchor-gpg-secrets:
+  &gpg-secrets
+  - gpg_keyname
+  - gpg_executable
+  - gpg_passphrase
+  - gpg_secret_keys
+  - gpg_ownertrust
+
+anchor-github-secrets:
+  &github-secrets
+  - github_access_token
+
+anchor-maven-env:
+  &maven-env
+  JUDONG_NEXUS_DISTRIBUTION_URL: https://nexus.judo.technology/repository/maven-judong-snapshots/
+  JUDONG_NEXUS_MIRROR_URL: https://nexus.judo.technology/repository/maven-judong/
+  JUDONG_NEXUS_USERNAME:
+    from_secret: judong_nexus_username
+  JUDONG_NEXUS_PASSWORD:
+    from_secret: judong_nexus_password
+  SONATYPE_USERNAME:
+    from_secret: sonatype_username
+  SONATYPE_PASSWORD:
+    from_secret: sonatype_password
+  BLACKBELT_NEXUS_USERNAME:
+    from_secret: blackbelt_nexus_username
+  BLACKBELT_NEXUS_PASSWORD:
+    from_secret: blackbelt_nexus_password
+  M2_HOME: /drone/src/.m2
+  MAVEN_EXEC: >-
+    mvn -ntp -s .maven.xml
+    -Djansi.force=true
+    -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
+    -DuseCustomSettings=true
+    -Dstyle.color=always
+    -Dtycho.mode=maven
+    -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+anchor-gpg-env:
+  &gpg-env
+  GPG_KEYNAME:
+    from_secret: gpg_keyname
+  GPG_PASSPHRASE:
+    from_secret: gpg_passphrase
+  GPG_SECRET_KEYS:
+    from_secret: gpg_secret_keys
+  GPG_OWNERTRUST:
+    from_secret: gpg_ownertrust
+
+anchor-github-env:
+  &github-env
+  GITHUB_ACCESS_TOKEN:
+    from_secret: github_access_token
+
 steps:
-  ## Pull the last build .m2 from GCloud bucket
   - &cache
     name: restore-cache
     image: homerovalle/drone-gcs-cache
-    settings:
-      &cache-settings
+    settings: &cache-settings
       pull: true
       bucket: drone-agent-m2-cache
       json_key:
@@ -17,98 +78,125 @@ steps:
       debug: true
     secrets: [gcloud_bucket_access_key_json]
 
-  ## Run the build
-  - name: build-artifacts
+  - name: set-pom-version
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      # Maven build profiles
-      - export BUILD_PROFILES="test-judo-psm,sign-artifacts,release-judo-ng"
-      - export DEPLOY_PROFILES="release-dummy,release-github,release-p2-blackbelt"
+      # Calculate version number
+      - export VERSION_FROM_POM_BASE_VERSION=$(echo "$(mvn help:evaluate -Dexpression=project.version -Dtycho.mode=maven -q -DforceStdout )" | cut -d'-' -f 1)
+      - export VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME=$(echo "$${CI_COMMIT_BRANCH}" | cut -d ' ' -f2 | tr '\/\.-' '_')
+      - export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$(date +%Y%m%d_%H%M%S)_${CI_COMMIT_SHA:0:8}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}
 
+      # Set versions
+      - >-
+        ${MAVEN_EXEC}
+        -Dtycho.mode=maven
+        -DnewVersion=$${VERSION_NUMBER}
+        -DgenerateBackupPoms=false
+        versions:set
+
+    environment:
+      <<: *maven-env
+    secrets: *maven-secrets
+    when:
+      event:
+        - push
+        - pull_request
+
+  - name: update-eclipse-version
+    pull: default
+    image: maven:3.6.2-jdk-8
+    commands:
+      # Update target definition version
+      - >-
+        ${MAVEN_EXEC}
+        -Dtycho.mode=maven
+        -f ./targetdefinition/pom.xml
+        -P update-target-versions
+        validate
+
+      # Update site version
+      - >-
+        ${MAVEN_EXEC}
+        -Dtycho.mode=maven
+        -f ./site/pom.xml
+        -P update-category-versions
+        validate
+      # Update tycho versions
+      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
+    environment:
+      <<: *maven-env
+    secrets: *maven-secrets
+    when:
+      event:
+        - push
+        - pull_request
+
+  - name: build-and-deploy-artifacts
+    pull: default
+    image: maven:3.6.2-jdk-8
+    commands:
       # Import PGP keys
       - export GPG_TTY=/dev/console
       - echo "$${GPG_SECRET_KEYS}" | base64 --decode | gpg --import --batch
       - echo "$${GPG_OWNERTRUST}" | base64 --decode | gpg --import-ownertrust
 
-#      - echo "Nexus  $${JUDONG_NEXUS_USERNAME}"
-#      - echo "Nexus  $${JUDONG_NEXUS_PASSWORD}"
-#      - echo "Nexus  $${JUDONG_NEXUS_MIRROR_URL}"
-#      - echo "Nexus  $${JUDONG_NEXUS_DISTRIBUTION_URL}"
-
-      # Calculate version number
-      - export VERSION_FROM_POM_FULL_VERSION=$$(python -c "import xml.etree.ElementTree as ET; print(ET.parse(open('/drone/src/pom.xml')).getroot().find('{http://maven.apache.org/POM/4.0.0}version').text)")
-      - export VERSION_FROM_POM_BASE_VERSION=$(echo "$${VERSION_FROM_POM_FULL_VERSION}" | cut -d'-' -f 1)
-      - export VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME=$(echo "$${CI_COMMIT_BRANCH}" | cut -d ' ' -f2 | tr '\/\.-' '_')
-      - export VERSION_NUMBER=$${VERSION_FROM_POM_BASE_VERSION}.$(date +%Y%m%d_%H%M%S)_${CI_COMMIT_SHA:0:8}_$${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}
-
-      - echo "Base version from POM (VERSION_FROM_POM_BASE_VERSION) - $${VERSION_FROM_POM_BASE_VERSION}"
-      - echo "Base version from POM (VERSION_FROM_POM_BASE_VERSION) - $${VERSION_FROM_POM_BASE_VERSION}"
-      - echo "Version in POM (VERSION_FROM_POM_FULL_VERSION) - $${VERSION_FROM_POM_FULL_VERSION}"
-      - echo "Short commit SHA (CI_SHORT_COMMIT_SHA) - $${CI_SHORT_COMMIT_SHA}"
-      - echo "Current branch name (VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME) - $${VERSION_FROM_GIT_TAG_CURRENT_BRANCH_VALID_NAME}"
-      - echo "Building version - $${VERSION_NUMBER}"
-
-      # Set versions
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DnewVersion=$${VERSION_NUMBER} -DgenerateBackupPoms=false versions:set
-
-      # Update target definition version
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./targetdefinition/pom.xml -P update-target-versions validate
-
-      # Update site version
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven  -f ./site/pom.xml -P update-category-versions validate
-
-      # Update tycho versions
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven tycho-versions:update-eclipse-metadata
-
-      # DaltDeploymentRepository=id::layout::url
       # Run maven build and deploy to nexus
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml -DuseCustomSettings=true  -P $${BUILD_PROFILES} clean deploy
-
-      # Run maven deploy p2 and github
-      - mvn -ntp -s .maven.xml -Dstyle.color=always -Dtycho.mode=maven -DdeployOnly -Dgithub_release=true -Dgithub.prerelease=true -Dgithub.commitish=$${CI_COMMIT_SHA} -P $${DEPLOY_PROFILES} deploy
+      - >-
+        ${MAVEN_EXEC}
+        -P $${MAVEN_PROFILES}
+        clean deploy
 
     environment:
-      JUDONG_NEXUS_USERNAME:
-         from_secret: judong_nexus_username
-      JUDONG_NEXUS_PASSWORD:
-         from_secret: judong_nexus_password
-      JUDONG_NEXUS_DISTRIBUTION_URL:
-         from_secret: judong_nexus_distribution_url
-      JUDONG_NEXUS_MIRROR_URL:
-         from_secret: judong_nexus_mirror_url
-      SONATYPE_USERNAME:
-         from_secret: sonatype_username
-      SONATYPE_PASSWORD:
-         from_secret: sonatype_password
-      GPG_KEYNAME:
-         from_secret: gpg_keyname
-      GPG_EXECUTABLE:
-         from_secret: gpg_executable
-      GPG_PASSPHRASE:
-         from_secret: gpg_passphrase
-      GPG_SECRET_KEYS:
-        from_secret: gpg_secret_keys
-      GPG_OWNERTRUST:
-        from_secret: gpg_ownertrust
-      GITHUB_ACCESS_TOKEN:
-        from_secret: github_access_token
-      BLACKBELT_NEXUS_USERNAME:
-        from_secret: blackbelt_nexus_username
-      BLACKBELT_NEXUS_PASSWORD:
-        from_secret: blackbelt_nexus_password
-      M2_HOME: /drone/src/.m2
-      MAVEN_OPTS:
-        -Djansi.force=true
-        -Dorg.ops4j.pax.url.mvn.settings=/drone/src/.maven.xml
-        -DuseCustomSettings=true
-#        -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
-    secrets: [ judong_nexus_username, judong_nexus_password, judong_nexus_distribution_url, judong_nexus_mirror_url, sonatype_username, sonatype_password, gpg_keyname, gpg_executable, gpg_passphrase, gpg_secret_keys, gpg_ownertrust, github_access_token, blackbelt_nexus_username, blackbelt_nexus_password ]
+      MAVEN_PROFILES: test-judo-psm,sign-artifacts,release-judo-ng
+      <<: [*maven-env, *gpg-env]
+    secrets: [*maven-secrets, *gpg-secrets]
     when:
       event:
         - push
-        - pull_request
+
+  ## Release to github
+  - name: release-to-github
+    pull: default
+    image: maven:3.6.2-jdk-8
+    commands:
+      - >-
+        ${MAVEN_EXEC}
+        -Dtycho.mode=maven
+        -DdeployOnly
+        -Dgithub_release=true
+        -Dgithub.prerelease=true
+        -Dgithub.commitish=$${CI_COMMIT_SHA}
+        -P $${MAVEN_PROFILES}
+        deploy
+
+    environment:
+      MAVEN_PROFILES: release-dummy,release-github
+      <<: [*maven-env, *github-env]
+    secrets: [*maven-secrets, *github-secrets]
+    when:
+      event:
+        - push
+
+
+  ## Release to P2
+  - name: release-to-p2
+    pull: default
+    image: maven:3.6.2-jdk-8
+    commands:
+      # Run maven deploy p2 and github
+      - >-
+        ${MAVEN_EXEC}
+        -Dtycho.mode=maven
+        -DdeployOnly
+        -P release-dummy,release-p2-blackbelt
+        deploy
+    environment:
+      <<: [*maven-env, *gpg-env]
+    secrets: [*maven-secrets, *gpg-secrets]
+    when:
+      event:
+        - push
 
   ## Push the current .m2 cache to GCloud bucket
   ## The failed build also push the cache
@@ -122,8 +210,8 @@ steps:
         - .m2
     when:
       status:
-      - success
-      - failure
+        - success
+        - failure
 
   ## Flush the old .m2 cache from GCloud bucket
   - <<: *cache
