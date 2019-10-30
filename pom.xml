@@ -898,15 +898,13 @@
 							<tag>${project.version}</tag>
 							<deleteRelease>false</deleteRelease>
 							<overwriteArtifact>false</overwriteArtifact>
-                            <fileSets>
-                                <fileSet>
-                                    <directory>${basedir}/**/target</directory>
-                                    <includes>
-                                        <include>*.jar</include>
-										<include>*.zip</include>
-                                    </includes>
-                                </fileSet>
-                            </fileSets>
+							<fileSet>
+								<directory>${basedir}</directory>
+								<includes>
+									<include>**/target/*.jar</include>
+									<include>**/target/*.zip</include>
+								</includes>
+							</fileSet>
                         </configuration>
                         <executions>
                             <execution>
