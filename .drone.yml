@@ -25,8 +25,8 @@ anchor-maven-env: &maven-env
   DISTRIBUTION_P2_URL: https://nexus.blackbelt.cloud/repository/p2-judo
   GITHUB_RELEASE_DESCRIPTION: |
         **Branch:** $${env.CI_COMMIT_BRANCH}
-        **P2 Update Site:** ${env.DISTRIBUTION_P2_URL}/$${project-shortname}/$${project.version}
-        **CI:** https://https://ci.judo.technology/BlackBeltTechnology/$${project-repositoryId}/${env.DRONE_BUILD_NUMBER}
+        **P2 Update Site:** $${env.DISTRIBUTION_P2_URL}/$${project-shortname}/$${project.version}
+        **CI:** https://https://ci.judo.technology/BlackBeltTechnology/$${project-repositoryId}/$${env.DRONE_BUILD_NUMBER}
 
   JUDONG_NEXUS_DISTRIBUTION_URL: https://nexus.judo.technology/repository/maven-judong-snapshots/
   JUDONG_NEXUS_MIRROR_URL: https://nexus.judo.technology/repository/maven-judong/
