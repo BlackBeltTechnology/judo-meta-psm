@@ -898,6 +898,8 @@
 							<tag>${project.version}</tag>
 							<deleteRelease>false</deleteRelease>
 							<overwriteArtifact>false</overwriteArtifact>
+							<prerelease>${env.GITHUB_PRERELEASE}</prerelease>
+							<draft>${env.GITHUB_DRAFT}</draft>
 							<fileSet>
 								<directory>${basedir}</directory>
 								<includes>
@@ -941,8 +943,6 @@
                                     <includes>*/**</includes>
                                     <url>dav:${env.DISTRIBUTION_P2_URL}</url>
                                     <toDir>${project-shortname}/${project.version}</toDir>
-									<prerelease>${env.GITHUB_PRERELEASE}</prerelease>
-									<draft>${env.GITHUB_DRAFT}</draft>
                                 </configuration>
                             </execution>
                         </executions>
