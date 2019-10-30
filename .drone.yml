@@ -26,7 +26,7 @@ anchor-maven-env: &maven-env
   GITHUB_RELEASE_DESCRIPTION: |
         **Branch:** $${env.CI_COMMIT_BRANCH}
         **P2 Update Site:** $${env.DISTRIBUTION_P2_URL}/$${project-shortname}/$${project.version}
-        **CI:** https://https://ci.judo.technology/BlackBeltTechnology/$${project-repositoryId}/$${env.DRONE_BUILD_NUMBER}
+        **CI:** https://ci.judo.technology/$${project-repositoryId}/$${env.DRONE_BUILD_NUMBER}
 
   JUDONG_NEXUS_DISTRIBUTION_URL: https://nexus.judo.technology/repository/maven-judong-snapshots/
   JUDONG_NEXUS_MIRROR_URL: https://nexus.judo.technology/repository/maven-judong/
@@ -155,8 +155,6 @@ steps:
         $${MAVEN_EXEC}
         -Dtycho.mode=maven
         -Dignore_child_modules=true
-        -Dgithub.prerelease=true
-        -Dgithub.commitish=$${CI_COMMIT_SHA}
         -P release-dummy,release-github
         deploy
     environment:
@@ -170,6 +168,8 @@ steps:
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
+      -  export GITHUB_PRERELEASE=$(if [[ $${CI_COMMIT_BRANCH} =~ ^develop ]]; then echo "true"; else echo "false"; fi)
+      -  export GITHUB_DRAFT=$(if [[ $${CI_COMMIT_BRANCH} =~ ^develop | =~ ^master ]]; then echo "false"; else echo "true"; fi)
       - >-
         $${MAVEN_EXEC}
         -Dtycho.mode=maven
