@@ -151,6 +151,8 @@ steps:
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
+      - export GITHUB_PRERELEASE=$(if [[ $${CI_COMMIT_BRANCH} =~ ^develop ]]; then echo "true"; else echo "false"; fi)
+      - export GITHUB_DRAFT=$(if [[ $${CI_COMMIT_BRANCH} =~ ^develop | =~ ^master ]]; then echo "false"; else echo "true"; fi)
       - >-
         $${MAVEN_EXEC}
         -Dtycho.mode=maven
@@ -168,8 +170,6 @@ steps:
     pull: default
     image: maven:3.6.2-jdk-8
     commands:
-      - export GITHUB_PRERELEASE=$(if [[ $${CI_COMMIT_BRANCH} =~ ^develop ]]; then echo "true"; else echo "false"; fi)
-      - export GITHUB_DRAFT=$(if [[ $${CI_COMMIT_BRANCH} =~ ^develop | =~ ^master ]]; then echo "false"; else echo "true"; fi)
       - >-
         $${MAVEN_EXEC}
         -Dtycho.mode=maven
