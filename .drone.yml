@@ -21,6 +21,13 @@ anchor-github-secrets: &github-secrets
   - github_access_token
 
 anchor-maven-env: &maven-env
+  DISTRIBUTION_P2_ID: blackbelt-nexus-distribution
+  DISTRIBUTION_P2_URL: https://nexus.blackbelt.cloud/repository/p2-judo
+  GITHUB_RELEASE_DESCRIPTION: |
+        **Branch:** $${env.CI_COMMIT_BRANCH}
+        **P2 Update Site:** ${env.DISTRIBUTION_P2_URL}/$${project-shortname}/$${project.version}
+        **CI:** https://https://ci.judo.technology/BlackBeltTechnology/$${project-repositoryId}/${env.DRONE_BUILD_NUMBER}
+
   JUDONG_NEXUS_DISTRIBUTION_URL: https://nexus.judo.technology/repository/maven-judong-snapshots/
   JUDONG_NEXUS_MIRROR_URL: https://nexus.judo.technology/repository/maven-judong/
   JUDONG_NEXUS_USERNAME:
@@ -147,8 +154,7 @@ steps:
       - >-
         $${MAVEN_EXEC}
         -Dtycho.mode=maven
-        -DdeployOnly
-        -Dgithub_release=true
+        -Dignore_child_modules=true
         -Dgithub.prerelease=true
         -Dgithub.commitish=$${CI_COMMIT_SHA}
         -P release-dummy,release-github
@@ -167,7 +173,7 @@ steps:
       - >-
         $${MAVEN_EXEC}
         -Dtycho.mode=maven
-        -DdeployOnly
+        -Dignore_child_modules=true
         -P release-dummy,release-p2-blackbelt
         deploy
     environment:

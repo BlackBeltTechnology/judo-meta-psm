@@ -18,10 +18,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:git:git@github.com:${project-repositoryId}.git</connection>
-		<developerConnection>scm:git:ssh://${git.username}@github.com:${project-repositoryId}.git
-        </developerConnection>
-		<url>http://github.com/${project-repositoryId}</url>
+		<connection>scm:git:git@github.com:j${project-repositoryId}.git</connection>
+		<developerConnection>scm:git:git@github.com:${project-repositoryId}.git</developerConnection>
+		<url>http://github.com/${project-repositoryId}/tree/${project.scm.tag}</url>
 	</scm>
 
     <developers>
@@ -750,10 +749,10 @@
 
 	<profiles>
         <profile>
-            <id>modules</id>
+            <id>child-modules</id>
             <activation>
                 <property>
-                    <name>github_release</name>
+                    <name>ignore_child_modules</name>
                     <value>!true</value>
                 </property>
             </activation>
@@ -890,44 +889,21 @@
                     <plugin>
                         <groupId>de.jutzig</groupId>
                         <artifactId>github-release-plugin</artifactId>
-                        <version>1.3.0</version>
+                        <version>1.4.0</version>
                         <inherited>false</inherited>
                         <configuration>
                             <repositoryId>${project-repositoryId}</repositoryId>
-                            <description>
-                                **Branch:** ${env.WERCKER_GIT_BRANCH}
-                                **P2 Update Site:** https://nexus.blackbelt.cloud/repository/p2-judo/${project-shortname}/${project.version}
-                                **Maven repository:** https://nexus.blackbelt.cloud/#browse/browse:maven-judo-release:hu%2Fblackbelt%2Feclipse%2F${project-shortname}
-                                **Wercker:** https://app.wercker.com/${project-repositoryId}/runs/build/${env.WERCKER_RUN_ID}
-                            </description>
+                            <description>${env.GITHUB_RELEASE_DESCRIPTION}</description>
                             <releaseName>${project.version}</releaseName>
-                            <prerelease>true</prerelease>
-                            <tag>${project.version}</tag>
-                            <deleteRelease>true</deleteRelease>
-                            <commitish>${env.WERCKER_GIT_COMMIT}</commitish>
+							<tag>${project.version}</tag>
+							<deleteRelease>false</deleteRelease>
+							<overwriteArtifact>false</overwriteArtifact>
                             <fileSets>
                                 <fileSet>
-                                    <directory>${basedir}/model/target</directory>
+                                    <directory>${basedir}/**/target</directory>
                                     <includes>
                                         <include>*.jar</include>
-                                    </includes>
-                                </fileSet>
-								<fileSet>
-									<directory>${basedir}/model-test/target</directory>
-									<includes>
-										<include>*.jar</include>
-									</includes>
-								</fileSet>
-                                <fileSet>
-                                    <directory>${basedir}/osgi/target</directory>
-                                    <includes>
-                                        <include>*.jar</include>
-                                    </includes>
-                                </fileSet>
-                                <fileSet>
-                                    <directory>${basedir}/site/target</directory>
-                                    <includes>
-                                        <include>*.zip</include>
+										<include>*.zip</include>
                                     </includes>
                                 </fileSet>
                             </fileSets>
@@ -962,10 +938,10 @@
                                     <goal>upload</goal>
                                 </goals>
                                 <configuration>
-                                    <serverId>blackbelt-nexus-distribution</serverId>
+                                    <serverId>${env.DISTRIBUTION_P2_ID}</serverId>
                                     <fromDir>${basedir}/site/target/repository</fromDir>
                                     <includes>*/**</includes>
-                                    <url>dav:https://nexus.blackbelt.cloud/repository/p2-judo</url>
+                                    <url>dav:${env.DISTRIBUTION_P2_URL}</url>
                                     <toDir>${project-shortname}/${project.version}</toDir>
                                 </configuration>
                             </execution>
