@@ -42,6 +42,7 @@ anchor-maven-env: &maven-env
     from_secret: blackbelt_nexus_username
   BLACKBELT_NEXUS_PASSWORD:
     from_secret: blackbelt_nexus_password
+  MAVEN_OPS: -Djansi.force=true
   M2_HOME: /drone/src/.m2
   MAVEN_EXEC: >-
     mvn
