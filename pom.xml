@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>hu.blackbelt.judo.meta</groupId>
@@ -70,8 +71,8 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 
-		<epsilon-runtime-version>1.2.0.develop_101</epsilon-runtime-version>
-		<epsilon-runtime-eclipse-version>1.2.0.develop_00010</epsilon-runtime-eclipse-version>
+		<epsilon-runtime-version>1.2.0.20191018_105940_dc9d257_develop</epsilon-runtime-version>
+		<epsilon-runtime-eclipse-version>1.2.0.20191105_183445_4b0b2da_develop</epsilon-runtime-eclipse-version>
 
 		<src.dir>src/main</src.dir>
 
@@ -80,8 +81,8 @@
 		<tycho-version>1.4.0</tycho-version>
 		<eclipse-p2-base>http://download.eclipse.org/releases/2019-03</eclipse-p2-base>
 
-		<emf-genmodel-generator-version>1.0.0.develop_00025</emf-genmodel-generator-version>
-		<judo-genmodel-generator-version>1.0.0.develop_00018</judo-genmodel-generator-version>
+		<emf-genmodel-generator-version>1.0.0.20191105_182930_676cf43_develop</emf-genmodel-generator-version>
+		<judo-genmodel-generator-version>1.0.0.20191105_183255_7673428_develop</judo-genmodel-generator-version>
 
 		<!-- Xtend / Xcore -->
 		<emf-version>2.18.0</emf-version>
@@ -104,17 +105,17 @@
 
 		<!-- Pax exam dependencies -->
 		<karaf-version>4.2.6</karaf-version>
-		<osgi-utils-version>1.0.7</osgi-utils-version>
-		<bouncycastle-karaf-features-version>1.61.2</bouncycastle-karaf-features-version>
-		<tinybundles-karaf-features-version>3.0.0_1</tinybundles-karaf-features-version>
-		<google-karaf-features-version>1.0.3</google-karaf-features-version>
-		<eclipse-emf-karaf-features-version>1.0.0.develop_10</eclipse-emf-karaf-features-version>
-		<eclipse-epsilon-karaf-features-version>1.0.0.develop_5</eclipse-epsilon-karaf-features-version>
-		<eclipse-xtext-karaf-features-version>1.0.0.develop_6</eclipse-xtext-karaf-features-version>
-		<antlr-karaf-features-version>1.0.1</antlr-karaf-features-version>
-		<apache-commons-karaf-features-version>1.0.5</apache-commons-karaf-features-version>
-		<apache-poi-karaf-features-version>1.0.2</apache-poi-karaf-features-version>
-		<apache-httpclient-karaf-features-version>1.0.1.develop_15</apache-httpclient-karaf-features-version>
+		<osgi-utils-version>1.0.8.20191017_132312_ad682ad_develop</osgi-utils-version>
+		<bouncycastle-karaf-features-version>1.61.3.20191022_114357_aee679a_develop</bouncycastle-karaf-features-version>
+		<tinybundles-karaf-features-version>3.0.1.20191022_112822_116bc48_develop</tinybundles-karaf-features-version>
+		<google-karaf-features-version>1.0.4.20191022_114140_684a990_develop</google-karaf-features-version>
+		<eclipse-emf-karaf-features-version>1.0.0.20191022_114422_fafe494_develop</eclipse-emf-karaf-features-version>
+		<eclipse-epsilon-karaf-features-version>1.0.0.20191022_114323_7e8e2c9_develop</eclipse-epsilon-karaf-features-version>
+		<eclipse-xtext-karaf-features-version>1.0.0.20191022_114147_6026913_develop</eclipse-xtext-karaf-features-version>
+		<antlr-karaf-features-version>1.0.2.20191022_122300_25c8e72_develop</antlr-karaf-features-version>
+		<apache-commons-karaf-features-version>1.0.6.20191022_114658_6c2e28d_develop</apache-commons-karaf-features-version>
+		<apache-poi-karaf-features-version>1.0.3.20191022_114532_a759e74_develop</apache-poi-karaf-features-version>
+		<apache-httpclient-karaf-features-version>1.0.1.20191022_114521_71b5cd0_develop</apache-httpclient-karaf-features-version>
 		<pax-exam-version>4.13.1</pax-exam-version>
 		<log4j.configuration>log4j.properties</log4j.configuration>
 	</properties>
@@ -813,15 +814,15 @@
 		</profile>
 
 		<profile>
-			<id>release-blackbelt</id>
+			<id>release-judong</id>
 			<distributionManagement>
 				<snapshotRepository>
-					<id>blackbelt-nexus-distribution</id>
-					<url>https://nexus.blackbelt.cloud/repository/maven-judo-release/</url>
+					<id>judong-nexus-distribution</id>
+					<url>${env.JUDONG_MAVEN_UPSTREAM_SNAPSHOT}</url>
 				</snapshotRepository>
 				<repository>
-					<id>blackbelt-nexus-distribution</id>
-					<url>https://nexus.blackbelt.cloud/repository/maven-judo-release/</url>
+					<id>judong-nexus-distribution</id>
+					<url>${env.JUDONG_MAVEN_UPSTREAM_RELEASE}</url>
 				</repository>
 			</distributionManagement>
 		</profile>
@@ -931,7 +932,7 @@
         </profile>
         
         <profile>
-            <id>release-p2-blackbelt</id>
+            <id>release-p2-judong</id>
             <build>
                 <plugins>
                     <plugin>
@@ -940,16 +941,16 @@
                         <version>2.0.0</version>
                         <executions>
                             <execution>
-                                <id>upload-respoitory</id>
+                                <id>upload-repository</id>
                                 <phase>deploy</phase>
                                 <goals>
                                     <goal>upload</goal>
                                 </goals>
                                 <configuration>
-                                    <serverId>blackbelt-nexus-distribution</serverId>
+                                    <serverId>judong-nexus-distribution</serverId>
                                     <fromDir>${basedir}/site/target/repository</fromDir>
                                     <includes>*/**</includes>
-                                    <url>dav:https://nexus.blackbelt.cloud/repository/p2-judo</url>
+                                    <url>dav:${env.JUDONG_P2_UPSTREAM}</url>
                                     <toDir>${project-shortname}/${project.version}</toDir>
                                 </configuration>
                             </execution>
