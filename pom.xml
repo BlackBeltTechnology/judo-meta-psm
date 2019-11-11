@@ -82,7 +82,7 @@
 		<eclipse-p2-base>http://download.eclipse.org/releases/2019-03</eclipse-p2-base>
 
 		<emf-genmodel-generator-version>1.0.0.20191105_182930_676cf43_develop</emf-genmodel-generator-version>
-		<judo-genmodel-generator-version>1.0.0.20191105_183255_7673428_develop</judo-genmodel-generator-version>
+		<judo-genmodel-generator-version>1.0.0.20191105_185759_897db9c_develop</judo-genmodel-generator-version>
 
 		<!-- Xtend / Xcore -->
 		<emf-version>2.18.0</emf-version>
@@ -881,8 +881,8 @@
                             <repositoryId>${project-repositoryId}</repositoryId>
                             <description>
                                 **Branch:** ${env.WERCKER_GIT_BRANCH}
-                                **P2 Update Site:** https://nexus.blackbelt.cloud/repository/p2-judo/${project-shortname}/${project.version}
-                                **Maven repository:** https://nexus.blackbelt.cloud/#browse/browse:maven-judo-release:hu%2Fblackbelt%2Feclipse%2F${project-shortname}
+                                **P2 Update Site:** ${env.JUDONG_P2_UPSTREAM}/repository/p2/${project-shortname}/${project.version}
+                                **Maven repository:** ${env.JUDONG_MAVEN_UPSTREAM_SNAPSHOT}/#browse/browse:maven-judo-release:hu%2Fblackbelt%2Feclipse%2F${project-shortname}
                                 **Wercker:** https://app.wercker.com/${project-repositoryId}/runs/build/${env.WERCKER_RUN_ID}
                             </description>
                             <releaseName>${project.version}</releaseName>
