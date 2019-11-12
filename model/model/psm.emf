@@ -452,6 +452,9 @@ package service {
     ref data.EntityType[1] entityType;
     val BoundOperation[*] operations;
     val ~derived.LogicalExpressionType filter;
+    ref BoundOperation update;
+    ref BoundOperation delete;
+    ref UnboundOperation create;
   }
 
   abstract class OperationDeclaration {
