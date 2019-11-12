@@ -426,6 +426,7 @@ package service {
     ref ~derived.ReferenceAccessor range;
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
+    ref BoundOperation create;
   }
 
   class TransferAttribute extends namespace.NamedElement {
