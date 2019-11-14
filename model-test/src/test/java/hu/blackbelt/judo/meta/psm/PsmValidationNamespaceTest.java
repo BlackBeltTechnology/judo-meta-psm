@@ -429,7 +429,7 @@ class PsmValidationNamespaceTest {
                 ))
                 .build();
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("ElementNameNotEmpty|NamespaceElement name must contain at least one character. Zero length name found in M::"), Collections.emptyList());
+        runEpsilon(ImmutableList.of("ElementNameNotEmpty|Named element name must contain at least one character. Zero length name found in M::"), Collections.emptyList());
     }
     
     @Test
@@ -442,7 +442,7 @@ class PsmValidationNamespaceTest {
                 ))
                 .build();
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("ElementNameContainsValidCharacters|NamespaceElement's name can only contain english letters (A-Z, a-z), digits (0-9) and underscore characters (_): string$string"), Collections.emptyList());
+        runEpsilon(ImmutableList.of("ElementNameContainsValidCharacters|Named element's name can only contain english letters (A-Z, a-z), digits (0-9) and underscore characters (_): string$string"), Collections.emptyList());
     }
     
     @Test
@@ -455,7 +455,7 @@ class PsmValidationNamespaceTest {
                 ))
                 .build();
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("ElementNameCannotContainSubsequentUnderscores|NamespaceElement's name cannot contain two subsequent underscore characters: __string"), Collections.emptyList());
+        runEpsilon(ImmutableList.of("ElementNameCannotContainSubsequentUnderscores|Named element's name cannot contain two subsequent underscore characters: __string"), Collections.emptyList());
     }
 
     @Test
@@ -468,7 +468,7 @@ class PsmValidationNamespaceTest {
                 ))
                 .build();
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("ElementNameFirstCharacterCannotBeDigit|NamespaceElement's name must start with an english letter or an underscore: 0string"), Collections.emptyList());
+        runEpsilon(ImmutableList.of("ElementNameFirstCharacterCannotBeDigit|Named element's name must start with an english letter or an underscore: 0string"), Collections.emptyList());
     }
 
     @Test
@@ -481,6 +481,6 @@ class PsmValidationNamespaceTest {
                 ))
                 .build();
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("ElementNameLastCharacterCannotBeUnderscore|NamespaceElement's name must end with an english letter or a digit: string_"), Collections.emptyList());
+        runEpsilon(ImmutableList.of("ElementNameLastCharacterCannotBeUnderscore|Named element's name must end with an english letter or a digit: string_"), Collections.emptyList());
     }
 }
