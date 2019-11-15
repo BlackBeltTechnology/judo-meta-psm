@@ -2,18 +2,18 @@ context PSM!ReferenceTypedElement {
 
     constraint CardinalityLowerIsGreaterThanOrEqualToZero {
         check: self.cardinality.lower >= 0
-        message: "Lower attribute of: " + self.name + " must be greater than or equal to zero"
+        message: "Lower attribute of reference typed element: " + self.name + " must be greater than or equal to zero"
     }
     
     // lower property must be less or equal to upper property
     constraint LowerMustBeLessOrEqualToUpper {
         check: self.cardinality.upper == -1 or self.cardinality.lower <= self.cardinality.upper
-        message: "Lower (" + self.cardinality.lower + ") must be less or equal to upper (" + self.cardinality.upper + ") of attribute: " + self.name
+        message: "Lower (" + self.cardinality.lower + ") must be less or equal to upper (" + self.cardinality.upper + ") of reference typed element: " + self.name
     }
     
     // upper attribute must be at least 1    
     constraint CardinalityUpperIsAtLeastOne {
         check: self.cardinality.upper > 0 or self.cardinality.upper == -1
-        message: "Invalid upper attribute of " + self.name
+        message: "Invalid upper attribute of reference typed element: " + self.name
     }
 }

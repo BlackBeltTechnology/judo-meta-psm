@@ -77,9 +77,9 @@ class PsmValidationDataTest {
 				.withRelations(ImmutableList.of(endpoint1, endpoint2)).build();
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity)).build();
 		psmModel.addContent(m);
-		runEpsilon(ImmutableList.of("CardinalityUpperIsAtLeastOne|Invalid upper attribute of endpoint1",
-				"CardinalityUpperIsAtLeastOne|Invalid upper attribute of endpoint2",
-				"LowerMustBeLessOrEqualToUpper|Lower (0) must be less or equal to upper (-2) of attribute: endpoint2"),
+		runEpsilon(ImmutableList.of("CardinalityUpperIsAtLeastOne|Invalid upper attribute of reference typed element: endpoint1",
+				"CardinalityUpperIsAtLeastOne|Invalid upper attribute of reference typed element: endpoint2",
+				"LowerMustBeLessOrEqualToUpper|Lower (0) must be less or equal to upper (-2) of reference typed element: endpoint2"),
 				Collections.emptyList());
 	}
 
@@ -94,7 +94,7 @@ class PsmValidationDataTest {
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity)).build();
 		psmModel.addContent(m);
 		runEpsilon(ImmutableList.of(
-				"CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of: containment must be greater than or equal to zero"),
+				"CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of reference typed element: containment must be greater than or equal to zero"),
 				Collections.emptyList());
 	}
 
@@ -109,7 +109,7 @@ class PsmValidationDataTest {
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity)).build();
 		psmModel.addContent(m);
 		runEpsilon(ImmutableList.of(
-				"LowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (1) of attribute: endpoint"),
+				"LowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (1) of reference typed element: endpoint"),
 				Collections.emptyList());
 	}
 
