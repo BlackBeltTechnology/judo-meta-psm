@@ -2,6 +2,7 @@ context PSM!TimestampType {
 
 	constraint TimeStampBaseUnitIsValid {
 		check:	(self.baseUnit == PSM!DurationType#nanosecond) or
+		        (self.baseUnit == PSM!DurationType#microsecond) or
 				(self.baseUnit == PSM!DurationType#millisecond) or
 				(self.baseUnit == PSM!DurationType#second) or
 				(self.baseUnit == PSM!DurationType#minute) or
