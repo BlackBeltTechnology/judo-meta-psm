@@ -189,4 +189,88 @@ class PsmValidationAccesspointTest {
            "AccessPointUnboundOperationsAreUnique|Exposed services of access point accessPoint are referencing to the same unbound operation."),
            Collections.emptyList());
     }
+    
+    @Test
+    void testCardinalityLowerIsGreaterThanOrEqualToZero() throws Exception {
+           log.info("Testing constraint: CardinalityLowerIsGreaterThanOrEqualToZero");
+
+           EntityType entity = newEntityTypeBuilder().withName("entity").build();
+           MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject").withEntityType(entity).build();
+           StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+                   .withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
+
+           ExposedGraph graph = newExposedGraphBuilder().withName("graph").withCardinality(newCardinalityBuilder().withLower(-1).withUpper(5).build())
+                   .withSelector(staticNav).withMappedTransferObjectType(transferObject).build();
+           AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint").withExposedGraphs(graph).build();
+           
+           Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                               entity,
+                               transferObject,
+                               staticNav,
+                               accessPoint
+                           )).build();
+
+           psmModel.addContent(model);
+        
+           runEpsilon(ImmutableList.of(
+               "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of exposed graph: graph must be greater than or equal to zero",
+               "SelectorCardinalityIsValid|Cardinality of exposed graph graph must match cardinality of the exposed graph's selector."),
+               Collections.emptyList());
+    }
+    
+    @Test
+    void testLowerMustBeLessOrEqualToUpper() throws Exception {
+           log.info("Testing constraint: LowerMustBeLessOrEqualToUpper");
+
+           EntityType entity = newEntityTypeBuilder().withName("entity").build();
+           MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject").withEntityType(entity).build();
+           StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+                   .withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
+
+           ExposedGraph graph = newExposedGraphBuilder().withName("graph").withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build())
+                   .withSelector(staticNav).withMappedTransferObjectType(transferObject).build();
+           AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint").withExposedGraphs(graph).build();
+           
+           Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                               entity,
+                               transferObject,
+                               staticNav,
+                               accessPoint
+                           )).build();
+
+           psmModel.addContent(model);
+        
+           runEpsilon(ImmutableList.of(
+               "LowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (2) of exposed graph: graph",
+               "SelectorCardinalityIsValid|Cardinality of exposed graph graph must match cardinality of the exposed graph's selector."),
+               Collections.emptyList());
+    }
+    
+    @Test
+    void testCardinalityUpperIsAtLeastOne() throws Exception {
+           log.info("Testing constraint: CardinalityUpperIsAtLeastOne");
+
+           EntityType entity = newEntityTypeBuilder().withName("entity").build();
+           MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject").withEntityType(entity).build();
+           StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+                   .withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
+
+           ExposedGraph graph = newExposedGraphBuilder().withName("graph").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build())
+                   .withSelector(staticNav).withMappedTransferObjectType(transferObject).build();
+           AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint").withExposedGraphs(graph).build();
+           
+           Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                               entity,
+                               transferObject,
+                               staticNav,
+                               accessPoint
+                           )).build();
+
+           psmModel.addContent(model);
+        
+           runEpsilon(ImmutableList.of(
+               "CardinalityUpperIsAtLeastOne|Invalid upper attribute of exposed graph: graph",
+               "SelectorCardinalityIsValid|Cardinality of exposed graph graph must match cardinality of the exposed graph's selector."),
+               Collections.emptyList());
+    }
 }

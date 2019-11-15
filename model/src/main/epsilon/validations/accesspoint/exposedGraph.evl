@@ -10,4 +10,21 @@ context PSM!ExposedGraph {
                 (self.selector.cardinality.upper == self.cardinality.upper)
         message: "Cardinality of exposed graph " + self.name + " must match cardinality of the exposed graph's selector."
     }
+    
+    constraint CardinalityLowerIsGreaterThanOrEqualToZero {
+        check: self.cardinality.lower >= 0
+        message: "Lower attribute of exposed graph: " + self.name + " must be greater than or equal to zero"
+    }
+    
+    // lower property must be less or equal to upper property
+    constraint LowerMustBeLessOrEqualToUpper {
+        check: self.cardinality.upper == -1 or self.cardinality.lower <= self.cardinality.upper
+        message: "Lower (" + self.cardinality.lower + ") must be less or equal to upper (" + self.cardinality.upper + ") of exposed graph: " + self.name
+    }
+    
+    // upper attribute must be at least 1    
+    constraint CardinalityUpperIsAtLeastOne {
+        check: self.cardinality.upper > 0 or self.cardinality.upper == -1
+        message: "Invalid upper attribute of exposed graph: " + self.name
+    }
 }
