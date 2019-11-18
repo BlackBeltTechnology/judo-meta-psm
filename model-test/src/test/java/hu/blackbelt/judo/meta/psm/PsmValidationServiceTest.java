@@ -1,14 +1,52 @@
 package hu.blackbelt.judo.meta.psm;
 
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newContainmentBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticDataBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newBoundOperationBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newOperationBodyBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnboundOperationBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.eclipse.emf.common.util.URI;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.ImmutableList;
+
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
-import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
+import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.Containment;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.derived.StaticData;
+import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
@@ -18,28 +56,8 @@ import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.type.*;
-
-import org.eclipse.emf.common.util.URI;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticDataBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
+import hu.blackbelt.judo.meta.psm.type.NumericType;
+import hu.blackbelt.judo.meta.psm.type.StringType;
 
 class PsmValidationServiceTest {
     
@@ -1932,4 +1950,167 @@ class PsmValidationServiceTest {
 	          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer object relation(s) of the same name."),
 	          Collections.emptyList());
    }
+   
+	@Test
+	void testCardinalityLowerIsGreaterThanOrEqualToZeroRelation() throws Exception {
+		log.info("Testing constraint: CardinalityLowerIsGreaterThanOrEqualToZero");
+
+		UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("relation").withTarget(target)
+				.withCardinality(newCardinalityBuilder().withLower(-1).withUpper(1).build()).withEmbedded(true).build();
+
+		UnmappedTransferObjectType transferObject = newUnmappedTransferObjectTypeBuilder().withName("unmapped")
+				.withRelations(relation).build();
+		;
+
+		Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(target, transferObject)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(
+				ImmutableList.of("CardinalityLowerIsGreaterThanOrEqualToZero|"
+						+ "Lower attribute of element: relation must be greater than or equal to zero"),
+				Collections.emptyList());
+	}
+
+	@Test
+	void testCardinalityLowerMustBeLessOrEqualToUpperRelation() throws Exception {
+		log.info("Testing constraint: CardinalityLowerMustBeLessOrEqualToUpper");
+
+		UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("relation").withTarget(target)
+				.withCardinality(newCardinalityBuilder().withLower(3).withUpper(1).build()).withEmbedded(true).build();
+
+		UnmappedTransferObjectType transferObject = newUnmappedTransferObjectTypeBuilder().withName("unmapped")
+				.withRelations(relation).build();
+		;
+
+		Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(target, transferObject)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of(
+				"CardinalityLowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (1) of element: relation"),
+				Collections.emptyList());
+	}
+
+	@Test
+	void testCardinalityUpperIsAtLeastOneRelation() throws Exception {
+		log.info("Testing constraint: CardinalityUpperIsAtLeastOne");
+
+		UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("relation").withTarget(target)
+				.withCardinality(newCardinalityBuilder().withLower(3).withUpper(0).build()).withEmbedded(true).build();
+
+		UnmappedTransferObjectType transferObject = newUnmappedTransferObjectTypeBuilder().withName("unmapped")
+				.withRelations(relation).build();
+		;
+
+		Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(target, transferObject)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of("CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: relation",
+				"CardinalityLowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (0) of element: relation"),
+				Collections.emptyList());
+	}
+	
+	   @Test
+	   void testCardinalityLowerIsGreaterThanOrEqualToZeroParameter() throws Exception {
+		      log.info("Testing constraint: CardinalityLowerIsGreaterThanOrEqualToZero");
+
+		      UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
+
+		      BoundOperation bound = newBoundOperationBuilder().withName("bound").withInput(
+		    		  newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(-1).build()).withType(unmapped).build())
+		    		  .build();
+		      
+		      MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+		    		  .withEntityType(newEntityTypeBuilder().withName("entity").build())
+		    		  .withOperations(bound)
+		    		  .build();
+		      
+		      UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
+		    		  .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(-2).build()).withType(unmapped).build())
+		    		  .withImplementation(newOperationBodyBuilder().build())
+		    		  .build();
+		      
+		      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+		              			unmapped,mapped,unbound
+		                      ))
+		    		  .build();
+		   
+		      psmModel.addContent(model);
+		   
+		      runEpsilon(ImmutableList.of(
+		          "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: output must be greater than or equal to zero",
+		          "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: input must be greater than or equal to zero"),
+		          Collections.emptyList());
+	   }
+	   
+	   @Test
+	   void testCardinalityLowerMustBeLessOrEqualToUpperParameter() throws Exception {
+		      log.info("Testing constraint: CardinalityLowerMustBeLessOrEqualToUpper");
+
+		      UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
+
+		      BoundOperation bound = newBoundOperationBuilder().withName("bound").withInput(
+		    		  newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(2).withUpper(1).build()).withType(unmapped).build())
+		    		  .build();
+		      
+		      MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+		    		  .withEntityType(newEntityTypeBuilder().withName("entity").build())
+		    		  .withOperations(bound)
+		    		  .build();
+		      
+		      UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
+		    		  .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build()).withType(unmapped).build())
+		    		  .withImplementation(newOperationBodyBuilder().build())
+		    		  .build();
+		      
+		      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+		              			unmapped,mapped,unbound
+		                      ))
+		    		  .build();
+		   
+		      psmModel.addContent(model);
+		   
+		      runEpsilon(ImmutableList.of(
+		          "CardinalityLowerMustBeLessOrEqualToUpper|Lower (2) must be less or equal to upper (1) of element: input",
+		          "CardinalityLowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (2) of element: output"),
+				Collections.emptyList());
+	}
+	   
+	   @Test
+	   void testCardinalityUpperIsAtLeastOneParameter() throws Exception {
+		      log.info("Testing constraint: CardinalityUpperIsAtLeastOne");
+
+		      UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
+
+		      BoundOperation bound = newBoundOperationBuilder().withName("bound").withInput(
+		    		  newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
+		    		  .build();
+		      
+		      MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+		    		  .withEntityType(newEntityTypeBuilder().withName("entity").build())
+		    		  .withOperations(bound)
+		    		  .build();
+		      
+		      UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
+		    		  .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
+		    		  .withImplementation(newOperationBodyBuilder().build())
+		    		  .build();
+		      
+		      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+		              			unmapped,mapped,unbound
+		                      ))
+		    		  .build();
+		   
+		      psmModel.addContent(model);
+		   
+		      runEpsilon(ImmutableList.of(
+		          "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: output",
+		          "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: input"),
+		          Collections.emptyList());
+	   }
 }

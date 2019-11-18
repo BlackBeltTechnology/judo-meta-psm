@@ -21,6 +21,4 @@ context PSM!EntityType {
                                     .select(e | e.name.toLowerCase() == n.toLowerCase()).size() == 1 )
         message: "Entity type: " + self.name + " has inherited named elements of the same name."
     }
-
-    //TODO-suspended: Seq & Attr, Seq & Rel, Se & RelCC (duplicate name check) [after Sequence becomes supported]
 }
