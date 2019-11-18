@@ -11,7 +11,7 @@ context PSM!`Sequence` {
     }
     
     constraint ValidMaximumValue {
-        guard: self.maximumValue.isDefined()
+        guard: self.maximumValue <> 0
         check: self.maximumValue >= self.initialValue + self.increment
         message: "Maximum value of sequence: " + self.name + " must be greater than or equal to the sum of initial value and increment"
     }
