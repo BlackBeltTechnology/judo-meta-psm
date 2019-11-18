@@ -19,10 +19,12 @@ import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -258,7 +260,7 @@ public class PsmUtils {
         foundSuperTypes.addAll(newSuperTypes);
         newSuperTypes.forEach(s -> addSuperTypes(s, foundSuperTypes));
     }
-    
+
     /**
      * Get unique list of all (inherited and not inherited) relations of a given entity type.
      *
@@ -266,12 +268,12 @@ public class PsmUtils {
      * @return unique list of the inherited and own relations of an entity type
      */
     public static EList<Relation> getAllRelations(final EntityType entityType) {
-    	final EList<Relation> relations = new UniqueEList<>();
-    	relations.addAll(entityType.getRelations());
-    	relations.addAll(entityType.getAllSuperEntityTypes().stream()
-    			.flatMap(e -> e.getRelations().stream())
+        final EList<Relation> relations = new UniqueEList<>();
+        relations.addAll(entityType.getRelations());
+        relations.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getRelations().stream())
                 .collect(Collectors.toSet()));
-    	return relations;
+        return relations;
     }
 
     /**
@@ -281,14 +283,14 @@ public class PsmUtils {
      * @return unique list of the inherited and own attributes of an entity type
      */
     public static EList<Attribute> getAllAttributes(final EntityType entityType) {
-    	final EList<Attribute> attributes = new UniqueEList<>();
-    	attributes.addAll(entityType.getAttributes());
-    	attributes.addAll(entityType.getAllSuperEntityTypes().stream()
-    			.flatMap(e -> e.getAttributes().stream())
+        final EList<Attribute> attributes = new UniqueEList<>();
+        attributes.addAll(entityType.getAttributes());
+        attributes.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getAttributes().stream())
                 .collect(Collectors.toSet()));
-    	return attributes;
+        return attributes;
     }
-    
+
     /**
      * Get unique list of all (inherited and not inherited) data properties of a given entity type.
      *
@@ -296,12 +298,12 @@ public class PsmUtils {
      * @return unique list of the inherited and own data properties of an entity type
      */
     public static EList<DataProperty> getAllDataProperties(final EntityType entityType) {
-    	final EList<DataProperty> dataProperties = new UniqueEList<>();
-    	dataProperties.addAll(entityType.getDataProperties());
-    	dataProperties.addAll(entityType.getAllSuperEntityTypes().stream()
-    			.flatMap(e -> e.getDataProperties().stream())
+        final EList<DataProperty> dataProperties = new UniqueEList<>();
+        dataProperties.addAll(entityType.getDataProperties());
+        dataProperties.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getDataProperties().stream())
                 .collect(Collectors.toSet()));
-    	return dataProperties;
+        return dataProperties;
     }
 
     /**
@@ -311,14 +313,14 @@ public class PsmUtils {
      * @return unique list of the inherited and own navigation properties of an entity type
      */
     public static EList<NavigationProperty> getAllNavigationProperties(final EntityType entityType) {
-    	final EList<NavigationProperty> navigationProperties = new UniqueEList<>();
-    	navigationProperties.addAll(entityType.getNavigationProperties());
-    	navigationProperties.addAll(entityType.getAllSuperEntityTypes().stream()
-    			.flatMap(e -> e.getNavigationProperties().stream())
+        final EList<NavigationProperty> navigationProperties = new UniqueEList<>();
+        navigationProperties.addAll(entityType.getNavigationProperties());
+        navigationProperties.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getNavigationProperties().stream())
                 .collect(Collectors.toSet()));
-    	return navigationProperties;
+        return navigationProperties;
     }
-    
+
     /**
      * Get set of all inherited attribute names of a given entity type.
      *
@@ -326,7 +328,7 @@ public class PsmUtils {
      * @return set of the names of inherited attributes
      */
     public static Set<String> getInheritedAttributeNames(final EntityType entityType) {
-    	return entityType.getAllSuperEntityTypes().stream()
+        return entityType.getAllSuperEntityTypes().stream()
                 .flatMap(e -> e.getAttributes().stream())
                 .map(a -> a.getName())
                 .collect(Collectors.toSet());
@@ -344,7 +346,7 @@ public class PsmUtils {
                 .map(r -> r.getName())
                 .collect(Collectors.toSet());
     }
-    
+
     /**
      * Get set of all inherited data property names of a given entity type.
      *
@@ -353,9 +355,9 @@ public class PsmUtils {
      */
     public static Set<String> getInheritedDataPropertyNames(final EntityType entityType) {
         return entityType.getAllSuperEntityTypes().stream()
-            .flatMap(e -> e.getDataProperties().stream())
-            .map(d -> d.getName())
-            .collect(Collectors.toSet());
+                .flatMap(e -> e.getDataProperties().stream())
+                .map(d -> d.getName())
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -366,11 +368,11 @@ public class PsmUtils {
      */
     public static Set<String> getInheritedNavigationPropertyNames(final EntityType entityType) {
         return entityType.getAllSuperEntityTypes().stream()
-            .flatMap(to -> to.getNavigationProperties().stream())
-            .map(n -> n.getName())
-            .collect(Collectors.toSet());
+                .flatMap(to -> to.getNavigationProperties().stream())
+                .map(n -> n.getName())
+                .collect(Collectors.toSet());
     }
-    
+
     /**
      * Get set of all inherited named element names of a given entity type.
      *
@@ -378,14 +380,14 @@ public class PsmUtils {
      * @return set of the names of inherited named elements
      */
     public static Set<String> getInheritedNamedElementNames(final EntityType entityType) {
-    	return Stream.of(getInheritedAttributeNames(entityType),
-    			getInheritedRelationNames(entityType),
-    			getInheritedDataPropertyNames(entityType),
-    			getInheritedNavigationPropertyNames(entityType))
-            .flatMap(s -> s.stream())
-    		.collect(Collectors.toSet());
+        return Stream.of(getInheritedAttributeNames(entityType),
+                getInheritedRelationNames(entityType),
+                getInheritedDataPropertyNames(entityType),
+                getInheritedNavigationPropertyNames(entityType))
+                .flatMap(s -> s.stream())
+                .collect(Collectors.toSet());
     }
-    
+
     /**
      * Get list of all super transfer object types of a given transfer object type. The given transfer object type is included in case of circular references.
      *
@@ -401,16 +403,16 @@ public class PsmUtils {
     /**
      * Add super transfer object types of a given transfer object type recursively to a list.
      *
-     * @param transferObjectType transfer object type
+     * @param transferObjectType            transfer object type
      * @param foundSuperTransferObjectTypes list that super transfer object types added to
      */
     private static void addSuperTransferObjectTypes(final TransferObjectType transferObjectType, final EList<TransferObjectType> foundSuperTransferObjectTypes) {
         final Set<TransferObjectType> newSuperTransferObjectTypes = transferObjectType.getSuperTransferObjectTypes().stream()
-        		.filter(s -> !foundSuperTransferObjectTypes.contains(s)).collect(Collectors.toSet());
+                .filter(s -> !foundSuperTransferObjectTypes.contains(s)).collect(Collectors.toSet());
         foundSuperTransferObjectTypes.addAll(newSuperTransferObjectTypes);
         newSuperTransferObjectTypes.forEach(s -> addSuperTransferObjectTypes(s, foundSuperTransferObjectTypes));
     }
-    
+
     /**
      * Get unique list of all inherited transfer attribute names of a given mapped transfer object type.
      *
@@ -420,9 +422,9 @@ public class PsmUtils {
     public static EList<String> getInheritedTransferAttributeNames(final TransferObjectType transferObjectType) {
         EList<String> attributeNames = new UniqueEList<>();
         attributeNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
-            .flatMap(to -> to.getAttributes().stream())
-            .map(a -> a.getName())
-            .collect(Collectors.toSet()));
+                .flatMap(to -> to.getAttributes().stream())
+                .map(a -> a.getName())
+                .collect(Collectors.toSet()));
         return attributeNames;
     }
 
@@ -435,12 +437,12 @@ public class PsmUtils {
     public static EList<String> getInheritedTransferObjectRelationNames(final TransferObjectType transferObjectType) {
         EList<String> relationNames = new UniqueEList<>();
         relationNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
-            .flatMap(to -> to.getRelations().stream())
-            .map(r -> r.getName())
-            .collect(Collectors.toSet()));
+                .flatMap(to -> to.getRelations().stream())
+                .map(r -> r.getName())
+                .collect(Collectors.toSet()));
         return relationNames;
     }
-    
+
     /**
      * Get unique list of all inherited operation names of a given mapped transfer object type.
      *
@@ -449,17 +451,17 @@ public class PsmUtils {
      */
     public static EList<String> getInheritedOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
         EList<String> operationNames = new UniqueEList<>();
-        
+
         Set<String> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
-            .filter(to -> to instanceof MappedTransferObjectType)
-            .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
-            .map(o -> o.getName())
-            .collect(Collectors.toSet());
-        
+                .filter(to -> to instanceof MappedTransferObjectType)
+                .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-    
+
     /**
      * Get unique list of all operation names (inherited and not inherited) of a given mapped transfer object type.
      *
@@ -468,16 +470,16 @@ public class PsmUtils {
      */
     public static EList<String> getAllOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
         EList<String> operationNames = new UniqueEList<>();
-        
+
         Set<String> operationNamesSet = mappedTransferObjectType.getOperations().stream()
                 .map(o -> o.getName())
                 .collect(Collectors.toSet());
-        
+
         operationNamesSet.addAll(getInheritedOperationNames(mappedTransferObjectType));
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-    
+
     /**
      * Get list of all implementations of a given inherited operation.
      *
@@ -492,7 +494,7 @@ public class PsmUtils {
                 .map(mto -> (MappedTransferObjectType) mto)
                 .forEach(s -> {
                     final Optional<BoundOperation> boundOperation = s.getOperations().stream()
-                    		.filter(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null).findAny();
+                            .filter(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null).findAny();
                     if (boundOperation.isPresent()) {
                         implementations.add(boundOperation.get().getImplementation());
                     } else {
@@ -501,7 +503,7 @@ public class PsmUtils {
                 });
         return implementations;
     }
-    
+
     /**
      * Get the implementation of a given inherited operation.
      *
@@ -562,7 +564,7 @@ public class PsmUtils {
 
     /**
      * Check if a mapped transfer object type is abstract.
-     *
+     * <p>
      * A mapped transfer object type is abstract if and only if the referenced entity type is abstract.
      *
      * @param mappedTransferObjectType mapped transfer object type
@@ -574,7 +576,7 @@ public class PsmUtils {
 
     /**
      * Check if a mapped transfer object type is instantiable.
-     *
+     * <p>
      * A mapped transfer object type is not instantiable if it has (its own or inherited) bound operation without operation body
      * or referenced entity type is abstract.
      *
@@ -582,12 +584,12 @@ public class PsmUtils {
      * @return <code>true</code> if mapped transfer object type is instantiable, <code>false</code> otherwise
      */
     public static boolean isInstantiableMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
-    	if(mappedTransferObjectType.getEntityType().isAbstract()) return false;
-    	
-    	return getAllOperationNames(mappedTransferObjectType).stream().allMatch(
-    			name -> mappedTransferObjectType.getOperations().stream()
-    					.anyMatch(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null)
-    			|| getInheritedOperationImplementationsByName(mappedTransferObjectType,name).size() == 1);
+        if (mappedTransferObjectType.getEntityType().isAbstract()) return false;
+
+        return getAllOperationNames(mappedTransferObjectType).stream().allMatch(
+                name -> mappedTransferObjectType.getOperations().stream()
+                        .anyMatch(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null)
+                        || getInheritedOperationImplementationsByName(mappedTransferObjectType, name).size() == 1);
     }
 
     public static boolean isRegex(String regex) throws PatternSyntaxException {
@@ -598,6 +600,29 @@ public class PsmUtils {
             //fukd
             return false;
         }
+    }
+
+    /**
+     * Get all possible containers of a given (embedded) mapped transfer object type.
+     *
+     * @param mappedTransferObjectType
+     * @return
+     */
+    public EList<MappedTransferObjectType> getAllContainers(final MappedTransferObjectType mappedTransferObjectType) {
+        return getAllContainers(new UniqueEList<>(), mappedTransferObjectType);
+    }
+
+    private EList<MappedTransferObjectType> getAllContainers(final EList<MappedTransferObjectType> result, final MappedTransferObjectType mappedTransferObjectType) {
+        final List<MappedTransferObjectType> newContainers = getAllContents(mappedTransferObjectType, TransferObjectRelation.class)
+                .filter(r -> EcoreUtil.equals(mappedTransferObjectType, r.eContainer()) && (r.getTarget() instanceof MappedTransferObjectType))
+                .map(r -> (MappedTransferObjectType) r.getTarget())
+                .filter(t -> !result.contains(t))
+                .collect(Collectors.toList());
+
+        result.addAll(newContainers);
+        newContainers.forEach(i -> getAllContainers(result, i));
+
+        return result;
     }
 
     /**

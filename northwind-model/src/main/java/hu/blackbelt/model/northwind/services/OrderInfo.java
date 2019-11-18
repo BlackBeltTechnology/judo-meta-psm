@@ -74,6 +74,7 @@ public class OrderInfo {
     public BoundOperation updateOrder = newBoundOperationBuilder().build();
     public BoundOperation deleteOrder = newBoundOperationBuilder().build();
     public BoundOperation changeShipment = newBoundOperationBuilder().build();
+    public BoundOperation createItem = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp,
                      Order $order, OrderItem $orderItem, ShipperInfo $shipperInfo, CategoryInfo $categoryInfo,
@@ -99,6 +100,7 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withLower(1).withUpper(-1)
                         )
+                        .withCreate(createItem)
                 )
                 .withRelations(useTransferObjectRelation(shipper)
                         .withName("shipper")
@@ -120,6 +122,27 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
                         ))
+                .withOperations(useBoundOperation(createItem)
+                        .withName("createItem")
+                        .withOutput(newParameterBuilder()
+                                .withName("output")
+                                .withType($orderItem.$)
+                                .withCardinality(newCardinalityBuilder()
+                                        .withLower(1)
+                                )
+                        )
+                        .withInput(newParameterBuilder().withName("input")
+                                .withType($orderItem.$)
+                                .withCardinality(newCardinalityBuilder()
+                                        .withLower(1)
+                                )
+                        )
+                        .withImplementation(
+                                newOperationBodyBuilder()
+                                        .withStateful(true)
+                                        .withCustomImplementation(true)
+                        )
+                )
                 .withOperations(useBoundOperation(updateOrder)
                         .withName("updateOrder")
                         .withOutput(newParameterBuilder()

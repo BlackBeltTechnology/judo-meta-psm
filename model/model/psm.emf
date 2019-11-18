@@ -422,11 +422,21 @@ package service {
     op boolean[1] isNavigable();
     val type.Cardinality[1] cardinality;
     ref data.ReferenceTypedElement binding;
-    ref ~derived.ReferenceAccessor defaultValue;
+    ref ~derived.StaticNavigation defaultValue;
     ref ~derived.ReferenceAccessor range;
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
     ref BoundOperation create;
+    attr boolean[1] creatableElement;
+    attr boolean[1] updatableElement;
+    ref BoundOperation update;
+    ref BoundOperation delete;
+    ref BoundOperation set;
+    ref BoundOperation get;
+    ref BoundOperation unset;
+    ref BoundOperation addAll;
+    ref BoundOperation removeAll;
+    ref UnboundOperation getRange;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -434,7 +444,7 @@ package service {
     @GenModel(body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;")
     op boolean[1] isPrimitive();
     attr boolean[1] required;
-    ref ~derived.PrimitiveAccessor defaultValue;
+    ref ~derived.StaticData defaultValue;
     ref type.Primitive[1] dataType;
     ref data.PrimitiveTypedElement binding;
   }
@@ -453,9 +463,7 @@ package service {
     ref data.EntityType[1] entityType;
     val BoundOperation[*] operations;
     val ~derived.LogicalExpressionType filter;
-    ref BoundOperation update;
-    ref BoundOperation delete;
-    ref UnboundOperation create;
+    ref UnboundOperation getTemplate;
   }
 
   abstract class OperationDeclaration {
@@ -499,6 +507,10 @@ package accesspoint {
     ref service.MappedTransferObjectType[1] mappedTransferObjectType;
     ref ~derived.StaticNavigation[1] selector;
     val type.Cardinality[1] cardinality;
+    ref service.UnboundOperation get;
+    ref service.UnboundOperation create;
+    ref service.BoundOperation update;
+    ref service.BoundOperation delete;
   }
 
   class ExposedService {
