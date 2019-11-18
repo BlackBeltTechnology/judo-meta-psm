@@ -119,9 +119,6 @@ public class OrderDetail {
                         .withGetterExpression(newReferenceSelectorTypeBuilder()
                                 .withExpression("self.product.category")
                         )
-                        .withSetterExpression(newReferenceSelectorTypeBuilder()
-                                .withExpression("self.product.category")
-                        )
                 )
                 .build();
 
