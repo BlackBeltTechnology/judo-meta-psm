@@ -427,8 +427,8 @@ package service {
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
     ref BoundOperation create;
-    attr boolean[1] creatableElement;
-    attr boolean[1] updatableElement;
+    attr boolean[1] createableElement;
+    attr boolean[1] updateableElement;
     ref BoundOperation update;
     ref BoundOperation delete;
     ref BoundOperation set;
