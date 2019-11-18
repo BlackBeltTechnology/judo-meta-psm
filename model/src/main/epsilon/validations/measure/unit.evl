@@ -1,8 +1,24 @@
 context PSM!Unit {
-    
+
     // unit name should be unique
     critique UnitNameIsUnique {
-        check: not PSM!Unit.all.excluding(self).selectOne(u | u.name == self.name or u.symbol == self.name or self.symbol.isDefined() and (u.name = self.symbol or u.symbol.isDefined() and u.symbol = self.symbol)).isDefined()
-        message: "Unit name/symbol is not unique: " + self.name + "/" + self.symbol
+        check: not PSM!Unit.all.excluding(self)
+                    .exists(u | u.name.toLowerCase() == self.name.toLowerCase() or (u.symbol.isDefined() and u.symbol.toLowerCase() == self.name.toLowerCase()) )
+        message: "Unit name is not unique: " + self.name + " (in measure: " + self.eContainer.name + ")"
+    }
+    
+    // unit symbol should be unique
+    critique UnitSymbolIsUnique {
+        guard: self.symbol.isDefined() and self.satisfies("UnitSymbolIsUniqueInMeasure")
+        check: not PSM!Unit.all.excluding(self)
+                    .exists(u | u.name.toLowerCase() == self.symbol.toLowerCase() or (u.symbol.isDefined() and u.symbol == self.symbol) )
+        message: "Unit symbol is not unique: " + self.symbol + " in unit: " + self.name + " (in measure: " + self.eContainer.name + ")"
+    }
+    
+    //unit symbol must be unique in its measure
+    constraint UnitSymbolIsUniqueInMeasure {
+        guard: self.symbol.isDefined() and self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer.units.excluding(self).exists(u | u.symbol.isDefined() and u.symbol == self.symbol)
+        message: "Unit symbol: " + self.symbol + " of unit: " + self.name + " of measure: " + self.eContainer.name + " is not unique"
     }
 }
