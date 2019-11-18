@@ -1,17 +1,22 @@
 package hu.blackbelt.judo.meta.psm;
 
-import com.google.common.collect.ImmutableList;
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
-import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
-import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
-import hu.blackbelt.judo.meta.psm.data.*;
-import hu.blackbelt.judo.meta.psm.derived.DataProperty;
-import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.judo.meta.psm.type.NumericType;
-import hu.blackbelt.judo.meta.psm.type.StringType;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newContainmentBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,18 +24,22 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
+import com.google.common.collect.ImmutableList;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
+import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
+import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
+import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.Containment;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.derived.DataProperty;
+import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
+import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.type.NumericType;
+import hu.blackbelt.judo.meta.psm.type.StringType;
 
 class PsmValidationDataTest {
 
@@ -77,9 +86,9 @@ class PsmValidationDataTest {
 				.withRelations(ImmutableList.of(endpoint1, endpoint2)).build();
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity)).build();
 		psmModel.addContent(m);
-		runEpsilon(ImmutableList.of("CardinalityUpperIsAtLeastOne|Invalid upper attribute of reference typed element: endpoint1",
-				"CardinalityUpperIsAtLeastOne|Invalid upper attribute of reference typed element: endpoint2",
-				"LowerMustBeLessOrEqualToUpper|Lower (0) must be less or equal to upper (-2) of reference typed element: endpoint2"),
+		runEpsilon(ImmutableList.of("CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: endpoint1",
+				"CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: endpoint2",
+				"CardinalityLowerMustBeLessOrEqualToUpper|Lower (0) must be less or equal to upper (-2) of element: endpoint2"),
 				Collections.emptyList());
 	}
 
@@ -94,13 +103,13 @@ class PsmValidationDataTest {
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity)).build();
 		psmModel.addContent(m);
 		runEpsilon(ImmutableList.of(
-				"CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of reference typed element: containment must be greater than or equal to zero"),
+				"CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: containment must be greater than or equal to zero"),
 				Collections.emptyList());
 	}
 
 	@Test
-	void testLowerMustBeLessOrEqualToUpper() throws Exception {
-		log.info("Testing constraint: UpperIsAtLeastOne");
+	void testCardinalityLowerMustBeLessOrEqualToUpper() throws Exception {
+		log.info("Testing constraint: CardinalityLowerMustBeLessOrEqualToUpper");
 
 		AssociationEnd endpoint = newAssociationEndBuilder().withName("endpoint")
 				.withCardinality(newCardinalityBuilder().withLower(3).withUpper(1).build()).build();
@@ -109,7 +118,7 @@ class PsmValidationDataTest {
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entity)).build();
 		psmModel.addContent(m);
 		runEpsilon(ImmutableList.of(
-				"LowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (1) of reference typed element: endpoint"),
+				"CardinalityLowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (1) of element: endpoint"),
 				Collections.emptyList());
 	}
 
