@@ -1,0 +1,18 @@
+context PSM!`Sequence` {
+
+    constraint ValidInitialValue {
+        check: self.initialValue >= 0
+        message: "Initial value of sequence: " + self.name + " must be greater than or equal to zero"
+    }
+    
+    constraint ValidIncrement {
+        check: self.increment > 0
+        message: "Increment of sequence: " + self.name + " must be greater than zero"
+    }
+    
+    constraint ValidMaximumValue {
+        guard: self.maximumValue <> 0
+        check: self.maximumValue >= self.initialValue + self.increment
+        message: "Maximum value of sequence: " + self.name + " must be greater than or equal to the sum of initial value and increment"
+    }
+}

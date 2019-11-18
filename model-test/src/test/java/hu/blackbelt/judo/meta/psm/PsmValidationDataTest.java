@@ -3,6 +3,7 @@ package hu.blackbelt.judo.meta.psm;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newContainmentBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntitySequenceBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
@@ -32,6 +33,7 @@ import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.Containment;
+import hu.blackbelt.judo.meta.psm.data.EntitySequence;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
@@ -73,8 +75,8 @@ class PsmValidationDataTest {
 	}
 
 	@Test
-	void testUpperIsAtLeastOneAssociationEnd() throws Exception {
-		log.info("Testing constraint: UpperIsAtLeastOne");
+	void testCardinalityUpperIsAtLeastOneAssociationEnd() throws Exception {
+		log.info("Testing constraint: CardinalityUpperIsAtLeastOne");
 
 		AssociationEnd endpoint1 = newAssociationEndBuilder().withName("endpoint1")
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).build();
@@ -819,6 +821,104 @@ class PsmValidationDataTest {
 		runEpsilon(
 				ImmutableList.of("InheritingNamedElementsOfTheSameNameIsNotAllowed|"
 						+ "Entity type: entityType has inherited named elements of the same name."),
+				Collections.emptyList());
+	}
+
+	@Test
+	void testInheritingNamedElementsOfTheSameNameIsNotAllowedEntitySequences() throws Exception {
+		log.info("Testing constraint: InheritingNamedElementsOfTheSameNameIsNotAllowed");
+
+		NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+
+		AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build())
+				.build();
+		AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build())
+				.build();
+
+		NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation")
+				.withCardinality(newCardinalityBuilder().build())
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e1").build()).build();
+		NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("member1")
+				.withCardinality(newCardinalityBuilder().build())
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e2").build()).build();
+
+		DataProperty property1 = newDataPropertyBuilder().withName("MEMBER2").withDataType(integer)
+				.withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.attribute1").build()).build();
+		DataProperty property2 = newDataPropertyBuilder().withName("property").withDataType(integer)
+				.withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.attribute2").build()).build();
+
+		EntitySequence sequence1 = newEntitySequenceBuilder().withName("Member1").build();
+		EntitySequence sequence2 = newEntitySequenceBuilder().withName("Member2").build();
+
+		EntityType parent1 = newEntityTypeBuilder().withName("parent1").withDataProperties(property1).withRelations(e1)
+				.withNavigationProperties(navigation1).withSequences(sequence1).build();
+		EntityType parent2 = newEntityTypeBuilder().withName("parent2").withDataProperties(property2).withRelations(e2)
+				.withNavigationProperties(navigation2).withSequences(sequence2).build();
+		EntityType entityType = newEntityTypeBuilder().withName("entityType")
+				.withSuperEntityTypes(ImmutableList.of(parent1, parent2)).build();
+
+		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType, parent1, parent2, integer))
+				.build();
+
+		psmModel.addContent(m);
+		runEpsilon(
+				ImmutableList.of("InheritingNamedElementsOfTheSameNameIsNotAllowed|"
+						+ "Entity type: entityType has inherited named elements of the same name."),
+				Collections.emptyList());
+	}
+
+	@Test
+	void testValidInitialValue() throws Exception {
+		log.info("Testing constraint: ValidInitialValue");
+
+		EntityType entityType = newEntityTypeBuilder().withName("entityType").build();
+
+		EntitySequence sequence = newEntitySequenceBuilder().withName("sequence").withInitialValue(-5l).build();
+
+		entityType.getSequences().add(sequence);
+
+		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType)).build();
+
+		psmModel.addContent(m);
+		runEpsilon(
+				ImmutableList.of(
+						"ValidInitialValue|Initial value of sequence: sequence must be greater than or equal to zero"),
+				Collections.emptyList());
+	}
+
+	@Test
+	void testValidIncrement() throws Exception {
+		log.info("Testing constraint: ValidIncrement");
+
+		EntityType entityType = newEntityTypeBuilder().withName("entityType").build();
+
+		EntitySequence sequence = newEntitySequenceBuilder().withName("sequence").withIncrement(0l).build();
+
+		entityType.getSequences().add(sequence);
+
+		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType)).build();
+
+		psmModel.addContent(m);
+		runEpsilon(ImmutableList.of("ValidIncrement|Increment of sequence: sequence must be greater than zero"),
+				Collections.emptyList());
+	}
+
+	@Test
+	void testValidMaximumValue() throws Exception {
+		log.info("Testing constraint: ValidMaximumValue");
+
+		EntityType entityType = newEntityTypeBuilder().withName("entityType").build();
+
+		EntitySequence sequence = newEntitySequenceBuilder().withName("sequence").withInitialValue(2l).withIncrement(5l)
+				.withMaximumValue(6l).build();
+
+		entityType.getSequences().add(sequence);
+
+		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(entityType)).build();
+
+		psmModel.addContent(m);
+		runEpsilon(ImmutableList.of(
+				"ValidMaximumValue|Maximum value of sequence: sequence must be greater than or equal to the sum of initial value and increment"),
 				Collections.emptyList());
 	}
 }
