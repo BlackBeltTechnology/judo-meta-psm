@@ -458,11 +458,11 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/BoundOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="set" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="set" eType="#//service/BoundOperationWithRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="get" eType="#//service/BoundOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="unset" eType="#//service/BoundOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" eType="#//service/BoundOperation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="unset" eType="#//service/BoundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" eType="#//service/BoundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" eType="#//service/BoundOperationWithRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" eType="#//service/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteableElement" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -539,6 +539,10 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="customImplementation"
           lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relation" lowerBound="1"
+          eType="#//service/TransferObjectRelation"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"

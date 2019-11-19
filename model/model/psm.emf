@@ -231,6 +231,7 @@ package data {
     !ordered op Attribute[*] getAllAttributes();
     !ordered op ~derived.DataProperty[*] getAllDataProperties();
     !ordered op ~derived.NavigationProperty[*] getAllNavigationProperties();
+    !ordered op EntitySequence[*] getAllSequences();
     ref EntityType[*] superEntityTypes;
     attr boolean[1] ~abstract;
     val Attribute[*] attributes;
@@ -431,11 +432,11 @@ package service {
     attr boolean[1] updateableElement;
     ref BoundOperation update;
     ref BoundOperation delete;
-    ref BoundOperation set;
+    ref BoundOperationWithRelation set;
     ref BoundOperation get;
-    ref BoundOperation unset;
-    ref BoundOperation addAll;
-    ref BoundOperation removeAll;
+    ref BoundOperationWithRelation unset;
+    ref BoundOperationWithRelation addAll;
+    ref BoundOperationWithRelation removeAll;
     ref UnboundOperation getRange;
     attr boolean[1] deleteableElement = true;
   }
@@ -493,6 +494,10 @@ package service {
     attr boolean[1] stateful;
     attr boolean[1] customImplementation;
     attr script.Script body;
+  }
+
+  class BoundOperationWithRelation extends BoundOperation {
+    ref TransferObjectRelation[1] relation;
   }
 
 }
