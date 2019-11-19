@@ -463,6 +463,9 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" eType="#//service/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" eType="#//service/BoundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" eType="#//service/UnboundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteableElement" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isPrimitive" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">

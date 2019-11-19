@@ -14180,6 +14180,10 @@
               <styles xmi:type="notation:FontStyle" xmi:id="_Eg0TkQV5EeqzPZkwPmCQug" fontColor="2697711" fontName="Noto Sans" fontHeight="8"/>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_Eg0TkgV5EeqzPZkwPmCQug"/>
             </children>
+            <children xmi:type="notation:Node" xmi:id="_gQ5qwAoYEeq85qGhjTge8Q" type="3010" element="_gQRYoAoYEeq85qGhjTge8Q">
+              <styles xmi:type="notation:FontStyle" xmi:id="_gQ5qwQoYEeq85qGhjTge8Q" fontColor="2697711" fontName="Noto Sans" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_gQ5qwgoYEeq85qGhjTge8Q"/>
+            </children>
             <children xmi:type="notation:Node" xmi:id="_fhlf8wUxEeqzPZkwPmCQug" type="3010" element="_fhgncQUxEeqzPZkwPmCQug">
               <styles xmi:type="notation:FontStyle" xmi:id="_fhlf9AUxEeqzPZkwPmCQug" fontName="Noto Sans" fontHeight="8"/>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_fhlf9QUxEeqzPZkwPmCQug"/>
@@ -14601,7 +14605,7 @@
         </edges>
         <edges xmi:type="notation:Edge" xmi:id="_6twcgAn2Eeq85qGhjTge8Q" type="4001" element="_yJ6XtgnsEeq85qGhjTge8Q" source="_fhk44AUxEeqzPZkwPmCQug" target="_pIWQkBNXEemYKLassfSQTg">
           <children xmi:type="notation:Node" xmi:id="_6twchAn2Eeq85qGhjTge8Q" type="6001">
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6twchQn2Eeq85qGhjTge8Q" x="-198" y="-7"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6twchQn2Eeq85qGhjTge8Q" x="-205" y="-8"/>
           </children>
           <children xmi:type="notation:Node" xmi:id="_6twchgn2Eeq85qGhjTge8Q" type="6002">
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6twchwn2Eeq85qGhjTge8Q" y="10"/>
@@ -15003,7 +15007,7 @@
       <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
       <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
       <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_MEnLDwYPEeqzPZkwPmCQug" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
+      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_izNPgQoYEeq85qGhjTge8Q" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
@@ -15027,6 +15031,14 @@
         <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/updateableElement"/>
         <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/updateableElement"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_GbVfjwV5EeqzPZkwPmCQug" labelAlignment="LEFT" description="_mdhZsRFBEemYKLassfSQTg">
+          <labelFormat>bold</labelFormat>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
+      </ownedElements>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_gQRYoAoYEeq85qGhjTge8Q" name="deleteableElement : EBoolean = true" tooltipText="">
+        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/deleteableElement"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/deleteableElement"/>
+        <ownedStyle xmi:type="diagram:BundledImage" uid="_kZBWtAoYEeq85qGhjTge8Q" labelAlignment="LEFT" description="_mdhZsRFBEemYKLassfSQTg">
           <labelFormat>bold</labelFormat>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>

@@ -437,6 +437,7 @@ package service {
     ref BoundOperation addAll;
     ref BoundOperation removeAll;
     ref UnboundOperation getRange;
+    attr boolean[1] deleteableElement = true;
   }
 
   class TransferAttribute extends namespace.NamedElement {
