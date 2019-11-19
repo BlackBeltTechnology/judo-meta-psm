@@ -437,7 +437,7 @@ package service {
     ref BoundOperationWithRelation unset;
     ref BoundOperationWithRelation addAll;
     ref BoundOperationWithRelation removeAll;
-    ref UnboundOperation getRange;
+    ref UnboundOperationWithRelation getRange;
     attr boolean[1] deleteableElement = true;
   }
 
@@ -497,6 +497,10 @@ package service {
   }
 
   class BoundOperationWithRelation extends BoundOperation {
+    ref TransferObjectRelation[1] relation;
+  }
+
+  class UnboundOperationWithRelation extends UnboundOperation {
     ref TransferObjectRelation[1] relation;
   }
 
