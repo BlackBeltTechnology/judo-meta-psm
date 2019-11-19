@@ -444,13 +444,29 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/ReferenceAccessor"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/StaticNavigation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//derived/ReferenceAccessor"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="embedded" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="createableElement" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="updateableElement" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="set" eType="#//service/BoundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="get" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="unset" eType="#//service/BoundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" eType="#//service/BoundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" eType="#//service/BoundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteableElement" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isPrimitive" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -460,7 +476,7 @@
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/PrimitiveAccessor"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/StaticData"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/Primitive"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
@@ -492,6 +508,7 @@
           eType="#//service/BoundOperation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//derived/LogicalExpressionType"
           containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getTemplate" eType="#//service/UnboundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OperationDeclaration" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"
@@ -523,6 +540,14 @@
           lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relation" lowerBound="1"
+          eType="#//service/TransferObjectRelation"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperationWithRelation" eSuperTypes="#//service/UnboundOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="relation" lowerBound="1"
+          eType="#//service/TransferObjectRelation"/>
+    </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
       nsPrefix="accesspoint">
@@ -539,6 +564,10 @@
           eType="#//derived/StaticNavigation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="get" eType="#//service/UnboundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/UnboundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/BoundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/BoundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ExposedService">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
