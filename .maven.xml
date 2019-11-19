@@ -18,25 +18,25 @@
         </server>
         
         <server>
-            <id>blackbelt-nexus-distribution</id>
-            <username>${env.BLACKBELT_NEXUS_USERNAME}</username>
-            <password>${env.BLACKBELT_NEXUS_PASSWORD}</password>
+            <id>judong-nexus-distribution</id>
+            <username>${env.JUDONG_NEXUS_USERNAME}</username>
+            <password>${env.JUDONG_NEXUS_PASSWORD}</password>
         </server>
         
         <server>
-            <id>blackbelt-nexus-mirror</id>
-            <username>${env.BLACKBELT_NEXUS_USERNAME}</username>
-            <password>${env.BLACKBELT_NEXUS_PASSWORD}</password>
+            <id>judong-nexus-mirror</id>
+            <username>${env.JUDONG_NEXUS_USERNAME}</username>
+            <password>${env.JUDONG_NEXUS_PASSWORD}</password>
         </server>
         
     </servers>
     
     <mirrors>
         <mirror>
-            <id>blackbelt-nexus-mirror</id>
-            <name>blackbelt-nexus-mirror</name>
-            <url>https://nexus.blackbelt.cloud/repository/maven</url>
-            <mirrorOf>central</mirrorOf>
+            <id>judong-nexus-mirror</id>
+            <name>judong-nexus-mirror</name>
+            <url>https://nexus.judo.technology/repository/maven-judong/</url>
+            <mirrorOf>*</mirrorOf>
         </mirror>
     </mirrors>
     
@@ -72,8 +72,4 @@
         </profile>
 
     </profiles>
-    
-    <pluginGroups>
-        <pluginGroup>com.amashchenko.maven.plugin</pluginGroup>
-    </pluginGroups>
 </settings>

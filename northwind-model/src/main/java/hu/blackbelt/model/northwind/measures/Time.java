@@ -28,7 +28,7 @@ public class Time {
 
     public Measure $ = newMeasureBuilder().build();
     public DurationUnit nanosecond = newDurationUnitBuilder().build();
-    public Unit microsecond = newUnitBuilder().build();
+    public DurationUnit microsecond = newDurationUnitBuilder().build();
     public DurationUnit millisecond = newDurationUnitBuilder().build();
     public DurationUnit second = newDurationUnitBuilder().build();
     public DurationUnit minute = newDurationUnitBuilder().build();
@@ -41,19 +41,20 @@ public class Time {
                 .withName("Time")
                 .withUnits(useDurationUnit(nanosecond)
                         .withName("nanosecond")
-                        .withRateDividend(new Double("0.000000001"))
+                        .withRateDivisor(new Double("1000000000.0"))
                         .withUnitType(DurationType.NANOSECOND)
                         .withSymbol("ns")
                 )
-                .withUnits(useUnit(microsecond)
+                .withUnits(useDurationUnit(microsecond)
                         .withName("microsecond")
-                        .withRateDividend(new Double("0.000001"))
+                        .withRateDivisor(new Double("1000000.0"))
+                        .withUnitType(DurationType.MICROSECOND)
                         .withSymbol("\u03bcs")
                 )
 
                 .withUnits(useDurationUnit(millisecond)
                         .withName("millisecond")
-                        .withRateDividend(new Double("0.001"))
+                        .withRateDivisor(new Double("1000.0"))
                         .withUnitType(DurationType.MILLISECOND)
                         .withSymbol("ms")
                 )

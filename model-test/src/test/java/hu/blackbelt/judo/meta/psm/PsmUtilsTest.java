@@ -500,4 +500,39 @@ public class PsmUtilsTest extends NorthwindTest {
 		Assertions.assertEquals(expected,actual);
 	}
 	
+	@Test
+	public void testGetAllSequences() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+        EntitySequence s1 = newEntitySequenceBuilder().withName("s1").build();
+        EntitySequence s2 = newEntitySequenceBuilder().withName("s2").build();
+        EntitySequence s3 = newEntitySequenceBuilder().withName("s3").build();
+        EntitySequence s4 = newEntitySequenceBuilder().withName("s4").build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withSequences(s1)
+				.build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withSequences(s2)
+				.build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withSequences(s3)
+				.build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4))
+				.withSequences(s4)
+				.build();
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5))
+				.build();
+
+		psmModel.addContent(m);
+		
+		Set<EntitySequence> expected = new HashSet<>(new UniqueEList<>(Arrays.asList(s1,s2,s3,s4)));
+		Set<EntitySequence> actual = new HashSet<>(PsmUtils.getAllSequences(entityType5));
+		
+		Assertions.assertEquals(expected,actual);
+	}
 }

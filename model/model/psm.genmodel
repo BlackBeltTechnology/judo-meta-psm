@@ -138,6 +138,8 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllDataProperties(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllNavigationProperties"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllNavigationProperties(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllSequences"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSequences(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//data/Relation">
         <genOperations ecoreOperation="psm.ecore#//data/Relation/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);"/>

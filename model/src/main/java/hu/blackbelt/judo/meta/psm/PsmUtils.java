@@ -321,6 +321,22 @@ public class PsmUtils {
         return navigationProperties;
     }
 
+
+    /**
+     * Get unique list of all (inherited and not inherited) sequences of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited and own sequences of an entity type
+     */
+    public static EList<EntitySequence> getAllSequences(final EntityType entityType) {
+        final EList<EntitySequence> sequences = new UniqueEList<>();
+        sequences.addAll(entityType.getSequences());
+        sequences.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getSequences().stream())
+                .collect(Collectors.toSet()));
+        return sequences;
+    }
+
     /**
      * Get set of all inherited attribute names of a given entity type.
      *
@@ -368,7 +384,20 @@ public class PsmUtils {
      */
     public static Set<String> getInheritedNavigationPropertyNames(final EntityType entityType) {
         return entityType.getAllSuperEntityTypes().stream()
-                .flatMap(to -> to.getNavigationProperties().stream())
+                .flatMap(e -> e.getNavigationProperties().stream())
+                .map(n -> n.getName())
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get set of all inherited entity sequence names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return set of the names of inherited entity sequence
+     */
+    public static Set<String> getInheritedSequenceNames(final EntityType entityType) {
+        return entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getSequences().stream())
                 .map(n -> n.getName())
                 .collect(Collectors.toSet());
     }
@@ -383,7 +412,8 @@ public class PsmUtils {
         return Stream.of(getInheritedAttributeNames(entityType),
                 getInheritedRelationNames(entityType),
                 getInheritedDataPropertyNames(entityType),
-                getInheritedNavigationPropertyNames(entityType))
+                getInheritedNavigationPropertyNames(entityType),
+                getInheritedSequenceNames(entityType))
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
     }
