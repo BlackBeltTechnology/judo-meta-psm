@@ -5,7 +5,6 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Order;
-import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
 
@@ -38,6 +37,7 @@ public class OrderInfoQuery {
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation discountedItems = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp,
@@ -54,7 +54,7 @@ public class OrderInfoQuery {
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
-                        .withBinding($order.shipName)
+                        .withBinding($order.shipperName)
                 )
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")
@@ -63,6 +63,15 @@ public class OrderInfoQuery {
                         .withEmbedded(true)
                         .withCardinality(newCardinalityBuilder()
                                 .withLower(1).withUpper(-1)
+                        )
+                )
+                .withRelations(useTransferObjectRelation(discountedItems)
+                        .withName("discountedItems")
+                        .withBinding($order.discountedItems)
+                        .withTarget($orderItemQuery.$)
+                        .withEmbedded(true)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1)
                         )
                 )
                 .withRelations(useTransferObjectRelation(categories)

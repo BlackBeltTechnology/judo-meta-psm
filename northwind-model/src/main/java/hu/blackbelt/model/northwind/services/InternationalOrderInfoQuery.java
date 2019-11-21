@@ -2,21 +2,11 @@ package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
-import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.InternationalOrder;
-import hu.blackbelt.model.northwind.entities.Order;
-import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.TimeStamp;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useMappedTransferObjectType;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferAttribute;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferObjectRelation;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class InternationalOrderInfoQuery {
 
@@ -34,45 +24,12 @@ public class InternationalOrderInfoQuery {
     */
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
 
-    public TransferAttribute orderDate = newTransferAttributeBuilder().build();
-    public TransferAttribute shipperName = newTransferAttributeBuilder().build();
-
-    public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
-    public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
-
-    public void init(Package $package, String $string, TimeStamp $timeStamp, Order $order, InternationalOrder $internationalOrder,
-                     OrderItemQuery $orderItemQuery, CategoryInfo $categoryInfo) {
+    public void init(Package $package, InternationalOrder $internationalOrder,
+                     OrderInfoQuery $orderInfoQuery) {
         useMappedTransferObjectType($)
                 .withName("InternationalOrderInfoQuery")
                 .withEntityType($internationalOrder.$)
-                .withAttributes(useTransferAttribute(orderDate)
-                        .withName("orderDate")
-                        .withDataType($timeStamp.$)
-                        .withRequired(true)
-                        .withBinding($order.orderDate)
-                )
-                .withAttributes(useTransferAttribute(shipperName)
-                        .withName("shipperName")
-                        .withDataType($string.$)
-                        .withBinding($order.shipperName)
-                )
-                .withRelations(useTransferObjectRelation(items)
-                        .withName("items")
-                        .withBinding($order.orderDetails)
-                        .withTarget($orderItemQuery.$)
-                        .withEmbedded(true)
-                        .withCardinality(newCardinalityBuilder()
-                                .withLower(1).withUpper(-1)
-                        )
-                )
-                .withRelations(useTransferObjectRelation(categories)
-                        .withName("categories")
-                        .withBinding($order.categories)
-                        .withTarget($categoryInfo.$)
-                        .withEmbedded(true)
-                        .withCardinality(newCardinalityBuilder()
-                                .withUpper(-1)
-                        ))
+                .withSuperTransferObjectTypes($orderInfoQuery.$)
                 .build();
 
         usePackage($package).withElements($).build();
