@@ -91,7 +91,7 @@ public class OrderInfo {
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
-                        .withBinding($order.shipName)
+                        .withBinding($order.shipperName)
                 )
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")

@@ -325,7 +325,6 @@ public class Demo {
         // Mapped transfer objects
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
-        internationalOrderInfoQuery.init(services.$, string, timeStamp, order, internationalOrder, orderItemQuery, categoryInfo);
         shipperInfo.init(services.$, string, shipper, company);
         productInfo.init(services.$, string, double_, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
@@ -333,6 +332,7 @@ public class Demo {
         orderItemQuery.init(services.$, string, integer, double_, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
         orderInfoQuery.init(services.$, string, timeStamp, order, orderItemQuery, categoryInfo);
+        internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations
         createCategory.init(services.$, categoryInfo);
