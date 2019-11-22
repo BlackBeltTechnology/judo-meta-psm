@@ -326,7 +326,7 @@ public class Demo {
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
         shipperInfo.init(services.$, string, shipper, company);
-        productInfo.init(services.$, string, double_, product, categoryInfo, allCategories);
+        productInfo.init(services.$, string, integer, double_, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);

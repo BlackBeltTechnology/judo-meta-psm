@@ -6,6 +6,7 @@ import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Product;
 import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
@@ -31,10 +32,11 @@ public class ProductInfo {
     */
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
     public TransferAttribute unitPrice = newTransferAttributeBuilder().build();
+    public TransferAttribute unitsInStock= newTransferAttributeBuilder().build();
     public TransferAttribute productName = newTransferAttributeBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, Double $double, Product $product,
+    public void init(Package $package, String $string, Integer $integer, Double $double, Product $product,
                      CategoryInfo $categoryInfo, AllCategories $allCategories) {
         useMappedTransferObjectType($)
                 .withName("ProductInfo")
@@ -44,6 +46,11 @@ public class ProductInfo {
                         .withRequired(true)
                         .withDataType($double.$)
                         .withBinding($product.unitPrice)
+                )
+                .withAttributes(useTransferAttribute(unitsInStock)
+                        .withName("unitsInStock")
+                        .withDataType($integer.$)
+                        .withBinding($product.unitsInStock)
                 )
                 .withAttributes(useTransferAttribute(productName)
                         .withName("productName")

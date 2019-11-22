@@ -37,7 +37,7 @@ public class OrderInfoQuery {
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
-    public TransferObjectRelation discountedItems = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp,
@@ -65,9 +65,9 @@ public class OrderInfoQuery {
                                 .withLower(1).withUpper(-1)
                         )
                 )
-                .withRelations(useTransferObjectRelation(discountedItems)
-                        .withName("discountedItems")
-                        .withBinding($order.discountedItems)
+                .withRelations(useTransferObjectRelation(discountedItemsOutOfStock)
+                        .withName("discountedItemsOutOfStock")
+                        .withBinding($order.discountedItemsOutOfStock)
                         .withTarget($orderItemQuery.$)
                         .withEmbedded(true)
                         .withCardinality(newCardinalityBuilder()

@@ -77,7 +77,7 @@ public class Order {
     public Containment orderDetails = newContainmentBuilder().build();
     public DataProperty shipperName = newDataPropertyBuilder().build();
 
-    public NavigationProperty discountedItems = newNavigationPropertyBuilder().build();
+    public NavigationProperty discountedItemsOutOfStock = newNavigationPropertyBuilder().build();
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double,
@@ -146,12 +146,12 @@ public class Order {
                                 .withExpression("self.shipper.companyName"))
                         .build()
                 )
-                .withNavigationProperties(useNavigationProperty(discountedItems)
-                        .withName("discountedItems")
+                .withNavigationProperties(useNavigationProperty(discountedItemsOutOfStock)
+                        .withName("discountedItemsOutOfStock")
                         .withTarget($orderDetail.$)
                         .withCardinality(newCardinalityBuilder().withUpper(-1))
                         .withGetterExpression(newReferenceExpressionTypeBuilder()
-                                .withExpression("self.orderDetails!filter(od | od.discount > 0)"))
+                                .withExpression("self.orderDetails!filter(od | od.discount > 0 and od.product.unitsInStock = 0)"))
                         .build()
                 )
                 .withNavigationProperties(useNavigationProperty(categories)
