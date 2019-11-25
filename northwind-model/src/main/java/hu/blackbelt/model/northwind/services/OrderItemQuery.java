@@ -5,9 +5,11 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.OrderDetail;
+import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
@@ -40,11 +42,13 @@ public class OrderItemQuery {
     public TransferAttribute discount = newTransferAttributeBuilder().build();
     public TransferAttribute productName = newTransferAttributeBuilder().build();
     public TransferAttribute price = newTransferAttributeBuilder().build();
+    public TransferAttribute heavy = newTransferAttributeBuilder().build();
+    public TransferAttribute weight = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation product = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, Integer $integer, Double $double, OrderDetail $orderDetail,
+    public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean, MassStoredInGrams $massStoredInGrams, OrderDetail $orderDetail,
                      ProductInfoQuery $productInfoQuery, CategoryInfo $categoryInfo, AllProducts $allProducts, AllCategories $allCategories) {
         useMappedTransferObjectType($)
                 .withName("OrderItemQuery")
@@ -72,6 +76,16 @@ public class OrderItemQuery {
                         .withRequired(true)
                         .withDataType($string.$)
                         .withBinding($orderDetail.productName)
+                )
+                .withAttributes(useTransferAttribute(heavy)
+                        .withName("heavy")
+                        .withDataType($boolean.$)
+                        .withBinding($orderDetail.heavy)
+                )
+                .withAttributes(useTransferAttribute(weight)
+                        .withName("weight")
+                        .withDataType($massStoredInGrams.$)
+                        .withBinding($orderDetail.weight)
                 )
                 .withAttributes(useTransferAttribute(price)
                         .withName("price")
