@@ -269,8 +269,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embedded"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/create"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/createableElement"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/updateableElement"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embeddedCreate"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embeddedUpdate"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/update"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -287,7 +287,7 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/removeAll"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/getRange"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/deleteableElement"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embeddedDelete"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectRelation/isCollection"
             body="if (getCardinality() == null) {&#xA;    return false;&#xA;} else {&#xA;    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;&#xA;}"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectRelation/isRequired"

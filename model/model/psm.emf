@@ -429,8 +429,8 @@ package service {
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
     ref BoundOperation create;
-    attr boolean[1] createableElement;
-    attr boolean[1] updateableElement;
+    attr boolean[1] embeddedCreate;
+    attr boolean[1] embeddedUpdate;
     ref BoundOperation update;
     ref BoundOperation delete;
     ref BoundOperationWithRelation set;
@@ -439,7 +439,7 @@ package service {
     ref BoundOperationWithRelation addAll;
     ref BoundOperationWithRelation removeAll;
     ref UnboundOperationWithRelation getRange;
-    attr boolean[1] deleteableElement = true;
+    attr boolean[1] embeddedDelete = false;
   }
 
   class TransferAttribute extends namespace.NamedElement {
