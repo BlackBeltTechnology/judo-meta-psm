@@ -419,6 +419,7 @@
           eType="#//service/TransferAttribute" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="superTransferObjectTypes"
           upperBound="-1" eType="#//service/TransferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getTemplate" eType="#//service/UnboundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -508,7 +509,6 @@
           eType="#//service/BoundOperation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//derived/LogicalExpressionType"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="getTemplate" eType="#//service/UnboundOperation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OperationDeclaration" abstract="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="faults" upperBound="-1"

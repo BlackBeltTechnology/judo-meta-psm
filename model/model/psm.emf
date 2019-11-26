@@ -401,6 +401,7 @@ package service {
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
     ref TransferObjectType[*] superTransferObjectTypes;
+    ref UnboundOperation getTemplate;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -465,7 +466,6 @@ package service {
     ref data.EntityType[1] entityType;
     val BoundOperation[*] operations;
     val ~derived.LogicalExpressionType filter;
-    ref UnboundOperation getTemplate;
   }
 
   abstract class OperationDeclaration {

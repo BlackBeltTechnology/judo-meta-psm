@@ -247,6 +247,8 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/attributes"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/superTransferObjectTypes"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/getTemplate"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getAllSuperTransferObjectTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferAttributeNames"
@@ -311,8 +313,6 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/entityType"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/filter"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/getTemplate"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isAbstract"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isInstantiable"
