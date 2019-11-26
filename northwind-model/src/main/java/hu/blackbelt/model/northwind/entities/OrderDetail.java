@@ -6,9 +6,11 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
@@ -59,12 +61,13 @@ public class OrderDetail {
     public DataProperty productName = newDataPropertyBuilder().build();
     public DataProperty categoryName = newDataPropertyBuilder().build();
     public DataProperty price = newDataPropertyBuilder().build();
+    public DataProperty weight = newDataPropertyBuilder().build();
+    public DataProperty heavy = newDataPropertyBuilder().build();
     public NavigationProperty category = newNavigationPropertyBuilder().build();
     public AssociationEnd product = newAssociationEndBuilder().build();
 
-    public void init(Package $package, String $string, Double $double, Integer $integer, Product $product,
-                     Category $category
-    ) {
+    public void init(Package $package, String $string, Double $double, Integer $integer, Boolean $boolean,
+                     MassStoredInGrams $massStoredInGrams, Product $product,Category $category) {
         useEntityType($)
                 .withName("OrderDetail")
                 .withAttributes(useAttribute(unitPrice)
@@ -109,6 +112,20 @@ public class OrderDetail {
                         .withDataType($double.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.quantity * self.unitPrice * (1 - self.discount)")
+                        )
+                )
+                .withDataProperties(useDataProperty(weight)
+                        .withName("weight")
+                        .withDataType($massStoredInGrams.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.quantity * self.product.weight")
+                        )
+                )
+                .withDataProperties(useDataProperty(heavy)
+                        .withName("heavy")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.quantity * self.product.weight > 1000 [dkg]")
                         )
                 )
                 .withNavigationProperties(useNavigationProperty(category)

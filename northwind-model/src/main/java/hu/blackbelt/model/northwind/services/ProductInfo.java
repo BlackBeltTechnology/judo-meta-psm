@@ -8,6 +8,7 @@ import hu.blackbelt.model.northwind.entities.Product;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
@@ -34,10 +35,12 @@ public class ProductInfo {
     public TransferAttribute unitPrice = newTransferAttributeBuilder().build();
     public TransferAttribute unitsInStock= newTransferAttributeBuilder().build();
     public TransferAttribute productName = newTransferAttributeBuilder().build();
+    public TransferAttribute weight = newTransferAttributeBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, Integer $integer, Double $double, Product $product,
-                     CategoryInfo $categoryInfo, AllCategories $allCategories) {
+    public void init(Package $package, String $string, Integer $integer, Double $double,
+                     MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
+                     AllCategories $allCategories) {
         useMappedTransferObjectType($)
                 .withName("ProductInfo")
                 .withEntityType($product.$)
@@ -57,6 +60,11 @@ public class ProductInfo {
                         .withRequired(true)
                         .withDataType($string.$)
                         .withBinding($product.productName)
+                )
+                .withAttributes(useTransferAttribute(weight)
+                        .withName("weight")
+                        .withDataType($massStoredInKilograms.$)
+                        .withBinding($product.weight)
                 )
                 .withRelations(useTransferObjectRelation(category)
                         .withName("category")

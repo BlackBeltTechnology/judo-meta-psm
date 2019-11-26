@@ -88,6 +88,7 @@ import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Float;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.Long;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
 import hu.blackbelt.model.northwind.types.Phone;
 import hu.blackbelt.model.northwind.types.String;
@@ -199,6 +200,7 @@ public class Demo {
     private Integer integer = new Integer();
     private Long long_ = new Long();
     private MassStoredInKilograms massStoredInKilograms = new MassStoredInKilograms();
+    private MassStoredInGrams massStoredInGrams = new MassStoredInGrams();
     private Phone phone = new Phone();
     private String string = new String();
     private Text text = new Text();
@@ -286,6 +288,7 @@ public class Demo {
 
         areaStoredInSquareMetre.init(measured.$, area);
         massStoredInKilograms.init(measured.$, mass);
+        massStoredInGrams.init(measured.$, mass);
         timeStoredInMonths.init(measured.$, monthBasedTime);
         timeStoredInSeconds.init(measured.$, time);
         velocityStoredInKmPerHour.init(measured.$, velocity);
@@ -307,7 +310,7 @@ public class Demo {
         onlineOrder.init(entities.$, url, order);
         order.init(entities.$, string, timeStamp, double_, customer, shipper, employee,
                 internationalAddress, orderDetail, category);
-        orderDetail.init(entities.$, string, double_, integer, product, category);
+        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
         product.init(entities.$, string, integer, double_, boolean_, massStoredInKilograms, category, supplier,
@@ -326,10 +329,10 @@ public class Demo {
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
         shipperInfo.init(services.$, string, shipper, company);
-        productInfo.init(services.$, string, integer, double_, product, categoryInfo, allCategories);
+        productInfo.init(services.$, string, integer, double_, massStoredInKilograms, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
-        orderItemQuery.init(services.$, string, integer, double_, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
+        orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
         orderInfoQuery.init(services.$, string, timeStamp, order, orderItemQuery, categoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
