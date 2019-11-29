@@ -125,7 +125,7 @@ public class OrderDetail {
                         .withName("heavy")
                         .withDataType($boolean.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
-                                .withExpression("self.quantity * self.product.weight > 1000 [dkg]")
+                                .withExpression("self.weight > 1000 [dkg]")
                         )
                 )
                 .withNavigationProperties(useNavigationProperty(category)

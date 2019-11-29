@@ -5,6 +5,8 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Order;
+import hu.blackbelt.model.northwind.types.Boolean;
+import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
 
@@ -34,13 +36,23 @@ public class OrderInfoQuery {
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
+    public TransferAttribute shipped = newTransferAttributeBuilder().build();
+    public TransferAttribute orderOfCompany = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
+    public TransferAttribute shipperHasTerritory = newTransferAttributeBuilder().build();
+    public TransferAttribute shipperIsCustomer = newTransferAttributeBuilder().build();
+    public TransferAttribute shippedByManufacturer = newTransferAttributeBuilder().build();
+    public TransferAttribute shippedByManufacturer2 = newTransferAttributeBuilder().build();
+    public TransferAttribute hasHeavyItem = newTransferAttributeBuilder().build();
+    public TransferAttribute notOnlyLightItems = newTransferAttributeBuilder().build();
+    public TransferAttribute noManufacturerDefined = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfItems = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp,
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer,
                      Order $order, OrderItemQuery $orderItemQuery, CategoryInfo $categoryInfo) {
         useMappedTransferObjectType($)
                 .withName("OrderInfoQuery")
@@ -51,11 +63,66 @@ public class OrderInfoQuery {
                         .withDataType($timeStamp.$)
                         .withBinding($order.orderDate)
                 )
+//                .withAttributes(useTransferAttribute(shipped)
+//                        .withName("shipped")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.shipped)
+//                )
+//                .withAttributes(useTransferAttribute(orderOfCompany)
+//                        .withName("orderOfCompany")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.orderOfCompany)
+//                )
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
                         .withBinding($order.shipperName)
                 )
+//                .withAttributes(useTransferAttribute(shipperHasTerritory)
+//                        .withName("shipperHasTerritory")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.shipperHasTerritory)
+//                )
+//                .withAttributes(useTransferAttribute(shippedByManufacturer)
+//                        .withName("shippedByManufacturer")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.shippedByManufacturer)
+//                )
+////                .withAttributes(useTransferAttribute(shippedByManufacturer2)
+////                        .withName("shippedByManufacturer2")
+////                        .withDataType($boolean.$)
+////                        .withBinding($order.shippedByManufacturer2)
+////                )
+//                .withAttributes(useTransferAttribute(shipperIsCustomer)
+//                        .withName("shipperIsCustomer")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.shipperIsCustomer)
+//                )
+//                .withAttributes(useTransferAttribute(shipperIsCustomer)
+//                        .withName("shipperIsCustomer")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.shipperIsCustomer)
+//                )
+//                .withAttributes(useTransferAttribute(hasHeavyItem)
+//                        .withName("hasHeavyItem")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.hasHeavyItem)
+//                )
+//                .withAttributes(useTransferAttribute(notOnlyLightItems)
+//                        .withName("notOnlyLightItems")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.notOnlyLightItems)
+//                )
+//                .withAttributes(useTransferAttribute(noManufacturerDefined)
+//                        .withName("noManufacturerDefined")
+//                        .withDataType($boolean.$)
+//                        .withBinding($order.noManufacturerDefined)
+//                )
+//                .withAttributes(useTransferAttribute(numberOfItems)
+//                        .withName("numberOfItems")
+//                        .withDataType($integer.$)
+//                        .withBinding($order.numberOfItems)
+//                )
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")
                         .withBinding($order.orderDetails)
@@ -65,15 +132,15 @@ public class OrderInfoQuery {
                                 .withLower(1).withUpper(-1)
                         )
                 )
-                .withRelations(useTransferObjectRelation(discountedItemsOutOfStock)
-                        .withName("discountedItemsOutOfStock")
-                        .withBinding($order.discountedItemsOutOfStock)
-                        .withTarget($orderItemQuery.$)
-                        .withEmbedded(true)
-                        .withCardinality(newCardinalityBuilder()
-                                .withUpper(-1)
-                        )
-                )
+//                .withRelations(useTransferObjectRelation(discountedItemsOutOfStock)
+//                        .withName("discountedItemsOutOfStock")
+//                        .withBinding($order.discountedItemsOutOfStock)
+//                        .withTarget($orderItemQuery.$)
+//                        .withEmbedded(true)
+//                        .withCardinality(newCardinalityBuilder()
+//                                .withUpper(-1)
+//                        )
+//                )
                 .withRelations(useTransferObjectRelation(categories)
                         .withName("categories")
                         .withBinding($order.categories)

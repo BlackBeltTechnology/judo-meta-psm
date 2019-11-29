@@ -7,7 +7,9 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
 
@@ -75,15 +77,24 @@ public class Order {
     public AssociationEnd employee = newAssociationEndBuilder().build();
     public Containment shipAddress = newContainmentBuilder().build();
     public Containment orderDetails = newContainmentBuilder().build();
+    public DataProperty shipped = newDataPropertyBuilder().build();
+    public DataProperty orderOfCompany = newDataPropertyBuilder().build();
     public DataProperty shipperName = newDataPropertyBuilder().build();
+    public DataProperty shipperHasTerritory = newDataPropertyBuilder().build();
+    public DataProperty shipperIsCustomer = newDataPropertyBuilder().build();
+    public DataProperty shippedByManufacturer = newDataPropertyBuilder().build();
+    public DataProperty shippedByManufacturer2 = newDataPropertyBuilder().build();
+    public DataProperty hasHeavyItem = newDataPropertyBuilder().build();
+    public DataProperty notOnlyLightItems = newDataPropertyBuilder().build();
+    public DataProperty noManufacturerDefined = newDataPropertyBuilder().build();
+    public DataProperty numberOfItems = newDataPropertyBuilder().build();
 
     public NavigationProperty discountedItemsOutOfStock = newNavigationPropertyBuilder().build();
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double,
-        Customer $customer, Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
-                     OrderDetail $orderDetail, Category $category
-    ) {
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean, Integer $integer,
+                     Customer $customer, Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
+                     OrderDetail $orderDetail, Category $category) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
@@ -139,11 +150,53 @@ public class Order {
                         .withCardinality(newCardinalityBuilder().withLower(1).withUpper(-1))
                         .build()
                 )
+                .withDataProperties(useDataProperty(shipped)
+                        .withName("shipped")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.shippedDate!isdefined()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(shipperIsCustomer)
+                        .withName("shipperIsCustomer")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.shipper = self.customer"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(shippedByManufacturer)
+                        .withName("shippedByManufacturer")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.shipper!memberof(self.orderDetails.product.manufacturers)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(shippedByManufacturer2)
+                        .withName("shippedByManufacturer2")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails.product.manufacturers!contains(self.shipper)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(orderOfCompany)
+                        .withName("orderOfCompany")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.customer!kindof(demo::entities::Company)"))
+                        .build()
+                )
                 .withDataProperties(useDataProperty(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.shipper.companyName"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(shipperHasTerritory)
+                        .withName("shipperHasTerritory")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.shipper.territory!isdefined()"))
                         .build()
                 )
                 .withNavigationProperties(useNavigationProperty(discountedItemsOutOfStock)
@@ -160,6 +213,34 @@ public class Order {
                         .withCardinality(newCardinalityBuilder().withUpper(-1))
                         .withGetterExpression(newReferenceExpressionTypeBuilder()
                                 .withExpression("self.orderDetails.product.category"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(hasHeavyItem)
+                        .withName("hasHeavyItem")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!exists(i | i.quantity * i.product.weight > 1000 [dkg])"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfItems)
+                        .withName("numberOfItems")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!count()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(noManufacturerDefined)
+                        .withName("noManufacturerDefined")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails.product.manufacturers!empty()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(notOnlyLightItems)
+                        .withName("notOnlyLightItems")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("not self.orderDetails!forAll(i | not i.heavy)"))
                         .build()
                 )
                 .build();

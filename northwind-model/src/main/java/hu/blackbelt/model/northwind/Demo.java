@@ -308,7 +308,7 @@ public class Demo {
         mailingList.init(entities.$, person);
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
-        order.init(entities.$, string, timeStamp, double_, customer, shipper, employee,
+        order.init(entities.$, string, timeStamp, double_, boolean_, integer, customer, shipper, employee,
                 internationalAddress, orderDetail, category);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
@@ -321,7 +321,7 @@ public class Demo {
         supplier.init(entities.$, url, company, product);
         territory.init(entities.$, string, employee, region, shipper);
 
-        // Unmaped transfer object type
+        // Unmapped transfer object type
         shipmentChange.init(services.$, string, timeStamp);
         comment.init(services.$, string, text, timeStamp);
 
@@ -334,7 +334,7 @@ public class Demo {
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, order, orderItemQuery, categoryInfo);
+        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, order, orderItemQuery, categoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations
