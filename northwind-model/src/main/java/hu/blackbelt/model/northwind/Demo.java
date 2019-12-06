@@ -77,6 +77,7 @@ import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.services.ProductInfoQuery;
 import hu.blackbelt.model.northwind.services.ShipmentChange;
 import hu.blackbelt.model.northwind.services.ShipperInfo;
+import hu.blackbelt.model.northwind.services.TerritoryInfo;
 import hu.blackbelt.model.northwind.services.TotalNumberOfOrders;
 import hu.blackbelt.model.northwind.types.Measured;
 import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
@@ -180,6 +181,7 @@ public class Demo {
     private CreateShipper createShipper = new CreateShipper();
     private GetAllInternationalOrders getAllInternationalOrders = new GetAllInternationalOrders();
     private GetAllOrders getAllOrders = new GetAllOrders();
+    private TerritoryInfo territoryInfo = new TerritoryInfo();
     private InternationalOrderInfo internationalOrderInfo = new InternationalOrderInfo();
     private InternationalOrderInfoQuery internationalOrderInfoQuery = new InternationalOrderInfoQuery();
     private OrderInfo orderInfo = new OrderInfo();
@@ -309,7 +311,7 @@ public class Demo {
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
         order.init(entities.$, string, timeStamp, double_, boolean_, integer, customer, shipper, employee,
-                internationalAddress, orderDetail, category);
+                internationalAddress, orderDetail, category, territory);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
@@ -331,10 +333,11 @@ public class Demo {
         shipperInfo.init(services.$, string, shipper, company);
         productInfo.init(services.$, string, integer, double_, massStoredInKilograms, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
+        territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, order, orderItemQuery, categoryInfo);
+        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, order, orderItemQuery, categoryInfo, territoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations

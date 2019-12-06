@@ -88,13 +88,21 @@ public class Order {
     public DataProperty notOnlyLightItems = newDataPropertyBuilder().build();
     public DataProperty noManufacturerDefined = newDataPropertyBuilder().build();
     public DataProperty numberOfItems = newDataPropertyBuilder().build();
+    public DataProperty numberOfProducts = newDataPropertyBuilder().build();
+    public DataProperty numberOfCategories = newDataPropertyBuilder().build();
+    public DataProperty totalPrice = newDataPropertyBuilder().build();
+    public DataProperty cheapestItemPrice = newDataPropertyBuilder().build();
+    public DataProperty totalWeight = newDataPropertyBuilder().build();
+    public DataProperty averageProductWeight = newDataPropertyBuilder().build();
+    public DataProperty averageItemWeight = newDataPropertyBuilder().build();
 
     public NavigationProperty discountedItemsOutOfStock = newNavigationPropertyBuilder().build();
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
+    public NavigationProperty dhlTerritory = newNavigationPropertyBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean, Integer $integer,
                      Customer $customer, Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
-                     OrderDetail $orderDetail, Category $category) {
+                     OrderDetail $orderDetail, Category $category, Territory $territory) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
@@ -207,6 +215,14 @@ public class Order {
                                 .withExpression("self.orderDetails!filter(od | od.discount > 0 and od.product.unitsInStock = 0)"))
                         .build()
                 )
+                .withNavigationProperties(useNavigationProperty(dhlTerritory)
+                        .withName("dhlTerritory")
+                        .withTarget($territory.$)
+                        .withCardinality(newCardinalityBuilder())
+                        .withGetterExpression(newReferenceExpressionTypeBuilder()
+                                .withExpression("self.shipper!filter(s | s.companyName = 'DHL').territory"))
+                        .build()
+                )
                 .withNavigationProperties(useNavigationProperty(categories)
                         .withName("categories")
                         .withTarget($category.$)
@@ -219,7 +235,7 @@ public class Order {
                         .withName("hasHeavyItem")
                         .withDataType($boolean.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
-                                .withExpression("self.orderDetails!exists(i | i.quantity * i.product.weight > 1000 [dkg])"))
+                                .withExpression("self.orderDetails!exists(i | i.weight > 1000 [dkg])"))
                         .build()
                 )
                 .withDataProperties(useDataProperty(numberOfItems)
@@ -227,6 +243,20 @@ public class Order {
                         .withDataType($integer.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.orderDetails!count()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfProducts)
+                        .withName("numberOfProducts")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails.product!count()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfCategories)
+                        .withName("numberOfCategories")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails.product.category!count()"))
                         .build()
                 )
                 .withDataProperties(useDataProperty(noManufacturerDefined)
@@ -241,6 +271,41 @@ public class Order {
                         .withDataType($boolean.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("not self.orderDetails!forAll(i | not i.heavy)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(totalPrice)
+                        .withName("totalPrice")
+                        .withDataType($double.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!sum(i | i.price)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(totalWeight)
+                        .withName("totalWeight")
+                        .withDataType($double.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!sum(i | i.product.weight)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(averageProductWeight)
+                        .withName("averageProductWeight")
+                        .withDataType($double.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails.product!avg(p | p.weight)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(averageItemWeight)
+                        .withName("averageItemWeight")
+                        .withDataType($double.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!avg(i | i.weight)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(cheapestItemPrice)
+                        .withName("cheapestItemPrice")
+                        .withDataType($double.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!min(i | i.price)"))
                         .build()
                 )
                 .build();

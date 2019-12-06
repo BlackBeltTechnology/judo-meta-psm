@@ -103,7 +103,7 @@ public class OrderDetail {
                         .withDataType($string.$)
                         .withRequired(true)
                         .withGetterExpression(newDataExpressionTypeBuilder()
-                                .withExpression("self.product.category.categoryName")
+                                .withExpression("self.category.categoryName")
                         )
                 )
                 .withDataProperties(useDataProperty(price)
