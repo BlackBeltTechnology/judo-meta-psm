@@ -12,21 +12,10 @@ import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newContainmentBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAssociationEnd;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAttribute;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useContainment;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useEntityType;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useDataProperty;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useNavigationProperty;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
@@ -88,6 +77,7 @@ public class Order {
     public DataProperty notOnlyLightItems = newDataPropertyBuilder().build();
     public DataProperty noManufacturerDefined = newDataPropertyBuilder().build();
     public DataProperty numberOfItems = newDataPropertyBuilder().build();
+    public DataProperty numberOfDiscountedItemsOutOfStock = newDataPropertyBuilder().build();
     public DataProperty numberOfProducts = newDataPropertyBuilder().build();
     public DataProperty numberOfCategories = newDataPropertyBuilder().build();
     public DataProperty totalPrice = newDataPropertyBuilder().build();
@@ -100,8 +90,9 @@ public class Order {
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
     public NavigationProperty dhlTerritory = newNavigationPropertyBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean, Integer $integer,
-                     Customer $customer, Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
+                     Integer $integer, MassStoredInGrams $massStoredInGrams, Customer $customer,
+                     Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
                      OrderDetail $orderDetail, Category $category, Territory $territory) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
@@ -245,6 +236,13 @@ public class Order {
                                 .withExpression("self.orderDetails!count()"))
                         .build()
                 )
+                .withDataProperties(useDataProperty(numberOfDiscountedItemsOutOfStock)
+                        .withName("numberOfDiscountedItemsOutOfStock")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.discountedItemsOutOfStock!count()"))
+                        .build()
+                )
                 .withDataProperties(useDataProperty(numberOfProducts)
                         .withName("numberOfProducts")
                         .withDataType($integer.$)
@@ -282,21 +280,21 @@ public class Order {
                 )
                 .withDataProperties(useDataProperty(totalWeight)
                         .withName("totalWeight")
-                        .withDataType($double.$)
+                        .withDataType($massStoredInGrams.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
-                                .withExpression("self.orderDetails!sum(i | i.product.weight)"))
+                                .withExpression("self.orderDetails!sum(i | i.weight)"))
                         .build()
                 )
                 .withDataProperties(useDataProperty(averageProductWeight)
                         .withName("averageProductWeight")
-                        .withDataType($double.$)
+                        .withDataType($massStoredInGrams.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.orderDetails.product!avg(p | p.weight)"))
                         .build()
                 )
                 .withDataProperties(useDataProperty(averageItemWeight)
                         .withName("averageItemWeight")
-                        .withDataType($double.$)
+                        .withDataType($massStoredInGrams.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.orderDetails!avg(i | i.weight)"))
                         .build()

@@ -5,20 +5,15 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Order;
-import hu.blackbelt.model.northwind.entities.Territory;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useMappedTransferObjectType;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferAttribute;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferObjectRelation;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class OrderInfoQuery {
@@ -49,6 +44,7 @@ public class OrderInfoQuery {
     public TransferAttribute notOnlyLightItems = newTransferAttributeBuilder().build();
     public TransferAttribute noManufacturerDefined = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfItems = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfDiscountedItemsOutOfStock = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfProducts = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfCategories = newTransferAttributeBuilder().build();
     public TransferAttribute totalPrice = newTransferAttributeBuilder().build();
@@ -62,8 +58,9 @@ public class OrderInfoQuery {
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation dhlTerritory = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer, Double $double,
-                     Order $order, OrderItemQuery $orderItemQuery, CategoryInfo $categoryInfo, TerritoryInfo $territoryInfo) {
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer,
+                     Double $double, MassStoredInGrams $massStoredInGrams, Order $order, OrderItemQuery $orderItemQuery,
+                     CategoryInfo $categoryInfo, TerritoryInfo $territoryInfo) {
         useMappedTransferObjectType($)
                 .withName("OrderInfoQuery")
                 .withEntityType($order.$)
@@ -128,6 +125,11 @@ public class OrderInfoQuery {
                         .withDataType($integer.$)
                         .withBinding($order.numberOfItems)
                 )
+                .withAttributes(useTransferAttribute(numberOfDiscountedItemsOutOfStock)
+                        .withName("numberOfDiscountedItemsOutOfStock")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfDiscountedItemsOutOfStock)
+                )
                 .withAttributes(useTransferAttribute(numberOfProducts)
                         .withName("numberOfProducts")
                         .withDataType($integer.$)
@@ -150,17 +152,17 @@ public class OrderInfoQuery {
                 )
                 .withAttributes(useTransferAttribute(totalWeight)
                         .withName("totalWeight")
-                        .withDataType($double.$)
+                        .withDataType($massStoredInGrams.$)
                         .withBinding($order.totalWeight)
                 )
                 .withAttributes(useTransferAttribute(averageProductWeight)
                         .withName("averageProductWeight")
-                        .withDataType($double.$)
+                        .withDataType($massStoredInGrams.$)
                         .withBinding($order.averageProductWeight)
                 )
                 .withAttributes(useTransferAttribute(averageItemWeight)
                         .withName("averageItemWeight")
-                        .withDataType($double.$)
+                        .withDataType($massStoredInGrams.$)
                         .withBinding($order.averageItemWeight)
                 )
                 .withRelations(useTransferObjectRelation(items)

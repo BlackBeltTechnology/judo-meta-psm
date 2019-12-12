@@ -12,18 +12,8 @@ import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAssociationEnd;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAttribute;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useEntityType;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceSelectorTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useDataProperty;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useNavigationProperty;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
@@ -67,7 +57,7 @@ public class OrderDetail {
     public AssociationEnd product = newAssociationEndBuilder().build();
 
     public void init(Package $package, String $string, Double $double, Integer $integer, Boolean $boolean,
-                     MassStoredInGrams $massStoredInGrams, Product $product,Category $category) {
+                     MassStoredInGrams $massStoredInGrams, Product $product, Category $category) {
         useEntityType($)
                 .withName("OrderDetail")
                 .withAttributes(useAttribute(unitPrice)

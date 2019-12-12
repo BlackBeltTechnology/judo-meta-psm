@@ -310,7 +310,7 @@ public class Demo {
         mailingList.init(entities.$, person);
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
-        order.init(entities.$, string, timeStamp, double_, boolean_, integer, customer, shipper, employee,
+        order.init(entities.$, string, timeStamp, double_, boolean_, integer, massStoredInGrams, customer, shipper, employee,
                 internationalAddress, orderDetail, category, territory);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
@@ -337,7 +337,7 @@ public class Demo {
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, order, orderItemQuery, categoryInfo, territoryInfo);
+        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations
