@@ -9,7 +9,7 @@ import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.*;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
@@ -52,6 +52,8 @@ public class OrderInfoQuery {
     public TransferAttribute averageProductWeight = newTransferAttributeBuilder().build();
     public TransferAttribute averageItemWeight = newTransferAttributeBuilder().build();
     public TransferAttribute cheapestItemPrice = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfProductsInCategories = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfDiscountedProductsInCategories = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
@@ -197,6 +199,16 @@ public class OrderInfoQuery {
                         .withTarget($territoryInfo.$)
                         .withEmbedded(true)
                         .withCardinality(newCardinalityBuilder())
+                )
+                .withAttributes(useTransferAttribute(numberOfProductsInCategories)
+                        .withName("numberOfProductsInCategories")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfProductsInCategories)
+                )
+                .withAttributes(useTransferAttribute(numberOfDiscountedProductsInCategories)
+                        .withName("numberOfDiscountedProductsInCategories")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfDiscountedProductsInCategories)
                 )
 
                 .build();

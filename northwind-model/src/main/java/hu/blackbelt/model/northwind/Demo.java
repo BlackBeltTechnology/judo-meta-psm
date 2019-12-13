@@ -119,7 +119,7 @@ public class Demo {
     private Measures measures = new Measures();
     private Types types = new Types();
     private Services services = new Services();
-    private Measured measured= new Measured();
+    private Measured measured = new Measured();
 
     private Address address = new Address();
     private Category category = new Category();
@@ -252,7 +252,7 @@ public class Demo {
         electricCharge.init(measures.$, electricCurrent, time);
         electricCurrent.init(measures.$);
         electricPotential.init(measures.$, work, electricCharge);
-        force.init(measures.$, mass,acceleration);
+        force.init(measures.$, mass, acceleration);
         frequency.init(measures.$, time);
         illuminance.init(measures.$, luminousIntensity, area);
         inductance.init(measures.$, magneticFlux, electricCurrent);
@@ -331,7 +331,7 @@ public class Demo {
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
         shipperInfo.init(services.$, string, shipper, company);
-        productInfo.init(services.$, string, integer, double_, massStoredInKilograms, product, categoryInfo, allCategories);
+        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);

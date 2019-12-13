@@ -85,6 +85,8 @@ public class Order {
     public DataProperty totalWeight = newDataPropertyBuilder().build();
     public DataProperty averageProductWeight = newDataPropertyBuilder().build();
     public DataProperty averageItemWeight = newDataPropertyBuilder().build();
+    public DataProperty numberOfProductsInCategories = newDataPropertyBuilder().build();
+    public DataProperty numberOfDiscountedProductsInCategories = newDataPropertyBuilder().build();
 
     public NavigationProperty discountedItemsOutOfStock = newNavigationPropertyBuilder().build();
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
@@ -306,6 +308,21 @@ public class Order {
                                 .withExpression("self.orderDetails!min(i | i.price)"))
                         .build()
                 )
+                .withDataProperties(useDataProperty(numberOfProductsInCategories)
+                        .withName("numberOfProductsInCategories")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.categories!sum(c | c.products!count())"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfDiscountedProductsInCategories)
+                        .withName("numberOfDiscountedProductsInCategories")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.categories!sum(c | c.products!filter(p | p.discounted)!count())"))
+                        .build()
+                )
+
                 .build();
 
         usePackage($package).withElements($).build();

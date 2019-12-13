@@ -5,6 +5,7 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Product;
+import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
@@ -36,9 +37,10 @@ public class ProductInfo {
     public TransferAttribute unitsInStock= newTransferAttributeBuilder().build();
     public TransferAttribute productName = newTransferAttributeBuilder().build();
     public TransferAttribute weight = newTransferAttributeBuilder().build();
+    public TransferAttribute discounted = newTransferAttributeBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, Integer $integer, Double $double,
+    public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
                      AllCategories $allCategories) {
         useMappedTransferObjectType($)
@@ -65,6 +67,11 @@ public class ProductInfo {
                         .withName("weight")
                         .withDataType($massStoredInKilograms.$)
                         .withBinding($product.weight)
+                )
+                .withAttributes(useTransferAttribute(discounted)
+                        .withName("discounted")
+                        .withDataType($boolean.$)
+                        .withBinding($product.discounted)
                 )
                 .withRelations(useTransferObjectRelation(category)
                         .withName("category")
