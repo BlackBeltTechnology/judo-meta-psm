@@ -73,6 +73,7 @@ import hu.blackbelt.model.northwind.services.OrderInfo;
 import hu.blackbelt.model.northwind.services.OrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrderItem;
 import hu.blackbelt.model.northwind.services.OrderItemQuery;
+import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
 import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.services.ProductInfoQuery;
 import hu.blackbelt.model.northwind.services.ShipmentChange;
@@ -218,6 +219,7 @@ public class Demo {
     private AllCategories allCategories = new AllCategories();
     private AllProducts allProducts = new AllProducts();
     private OrderAssignedToEmployee orderAssignedToEmployee = new OrderAssignedToEmployee();
+    private OrdersOfLastTwoWeeks ordersOfLastTwoWeeks = new OrdersOfLastTwoWeeks();
     private TotalNumberOfOrders totalNumberOfOrders = new TotalNumberOfOrders();
 
 
@@ -353,13 +355,16 @@ public class Demo {
         allCategories.init(services.$, category);
         allProducts.init(services.$, product);
         orderAssignedToEmployee.init(services.$, order);
+        ordersOfLastTwoWeeks.init(services.$, order);
 
         // Static Data
         totalNumberOfOrders.init(services.$, integer);
 
+        // Exposed graphs
+
         // Access Points
         internalAP.init($, orderInfoQuery, getAllOrders, getAllInternationalOrders,
-                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee);
+                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee, ordersOfLastTwoWeeks);
         externallAP.init($, productInfo, categoryInfo, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();
