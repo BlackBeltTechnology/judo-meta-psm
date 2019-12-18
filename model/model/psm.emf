@@ -433,12 +433,12 @@ package service {
     attr boolean[1] embeddedUpdate;
     ref BoundOperation update;
     ref BoundOperation delete;
-    ref BoundOperationWithRelation set;
+    ref BoundOperationWithRelation[*] set;
     ref BoundOperation get;
-    ref BoundOperationWithRelation unset;
-    ref BoundOperationWithRelation addAll;
-    ref BoundOperationWithRelation removeAll;
-    ref UnboundOperationWithRelation getRange;
+    ref BoundOperationWithRelation[*] unset;
+    ref BoundOperationWithRelation[*] addAll;
+    ref BoundOperationWithRelation[*] removeAll;
+    ref UnboundOperationWithRelation[*] getRange;
     attr boolean[1] embeddedDelete = false;
   }
 
@@ -519,8 +519,8 @@ package accesspoint {
     val type.Cardinality[1] cardinality;
     ref service.UnboundOperation get;
     ref service.UnboundOperation create;
-    ref service.BoundOperation update;
-    ref service.BoundOperation delete;
+    ref service.UnboundOperation update;
+    ref service.UnboundOperation delete;
   }
 
   class ExposedService {
