@@ -34,31 +34,17 @@ public class OrderInfoQuery {
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
     public TransferAttribute shipped = newTransferAttributeBuilder().build();
-//    public TransferAttribute orderOfCompany = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
-//    public TransferAttribute shipperHasTerritory = newTransferAttributeBuilder().build();
-//    public TransferAttribute shipperIsCustomer = newTransferAttributeBuilder().build();
-//    public TransferAttribute shippedByManufacturer = newTransferAttributeBuilder().build();
-//    public TransferAttribute shippedByManufacturer2 = newTransferAttributeBuilder().build();
     public TransferAttribute hasHeavyItem = newTransferAttributeBuilder().build();
-//    public TransferAttribute notOnlyLightItems = newTransferAttributeBuilder().build();
-//    public TransferAttribute noManufacturerDefined = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfItems = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfDiscountedItemsOutOfStock = newTransferAttributeBuilder().build();
-//    public TransferAttribute numberOfProducts = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfCategories = newTransferAttributeBuilder().build();
     public TransferAttribute totalPrice = newTransferAttributeBuilder().build();
     public TransferAttribute totalWeight = newTransferAttributeBuilder().build();
-//    public TransferAttribute averageProductWeight = newTransferAttributeBuilder().build();
-//    public TransferAttribute averageItemWeight = newTransferAttributeBuilder().build();
-//    public TransferAttribute cheapestItemPrice = newTransferAttributeBuilder().build();
-//    public TransferAttribute numberOfProductsInCategories = newTransferAttributeBuilder().build();
-//    public TransferAttribute numberOfDiscountedProductsInCategories = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
-//    public TransferObjectRelation dhlTerritory = newTransferObjectRelationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer,
                      Double $double, MassStoredInGrams $massStoredInGrams, Order $order, OrderItemQuery $orderItemQuery,
@@ -77,51 +63,16 @@ public class OrderInfoQuery {
                         .withDataType($boolean.$)
                         .withBinding($order.shipped)
                 )
-//                .withAttributes(useTransferAttribute(orderOfCompany)
-//                        .withName("orderOfCompany")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.orderOfCompany)
-//                )
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
                         .withBinding($order.shipperName)
                 )
-//                .withAttributes(useTransferAttribute(shipperHasTerritory)
-//                        .withName("shipperHasTerritory")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.shipperHasTerritory)
-//                )
-//                .withAttributes(useTransferAttribute(shippedByManufacturer)
-//                        .withName("shippedByManufacturer")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.shippedByManufacturer)
-//                )
-//                .withAttributes(useTransferAttribute(shippedByManufacturer2)
-//                        .withName("shippedByManufacturer2")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.shippedByManufacturer2)
-//                )
-//                .withAttributes(useTransferAttribute(shipperIsCustomer)
-//                        .withName("shipperIsCustomer")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.shipperIsCustomer)
-//                )
                 .withAttributes(useTransferAttribute(hasHeavyItem)
                         .withName("hasHeavyItem")
                         .withDataType($boolean.$)
                         .withBinding($order.hasHeavyItem)
                 )
-//                .withAttributes(useTransferAttribute(notOnlyLightItems)
-//                        .withName("notOnlyLightItems")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.notOnlyLightItems)
-//                )
-//                .withAttributes(useTransferAttribute(noManufacturerDefined)
-//                        .withName("noManufacturerDefined")
-//                        .withDataType($boolean.$)
-//                        .withBinding($order.noManufacturerDefined)
-//                )
                 .withAttributes(useTransferAttribute(numberOfItems)
                         .withName("numberOfItems")
                         .withDataType($integer.$)
@@ -132,11 +83,6 @@ public class OrderInfoQuery {
                         .withDataType($integer.$)
                         .withBinding($order.numberOfDiscountedItemsOutOfStock)
                 )
-//                .withAttributes(useTransferAttribute(numberOfProducts)
-//                        .withName("numberOfProducts")
-//                        .withDataType($integer.$)
-//                        .withBinding($order.numberOfProducts)
-//                )
                 .withAttributes(useTransferAttribute(numberOfCategories)
                         .withName("numberOfCategories")
                         .withDataType($integer.$)
@@ -147,26 +93,11 @@ public class OrderInfoQuery {
                         .withDataType($double.$)
                         .withBinding($order.totalPrice)
                 )
-//                .withAttributes(useTransferAttribute(cheapestItemPrice)
-//                        .withName("cheapestItemPrice")
-//                        .withDataType($double.$)
-//                        .withBinding($order.cheapestItemPrice)
-//                )
                 .withAttributes(useTransferAttribute(totalWeight)
                         .withName("totalWeight")
                         .withDataType($massStoredInGrams.$)
                         .withBinding($order.totalWeight)
                 )
-//                .withAttributes(useTransferAttribute(averageProductWeight)
-//                        .withName("averageProductWeight")
-//                        .withDataType($massStoredInGrams.$)
-//                        .withBinding($order.averageProductWeight)
-//                )
-//                .withAttributes(useTransferAttribute(averageItemWeight)
-//                        .withName("averageItemWeight")
-//                        .withDataType($massStoredInGrams.$)
-//                        .withBinding($order.averageItemWeight)
-//                )
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")
                         .withBinding($order.orderDetails)
@@ -192,24 +123,8 @@ public class OrderInfoQuery {
                         .withEmbedded(true)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
-                        ))
-//                .withRelations(useTransferObjectRelation(dhlTerritory)
-//                        .withName("dhlTerritory")
-//                        .withBinding($order.dhlTerritory)
-//                        .withTarget($territoryInfo.$)
-//                        .withEmbedded(true)
-//                        .withCardinality(newCardinalityBuilder())
-//                )
-//                .withAttributes(useTransferAttribute(numberOfProductsInCategories)
-//                        .withName("numberOfProductsInCategories")
-//                        .withDataType($integer.$)
-//                        .withBinding($order.numberOfProductsInCategories)
-//                )
-//                .withAttributes(useTransferAttribute(numberOfDiscountedProductsInCategories)
-//                        .withName("numberOfDiscountedProductsInCategories")
-//                        .withDataType($integer.$)
-//                        .withBinding($order.numberOfDiscountedProductsInCategories)
-//                )
+                        )
+                )
 
                 .build();
 
