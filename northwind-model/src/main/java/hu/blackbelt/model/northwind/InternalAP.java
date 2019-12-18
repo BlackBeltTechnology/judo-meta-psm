@@ -11,6 +11,7 @@ import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
 import hu.blackbelt.model.northwind.services.GetAllOrders;
 import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
 import hu.blackbelt.model.northwind.services.OrderInfoQuery;
+import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
 
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
@@ -42,13 +43,21 @@ public class InternalAP {
                      GetAllOrders $getAllOrders, GetAllInternationalOrders $getAllInternationalOrders,
                      CreateOrder $createOrder, CreateInternationalOrder $createInternationalOrder,
                      CreateShipper $createShipper, CreateProduct $createProduct, CreateCategory $createCategory,
-                     OrderAssignedToEmployee $orderAssignedToEmployee
+                     OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks
     ) {
         useAccessPoint($)
                 .withName("internalAP")
                 .withExposedGraphs(newExposedGraphBuilder()
                         .withName("ordersAssignedToEmployee")
                         .withSelector($orderAssignedToEmployee.$)
+                        .withMappedTransferObjectType($orderInfoQuery.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1))
+                        .build()
+                )
+                .withExposedGraphs(newExposedGraphBuilder()
+                        .withName("LastTwoWeekOrders")
+                        .withSelector($ordersOfLastTwoWeeks.$)
                         .withMappedTransferObjectType($orderInfoQuery.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))

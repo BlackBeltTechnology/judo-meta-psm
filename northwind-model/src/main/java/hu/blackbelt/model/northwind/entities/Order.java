@@ -7,24 +7,15 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newContainmentBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAssociationEnd;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAttribute;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useContainment;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useEntityType;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useDataProperty;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useNavigationProperty;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
@@ -75,15 +66,23 @@ public class Order {
     public AssociationEnd employee = newAssociationEndBuilder().build();
     public Containment shipAddress = newContainmentBuilder().build();
     public Containment orderDetails = newContainmentBuilder().build();
+    public DataProperty shipped = newDataPropertyBuilder().build();
     public DataProperty shipperName = newDataPropertyBuilder().build();
+    public DataProperty hasHeavyItem = newDataPropertyBuilder().build();
+    public DataProperty numberOfItems = newDataPropertyBuilder().build();
+    public DataProperty numberOfDiscountedItemsOutOfStock = newDataPropertyBuilder().build();
+    public DataProperty numberOfCategories = newDataPropertyBuilder().build();
+    public DataProperty totalPrice = newDataPropertyBuilder().build();
+    public DataProperty totalWeight = newDataPropertyBuilder().build();
+    public DataProperty numberOfDiscountedProductsInCategories = newDataPropertyBuilder().build();
 
     public NavigationProperty discountedItemsOutOfStock = newNavigationPropertyBuilder().build();
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double,
-        Customer $customer, Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
-                     OrderDetail $orderDetail, Category $category
-    ) {
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
+                     Integer $integer, MassStoredInGrams $massStoredInGrams, Customer $customer,
+                     Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
+                     OrderDetail $orderDetail, Category $category, Territory $territory) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
@@ -139,6 +138,13 @@ public class Order {
                         .withCardinality(newCardinalityBuilder().withLower(1).withUpper(-1))
                         .build()
                 )
+                .withDataProperties(useDataProperty(shipped)
+                        .withName("shipped")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.shippedDate!isdefined()"))
+                        .build()
+                )
                 .withDataProperties(useDataProperty(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
@@ -162,6 +168,56 @@ public class Order {
                                 .withExpression("self.orderDetails.product.category"))
                         .build()
                 )
+                .withDataProperties(useDataProperty(hasHeavyItem)
+                        .withName("hasHeavyItem")
+                        .withDataType($boolean.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!exists(i | i.weight > 1000 [dkg])"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfItems)
+                        .withName("numberOfItems")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!count()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfDiscountedItemsOutOfStock)
+                        .withName("numberOfDiscountedItemsOutOfStock")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.discountedItemsOutOfStock!count()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfCategories)
+                        .withName("numberOfCategories")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails.product.category!count()"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(totalPrice)
+                        .withName("totalPrice")
+                        .withDataType($double.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!sum(i | i.price)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(totalWeight)
+                        .withName("totalWeight")
+                        .withDataType($massStoredInGrams.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.orderDetails!sum(i | i.weight)"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(numberOfDiscountedProductsInCategories)
+                        .withName("numberOfDiscountedProductsInCategories")
+                        .withDataType($integer.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.categories!sum(c | c.products!filter(p | p.discounted)!count())"))
+                        .build()
+                )
+
                 .build();
 
         usePackage($package).withElements($).build();

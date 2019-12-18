@@ -25,7 +25,7 @@ public class AllProducts {
                 .withTarget($product.$)
                 .withCardinality(newCardinalityBuilder().withUpper(-1))
                 .withGetterExpression(newReferenceExpressionTypeBuilder()
-                        .withExpression("northwind::entities::Product")
+                        .withExpression("demo::entities::Product")
                 )
                 .build();
         usePackage($package).withElements($).build();

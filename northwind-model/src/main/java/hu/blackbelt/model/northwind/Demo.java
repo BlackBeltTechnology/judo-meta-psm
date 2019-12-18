@@ -73,10 +73,12 @@ import hu.blackbelt.model.northwind.services.OrderInfo;
 import hu.blackbelt.model.northwind.services.OrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrderItem;
 import hu.blackbelt.model.northwind.services.OrderItemQuery;
+import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
 import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.services.ProductInfoQuery;
 import hu.blackbelt.model.northwind.services.ShipmentChange;
 import hu.blackbelt.model.northwind.services.ShipperInfo;
+import hu.blackbelt.model.northwind.services.TerritoryInfo;
 import hu.blackbelt.model.northwind.services.TotalNumberOfOrders;
 import hu.blackbelt.model.northwind.types.Measured;
 import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
@@ -118,7 +120,7 @@ public class Demo {
     private Measures measures = new Measures();
     private Types types = new Types();
     private Services services = new Services();
-    private Measured measured= new Measured();
+    private Measured measured = new Measured();
 
     private Address address = new Address();
     private Category category = new Category();
@@ -180,6 +182,7 @@ public class Demo {
     private CreateShipper createShipper = new CreateShipper();
     private GetAllInternationalOrders getAllInternationalOrders = new GetAllInternationalOrders();
     private GetAllOrders getAllOrders = new GetAllOrders();
+    private TerritoryInfo territoryInfo = new TerritoryInfo();
     private InternationalOrderInfo internationalOrderInfo = new InternationalOrderInfo();
     private InternationalOrderInfoQuery internationalOrderInfoQuery = new InternationalOrderInfoQuery();
     private OrderInfo orderInfo = new OrderInfo();
@@ -216,6 +219,7 @@ public class Demo {
     private AllCategories allCategories = new AllCategories();
     private AllProducts allProducts = new AllProducts();
     private OrderAssignedToEmployee orderAssignedToEmployee = new OrderAssignedToEmployee();
+    private OrdersOfLastTwoWeeks ordersOfLastTwoWeeks = new OrdersOfLastTwoWeeks();
     private TotalNumberOfOrders totalNumberOfOrders = new TotalNumberOfOrders();
 
 
@@ -250,7 +254,7 @@ public class Demo {
         electricCharge.init(measures.$, electricCurrent, time);
         electricCurrent.init(measures.$);
         electricPotential.init(measures.$, work, electricCharge);
-        force.init(measures.$, mass,acceleration);
+        force.init(measures.$, mass, acceleration);
         frequency.init(measures.$, time);
         illuminance.init(measures.$, luminousIntensity, area);
         inductance.init(measures.$, magneticFlux, electricCurrent);
@@ -308,8 +312,8 @@ public class Demo {
         mailingList.init(entities.$, person);
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
-        order.init(entities.$, string, timeStamp, double_, customer, shipper, employee,
-                internationalAddress, orderDetail, category);
+        order.init(entities.$, string, timeStamp, double_, boolean_, integer, massStoredInGrams, customer, shipper, employee,
+                internationalAddress, orderDetail, category, territory);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
@@ -321,7 +325,7 @@ public class Demo {
         supplier.init(entities.$, url, company, product);
         territory.init(entities.$, string, employee, region, shipper);
 
-        // Unmaped transfer object type
+        // Unmapped transfer object type
         shipmentChange.init(services.$, string, timeStamp);
         comment.init(services.$, string, text, timeStamp);
 
@@ -329,12 +333,13 @@ public class Demo {
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
         shipperInfo.init(services.$, string, shipper, company);
-        productInfo.init(services.$, string, integer, double_, massStoredInKilograms, product, categoryInfo, allCategories);
+        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
+        territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, order, orderItemQuery, categoryInfo);
+        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations
@@ -350,13 +355,16 @@ public class Demo {
         allCategories.init(services.$, category);
         allProducts.init(services.$, product);
         orderAssignedToEmployee.init(services.$, order);
+        ordersOfLastTwoWeeks.init(services.$, order);
 
         // Static Data
         totalNumberOfOrders.init(services.$, integer);
 
+        // Exposed graphs
+
         // Access Points
         internalAP.init($, orderInfoQuery, getAllOrders, getAllInternationalOrders,
-                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee);
+                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee, ordersOfLastTwoWeeks);
         externallAP.init($, productInfo, categoryInfo, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();

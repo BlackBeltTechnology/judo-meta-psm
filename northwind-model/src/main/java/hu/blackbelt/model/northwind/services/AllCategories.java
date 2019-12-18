@@ -25,7 +25,7 @@ public class AllCategories {
                 .withTarget($category.$)
                 .withCardinality(newCardinalityBuilder().withUpper(-1))
                 .withGetterExpression(newReferenceExpressionTypeBuilder()
-                        .withExpression("northwind::entities::Category")
+                        .withExpression("demo::entities::Category")
                 )
                 .build();
 

@@ -5,16 +5,15 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Order;
+import hu.blackbelt.model.northwind.types.Boolean;
+import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.*;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useMappedTransferObjectType;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferAttribute;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferObjectRelation;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class OrderInfoQuery {
@@ -34,14 +33,22 @@ public class OrderInfoQuery {
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
+    public TransferAttribute shipped = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
+    public TransferAttribute hasHeavyItem = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfItems = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfDiscountedItemsOutOfStock = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfCategories = newTransferAttributeBuilder().build();
+    public TransferAttribute totalPrice = newTransferAttributeBuilder().build();
+    public TransferAttribute totalWeight = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp,
-                     Order $order, OrderItemQuery $orderItemQuery, CategoryInfo $categoryInfo) {
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer,
+                     Double $double, MassStoredInGrams $massStoredInGrams, Order $order, OrderItemQuery $orderItemQuery,
+                     CategoryInfo $categoryInfo, TerritoryInfo $territoryInfo) {
         useMappedTransferObjectType($)
                 .withName("OrderInfoQuery")
                 .withEntityType($order.$)
@@ -51,10 +58,45 @@ public class OrderInfoQuery {
                         .withDataType($timeStamp.$)
                         .withBinding($order.orderDate)
                 )
+                .withAttributes(useTransferAttribute(shipped)
+                        .withName("shipped")
+                        .withDataType($boolean.$)
+                        .withBinding($order.shipped)
+                )
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")
                         .withDataType($string.$)
                         .withBinding($order.shipperName)
+                )
+                .withAttributes(useTransferAttribute(hasHeavyItem)
+                        .withName("hasHeavyItem")
+                        .withDataType($boolean.$)
+                        .withBinding($order.hasHeavyItem)
+                )
+                .withAttributes(useTransferAttribute(numberOfItems)
+                        .withName("numberOfItems")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfItems)
+                )
+                .withAttributes(useTransferAttribute(numberOfDiscountedItemsOutOfStock)
+                        .withName("numberOfDiscountedItemsOutOfStock")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfDiscountedItemsOutOfStock)
+                )
+                .withAttributes(useTransferAttribute(numberOfCategories)
+                        .withName("numberOfCategories")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfCategories)
+                )
+                .withAttributes(useTransferAttribute(totalPrice)
+                        .withName("totalPrice")
+                        .withDataType($double.$)
+                        .withBinding($order.totalPrice)
+                )
+                .withAttributes(useTransferAttribute(totalWeight)
+                        .withName("totalWeight")
+                        .withDataType($massStoredInGrams.$)
+                        .withBinding($order.totalWeight)
                 )
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")
@@ -81,7 +123,8 @@ public class OrderInfoQuery {
                         .withEmbedded(true)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
-                        ))
+                        )
+                )
 
                 .build();
 
