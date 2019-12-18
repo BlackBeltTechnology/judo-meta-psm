@@ -24,7 +24,7 @@ public class OrderAssignedToEmployee {
                 .withName("ordersAssignedToEmployee")
                 .withTarget($order.$)
                 .withCardinality(newCardinalityBuilder().withUpper(-1))
-                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("northwind::entities::Employee.orders"))
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("demo::entities::Employee.orders"))
                 .build();
 
         usePackage($package).withElements($).build();

@@ -17,7 +17,7 @@ public class OrdersOfLastTwoWeeks {
                 .withName("ordersOfLastTwoWeeks")
                 .withTarget($order.$)
                 .withCardinality(newCardinalityBuilder().withUpper(-1))
-                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("northwind::entities::Order!filter(o | o.orderDate > `2019-12-01T00:00:00Z`"))
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("demo::entities::Order!filter(o | o.orderDate > `2019-01-01T00:00:00Z`)"))
                 .build();
 
         usePackage($package).withElements($).build();
