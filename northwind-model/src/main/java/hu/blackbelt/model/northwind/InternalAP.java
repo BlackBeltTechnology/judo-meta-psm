@@ -9,6 +9,7 @@ import hu.blackbelt.model.northwind.services.CreateProduct;
 import hu.blackbelt.model.northwind.services.CreateShipper;
 import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
 import hu.blackbelt.model.northwind.services.GetAllOrders;
+import hu.blackbelt.model.northwind.services.InitializerScript;
 import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
 import hu.blackbelt.model.northwind.services.OrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
@@ -43,7 +44,8 @@ public class InternalAP {
                      GetAllOrders $getAllOrders, GetAllInternationalOrders $getAllInternationalOrders,
                      CreateOrder $createOrder, CreateInternationalOrder $createInternationalOrder,
                      CreateShipper $createShipper, CreateProduct $createProduct, CreateCategory $createCategory,
-                     OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks
+                     OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks,
+                     InitializerScript $initializerScript
     ) {
         useAccessPoint($)
                 .withName("internalAP")
@@ -70,6 +72,8 @@ public class InternalAP {
                 .withExposedServices(newExposedServiceBuilder().withOperation($createShipper.$))
                 .withExposedServices(newExposedServiceBuilder().withOperation($createProduct.$))
                 .withExposedServices(newExposedServiceBuilder().withOperation($createCategory.$))
+                .withExposedServices(newExposedServiceBuilder().withOperation($initializerScript.$))
+
                 .build();
         useModel($model).withElements($).build();
     }
