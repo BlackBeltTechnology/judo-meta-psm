@@ -17,8 +17,8 @@ public class InitializerScript {
                 .withImplementation(newOperationBodyBuilder()
                         .withStateful(true)
                         .withCustomImplementation(true)
-                        .withBody("var demo::service::CategoryInfo category := new demo::service::CategoryInfo(categoryName := 'Laptop')\n" +
-                                "var demo::service::ProductInfo product := new demo::service::ProductInfo(productName := 'Dell Vostro', unitPrice := 10000)\n" +
+                        .withBody("var demo::services::CategoryInfo category := new demo::services::CategoryInfo(categoryName := 'Laptop')\n" +
+                                "var demo::services::ProductInfo product := new demo::services::ProductInfo(productName := 'Dell Vostro', unitPrice := 10000)\n" +
                                 "product.category := category;\n")
                 )
                 .build();
