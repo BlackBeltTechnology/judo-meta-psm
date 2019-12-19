@@ -1,5 +1,6 @@
 package hu.blackbelt.model.northwind;
 
+import com.sun.org.omg.CORBA.Initializer;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.StringBuilderLogger;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
@@ -66,6 +67,7 @@ import hu.blackbelt.model.northwind.services.CreateProduct;
 import hu.blackbelt.model.northwind.services.CreateShipper;
 import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
 import hu.blackbelt.model.northwind.services.GetAllOrders;
+import hu.blackbelt.model.northwind.services.InitializerScript;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfo;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
@@ -221,6 +223,7 @@ public class Demo {
     private OrderAssignedToEmployee orderAssignedToEmployee = new OrderAssignedToEmployee();
     private OrdersOfLastTwoWeeks ordersOfLastTwoWeeks = new OrdersOfLastTwoWeeks();
     private TotalNumberOfOrders totalNumberOfOrders = new TotalNumberOfOrders();
+    private InitializerScript initializerScript = new InitializerScript();
 
 
     private PsmModel createPsmModel() {
@@ -349,6 +352,7 @@ public class Demo {
         createProduct.init(services.$, productInfo);
         createShipper.init(services.$, shipperInfo);
         getAllOrders.init(services.$, orderInfoQuery);
+        initializerScript.init(services.$);
         getAllInternationalOrders.init(services.$, internationalOrderInfoQuery);
 
         // Static Navigation
@@ -364,7 +368,8 @@ public class Demo {
 
         // Access Points
         internalAP.init($, orderInfoQuery, getAllOrders, getAllInternationalOrders,
-                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee, ordersOfLastTwoWeeks);
+                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee,
+                ordersOfLastTwoWeeks, initializerScript);
         externallAP.init($, productInfo, categoryInfo, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();
