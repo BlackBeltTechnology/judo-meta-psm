@@ -33,6 +33,7 @@ public class OrderInfoQuery {
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
+    public TransferAttribute priority = newTransferAttributeBuilder().build();
     public TransferAttribute shipped = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
     public TransferAttribute shipperLocation = newTransferAttributeBuilder().build();
@@ -48,8 +49,8 @@ public class OrderInfoQuery {
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer,
-                     Double $double, Gps $gps, MassStoredInGrams $massStoredInGrams, Order $order, OrderItemQuery $orderItemQuery,
-                     CategoryInfo $categoryInfo, TerritoryInfo $territoryInfo) {
+                     Double $double, Gps $gps, Priority $priority, MassStoredInGrams $massStoredInGrams, Order $order,
+                     OrderItemQuery $orderItemQuery, CategoryInfo $categoryInfo, TerritoryInfo $territoryInfo) {
         useMappedTransferObjectType($)
                 .withName("OrderInfoQuery")
                 .withEntityType($order.$)
@@ -58,6 +59,12 @@ public class OrderInfoQuery {
                         .withRequired(true)
                         .withDataType($timeStamp.$)
                         .withBinding($order.orderDate)
+                )
+                .withAttributes(useTransferAttribute(priority)
+                        .withName("priority")
+                        .withRequired(false)
+                        .withDataType($priority.$)
+                        .withBinding($order.priority)
                 )
                 .withAttributes(useTransferAttribute(shipped)
                         .withName("shipped")

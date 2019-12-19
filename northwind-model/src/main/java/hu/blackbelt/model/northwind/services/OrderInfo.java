@@ -6,21 +6,12 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.Order;
-import hu.blackbelt.model.northwind.types.Gps;
+import hu.blackbelt.model.northwind.types.Priority;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newBoundOperationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newOperationBodyBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useBoundOperation;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useMappedTransferObjectType;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferAttribute;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferObjectRelation;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class OrderInfo {
@@ -66,6 +57,7 @@ public class OrderInfo {
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
+    public TransferAttribute priority = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation shipper = newTransferObjectRelationBuilder().build();
@@ -77,7 +69,7 @@ public class OrderInfo {
     public BoundOperation changeShipment = newBoundOperationBuilder().build();
     public BoundOperation createItem = newBoundOperationBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp,
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority,
                      Order $order, OrderItem $orderItem, ShipperInfo $shipperInfo, CategoryInfo $categoryInfo,
                      ShipmentChange $shipmentChange, Comment $comment) {
         useMappedTransferObjectType($)
@@ -88,6 +80,12 @@ public class OrderInfo {
                         .withRequired(true)
                         .withDataType($timeStamp.$)
                         .withBinding($order.orderDate)
+                )
+                .withAttributes(useTransferAttribute(priority)
+                        .withName("priority")
+                        .withRequired(false)
+                        .withDataType($priority.$)
+                        .withBinding($order.priority)
                 )
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")

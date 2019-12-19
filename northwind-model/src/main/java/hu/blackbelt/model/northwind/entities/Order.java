@@ -11,6 +11,7 @@ import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.Integer;
+import hu.blackbelt.model.northwind.types.Priority;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
@@ -61,6 +62,7 @@ public class Order {
     public Attribute shippedDate = newAttributeBuilder().build();
     public Attribute freight = newAttributeBuilder().build();
     public Attribute shipName = newAttributeBuilder().build();
+    public Attribute priority = newAttributeBuilder().build();
 
     public AssociationEnd customer = newAssociationEndBuilder().build();
     public AssociationEnd shipper = newAssociationEndBuilder().build();
@@ -82,9 +84,10 @@ public class Order {
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
-                     Integer $integer, Gps $gps, MassStoredInGrams $massStoredInGrams, Customer $customer,
-                     Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
-                     OrderDetail $orderDetail, Category $category, Territory $territory) {
+                     Integer $integer, Gps $gps, Priority $priority, MassStoredInGrams $massStoredInGrams,
+                     Customer $customer, Shipper $shipper, Employee $employee,
+                     InternationalAddress $internationalAddress, OrderDetail $orderDetail, Category $category,
+                     Territory $territory) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
@@ -106,6 +109,11 @@ public class Order {
                 .withAttributes(useAttribute(shipName)
                         .withName("shipName")
                         .withDataType($string.$)
+                )
+                .withAttributes(useAttribute(priority)
+                        .withName("priority")
+                        .withRequired(false)
+                        .withDataType($priority.$)
                 )
                 .withRelations(useAssociationEnd(customer)
                         .withName("customer")

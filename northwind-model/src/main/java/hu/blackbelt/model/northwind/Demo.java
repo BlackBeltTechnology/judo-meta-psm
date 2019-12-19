@@ -1,6 +1,5 @@
 package hu.blackbelt.model.northwind;
 
-import com.sun.org.omg.CORBA.Initializer;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.StringBuilderLogger;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
@@ -82,27 +81,28 @@ import hu.blackbelt.model.northwind.services.ShipmentChange;
 import hu.blackbelt.model.northwind.services.ShipperInfo;
 import hu.blackbelt.model.northwind.services.TerritoryInfo;
 import hu.blackbelt.model.northwind.services.TotalNumberOfOrders;
-import hu.blackbelt.model.northwind.types.Gps;
-import hu.blackbelt.model.northwind.types.Measured;
-import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
 import hu.blackbelt.model.northwind.types.Binary;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Countries;
 import hu.blackbelt.model.northwind.types.Date;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Float;
+import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.Long;
-import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
-import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
+import hu.blackbelt.model.northwind.types.Measured;
 import hu.blackbelt.model.northwind.types.Phone;
+import hu.blackbelt.model.northwind.types.Priority;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.Text;
 import hu.blackbelt.model.northwind.types.TimeStamp;
-import hu.blackbelt.model.northwind.types.measured.TimeStoredInMonths;
-import hu.blackbelt.model.northwind.types.measured.TimeStoredInSeconds;
 import hu.blackbelt.model.northwind.types.Titles;
 import hu.blackbelt.model.northwind.types.Url;
+import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
+import hu.blackbelt.model.northwind.types.measured.TimeStoredInMonths;
+import hu.blackbelt.model.northwind.types.measured.TimeStoredInSeconds;
 import hu.blackbelt.model.northwind.types.measured.VelocityStoredInKmPerHour;
 import hu.blackbelt.model.northwind.types.measured.VolumeStoredInLitre;
 
@@ -209,6 +209,7 @@ public class Demo {
     private MassStoredInKilograms massStoredInKilograms = new MassStoredInKilograms();
     private MassStoredInGrams massStoredInGrams = new MassStoredInGrams();
     private Phone phone = new Phone();
+    private Priority priority = new Priority();
     private String string = new String();
     private Text text = new Text();
     private TimeStamp timeStamp = new TimeStamp();
@@ -290,6 +291,7 @@ public class Demo {
         integer.init(types.$);
         long_.init(types.$);
         phone.init(types.$);
+        priority.init(types.$);
         string.init(types.$);
         text.init(types.$);
         timeStamp.init(types.$);
@@ -318,8 +320,8 @@ public class Demo {
         mailingList.init(entities.$, person);
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
-        order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, massStoredInGrams, customer, shipper, employee,
-                internationalAddress, orderDetail, category, territory);
+        order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, priority, massStoredInGrams,
+                customer, shipper, employee, internationalAddress, orderDetail, category, territory);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
@@ -337,15 +339,15 @@ public class Demo {
 
         // Mapped transfer objects
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
-        internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
+        internationalOrderInfo.init(services.$, string, double_, timeStamp, priority, order, internationalOrder, orderItem, shipperInfo);
         shipperInfo.init(services.$, string, shipper, company, gps);
         productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
-        orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, gps, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
+        orderInfo.init(services.$, string, timeStamp, priority, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
+        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, gps, priority, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations

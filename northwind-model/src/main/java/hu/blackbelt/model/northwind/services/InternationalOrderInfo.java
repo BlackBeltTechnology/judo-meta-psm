@@ -7,6 +7,7 @@ import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.model.northwind.entities.InternationalOrder;
 import hu.blackbelt.model.northwind.entities.Order;
 import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Priority;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
 
@@ -37,6 +38,7 @@ public class InternationalOrderInfo {
     */
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
+    public TransferAttribute priority = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
     public TransferAttribute customsDescription = newTransferAttributeBuilder().build();
     public TransferAttribute exciseTax = newTransferAttributeBuilder().build();
@@ -45,7 +47,7 @@ public class InternationalOrderInfo {
     public TransferObjectRelation shipper = newTransferObjectRelationBuilder().build();
 
 
-    public void init(Package $package, String $string, Double $double, TimeStamp $timeStamp, Order $order,
+    public void init(Package $package, String $string, Double $double, TimeStamp $timeStamp, Priority $priority, Order $order,
                      InternationalOrder $internationalOrder,
                      OrderItem $orderItem, ShipperInfo $shipperInfo) {
         useMappedTransferObjectType($)
@@ -56,6 +58,12 @@ public class InternationalOrderInfo {
                         .withDataType($timeStamp.$)
                         .withRequired(true)
                         .withBinding($order.orderDate)
+                )
+                .withAttributes(useTransferAttribute(priority)
+                        .withName("priority")
+                        .withDataType($priority.$)
+                        .withRequired(false)
+                        .withBinding($order.priority)
                 )
                 .withAttributes(useTransferAttribute(shipperName)
                         .withName("shipperName")
