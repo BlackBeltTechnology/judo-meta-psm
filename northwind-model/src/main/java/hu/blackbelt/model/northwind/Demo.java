@@ -80,6 +80,7 @@ import hu.blackbelt.model.northwind.services.ShipmentChange;
 import hu.blackbelt.model.northwind.services.ShipperInfo;
 import hu.blackbelt.model.northwind.services.TerritoryInfo;
 import hu.blackbelt.model.northwind.services.TotalNumberOfOrders;
+import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.Measured;
 import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
 import hu.blackbelt.model.northwind.types.Binary;
@@ -200,6 +201,7 @@ public class Demo {
     private Date date = new Date();
     private Double double_ = new Double();
     private Float float_ = new Float();
+    private Gps gps = new Gps();
     private Integer integer = new Integer();
     private Long long_ = new Long();
     private MassStoredInKilograms massStoredInKilograms = new MassStoredInKilograms();
@@ -281,6 +283,7 @@ public class Demo {
         date.init(types.$);
         double_.init(types.$);
         float_.init(types.$);
+        gps.init(types.$);
         integer.init(types.$);
         long_.init(types.$);
         phone.init(types.$);
@@ -302,7 +305,7 @@ public class Demo {
         address.init(entities.$, string, city);
         category.init(entities.$, string, text, binary, product, employee);
         city.init(entities.$, string);
-        company.init(entities.$, string, phone, customer, product);
+        company.init(entities.$, string, phone, customer, product, gps);
         customer.init(entities.$, order, address);
         employee.init(entities.$, string, date, phone, binary, text, person, order,
                 address, territory, category);
@@ -312,7 +315,7 @@ public class Demo {
         mailingList.init(entities.$, person);
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
-        order.init(entities.$, string, timeStamp, double_, boolean_, integer, massStoredInGrams, customer, shipper, employee,
+        order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, massStoredInGrams, customer, shipper, employee,
                 internationalAddress, orderDetail, category, territory);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
         paymentList.init(entities.$, employee);
@@ -332,14 +335,14 @@ public class Demo {
         // Mapped transfer objects
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         internationalOrderInfo.init(services.$, string, double_, timeStamp, order, internationalOrder, orderItem, shipperInfo);
-        shipperInfo.init(services.$, string, shipper, company);
+        shipperInfo.init(services.$, string, shipper, company, gps);
         productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
         productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
+        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, gps, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations

@@ -9,6 +9,7 @@ import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.TimeStamp;
@@ -68,6 +69,7 @@ public class Order {
     public Containment orderDetails = newContainmentBuilder().build();
     public DataProperty shipped = newDataPropertyBuilder().build();
     public DataProperty shipperName = newDataPropertyBuilder().build();
+    public DataProperty shipperLocation = newDataPropertyBuilder().build();
     public DataProperty hasHeavyItem = newDataPropertyBuilder().build();
     public DataProperty numberOfItems = newDataPropertyBuilder().build();
     public DataProperty numberOfDiscountedItemsOutOfStock = newDataPropertyBuilder().build();
@@ -80,7 +82,7 @@ public class Order {
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
-                     Integer $integer, MassStoredInGrams $massStoredInGrams, Customer $customer,
+                     Integer $integer, Gps $gps, MassStoredInGrams $massStoredInGrams, Customer $customer,
                      Shipper $shipper, Employee $employee, InternationalAddress $internationalAddress,
                      OrderDetail $orderDetail, Category $category, Territory $territory) {
         useEntityType($).withName("Order")
@@ -150,6 +152,13 @@ public class Order {
                         .withDataType($string.$)
                         .withGetterExpression(newDataExpressionTypeBuilder()
                                 .withExpression("self.shipper.companyName"))
+                        .build()
+                )
+                .withDataProperties(useDataProperty(shipperLocation)
+                        .withName("shipperLocation")
+                        .withDataType($gps.$)
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression("self.shipper.location"))
                         .build()
                 )
                 .withNavigationProperties(useNavigationProperty(discountedItemsOutOfStock)

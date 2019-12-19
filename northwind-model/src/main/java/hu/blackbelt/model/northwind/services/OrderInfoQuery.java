@@ -35,6 +35,7 @@ public class OrderInfoQuery {
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
     public TransferAttribute shipped = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
+    public TransferAttribute shipperLocation = newTransferAttributeBuilder().build();
     public TransferAttribute hasHeavyItem = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfItems = newTransferAttributeBuilder().build();
     public TransferAttribute numberOfDiscountedItemsOutOfStock = newTransferAttributeBuilder().build();
@@ -47,7 +48,7 @@ public class OrderInfoQuery {
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Boolean $boolean, Integer $integer,
-                     Double $double, MassStoredInGrams $massStoredInGrams, Order $order, OrderItemQuery $orderItemQuery,
+                     Double $double, Gps $gps, MassStoredInGrams $massStoredInGrams, Order $order, OrderItemQuery $orderItemQuery,
                      CategoryInfo $categoryInfo, TerritoryInfo $territoryInfo) {
         useMappedTransferObjectType($)
                 .withName("OrderInfoQuery")
@@ -67,6 +68,11 @@ public class OrderInfoQuery {
                         .withName("shipperName")
                         .withDataType($string.$)
                         .withBinding($order.shipperName)
+                )
+                .withAttributes(useTransferAttribute(shipperLocation)
+                        .withName("shipperLocation")
+                        .withDataType($gps.$)
+                        .withBinding($order.shipperLocation)
                 )
                 .withAttributes(useTransferAttribute(hasHeavyItem)
                         .withName("hasHeavyItem")
