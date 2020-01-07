@@ -469,7 +469,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" upperBound="-1"
           eType="#//service/BoundOperationWithRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" upperBound="-1"
-          eType="#//service/UnboundOperationWithRelation"/>
+          eType="#//service/BoundOperationWithRelation"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="embeddedDelete" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
@@ -573,6 +573,16 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/UnboundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="set" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="unset" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ExposedService">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"

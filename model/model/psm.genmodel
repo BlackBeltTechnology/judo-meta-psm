@@ -387,6 +387,16 @@
             ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/update"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/delete"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/getRange"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/set"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/unset"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/addAll"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/removeAll"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedService">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"

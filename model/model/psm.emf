@@ -438,7 +438,7 @@ package service {
     ref BoundOperationWithRelation[*] unset;
     ref BoundOperationWithRelation[*] addAll;
     ref BoundOperationWithRelation[*] removeAll;
-    ref UnboundOperationWithRelation[*] getRange;
+    ref BoundOperationWithRelation[*] getRange;
     attr boolean[1] embeddedDelete = false;
   }
 
@@ -521,6 +521,11 @@ package accesspoint {
     ref service.UnboundOperation create;
     ref service.UnboundOperation update;
     ref service.UnboundOperation delete;
+    ref service.UnboundOperationWithRelation[*] getRange;
+    ref service.UnboundOperationWithRelation[*] set;
+    ref service.UnboundOperationWithRelation[*] unset;
+    ref service.UnboundOperationWithRelation[*] addAll;
+    ref service.UnboundOperationWithRelation[*] removeAll;
   }
 
   class ExposedService {
