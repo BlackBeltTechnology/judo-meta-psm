@@ -468,8 +468,6 @@
           eType="#//service/BoundOperationWithRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" upperBound="-1"
           eType="#//service/BoundOperationWithRelation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" upperBound="-1"
-          eType="#//service/UnboundOperationWithRelation"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="embeddedDelete" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
@@ -537,6 +535,8 @@
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
           eType="#//service/TransferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" upperBound="-1"
+          eType="#//service/OperationWithRelation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OperationBody">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
@@ -545,11 +545,10 @@
           lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="relation" lowerBound="1"
-          eType="#//service/TransferObjectRelation"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperationWithRelation" eSuperTypes="#//service/UnboundOperation">
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation #//service/OperationWithRelation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperationWithRelation" eSuperTypes="#//service/UnboundOperation #//service/OperationWithRelation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="OperationWithRelation" abstract="true"
+        eSuperTypes="#//service/OperationDeclaration">
       <eStructuralFeatures xsi:type="ecore:EReference" name="relation" lowerBound="1"
           eType="#//service/TransferObjectRelation"/>
     </eClassifiers>
@@ -573,6 +572,14 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/UnboundOperation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/UnboundOperation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="set" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="unset" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" upperBound="-1"
+          eType="#//service/UnboundOperationWithRelation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ExposedService">
       <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"

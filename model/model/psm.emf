@@ -438,7 +438,6 @@ package service {
     ref BoundOperationWithRelation[*] unset;
     ref BoundOperationWithRelation[*] addAll;
     ref BoundOperationWithRelation[*] removeAll;
-    ref UnboundOperationWithRelation[*] getRange;
     attr boolean[1] embeddedDelete = false;
   }
 
@@ -488,6 +487,7 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
+    ref BoundOperationWithRelation[*] getRange;
   }
 
   class OperationBody {
@@ -521,6 +521,10 @@ package accesspoint {
     ref service.UnboundOperation create;
     ref service.UnboundOperation update;
     ref service.UnboundOperation delete;
+    ref service.UnboundOperationWithRelation[*] set;
+    ref service.UnboundOperationWithRelation[*] unset;
+    ref service.UnboundOperationWithRelation[*] addAll;
+    ref service.UnboundOperationWithRelation[*] removeAll;
   }
 
   class ExposedService {
