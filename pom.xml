@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -71,8 +70,8 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 
-		<epsilon-runtime-version>1.2.0.20191216_103052_a5925f7_develop</epsilon-runtime-version>
-		<epsilon-runtime-eclipse-version>1.2.0.20191105_183445_4b0b2da_develop</epsilon-runtime-eclipse-version>
+		<epsilon-runtime-version>1.2.0.20200112_015713_3d243d7_develop</epsilon-runtime-version>
+		<epsilon-runtime-eclipse-version>1.2.0.20200112_022936_df2f83b_develop</epsilon-runtime-eclipse-version>
 
 		<src.dir>src/main</src.dir>
 
@@ -82,7 +81,7 @@
 		<eclipse-p2-base>http://download.eclipse.org/releases/2019-03</eclipse-p2-base>
 
 		<emf-genmodel-generator-version>1.0.0.20191222_154354_a61f75c_develop</emf-genmodel-generator-version>
-		<judo-genmodel-generator-version>1.0.0.20191222_154320_f477d91_develop</judo-genmodel-generator-version>
+		<judo-genmodel-generator-version>1.0.0.20191227_185540_12197c7_develop</judo-genmodel-generator-version>
 
 		<!-- Xtend / Xcore -->
 		<emf-version>2.18.0</emf-version>
@@ -105,17 +104,17 @@
 
 		<!-- Pax exam dependencies -->
 		<karaf-version>4.2.6</karaf-version>
-		<osgi-utils-version>1.0.8.20191112_150604_8fcd0c1_develop</osgi-utils-version>
+		<osgi-utils-version>1.0.8.20200112_012807_d70d730_develop</osgi-utils-version>
 		<bouncycastle-karaf-features-version>1.61.3.20191112_145528_65f6ec3_develop</bouncycastle-karaf-features-version>
 		<tinybundles-karaf-features-version>3.0.1.20191112_144102_0b06548_develop</tinybundles-karaf-features-version>
-		<google-karaf-features-version>1.0.4.20191112_145050_c95a06d_develop</google-karaf-features-version>
+		<google-karaf-features-version>1.0.4.20200111_234307_71d7237_develop</google-karaf-features-version>
 		<eclipse-emf-karaf-features-version>1.0.0.20191112_145407_36a50ba_develop</eclipse-emf-karaf-features-version>
-		<eclipse-epsilon-karaf-features-version>1.0.0.20191112_145338_f4b7823_develop</eclipse-epsilon-karaf-features-version>
-		<eclipse-xtext-karaf-features-version>1.0.0.20191112_145149_5d3ebe1_develop</eclipse-xtext-karaf-features-version>
+		<eclipse-epsilon-karaf-features-version>1.0.0.20200111_234924_66a3503_develop</eclipse-epsilon-karaf-features-version>
+		<eclipse-xtext-karaf-features-version>1.0.0.20200111_235022_ceeaea2_develop</eclipse-xtext-karaf-features-version>
 		<antlr-karaf-features-version>1.0.2.20191112_150321_54f0b2e_develop</antlr-karaf-features-version>
 		<apache-commons-karaf-features-version>1.0.6.20191112_150120_8396e08_develop</apache-commons-karaf-features-version>
-		<apache-poi-karaf-features-version>1.0.3.20191112_145719_de479e7_develop</apache-poi-karaf-features-version>
-		<apache-httpclient-karaf-features-version>1.0.1.20191112_145941_a6f348a_develop</apache-httpclient-karaf-features-version>
+		<apache-poi-karaf-features-version>1.0.3.20200111_213125_a8284fb_develop</apache-poi-karaf-features-version>
+		<apache-httpclient-karaf-features-version>1.0.1.20200111_213046_71bd9f7_develop</apache-httpclient-karaf-features-version>
 		<pax-exam-version>4.13.1</pax-exam-version>
 		<log4j.configuration>log4j.properties</log4j.configuration>
 	</properties>
