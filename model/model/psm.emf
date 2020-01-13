@@ -401,7 +401,7 @@ package service {
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
     ref TransferObjectType[*] superTransferObjectTypes;
-    ref UnboundOperation getTemplate;
+    ref UnboundOperation#getTemplateOwnerTransferObjectType getTemplate;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -428,17 +428,17 @@ package service {
     ref ~derived.ReferenceAccessor range;
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
-    ref BoundOperation create;
     attr boolean[1] embeddedCreate;
     attr boolean[1] embeddedUpdate;
-    ref BoundOperation update;
-    ref BoundOperation delete;
-    ref BoundOperationWithRelation[*] set;
-    ref BoundOperation get;
-    ref BoundOperationWithRelation[*] unset;
-    ref BoundOperationWithRelation[*] addAll;
-    ref BoundOperationWithRelation[*] removeAll;
     attr boolean[1] embeddedDelete = false;
+    ref BoundOperation#getOwnerRelation get;
+    ref BoundOperation#createOwnerRelation create;
+    ref BoundOperation#updateOwnerRelation update;
+    ref BoundOperation#deleteOwnerRelation delete;
+    ref BoundOperationWithRelation[*]#setOwnerRelation set;
+    ref BoundOperationWithRelation[*]#unsetOwnerRelation unset;
+    ref BoundOperationWithRelation[*]#addAllOwnerRelation addAll;
+    ref BoundOperationWithRelation[*]#removeAllOwnerRelation removeAll;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -478,16 +478,25 @@ package service {
 
   class BoundOperation extends namespace.NamedElement, OperationDeclaration {
     val OperationBody implementation;
+    ref TransferObjectRelation#get getOwnerRelation;
+    ref TransferObjectRelation#create createOwnerRelation;
+    ref TransferObjectRelation#update updateOwnerRelation;
+    ref TransferObjectRelation#delete deleteOwnerRelation;
   }
 
   class UnboundOperation extends namespace.NamespaceElement, OperationDeclaration {
     val OperationBody[1] implementation;
+    ref TransferObjectType#getTemplate getTemplateOwnerTransferObjectType;
+    ref accesspoint.ExposedGraph#get getOwnerExposedGraph;
+    ref accesspoint.ExposedGraph#create createOwnerExposedGraph;
+    ref accesspoint.ExposedGraph#update updateOwnerExposedGraph;
+    ref accesspoint.ExposedGraph#delete deleteOwnerExposedGraph;
   }
 
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
-    ref BoundOperationWithRelation[*] getRange;
+    ref OperationWithRelation[*]#getRangeOwnerParameter getRange;
   }
 
   class OperationBody {
@@ -496,12 +505,23 @@ package service {
     attr script.Script body;
   }
 
-  class BoundOperationWithRelation extends BoundOperation {
-    ref TransferObjectRelation[1] relation;
+  class BoundOperationWithRelation extends BoundOperation, OperationWithRelation {
+    ref TransferObjectRelation#set setOwnerRelation;
+    ref TransferObjectRelation#unset unsetOwnerRelation;
+    ref TransferObjectRelation#addAll addAllOwnerRelation;
+    ref TransferObjectRelation#removeAll removeAllOwnerRelation;
   }
 
-  class UnboundOperationWithRelation extends UnboundOperation {
+  class UnboundOperationWithRelation extends UnboundOperation, OperationWithRelation {
+    ref accesspoint.ExposedGraph#set setOwnerExposedGraph;
+    ref accesspoint.ExposedGraph#unset unsetOwnerExposedGraph;
+    ref accesspoint.ExposedGraph#addAll addAllOwnerExposed;
+    ref accesspoint.ExposedGraph#removeAll removeAllOwnerExposedGraph;
+  }
+
+  abstract class OperationWithRelation extends OperationDeclaration {
     ref TransferObjectRelation[1] relation;
+    ref Parameter#getRange getRangeOwnerParameter;
   }
 
 }
@@ -517,14 +537,14 @@ package accesspoint {
     ref service.MappedTransferObjectType[1] mappedTransferObjectType;
     ref ~derived.StaticNavigation[1] selector;
     val type.Cardinality[1] cardinality;
-    ref service.UnboundOperation get;
-    ref service.UnboundOperation create;
-    ref service.UnboundOperation update;
-    ref service.UnboundOperation delete;
-    ref service.UnboundOperationWithRelation[*] set;
-    ref service.UnboundOperationWithRelation[*] unset;
-    ref service.UnboundOperationWithRelation[*] addAll;
-    ref service.UnboundOperationWithRelation[*] removeAll;
+    ref service.UnboundOperation#getOwnerExposedGraph get;
+    ref service.UnboundOperation#createOwnerExposedGraph create;
+    ref service.UnboundOperation#updateOwnerExposedGraph update;
+    ref service.UnboundOperation#deleteOwnerExposedGraph delete;
+    ref service.UnboundOperationWithRelation[*]#setOwnerExposedGraph set;
+    ref service.UnboundOperationWithRelation[*]#unsetOwnerExposedGraph unset;
+    ref service.UnboundOperationWithRelation[*]#addAllOwnerExposed addAll;
+    ref service.UnboundOperationWithRelation[*]#removeAllOwnerExposedGraph removeAll;
   }
 
   class ExposedService {
