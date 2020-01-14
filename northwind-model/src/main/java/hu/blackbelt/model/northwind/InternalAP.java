@@ -2,6 +2,7 @@ package hu.blackbelt.model.northwind;
 
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.model.northwind.services.AllInternationalOrders;
 import hu.blackbelt.model.northwind.services.CreateCategory;
 import hu.blackbelt.model.northwind.services.CreateInternationalOrder;
 import hu.blackbelt.model.northwind.services.CreateOrder;
@@ -10,6 +11,7 @@ import hu.blackbelt.model.northwind.services.CreateShipper;
 import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
 import hu.blackbelt.model.northwind.services.GetAllOrders;
 import hu.blackbelt.model.northwind.services.InitializerScript;
+import hu.blackbelt.model.northwind.services.InternationalOrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
 import hu.blackbelt.model.northwind.services.OrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
@@ -40,12 +42,12 @@ public class InternalAP {
     public AccessPoint $ = newAccessPointBuilder().build();
 
 
-    public void init(Model $model, OrderInfoQuery $orderInfoQuery,
+    public void init(Model $model, OrderInfoQuery $orderInfoQuery, InternationalOrderInfoQuery $internationalOrderInfoQuery,
                      GetAllOrders $getAllOrders, GetAllInternationalOrders $getAllInternationalOrders,
                      CreateOrder $createOrder, CreateInternationalOrder $createInternationalOrder,
                      CreateShipper $createShipper, CreateProduct $createProduct, CreateCategory $createCategory,
                      OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks,
-                     InitializerScript $initializerScript
+                     AllInternationalOrders $allInternationalOrders, InitializerScript $initializerScript
     ) {
         useAccessPoint($)
                 .withName("internalAP")
@@ -55,6 +57,16 @@ public class InternalAP {
                         .withMappedTransferObjectType($orderInfoQuery.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
+                        .withCreate($createOrder.$)
+                        .build()
+                )
+                .withExposedGraphs(newExposedGraphBuilder()
+                        .withName("allInternationalOrders")
+                        .withSelector($allInternationalOrders.$)
+                        .withMappedTransferObjectType($internationalOrderInfoQuery.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1))
+                        .withCreate($createInternationalOrder.$)
                         .build()
                 )
                 .withExposedGraphs(newExposedGraphBuilder()

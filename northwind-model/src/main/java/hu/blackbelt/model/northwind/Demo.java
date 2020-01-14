@@ -56,6 +56,7 @@ import hu.blackbelt.model.northwind.measures.Velocity;
 import hu.blackbelt.model.northwind.measures.Volume;
 import hu.blackbelt.model.northwind.measures.Work;
 import hu.blackbelt.model.northwind.services.AllCategories;
+import hu.blackbelt.model.northwind.services.AllInternationalOrders;
 import hu.blackbelt.model.northwind.services.AllProducts;
 import hu.blackbelt.model.northwind.services.CategoryInfo;
 import hu.blackbelt.model.northwind.services.Comment;
@@ -222,6 +223,7 @@ public class Demo {
     private InternalAP internalAP = new InternalAP();
     private ExternallAP externallAP = new ExternallAP();
     private AllCategories allCategories = new AllCategories();
+    private AllInternationalOrders allInternationalOrders = new AllInternationalOrders();
     private AllProducts allProducts = new AllProducts();
     private OrderAssignedToEmployee orderAssignedToEmployee = new OrderAssignedToEmployee();
     private OrdersOfLastTwoWeeks ordersOfLastTwoWeeks = new OrdersOfLastTwoWeeks();
@@ -362,6 +364,7 @@ public class Demo {
 
         // Static Navigation
         allCategories.init(services.$, category);
+        allInternationalOrders.init(services.$, internationalOrder);
         allProducts.init(services.$, product);
         orderAssignedToEmployee.init(services.$, order);
         ordersOfLastTwoWeeks.init(services.$, order);
@@ -369,12 +372,10 @@ public class Demo {
         // Static Data
         totalNumberOfOrders.init(services.$, integer);
 
-        // Exposed graphs
-
         // Access Points
-        internalAP.init($, orderInfoQuery, getAllOrders, getAllInternationalOrders,
+        internalAP.init($, orderInfoQuery, internationalOrderInfoQuery, getAllOrders, getAllInternationalOrders,
                 createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee,
-                ordersOfLastTwoWeeks, initializerScript);
+                ordersOfLastTwoWeeks, allInternationalOrders, initializerScript);
         externallAP.init($, productInfo, categoryInfo, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();
