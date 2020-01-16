@@ -1,29 +1,39 @@
 package hu.blackbelt.judo.meta.psm;
 
-import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.Containment;
+import hu.blackbelt.judo.meta.psm.data.EntitySequence;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement;
+import hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement;
+import hu.blackbelt.judo.meta.psm.data.Relation;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.measure.*;
+import hu.blackbelt.judo.meta.psm.measure.DerivedMeasure;
+import hu.blackbelt.judo.meta.psm.measure.DurationType;
+import hu.blackbelt.judo.meta.psm.measure.DurationUnit;
+import hu.blackbelt.judo.meta.psm.measure.Measure;
+import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.OperationBody;
+import hu.blackbelt.judo.meta.psm.service.OperationDeclaration;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
-
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +50,12 @@ public class PsmUtils {
 
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
+
+    final ResourceSet resourceSet;
+
+    public PsmUtils(ResourceSet resourceSet) {
+        this.resourceSet = resourceSet;
+    }
 
     /**
      * Convert namespace to string.
@@ -627,9 +643,39 @@ public class PsmUtils {
             Pattern.compile(regex);
             return true;
         } catch (PatternSyntaxException e) {
-            //fukd
             return false;
         }
+    }
+
+    public EList<MappedTransferObjectType> getAllContainingMappedTransferObjects(MappedTransferObjectType mappedTransferObjectType) {
+        EList<MappedTransferObjectType> sourceList = new BasicEList<>();
+        sourceList.add(mappedTransferObjectType);
+        return getAllContainingMappedTransferObjectsRecursively(sourceList, sourceList);
+    }
+
+    public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
+        EList<MappedTransferObjectType> newContainers = new BasicEList<>(all(MappedTransferObjectType.class).filter(
+                mto -> mto.getRelations().stream().filter(relation -> relation.isEmbedded() && (relation.getTarget() instanceof MappedTransferObjectType)
+                ).anyMatch(relation -> topLevelContainers.contains((MappedTransferObjectType) relation.getTarget())))
+                .collect(Collectors.toList()));
+
+        if (newContainers.isEmpty()) {
+            return allContainers;
+        }
+        EList<MappedTransferObjectType> newAllContainers = allContainers;
+        newAllContainers.addAll(newContainers);
+
+        return getAllContainingMappedTransferObjectsRecursively(newContainers, newAllContainers);
+
+    }
+
+    public EList<MappedTransferObjectType> getAllMappedTransferObjectsTypeOfInputParameterInOperations() {
+        Stream<MappedTransferObjectType> streamResult = all(OperationBody.class)
+                .filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)/*&& (implementation.eContainer() instanceof BoundOperation)*/
+                .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
+                .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
+                .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
+        return new BasicEList<>(streamResult.collect(Collectors.toSet()));
     }
 
     /**
@@ -653,6 +699,40 @@ public class PsmUtils {
         newContainers.forEach(i -> getAllContainers(result, i));
 
         return result;
+    }
+
+    /**
+     * Get stream of source iterator.
+     *
+     * @param sourceIterator source iterator
+     * @param parallel       flag controlling returned stream (serial or parallel)
+     * @param <T>            type of source iterator
+     * @return return serial (parallel = <code>false</code>) or parallel (parallel = <code>true</code>) stream
+     */
+    static <T> Stream<T> asStream(Iterator<T> sourceIterator, boolean parallel) {
+        Iterable<T> iterable = () -> sourceIterator;
+        return StreamSupport.stream(iterable.spliterator(), parallel);
+    }
+
+    /**
+     * Get all model elements.
+     *
+     * @param <T> generic type of model elements
+     * @return model elements
+     */
+    <T> Stream<T> all() {
+        return asStream((Iterator<T>) resourceSet.getAllContents(), false);
+    }
+
+    /**
+     * Get model elements with specific type
+     *
+     * @param clazz class of model element types
+     * @param <T>   specific type
+     * @return all elements with clazz type
+     */
+    public <T> Stream<T> all(final Class<T> clazz) {
+        return all().filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
     }
 
     /**

@@ -73,7 +73,7 @@ class ExecutionContextTest {
                                 .validateModel(false)
                                 .resource(psmResource)
                                 .build()))
-                .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils()))
+                .injectContexts(ImmutableMap.of("psmUtils", new PsmUtils(executionResourceSet)))
                 .build();
 
         // run the model / metadata loading
