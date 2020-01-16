@@ -51,12 +51,6 @@ public class PsmUtils {
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
 
-    final ResourceSet resourceSet;
-
-    public PsmUtils(ResourceSet resourceSet) {
-        this.resourceSet = resourceSet;
-    }
-
     /**
      * Convert namespace to string.
      *
@@ -648,13 +642,14 @@ public class PsmUtils {
     }
 
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjects(MappedTransferObjectType mappedTransferObjectType) {
-        EList<MappedTransferObjectType> sourceList = new BasicEList<>();
+        ResourceSet resourceSet = mappedTransferObjectType.eResource().getResourceSet();
+        EList<MappedTransferObjectType> sourceList = new UniqueEList<>();
         sourceList.add(mappedTransferObjectType);
-        return getAllContainingMappedTransferObjectsRecursively(sourceList, sourceList);
+        return getAllContainingMappedTransferObjectsRecursively(resourceSet, sourceList, sourceList);
     }
 
-    public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
-        EList<MappedTransferObjectType> newContainers = new BasicEList<>(all(MappedTransferObjectType.class).filter(
+    public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(ResourceSet resourceSet, EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
+        EList<MappedTransferObjectType> newContainers = new UniqueEList<>(all(resourceSet, MappedTransferObjectType.class).filter(
                 mto -> mto.getRelations().stream().filter(relation -> relation.isEmbedded() && (relation.getTarget() instanceof MappedTransferObjectType)
                 ).anyMatch(relation -> topLevelContainers.contains((MappedTransferObjectType) relation.getTarget())))
                 .collect(Collectors.toList()));
@@ -665,17 +660,17 @@ public class PsmUtils {
         EList<MappedTransferObjectType> newAllContainers = allContainers;
         newAllContainers.addAll(newContainers);
 
-        return getAllContainingMappedTransferObjectsRecursively(newContainers, newAllContainers);
+        return getAllContainingMappedTransferObjectsRecursively(resourceSet, newContainers, newAllContainers);
 
     }
 
-    public EList<MappedTransferObjectType> getAllMappedTransferObjectsTypeOfInputParameterInOperations() {
-        Stream<MappedTransferObjectType> streamResult = all(OperationBody.class)
+    public EList<MappedTransferObjectType> getAllMappedTransferObjectsTypeOfInputParameterInOperations(ResourceSet resourceSet) {
+        Stream<MappedTransferObjectType> streamResult = all(resourceSet, OperationBody.class)
                 .filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)/*&& (implementation.eContainer() instanceof BoundOperation)*/
                 .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
-        return new BasicEList<>(streamResult.collect(Collectors.toSet()));
+        return new UniqueEList<>(streamResult.collect(Collectors.toList()));
     }
 
     /**
@@ -720,7 +715,7 @@ public class PsmUtils {
      * @param <T> generic type of model elements
      * @return model elements
      */
-    <T> Stream<T> all() {
+    <T> Stream<T> all(final ResourceSet resourceSet) {
         return asStream((Iterator<T>) resourceSet.getAllContents(), false);
     }
 
@@ -731,8 +726,8 @@ public class PsmUtils {
      * @param <T>   specific type
      * @return all elements with clazz type
      */
-    public <T> Stream<T> all(final Class<T> clazz) {
-        return all().filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
+    public <T> Stream<T> all(final ResourceSet resourceSet, final Class<T> clazz) {
+        return all(resourceSet).filter(e -> clazz.isAssignableFrom(e.getClass())).map(e -> (T) e);
     }
 
     /**
