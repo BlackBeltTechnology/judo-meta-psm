@@ -661,9 +661,9 @@ public class PsmUtils {
      */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(ResourceSet resourceSet, EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
         EList<MappedTransferObjectType> newContainers = new UniqueEList<>(all(resourceSet, MappedTransferObjectType.class).filter(
-                mto -> mto.getRelations().stream().filter(relation -> relation.isEmbedded() && (relation.getTarget() instanceof MappedTransferObjectType)
-                ).anyMatch(relation -> topLevelContainers.contains((MappedTransferObjectType) relation.getTarget())))
-                .collect(Collectors.toList()));
+                mto -> mto.getRelations().stream().filter(relation -> relation.isEmbedded() && (relation.getTarget() instanceof MappedTransferObjectType)).anyMatch(
+                    relation -> topLevelContainers.contains((MappedTransferObjectType) relation.getTarget())
+                )).collect(Collectors.toList()))
 
         if (newContainers.isEmpty()) {
             return allContainers;
@@ -680,12 +680,13 @@ public class PsmUtils {
      * @param resourceSet
      * @return list of unique mapped transfer object types
      */
-    public EList<MappedTransferObjectType> getAllMappedTransferObjectsTypeOfInputParameterInOperations(ResourceSet resourceSet) {
+    public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
         Stream<MappedTransferObjectType> streamResult = all(resourceSet, OperationBody.class)
                 .filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)
                 .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
+
         return new UniqueEList<>(streamResult.collect(Collectors.toList()));
     }
 
