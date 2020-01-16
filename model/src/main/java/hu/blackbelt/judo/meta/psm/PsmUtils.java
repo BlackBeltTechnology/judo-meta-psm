@@ -26,7 +26,6 @@ import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
@@ -641,6 +640,11 @@ public class PsmUtils {
         }
     }
 
+    /**
+     * Get all possible mapped transfer object types embedding given mapped transfer object types
+     * @param mappedTransferObjectType
+     * @return all mapped transfer object type embedding given mapped transfer object type
+     */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjects(MappedTransferObjectType mappedTransferObjectType) {
         ResourceSet resourceSet = mappedTransferObjectType.eResource().getResourceSet();
         EList<MappedTransferObjectType> sourceList = new UniqueEList<>();
@@ -648,6 +652,13 @@ public class PsmUtils {
         return getAllContainingMappedTransferObjectsRecursively(resourceSet, sourceList, sourceList);
     }
 
+    /**
+     * Get all possible mapped transfer object types embedding at least one of listed of mapped transfer object types
+     * @param resourceSet
+     * @param topLevelContainers last list of unique mapped transfer object being embedded by mapped transfer object types
+     * @param allContainers all unique mapped transfer object types being targeted by transfer object relations so far in mapped transfer objects
+     * @return list of unique mapped transfer object types being targeted by transfer object relations in mapped transfer objects
+     */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(ResourceSet resourceSet, EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
         EList<MappedTransferObjectType> newContainers = new UniqueEList<>(all(resourceSet, MappedTransferObjectType.class).filter(
                 mto -> mto.getRelations().stream().filter(relation -> relation.isEmbedded() && (relation.getTarget() instanceof MappedTransferObjectType)
@@ -664,9 +675,14 @@ public class PsmUtils {
 
     }
 
+    /**
+     * Get all mapped transfer object types that are type of input parameter in operations
+     * @param resourceSet
+     * @return list of unique mapped transfer object types
+     */
     public EList<MappedTransferObjectType> getAllMappedTransferObjectsTypeOfInputParameterInOperations(ResourceSet resourceSet) {
         Stream<MappedTransferObjectType> streamResult = all(resourceSet, OperationBody.class)
-                .filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)/*&& (implementation.eContainer() instanceof BoundOperation)*/
+                .filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)
                 .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
