@@ -495,7 +495,7 @@ public class PsmUtils {
     /**
      * Get unique list of all operation names (inherited and not inherited) of a given mapped transfer object type.
      *
-     * @param transferObjectType transfer object type
+     * @param mappedTransferObjectType transfer object type
      * @return unique list of the names of all operations
      */
     public static EList<String> getAllOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
@@ -513,7 +513,7 @@ public class PsmUtils {
     /**
      * Get list of all implementations of a given inherited operation.
      *
-     * @param transferObjectType object type
+     * @param mappedTransferObjectType object type
      * @param name
      * @return list of the implementations of a given inherited operation
      */
@@ -537,7 +537,7 @@ public class PsmUtils {
     /**
      * Get the implementation of a given inherited operation.
      *
-     * @param transferObjectType transfer object type
+     * @param mappedTransferObjectType transfer object type
      * @param name
      * @return OperationBody implementation of a given inherited operation
      */

@@ -251,6 +251,8 @@
           upperBound="-1" eType="#//derived/NavigationProperty" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="sequences" upperBound="-1"
           eType="#//data/EntitySequence" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+          eType="#//service/BoundOperation" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/ReferenceTypedElement #//data/EntityMember">
       <eOperations name="toString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -421,6 +423,8 @@
           upperBound="-1" eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getTemplate" eType="#//service/UnboundOperation"
           eOpposite="#//service/UnboundOperation/getTemplateOwnerTransferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
+          eType="#//service/TransferOperation" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -513,8 +517,6 @@
       <eOperations name="getInheritedOperationNames" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="entityType" lowerBound="1"
           eType="#//data/EntityType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
-          eType="#//service/BoundOperation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="filter" eType="#//derived/LogicalExpressionType"
           containment="true"/>
     </eClassifiers>
@@ -538,8 +540,10 @@
           eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/update"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="deleteOwnerRelation"
           eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/delete"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="instanceRepresentation"
+          lowerBound="1" eType="#//service/MappedTransferObjectType"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//namespace/NamespaceElement #//service/OperationDeclaration">
+    <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//service/OperationDeclaration #//service/TransferOperation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" lowerBound="1"
           eType="#//service/OperationBody" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getTemplateOwnerTransferObjectType"
@@ -595,6 +599,11 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="getRangeOwnerParameter"
           eType="#//service/Parameter" eOpposite="#//service/Parameter/getRange"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundTransferOperation" eSuperTypes="#//service/TransferOperation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="binding" lowerBound="1"
+          eType="#//service/BoundOperation"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="TransferOperation" eSuperTypes="#//namespace/NamedElement"/>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
       nsPrefix="accesspoint">
@@ -628,9 +637,9 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" upperBound="-1"
           eType="#//service/UnboundOperationWithRelation" eOpposite="#//service/UnboundOperationWithRelation/removeAllOwnerExposedGraph"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedService">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
-          eType="#//service/UnboundOperation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ExposedService" eSuperTypes="#//namespace/NamedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="operationGroup" lowerBound="1"
+          eType="#//service/TransferObjectType"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">

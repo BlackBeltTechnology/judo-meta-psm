@@ -114,6 +114,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/dataProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/navigationProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/sequences"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/operations"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllSuperEntityTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperEntityTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAttribute" body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getAllSuperEntityTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
@@ -249,6 +250,7 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/superTransferObjectTypes"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/getTemplate"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/operations"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getAllSuperTransferObjectTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferAttributeNames"
@@ -309,7 +311,6 @@
       <genClasses ecoreClass="psm.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/entityType"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/filter"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isAbstract"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
@@ -346,6 +347,8 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/updateOwnerRelation"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/deleteOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/instanceRepresentation"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/UnboundOperation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/implementation"/>
@@ -398,6 +401,11 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/OperationWithRelation/getRangeOwnerParameter"/>
       </genClasses>
+      <genClasses ecoreClass="psm.ecore#//service/BoundTransferOperation">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/binding"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//service/TransferOperation"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Accesspoint" basePackage="hu.blackbelt.judo.meta.psm"
         resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
@@ -434,7 +442,7 @@
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedService">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedService/operation"/>
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedService/operationGroup"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"

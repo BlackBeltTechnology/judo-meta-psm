@@ -239,6 +239,7 @@ package data {
     val ~derived.DataProperty[*] dataProperties;
     val ~derived.NavigationProperty[*] navigationProperties;
     val EntitySequence[*] sequences;
+    val service.BoundOperation[*] operations;
   }
 
   abstract class Relation extends ReferenceTypedElement, EntityMember {
@@ -402,6 +403,7 @@ package service {
     val TransferAttribute[*] attributes;
     ref TransferObjectType[*] superTransferObjectTypes;
     ref UnboundOperation#getTemplateOwnerTransferObjectType getTemplate;
+    val TransferOperation[*] operations;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -463,7 +465,6 @@ package service {
     !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
     op String[*] getInheritedOperationNames();
     ref data.EntityType[1] entityType;
-    val BoundOperation[*] operations;
     val ~derived.LogicalExpressionType filter;
   }
 
@@ -482,9 +483,10 @@ package service {
     ref TransferObjectRelation#create createOwnerRelation;
     ref TransferObjectRelation#update updateOwnerRelation;
     ref TransferObjectRelation#delete deleteOwnerRelation;
+    ref MappedTransferObjectType[1] instanceRepresentation;
   }
 
-  class UnboundOperation extends namespace.NamespaceElement, OperationDeclaration {
+  class UnboundOperation extends OperationDeclaration, TransferOperation {
     val OperationBody[1] implementation;
     ref TransferObjectType#getTemplate getTemplateOwnerTransferObjectType;
     ref accesspoint.ExposedGraph#get getOwnerExposedGraph;
@@ -524,6 +526,13 @@ package service {
     ref Parameter#getRange getRangeOwnerParameter;
   }
 
+  class BoundTransferOperation extends TransferOperation {
+    ref BoundOperation[1] binding;
+  }
+
+  class TransferOperation extends namespace.NamedElement {
+  }
+
 }
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/accesspoint", prefix="accesspoint")
@@ -547,8 +556,8 @@ package accesspoint {
     ref service.UnboundOperationWithRelation[*]#removeAllOwnerExposedGraph removeAll;
   }
 
-  class ExposedService {
-    ref service.UnboundOperation[1] operation;
+  class ExposedService extends namespace.NamedElement {
+    ref service.TransferObjectType[1] operationGroup;
   }
 
 }
