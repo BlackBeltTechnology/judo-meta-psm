@@ -3,23 +3,14 @@ package hu.blackbelt.model.northwind;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.model.northwind.services.AllInternationalOrders;
-import hu.blackbelt.model.northwind.services.CreateCategory;
 import hu.blackbelt.model.northwind.services.CreateInternationalOrder;
 import hu.blackbelt.model.northwind.services.CreateOrder;
-import hu.blackbelt.model.northwind.services.CreateProduct;
-import hu.blackbelt.model.northwind.services.CreateShipper;
-import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
-import hu.blackbelt.model.northwind.services.GetAllOrders;
-import hu.blackbelt.model.northwind.services.InitializerScript;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
 import hu.blackbelt.model.northwind.services.OrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedServiceBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.useAccessPoint;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
@@ -43,12 +34,9 @@ public class InternalAP {
 
 
     public void init(Model $model, OrderInfoQuery $orderInfoQuery, InternationalOrderInfoQuery $internationalOrderInfoQuery,
-                     GetAllOrders $getAllOrders, GetAllInternationalOrders $getAllInternationalOrders,
                      CreateOrder $createOrder, CreateInternationalOrder $createInternationalOrder,
-                     CreateShipper $createShipper, CreateProduct $createProduct, CreateCategory $createCategory,
                      OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks,
-                     AllInternationalOrders $allInternationalOrders, InitializerScript $initializerScript
-    ) {
+                     AllInternationalOrders $allInternationalOrders) {
         useAccessPoint($)
                 .withName("internalAP")
                 .withExposedGraphs(newExposedGraphBuilder()
@@ -77,16 +65,7 @@ public class InternalAP {
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedServices(newExposedServiceBuilder().withOperation($getAllOrders.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($getAllInternationalOrders.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createOrder.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createInternationalOrder.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createShipper.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createProduct.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createCategory.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($initializerScript.$))
-
-                .build();
+                .withExposedServices(newExposedServiceBuilder().withName("exposed").withOperationGroup($internationalOrderInfoQuery.$)).build();
         useModel($model).withElements($).build();
     }
 }

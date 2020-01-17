@@ -67,7 +67,6 @@ import hu.blackbelt.model.northwind.services.CreateProduct;
 import hu.blackbelt.model.northwind.services.CreateShipper;
 import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
 import hu.blackbelt.model.northwind.services.GetAllOrders;
-import hu.blackbelt.model.northwind.services.InitializerScript;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfo;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfoQuery;
 import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
@@ -228,8 +227,6 @@ public class Demo {
     private OrderAssignedToEmployee orderAssignedToEmployee = new OrderAssignedToEmployee();
     private OrdersOfLastTwoWeeks ordersOfLastTwoWeeks = new OrdersOfLastTwoWeeks();
     private TotalNumberOfOrders totalNumberOfOrders = new TotalNumberOfOrders();
-    private InitializerScript initializerScript = new InitializerScript();
-
 
     private PsmModel createPsmModel() {
         java.lang.String createdSourceModelName = "urn:psm.judo-meta-psm";
@@ -353,14 +350,13 @@ public class Demo {
         internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
 
         // Operations
-        createCategory.init(services.$, categoryInfo);
-        createInternationalOrder.init(services.$, internationalOrderInfo);
-        createOrder.init(services.$, orderInfo);
-        createProduct.init(services.$, productInfo);
-        createShipper.init(services.$, shipperInfo);
-        getAllOrders.init(services.$, orderInfoQuery);
-        initializerScript.init(services.$);
-        getAllInternationalOrders.init(services.$, internationalOrderInfoQuery);
+        createCategory.init(categoryInfo);
+        createInternationalOrder.init(internationalOrderInfo);
+        createOrder.init(orderInfo);
+        createProduct.init(productInfo);
+        createShipper.init(shipperInfo);
+        getAllOrders.init(orderInfoQuery);
+        getAllInternationalOrders.init(internationalOrderInfoQuery);
 
         // Static Navigation
         allCategories.init(services.$, category);
@@ -373,9 +369,9 @@ public class Demo {
         totalNumberOfOrders.init(services.$, integer);
 
         // Access Points
-        internalAP.init($, orderInfoQuery, internationalOrderInfoQuery, getAllOrders, getAllInternationalOrders,
-                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee,
-                ordersOfLastTwoWeeks, allInternationalOrders, initializerScript);
+        internalAP.init($, orderInfoQuery, internationalOrderInfoQuery,
+                createOrder, createInternationalOrder, orderAssignedToEmployee,
+                ordersOfLastTwoWeeks, allInternationalOrders);
         externallAP.init($, productInfo, categoryInfo, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();

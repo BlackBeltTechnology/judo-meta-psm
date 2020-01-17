@@ -1,7 +1,6 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
@@ -64,11 +63,6 @@ public class OrderInfo {
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation comments = newTransferObjectRelationBuilder().build();
 
-    public BoundOperation updateOrder = newBoundOperationBuilder().build();
-    public BoundOperation deleteOrder = newBoundOperationBuilder().build();
-    public BoundOperation changeShipment = newBoundOperationBuilder().build();
-    public BoundOperation createItem = newBoundOperationBuilder().build();
-
     public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority,
                      Order $order, OrderItem $orderItem, ShipperInfo $shipperInfo, CategoryInfo $categoryInfo,
                      ShipmentChange $shipmentChange, Comment $comment) {
@@ -99,7 +93,6 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withLower(1).withUpper(-1)
                         )
-                        .withCreate(createItem)
                 )
                 .withRelations(useTransferObjectRelation(shipper)
                         .withName("shipper")
@@ -121,77 +114,6 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
                         ))
-                .withOperations(useBoundOperation(createItem)
-                        .withName("createItem")
-                        .withOutput(newParameterBuilder()
-                                .withName("output")
-                                .withType($orderItem.$)
-                                .withCardinality(newCardinalityBuilder()
-                                        .withLower(1)
-                                )
-                        )
-                        .withInput(newParameterBuilder().withName("input")
-                                .withType($orderItem.$)
-                                .withCardinality(newCardinalityBuilder()
-                                        .withLower(1)
-                                )
-                        )
-                        .withImplementation(
-                                newOperationBodyBuilder()
-                                        .withStateful(true)
-                                        .withCustomImplementation(true)
-                        )
-                )
-                .withOperations(useBoundOperation(updateOrder)
-                        .withName("updateOrder")
-                        .withOutput(newParameterBuilder()
-                                .withName("output")
-                                .withType($)
-                                .withCardinality(newCardinalityBuilder()
-                                        .withLower(1)
-                                )
-                        )
-                        .withInput(newParameterBuilder().withName("input")
-                                .withType($)
-                                .withCardinality(newCardinalityBuilder()
-                                        .withLower(1)
-                                )
-                        )
-                        .withImplementation(
-                                newOperationBodyBuilder()
-                                        .withStateful(true)
-                                        .withCustomImplementation(true)
-                        )
-                )
-                .withOperations(useBoundOperation(deleteOrder)
-                        .withName("deleteOrder")
-                        .withImplementation(
-                                newOperationBodyBuilder()
-                                        .withStateful(true)
-                                        .withCustomImplementation(true)
-                        )
-                )
-                .withOperations(useBoundOperation(changeShipment)
-                        .withName("changeShipment")
-                        .withOutput(newParameterBuilder()
-                                .withName("output")
-                                .withType($)
-                                .withCardinality(newCardinalityBuilder()
-                                        .withLower(1)
-                                )
-                        )
-                        .withInput(newParameterBuilder().withName("input")
-                                .withType($shipmentChange.$)
-                                .withCardinality(newCardinalityBuilder()
-                                        .withLower(1)
-                                )
-                        )
-                        .withImplementation(
-                                newOperationBodyBuilder()
-                                        .withStateful(true)
-                                        .withCustomImplementation(true)
-                        )
-                )
                 .build();
 
         usePackage($package).withElements($).build();

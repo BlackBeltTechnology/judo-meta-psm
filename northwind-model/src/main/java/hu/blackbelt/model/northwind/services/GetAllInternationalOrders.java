@@ -1,14 +1,10 @@
 package hu.blackbelt.model.northwind.services;
 
-import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newOperationBodyBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useUnboundOperation;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 
 public class GetAllInternationalOrders {
 
@@ -22,7 +18,7 @@ public class GetAllInternationalOrders {
     */
     public UnboundOperation $ = ServiceBuilders.newUnboundOperationBuilder().build();
 
-    public void init(Package $package, InternationalOrderInfoQuery $internationalOrderInfoQuery) {
+    public void init(InternationalOrderInfoQuery $internationalOrderInfoQuery) {
         useUnboundOperation($)
                 .withName("getAllInternationalOrders")
                 .withImplementation(newOperationBodyBuilder()
@@ -34,6 +30,6 @@ public class GetAllInternationalOrders {
                                 .withUpper(-1)))
                 .build();
 
-        usePackage($package).withElements($).build();
+        useMappedTransferObjectType($internationalOrderInfoQuery.$).withOperations($).build();
     }
 }

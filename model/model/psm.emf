@@ -232,6 +232,18 @@ package data {
     !ordered op ~derived.DataProperty[*] getAllDataProperties();
     !ordered op ~derived.NavigationProperty[*] getAllNavigationProperties();
     !ordered op EntitySequence[*] getAllSequences();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationByName(this,name);")
+    !unique op service.OperationBody[1] getInheritedOperationImplementationByName(String name);
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationsByName(this,name);")
+    !unique op service.OperationBody[*] getInheritedOperationImplementationsByName(String name);
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationNames(this);")
+    op String[*] getInheritedOperationNames();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);")
+    op String[*] getAllOperationNames();
     ref EntityType[*] superEntityTypes;
     attr boolean[1] ~abstract;
     val Attribute[*] attributes;
@@ -460,10 +472,6 @@ package service {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);")
     op boolean[1] isInstantiable();
-    op String[*] getAllOperationNames();
-    !unique op OperationBody[*] getInheritedOperationImplementationsByName(String name);
-    !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
-    op String[*] getInheritedOperationNames();
     ref data.EntityType[1] entityType;
     val ~derived.LogicalExpressionType filter;
   }
@@ -517,7 +525,7 @@ package service {
   class UnboundOperationWithRelation extends UnboundOperation, OperationWithRelation {
     ref accesspoint.ExposedGraph#set setOwnerExposedGraph;
     ref accesspoint.ExposedGraph#unset unsetOwnerExposedGraph;
-    ref accesspoint.ExposedGraph#addAll addAllOwnerExposed;
+    ref accesspoint.ExposedGraph#addAll addAllOwnerExposedGraph;
     ref accesspoint.ExposedGraph#removeAll removeAllOwnerExposedGraph;
   }
 
@@ -527,10 +535,14 @@ package service {
   }
 
   class BoundTransferOperation extends TransferOperation {
-    ref BoundOperation[1] binding;
+
+    @GenModel(body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding()).orElse(null) : null;")
+    !ordered op OperationBody getImplementation();
+    attr String[1] binding;
   }
 
-  class TransferOperation extends namespace.NamedElement {
+  abstract class TransferOperation extends namespace.NamedElement {
+    !ordered op OperationBody getImplementation();
   }
 
 }
@@ -552,7 +564,7 @@ package accesspoint {
     ref service.UnboundOperation#deleteOwnerExposedGraph delete;
     ref service.UnboundOperationWithRelation[*]#setOwnerExposedGraph set;
     ref service.UnboundOperationWithRelation[*]#unsetOwnerExposedGraph unset;
-    ref service.UnboundOperationWithRelation[*]#addAllOwnerExposed addAll;
+    ref service.UnboundOperationWithRelation[*]#addAllOwnerExposedGraph addAll;
     ref service.UnboundOperationWithRelation[*]#removeAllOwnerExposedGraph removeAll;
   }
 

@@ -5,9 +5,4 @@ context PSM!AccessPoint {
         check: not PSM!AccessPoint.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
         message: "Access point name is not unique: " + self.name
     }
-    
-    constraint AccessPointUnboundOperationsAreUnique {
-        check: self.exposedServices.size() == self.exposedServices.collect(e | e.getOperation()).asSet().size()
-        message: "Exposed services of access point " + self.name + " are referencing to the same unbound operation."
-    }
 }

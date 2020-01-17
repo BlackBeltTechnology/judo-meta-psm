@@ -1,11 +1,20 @@
 package hu.blackbelt.judo.meta.psm;
 
-import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.Containment;
+import hu.blackbelt.judo.meta.psm.data.EntitySequence;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement;
+import hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement;
+import hu.blackbelt.judo.meta.psm.data.Relation;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.measure.*;
+import hu.blackbelt.judo.meta.psm.measure.DerivedMeasure;
+import hu.blackbelt.judo.meta.psm.measure.DurationType;
+import hu.blackbelt.judo.meta.psm.measure.DurationUnit;
+import hu.blackbelt.judo.meta.psm.measure.Measure;
+import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
@@ -15,11 +24,9 @@ import hu.blackbelt.judo.meta.psm.service.OperationBody;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
-
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -474,17 +481,16 @@ public class PsmUtils {
     }
 
     /**
-     * Get unique list of all inherited operation names of a given mapped transfer object type.
+     * Get unique list of all inherited operation names of a given entity type.
      *
-     * @param mappedTransferObjectType mapped transfer object type
+     * @param entityType entity type
      * @return unique list of the names of inherited operations
      */
-    public static EList<String> getInheritedOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
+    public static EList<String> getInheritedOperationNames(final EntityType entityType) {
         EList<String> operationNames = new UniqueEList<>();
 
-        Set<String> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
-                .filter(to -> to instanceof MappedTransferObjectType)
-                .flatMap(mto -> ((MappedTransferObjectType) mto).getOperations().stream())
+        Set<String> operationNamesSet = entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
                 .map(o -> o.getName())
                 .collect(Collectors.toSet());
 
@@ -493,35 +499,46 @@ public class PsmUtils {
     }
 
     /**
-     * Get unique list of all operation names (inherited and not inherited) of a given mapped transfer object type.
+     * Get unique list of all operation names (inherited and not inherited) of a given entity type.
      *
-     * @param mappedTransferObjectType transfer object type
+     * @param entityType entity type
      * @return unique list of the names of all operations
      */
-    public static EList<String> getAllOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
+    public static EList<String> getAllOperationNames(final EntityType entityType) {
         EList<String> operationNames = new UniqueEList<>();
 
-        Set<String> operationNamesSet = mappedTransferObjectType.getOperations().stream()
+        Set<String> operationNamesSet = entityType.getOperations().stream()
                 .map(o -> o.getName())
                 .collect(Collectors.toSet());
 
-        operationNamesSet.addAll(getInheritedOperationNames(mappedTransferObjectType));
+        operationNamesSet.addAll(getInheritedOperationNames(entityType));
         operationNames.addAll(operationNamesSet);
         return operationNames;
+    }
+
+    public static Optional<OperationBody> getOperationImplementationByName(final EntityType entityType, final String name) {
+        final Optional<OperationBody> body = entityType.getOperations().stream().filter(o -> o.getName().equalsIgnoreCase(name))
+                .map(o -> o.getImplementation())
+                .findAny();
+
+        if (body.isPresent()) {
+            return body;
+        } else {
+            return Optional.ofNullable(getInheritedOperationImplementationByName(entityType, name));
+        }
     }
 
     /**
      * Get list of all implementations of a given inherited operation.
      *
-     * @param mappedTransferObjectType object type
-     * @param name
+     * @param entityType entity type
+     * @param name       operation name
      * @return list of the implementations of a given inherited operation
      */
-    public static EList<OperationBody> getInheritedOperationImplementationsByName(final MappedTransferObjectType mappedTransferObjectType, final String name) {
+    public static EList<OperationBody> getInheritedOperationImplementationsByName(final EntityType entityType, final String name) {
         EList<OperationBody> implementations = new UniqueEList<>();
-        mappedTransferObjectType.getSuperTransferObjectTypes().stream()
-                .filter(to -> to instanceof MappedTransferObjectType)
-                .map(mto -> (MappedTransferObjectType) mto)
+
+        entityType.getSuperEntityTypes().stream()
                 .forEach(s -> {
                     final Optional<BoundOperation> boundOperation = s.getOperations().stream()
                             .filter(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null).findAny();
@@ -537,12 +554,12 @@ public class PsmUtils {
     /**
      * Get the implementation of a given inherited operation.
      *
-     * @param mappedTransferObjectType transfer object type
-     * @param name
+     * @param entityType entity type
+     * @param name       operation name
      * @return OperationBody implementation of a given inherited operation
      */
-    public static OperationBody getInheritedOperationImplementationByName(final MappedTransferObjectType mappedTransferObjectType, final String name) {
-        EList<OperationBody> implementations = getInheritedOperationImplementationsByName(mappedTransferObjectType, name);
+    public static OperationBody getInheritedOperationImplementationByName(final EntityType entityType, final String name) {
+        EList<OperationBody> implementations = getInheritedOperationImplementationsByName(entityType, name);
         if (implementations.size() > 1) {
             throw new IllegalStateException("Multiple implementation found and not overriden by transfer object type");
         } else if (implementations.isEmpty()) {
@@ -616,18 +633,19 @@ public class PsmUtils {
     public static boolean isInstantiableMappedTransferObjectType(final MappedTransferObjectType mappedTransferObjectType) {
         if (mappedTransferObjectType.getEntityType().isAbstract()) return false;
 
-        return getAllOperationNames(mappedTransferObjectType).stream().allMatch(
-                name -> mappedTransferObjectType.getOperations().stream()
+        final EntityType entityType = mappedTransferObjectType.getEntityType();
+
+        return getAllOperationNames(entityType).stream().allMatch(
+                name -> entityType.getOperations().stream()
                         .anyMatch(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null)
-                        || getInheritedOperationImplementationsByName(mappedTransferObjectType, name).size() == 1);
+                        || getInheritedOperationImplementationsByName(entityType, name).size() == 1);
     }
 
-    public static boolean isRegex(String regex) throws PatternSyntaxException {
+    public static boolean isRegex(final String regex) throws PatternSyntaxException {
         try {
             Pattern.compile(regex);
             return true;
         } catch (PatternSyntaxException e) {
-            //fukd
             return false;
         }
     }

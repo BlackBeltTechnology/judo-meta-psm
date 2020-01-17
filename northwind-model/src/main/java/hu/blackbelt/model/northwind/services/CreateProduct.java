@@ -1,14 +1,10 @@
 package hu.blackbelt.model.northwind.services;
 
-import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newOperationBodyBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useUnboundOperation;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 
 public class CreateProduct {
     /*
@@ -24,7 +20,7 @@ public class CreateProduct {
     */
     public UnboundOperation $ = ServiceBuilders.newUnboundOperationBuilder().build();
 
-    public void init(Package $package, ProductInfo $productInfo) {
+    public void init(ProductInfo $productInfo) {
         useUnboundOperation($)
                 .withName("createProduct")
                 .withImplementation(newOperationBodyBuilder()
@@ -47,6 +43,6 @@ public class CreateProduct {
                 )
                 .build();
 
-        usePackage($package).withElements($).build();
+        useMappedTransferObjectType($productInfo.$).withOperations($).build();
     }
 }
