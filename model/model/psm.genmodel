@@ -400,12 +400,12 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/addAllOwnerRelation"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/removeAllOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/getRangeOwnerParameter"/>
         <genOperations ecoreOperation="psm.ecore#//service/BoundTransferOperation/getImplementation"
             body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding()).orElse(null) : null;"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/TransferOperation">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferOperation/getRangeOwnerParameter"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferOperation/getImplementation"/>
       </genClasses>
     </nestedGenPackages>

@@ -502,7 +502,7 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
-    ref BoundTransferOperation[*]#getRangeOwnerParameter getRange;
+    ref TransferOperation[*]#getRangeOwnerParameter getRange;
   }
 
   class OperationBody {
@@ -538,11 +538,11 @@ package service {
     ref TransferObjectRelation#unset unsetOwnerRelation;
     ref TransferObjectRelation#addAll addAllOwnerRelation;
     ref TransferObjectRelation#removeAll removeAllOwnerRelation;
-    ref Parameter#getRange getRangeOwnerParameter;
   }
 
   abstract class TransferOperation extends namespace.NamedElement {
     !ordered op OperationBody getImplementation();
+    ref Parameter#getRange getRangeOwnerParameter;
   }
 
 }

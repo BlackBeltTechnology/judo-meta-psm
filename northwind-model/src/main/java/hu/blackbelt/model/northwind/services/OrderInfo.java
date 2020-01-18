@@ -37,7 +37,7 @@ public class OrderInfo {
     public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation comments = newTransferObjectRelationBuilder().build();
 
-    public BoundTransferOperation getItems = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation getOrderItems = newBoundTransferOperationBuilder().build();
     public BoundTransferOperation createItem = newBoundTransferOperationBuilder().build();
     public BoundTransferOperation updateItem  = newBoundTransferOperationBuilder().build();
     public BoundTransferOperation deleteItem  = newBoundTransferOperationBuilder().build();
@@ -118,7 +118,7 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withLower(1).withUpper(-1)
                         )
-                        .withGet(getItems)
+                        .withGet(getOrderItems)
                         .withCreate(createItem)
                         .withUpdate(updateItem)
                         .withDelete(deleteItem)
@@ -155,8 +155,8 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
                         ))
-                .withOperations(useBoundTransferOperation(getItems)
-                        .withName("getItems")
+                .withOperations(useBoundTransferOperation(getOrderItems)
+                        .withName("getOrderItems")
                         .withBinding("getDetails")
                         .build()
                 )

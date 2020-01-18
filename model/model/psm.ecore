@@ -569,7 +569,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
           eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" upperBound="-1"
-          eType="#//service/BoundTransferOperation" eOpposite="#//service/BoundTransferOperation/getRangeOwnerParameter"/>
+          eType="#//service/TransferOperation" eOpposite="#//service/TransferOperation/getRangeOwnerParameter"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OperationBody">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
@@ -618,12 +618,12 @@
           eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/addAll"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="removeAllOwnerRelation"
           eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/removeAll"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="getRangeOwnerParameter"
-          eType="#//service/Parameter" eOpposite="#//service/Parameter/getRange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferOperation" abstract="true"
         eSuperTypes="#//namespace/NamedElement">
       <eOperations name="getImplementation" ordered="false" eType="#//service/OperationBody"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getRangeOwnerParameter"
+          eType="#//service/Parameter" eOpposite="#//service/Parameter/getRange"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
