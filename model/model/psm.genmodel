@@ -340,14 +340,6 @@
       <genClasses ecoreClass="psm.ecore#//service/BoundOperation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/implementation"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/getOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/createOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/updateOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/deleteOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/instanceRepresentation"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/UnboundOperation">
@@ -375,16 +367,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/customImplementation"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/body"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//service/BoundOperationWithRelation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/setOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/unsetOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/addAllOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/removeAllOwnerRelation"/>
-      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//service/BoundOperationWithRelation"/>
       <genClasses ecoreClass="psm.ecore#//service/UnboundOperationWithRelation">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperationWithRelation/setOwnerExposedGraph"/>
@@ -398,11 +381,27 @@
       <genClasses ecoreClass="psm.ecore#//service/OperationWithRelation">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/OperationWithRelation/relation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/OperationWithRelation/getRangeOwnerParameter"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/BoundTransferOperation">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/BoundTransferOperation/binding"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/getOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/createOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/updateOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/deleteOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/setOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/unsetOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/addAllOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/removeAllOwnerRelation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/getRangeOwnerParameter"/>
         <genOperations ecoreOperation="psm.ecore#//service/BoundTransferOperation/getImplementation"
             body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding()).orElse(null) : null;"/>
       </genClasses>

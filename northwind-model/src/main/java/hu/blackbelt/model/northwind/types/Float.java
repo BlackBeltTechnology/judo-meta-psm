@@ -8,9 +8,7 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumer
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useNumericType;
 
 public class Float {
-    /*
-        <elements xsi:type="type:NumericType" xmi:id="_WX24MIUcEeipmMyz9cMCRA" name="Float" precision="7" scale="4"/>
-    */
+
     public NumericType $ = newNumericTypeBuilder().build();
 
     public void init(Package $package) {

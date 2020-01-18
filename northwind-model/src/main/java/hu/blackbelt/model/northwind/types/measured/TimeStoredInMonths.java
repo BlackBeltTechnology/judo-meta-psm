@@ -10,9 +10,6 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 
 public class TimeStoredInMonths {
 
-    /*
-          <elements xsi:type="measure:MeasuredType" xmi:id="_WrULYB1ZEemwg4NgOjaKeA" name="TimeStoredInMonths" precision="9" storeUnit="_yX3RgB2GEemwg4NgOjaKeA"/>
-    */
     public MeasuredType $ = newMeasuredTypeBuilder().build();
 
     public void init(Package $package, MonthBasedTime $moMonthBasedTime) {

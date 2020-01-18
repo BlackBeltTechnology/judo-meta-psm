@@ -445,14 +445,14 @@ package service {
     attr boolean[1] embeddedCreate;
     attr boolean[1] embeddedUpdate;
     attr boolean[1] embeddedDelete = false;
-    ref BoundOperation#getOwnerRelation get;
-    ref BoundOperation#createOwnerRelation create;
-    ref BoundOperation#updateOwnerRelation update;
-    ref BoundOperation#deleteOwnerRelation delete;
-    ref BoundOperationWithRelation[*]#setOwnerRelation set;
-    ref BoundOperationWithRelation[*]#unsetOwnerRelation unset;
-    ref BoundOperationWithRelation[*]#addAllOwnerRelation addAll;
-    ref BoundOperationWithRelation[*]#removeAllOwnerRelation removeAll;
+    ref BoundTransferOperation#getOwnerRelation get;
+    ref BoundTransferOperation#createOwnerRelation create;
+    ref BoundTransferOperation#updateOwnerRelation update;
+    ref BoundTransferOperation#deleteOwnerRelation delete;
+    ref BoundTransferOperation[*]#setOwnerRelation set;
+    ref BoundTransferOperation[*]#unsetOwnerRelation unset;
+    ref BoundTransferOperation[*]#addAllOwnerRelation addAll;
+    ref BoundTransferOperation[*]#removeAllOwnerRelation removeAll;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -487,10 +487,6 @@ package service {
 
   class BoundOperation extends namespace.NamedElement, OperationDeclaration {
     val OperationBody implementation;
-    ref TransferObjectRelation#get getOwnerRelation;
-    ref TransferObjectRelation#create createOwnerRelation;
-    ref TransferObjectRelation#update updateOwnerRelation;
-    ref TransferObjectRelation#delete deleteOwnerRelation;
     ref MappedTransferObjectType[1] instanceRepresentation;
   }
 
@@ -506,7 +502,7 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
-    ref OperationWithRelation[*]#getRangeOwnerParameter getRange;
+    ref BoundTransferOperation[*]#getRangeOwnerParameter getRange;
   }
 
   class OperationBody {
@@ -516,10 +512,6 @@ package service {
   }
 
   class BoundOperationWithRelation extends BoundOperation, OperationWithRelation {
-    ref TransferObjectRelation#set setOwnerRelation;
-    ref TransferObjectRelation#unset unsetOwnerRelation;
-    ref TransferObjectRelation#addAll addAllOwnerRelation;
-    ref TransferObjectRelation#removeAll removeAllOwnerRelation;
   }
 
   class UnboundOperationWithRelation extends UnboundOperation, OperationWithRelation {
@@ -531,7 +523,6 @@ package service {
 
   abstract class OperationWithRelation extends OperationDeclaration {
     ref TransferObjectRelation[1] relation;
-    ref Parameter#getRange getRangeOwnerParameter;
   }
 
   class BoundTransferOperation extends TransferOperation {
@@ -539,6 +530,15 @@ package service {
     @GenModel(body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding()).orElse(null) : null;")
     !ordered op OperationBody getImplementation();
     attr String[1] binding;
+    ref TransferObjectRelation#get getOwnerRelation;
+    ref TransferObjectRelation#create createOwnerRelation;
+    ref TransferObjectRelation#update updateOwnerRelation;
+    ref TransferObjectRelation#delete deleteOwnerRelation;
+    ref TransferObjectRelation#set setOwnerRelation;
+    ref TransferObjectRelation#unset unsetOwnerRelation;
+    ref TransferObjectRelation#addAll addAllOwnerRelation;
+    ref TransferObjectRelation#removeAll removeAllOwnerRelation;
+    ref Parameter#getRange getRangeOwnerParameter;
   }
 
   abstract class TransferOperation extends namespace.NamedElement {

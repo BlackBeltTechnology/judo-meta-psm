@@ -4,21 +4,11 @@ import hu.blackbelt.judo.meta.psm.measure.DerivedMeasure;
 import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newDerivedMeasureBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newMeasureDefinitionTermBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newUnitBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useDerivedMeasure;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useUnit;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 
 public class ElectricCharge {
-    /*
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_1MUEQB81EemH1tWVVVMmqg" name="ElectricCharge">
-      <units xmi:id="_32iO0B81EemH1tWVVVMmqg" name="coulomb" symbol="C"/>
-      <terms xmi:id="_7OzyMB81EemH1tWVVVMmqg" unit="_O-NKcB81EemH1tWVVVMmqg"/>
-      <terms xmi:id="_6tAFoB81EemH1tWVVVMmqg" unit="_SlUs8B2GEemwg4NgOjaKeA"/>
-    </elements>
-    */
+
     public DerivedMeasure $ = newDerivedMeasureBuilder().build();
     public Unit coulomb = newUnitBuilder().build();
 

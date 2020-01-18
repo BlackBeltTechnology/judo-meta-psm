@@ -488,22 +488,22 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="embeddedDelete" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="get" eType="#//service/BoundOperation"
-          eOpposite="#//service/BoundOperation/getOwnerRelation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/BoundOperation"
-          eOpposite="#//service/BoundOperation/createOwnerRelation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/BoundOperation"
-          eOpposite="#//service/BoundOperation/updateOwnerRelation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/BoundOperation"
-          eOpposite="#//service/BoundOperation/deleteOwnerRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="get" eType="#//service/BoundTransferOperation"
+          eOpposite="#//service/BoundTransferOperation/getOwnerRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="create" eType="#//service/BoundTransferOperation"
+          eOpposite="#//service/BoundTransferOperation/createOwnerRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//service/BoundTransferOperation"
+          eOpposite="#//service/BoundTransferOperation/updateOwnerRelation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="delete" eType="#//service/BoundTransferOperation"
+          eOpposite="#//service/BoundTransferOperation/deleteOwnerRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="set" upperBound="-1"
-          eType="#//service/BoundOperationWithRelation" eOpposite="#//service/BoundOperationWithRelation/setOwnerRelation"/>
+          eType="#//service/BoundTransferOperation" eOpposite="#//service/BoundTransferOperation/setOwnerRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="unset" upperBound="-1"
-          eType="#//service/BoundOperationWithRelation" eOpposite="#//service/BoundOperationWithRelation/unsetOwnerRelation"/>
+          eType="#//service/BoundTransferOperation" eOpposite="#//service/BoundTransferOperation/unsetOwnerRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="addAll" upperBound="-1"
-          eType="#//service/BoundOperationWithRelation" eOpposite="#//service/BoundOperationWithRelation/addAllOwnerRelation"/>
+          eType="#//service/BoundTransferOperation" eOpposite="#//service/BoundTransferOperation/addAllOwnerRelation"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="removeAll" upperBound="-1"
-          eType="#//service/BoundOperationWithRelation" eOpposite="#//service/BoundOperationWithRelation/removeAllOwnerRelation"/>
+          eType="#//service/BoundTransferOperation" eOpposite="#//service/BoundTransferOperation/removeAllOwnerRelation"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferAttribute" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isPrimitive" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -546,14 +546,6 @@
     <eClassifiers xsi:type="ecore:EClass" name="BoundOperation" eSuperTypes="#//namespace/NamedElement #//service/OperationDeclaration">
       <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" eType="#//service/OperationBody"
           containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="getOwnerRelation" eType="#//service/TransferObjectRelation"
-          eOpposite="#//service/TransferObjectRelation/get"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="createOwnerRelation"
-          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/create"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="updateOwnerRelation"
-          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/update"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="deleteOwnerRelation"
-          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/delete"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="instanceRepresentation"
           lowerBound="1" eType="#//service/MappedTransferObjectType"/>
     </eClassifiers>
@@ -577,7 +569,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1"
           eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="getRange" upperBound="-1"
-          eType="#//service/OperationWithRelation" eOpposite="#//service/OperationWithRelation/getRangeOwnerParameter"/>
+          eType="#//service/BoundTransferOperation" eOpposite="#//service/BoundTransferOperation/getRangeOwnerParameter"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OperationBody">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateful" lowerBound="1"
@@ -586,16 +578,7 @@
           lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation #//service/OperationWithRelation">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="setOwnerRelation" eType="#//service/TransferObjectRelation"
-          eOpposite="#//service/TransferObjectRelation/set"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="unsetOwnerRelation" eType="#//service/TransferObjectRelation"
-          eOpposite="#//service/TransferObjectRelation/unset"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="addAllOwnerRelation"
-          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/addAll"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAllOwnerRelation"
-          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/removeAll"/>
-    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation #//service/OperationWithRelation"/>
     <eClassifiers xsi:type="ecore:EClass" name="UnboundOperationWithRelation" eSuperTypes="#//service/UnboundOperation #//service/OperationWithRelation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="setOwnerExposedGraph"
           eType="#//accesspoint/ExposedGraph" eOpposite="#//accesspoint/ExposedGraph/set"/>
@@ -610,8 +593,6 @@
         eSuperTypes="#//service/OperationDeclaration">
       <eStructuralFeatures xsi:type="ecore:EReference" name="relation" lowerBound="1"
           eType="#//service/TransferObjectRelation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="getRangeOwnerParameter"
-          eType="#//service/Parameter" eOpposite="#//service/Parameter/getRange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BoundTransferOperation" eSuperTypes="#//service/TransferOperation">
       <eOperations name="getImplementation" ordered="false" eType="#//service/OperationBody">
@@ -621,6 +602,24 @@
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="binding" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getOwnerRelation" eType="#//service/TransferObjectRelation"
+          eOpposite="#//service/TransferObjectRelation/get"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="createOwnerRelation"
+          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/create"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="updateOwnerRelation"
+          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/update"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="deleteOwnerRelation"
+          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/delete"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="setOwnerRelation" eType="#//service/TransferObjectRelation"
+          eOpposite="#//service/TransferObjectRelation/set"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="unsetOwnerRelation" eType="#//service/TransferObjectRelation"
+          eOpposite="#//service/TransferObjectRelation/unset"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="addAllOwnerRelation"
+          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/addAll"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="removeAllOwnerRelation"
+          eType="#//service/TransferObjectRelation" eOpposite="#//service/TransferObjectRelation/removeAll"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="getRangeOwnerParameter"
+          eType="#//service/Parameter" eOpposite="#//service/Parameter/getRange"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferOperation" abstract="true"
         eSuperTypes="#//namespace/NamedElement">

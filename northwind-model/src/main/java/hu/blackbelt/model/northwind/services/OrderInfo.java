@@ -1,13 +1,15 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
-import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.*;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.entities.Order;
-import hu.blackbelt.model.northwind.types.Priority;
+import hu.blackbelt.model.northwind.types.*;
+import hu.blackbelt.model.northwind.types.Boolean;
+import hu.blackbelt.model.northwind.types.Double;
+import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
@@ -15,55 +17,34 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardi
 
 public class OrderInfo {
 
-
-    /*
-    <elements xsi:type="service:MappedTransferObjectType" xmi:id="_-L7R4IFREemFzY3ZWApzVQ" name="OrderInfo" entityType="_-H4RoINkEeiLE-B2bbL0fg">
-      <relations xmi:id="_-L7R4YFREemFzY3ZWApzVQ" name="items" binding="_2CC44LwNEeiOuYiCo6IbXQ" target="_-eoLcIFREemFzY3ZWApzVQ">
-        <cardinality xmi:id="_-L7R4oFREemFzY3ZWApzVQ" upper="-1"/>
-      </relations>
-      <relations xmi:id="_csG2sIFSEemFzY3ZWApzVQ" name="shipper" binding="_WVBGcLwNEeiOuYiCo6IbXQ" target="_OUfQ4IFSEemFzY3ZWApzVQ">
-        <cardinality xmi:id="_mBre8IFSEemFzY3ZWApzVQ"/>
-      </relations>
-      <relations xmi:id="_AJB7MKfHEemuF_XcMCHsqg" name="categories" binding="_qMfVoHrHEemPuYxp6QV8dA" target="_xxeTIEWXEemHs64O5EYsyQ">
-        <cardinality xmi:id="_Ig3v4KfHEemuF_XcMCHsqg" upper="-1"/>
-      </relations>
-      <relations xmi:id="_hkJUIKiYEemuF_XcMCHsqg" name="comments" target="_wNexgKiXEemuF_XcMCHsqg" embedded="true">
-        <cardinality xmi:id="_lw-g8KiYEemuF_XcMCHsqg" upper="-1"/>
-      </relations>
-      <attributes xmi:id="_-L7R5YFREemFzY3ZWApzVQ" name="orderDate" required="true" dataType="_Z9J8IIN1EeiLE-B2bbL0fg" binding="_WXvUoIN1EeiLE-B2bbL0fg"/>
-      <attributes xmi:id="_-L7R5oFREemFzY3ZWApzVQ" name="shipperName" dataType="_Nppx8IUcEeipmMyz9cMCRA" binding="_5i40sCVQEemLpvUY7MQgng"/>
-      <operations xmi:id="_jEaRYKPUEem4Sqe63wVljw" name="updateOrder">
-        <output xmi:id="_qVIF8KPUEem4Sqe63wVljw" name="output" type="_-L7R4IFREemFzY3ZWApzVQ">
-          <cardinality xmi:id="_MI6JgKPVEem4Sqe63wVljw" lower="1"/>
-        </output>
-        <input xmi:id="_ofHmkKPUEem4Sqe63wVljw" name="input" type="_-L7R4IFREemFzY3ZWApzVQ">
-          <cardinality xmi:id="_MeG9cKPVEem4Sqe63wVljw" lower="1"/>
-        </input>
-      </operations>
-      <operations xmi:id="_lrK4QKPUEem4Sqe63wVljw" name="deleteOrder"/>
-      <operations xmi:id="_Agu9kKiYEemuF_XcMCHsqg" name="changeShipment">
-        <output xmi:id="_F72icKiYEemuF_XcMCHsqg" name="output" type="_-L7R4IFREemFzY3ZWApzVQ">
-          <cardinality xmi:id="_iziC8KiZEemuF_XcMCHsqg" lower="1"/>
-        </output>
-        <input xmi:id="_EPFeoKiYEemuF_XcMCHsqg" name="input" type="_gw4goKiXEemuF_XcMCHsqg">
-          <cardinality xmi:id="_jG31sKiZEemuF_XcMCHsqg" lower="1"/>
-        </input>
-      </operations>
-    </elements>
-    */
-
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
     public TransferAttribute priority = newTransferAttributeBuilder().build();
+    public TransferAttribute shipped = newTransferAttributeBuilder().build();
+    public TransferAttribute shipperLocation = newTransferAttributeBuilder().build();
+    public TransferAttribute hasHeavyItem = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfItems = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfDiscountedItemsOutOfStock = newTransferAttributeBuilder().build();
+    public TransferAttribute numberOfCategories = newTransferAttributeBuilder().build();
+    public TransferAttribute totalPrice = newTransferAttributeBuilder().build();
+    public TransferAttribute totalWeight = newTransferAttributeBuilder().build();
 
     public TransferObjectRelation items = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation shipper = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation discountedItemsOutOfStock = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation comments = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority,
+    public BoundTransferOperation getItems = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation createItem = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation updateItem  = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation deleteItem  = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation setProductOfItem  = newBoundTransferOperationBuilder().build();
+
+    public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority, Boolean $boolean,
+                     Gps $gps, Integer $integer, Double $double, MassStoredInGrams $massStoredInGrams,
                      Order $order, OrderItem $orderItem, ShipperInfo $shipperInfo, CategoryInfo $categoryInfo,
                      ShipmentChange $shipmentChange, Comment $comment) {
         useMappedTransferObjectType($)
@@ -86,12 +67,79 @@ public class OrderInfo {
                         .withDataType($string.$)
                         .withBinding($order.shipperName)
                 )
+                .withAttributes(useTransferAttribute(shipped)
+                        .withName("shipped")
+                        .withDataType($boolean.$)
+                        .withBinding($order.shipped)
+                )
+                .withAttributes(useTransferAttribute(shipperLocation)
+                        .withName("shipperLocation")
+                        .withDataType($gps.$)
+                        .withBinding($order.shipperLocation)
+                )
+                .withAttributes(useTransferAttribute(hasHeavyItem)
+                        .withName("hasHeavyItem")
+                        .withDataType($boolean.$)
+                        .withBinding($order.hasHeavyItem)
+                )
+                .withAttributes(useTransferAttribute(numberOfItems)
+                        .withName("numberOfItems")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfItems)
+                )
+                .withAttributes(useTransferAttribute(numberOfDiscountedItemsOutOfStock)
+                        .withName("numberOfDiscountedItemsOutOfStock")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfDiscountedItemsOutOfStock)
+                )
+                .withAttributes(useTransferAttribute(numberOfCategories)
+                        .withName("numberOfCategories")
+                        .withDataType($integer.$)
+                        .withBinding($order.numberOfCategories)
+                )
+                .withAttributes(useTransferAttribute(totalPrice)
+                        .withName("totalPrice")
+                        .withDataType($double.$)
+                        .withBinding($order.totalPrice)
+                )
+                .withAttributes(useTransferAttribute(totalWeight)
+                        .withName("totalWeight")
+                        .withDataType($massStoredInGrams.$)
+                        .withBinding($order.totalWeight)
+                )
                 .withRelations(useTransferObjectRelation(items)
                         .withName("items")
                         .withBinding($order.orderDetails)
                         .withTarget($orderItem.$)
+                        .withEmbedded(true)
+                        .withEmbeddedCreate(true)
+                        .withEmbeddedUpdate(true)
+                        .withEmbeddedDelete(true)
                         .withCardinality(newCardinalityBuilder()
                                 .withLower(1).withUpper(-1)
+                        )
+                        .withGet(getItems)
+                        .withCreate(createItem)
+                        .withUpdate(updateItem)
+                        .withDelete(deleteItem)
+                        .withSet(setProductOfItem)
+                )
+                .withRelations(useTransferObjectRelation(discountedItemsOutOfStock)
+                        .withName("discountedItemsOutOfStock")
+                        .withBinding($order.discountedItemsOutOfStock)
+                        .withTarget($orderItem.$)
+                        .withEmbedded(true)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1)
+                        )
+                )
+                .withRelations(useTransferObjectRelation(categories)
+                        .withName("categories")
+                        .withBinding($order.categories)
+                        .withTarget($categoryInfo.$)
+                        .withEmbedded(true)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1)
                         )
                 )
                 .withRelations(useTransferObjectRelation(shipper)
@@ -100,13 +148,6 @@ public class OrderInfo {
                         .withTarget($shipperInfo.$)
                         .withCardinality(newCardinalityBuilder())
                 )
-                .withRelations(useTransferObjectRelation(categories)
-                        .withName("categories")
-                        .withBinding($order.categories)
-                        .withTarget($categoryInfo.$)
-                        .withCardinality(newCardinalityBuilder()
-                                .withUpper(-1)
-                        ))
                 .withRelations(useTransferObjectRelation(comments)
                         .withName("comments")
                         .withTarget($comment.$)
@@ -114,6 +155,31 @@ public class OrderInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
                         ))
+                .withOperations(useBoundTransferOperation(getItems)
+                        .withName("getItems")
+                        .withBinding("getDetails")
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(createItem)
+                        .withName("createItem")
+                        .withBinding("createDetail")
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(updateItem)
+                        .withName("updateItem")
+                        .withBinding("updateDetail")
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(deleteItem)
+                        .withName("deleteItem")
+                        .withBinding("deleteDetail")
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(setProductOfItem)
+                        .withName("setProductOfItem")
+                        .withBinding("setProductOfDetail")
+                        .build()
+                )
                 .build();
 
         usePackage($package).withElements($).build();

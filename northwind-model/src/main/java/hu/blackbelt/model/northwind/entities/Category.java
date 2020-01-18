@@ -8,30 +8,11 @@ import hu.blackbelt.model.northwind.types.Binary;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.Text;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAssociationEnd;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAttribute;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useEntityType;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class Category {
-
-    /*
-        <elements xsi:type="data:EntityType" xmi:id="_43ZPcINkEeiLE-B2bbL0fg" name="Category">
-          <attributes xmi:id="_v7k5EINmEeiLE-B2bbL0fg" name="categoryName" dataType="_Nppx8IUcEeipmMyz9cMCRA" required="true"/>
-          <attributes xmi:id="_Vsjt0INuEeiLE-B2bbL0fg" name="description" dataType="_tXQUoIOGEeiLE-B2bbL0fg"/>
-          <attributes xmi:id="_cwpboINuEeiLE-B2bbL0fg" name="picture" dataType="_j-zrcINuEeiLE-B2bbL0fg"/>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_892OYLwCEeiOuYiCo6IbXQ" name="products" target="_6XH80INkEeiLE-B2bbL0fg" partner="_CkXK8LwDEeiOuYiCo6IbXQ">
-            <cardinality xmi:id="_98qusOdSEeiJv53TEP0vvQ" upper="-1"/>
-          </relations>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_NACAMOdTEeiJv53TEP0vvQ" name="owner" target="_ONN9gINlEeiLE-B2bbL0fg" partner="_Y1GwwOdTEeiJv53TEP0vvQ">
-            <cardinality xmi:id="_rzreIOdUEeiJv53TEP0vvQ"/>
-          </relations>
-        </elements>
-    */
 
     public EntityType $ = newEntityTypeBuilder().build();
     public Attribute categoryName = newAttributeBuilder().build();

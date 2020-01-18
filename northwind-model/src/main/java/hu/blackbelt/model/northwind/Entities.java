@@ -8,9 +8,7 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 
 public class Entities {
-    /*
-      <packages xmi:id="_l025cNODEeim9MGHLpE1bQ" name="entities">
-     */
+
     public Package $ = newPackageBuilder().build();
 
     public void init(Model $model) {

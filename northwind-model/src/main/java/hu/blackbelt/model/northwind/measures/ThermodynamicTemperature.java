@@ -4,18 +4,11 @@ import hu.blackbelt.judo.meta.psm.measure.Measure;
 import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newMeasureBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newUnitBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useMeasure;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useUnit;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 
 public class ThermodynamicTemperature {
-    /*
-    <elements xsi:type="measure:Measure" xmi:id="_K9bcoB81EemH1tWVVVMmqg" name="ThermodynamicTemperature">
-      <units xmi:id="_NFjmwB81EemH1tWVVVMmqg" name="kelvin" symbol="K"/>
-    </elements>
-    */
+
     public Measure $ = newMeasureBuilder().build();
     public Unit kelvin = newUnitBuilder().build();
 

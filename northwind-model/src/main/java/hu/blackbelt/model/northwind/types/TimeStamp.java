@@ -9,10 +9,6 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useTimes
 
 public class TimeStamp {
 
-    /*
-        <elements xsi:type="type:TimestampType" xmi:id="_Z9J8IIN1EeiLE-B2bbL0fg" name="Timestamp"/>
-    */
-
     public TimestampType $ = newTimestampTypeBuilder().build();
 
     public void init(Package $package) {

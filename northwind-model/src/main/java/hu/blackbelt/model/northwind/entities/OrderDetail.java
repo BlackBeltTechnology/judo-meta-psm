@@ -19,31 +19,6 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardi
 
 public class OrderDetail {
 
-    /*
-        <elements xsi:type="data:EntityType" xmi:id="__XzocINkEeiLE-B2bbL0fg" name="OrderDetail">
-          <attributes xmi:id="_bG7OUIN6EeiLE-B2bbL0fg" name="unitPrice" dataType="_VDVVQIUcEeipmMyz9cMCRA" required="true"/>
-          <attributes xmi:id="_d3obYIN6EeiLE-B2bbL0fg" name="quantity" dataType="_TXtg8IUcEeipmMyz9cMCRA" required="true"/>
-          <attributes xmi:id="_jIROkIN6EeiLE-B2bbL0fg" name="discount" dataType="_VDVVQIUcEeipmMyz9cMCRA" required="true"/>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_6QtRsLwNEeiOuYiCo6IbXQ" name="product" target="_6XH80INkEeiLE-B2bbL0fg">
-            <cardinality xmi:id="_98quuudSEeiJv53TEP0vvQ" lower="1"/>
-          </relations>
-          <dataProperties xmi:id="_mr-oACVvEemLpvUY7MQgng" name="productName" dataType="_Nppx8IUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_oHyJsDneEemsDIfvozHEKg" expression="self.product.productName"/>
-          </dataProperties>
-          <dataProperties xmi:id="_2MDDoCVvEemLpvUY7MQgng" name="categoryName" dataType="_Nppx8IUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_pXNKMDneEemsDIfvozHEKg" expression="self.product.category.categoryName"/>
-          </dataProperties>
-          <dataProperties xmi:id="__vG3MECrEemcEMUWkvDcXg" name="price" dataType="_VDVVQIUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_ECYDMECsEemcEMUWkvDcXg" expression="self.quantity * self.unitPrice * (1 - self.discount)"/>
-          </dataProperties>
-          <navigationProperties xmi:id="_rYlgkEZqEemHs64O5EYsyQ" name="category" target="_43ZPcINkEeiLE-B2bbL0fg">
-            <cardinality xmi:id="_sAcx0EZqEemHs64O5EYsyQ" lower="1"/>
-            <getterExpression xsi:type="derived:ReferenceSelectorType" xmi:id="_vLkC8EZqEemHs64O5EYsyQ" expression="self.product.category"/>
-            <setterExpression xmi:id="_xMOTIEZqEemHs64O5EYsyQ" expression="self.product.category"/>
-          </navigationProperties>
-        </elements>
-    */
-
     public EntityType $ = newEntityTypeBuilder().build();
     public Attribute unitPrice = newAttributeBuilder().build();
     public Attribute quantity = newAttributeBuilder().build();

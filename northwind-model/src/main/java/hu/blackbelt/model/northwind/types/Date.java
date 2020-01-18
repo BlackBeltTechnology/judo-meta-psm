@@ -9,9 +9,6 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useDateT
 
 public class Date {
 
-    /*
-        <elements xsi:type="type:DateType" xmi:id="_YoqOYIN1EeiLE-B2bbL0fg" name="Date"/>
-    */
     public DateType $ = newDateTypeBuilder().build();
 
     public void init(Package $package) {

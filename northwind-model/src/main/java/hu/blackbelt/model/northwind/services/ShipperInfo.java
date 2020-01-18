@@ -3,28 +3,27 @@ package hu.blackbelt.model.northwind.services;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperationWithRelation;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.entities.Company;
 import hu.blackbelt.model.northwind.entities.Shipper;
 import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.String;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useMappedTransferObjectType;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferAttribute;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 
-// TODO: Finish
 public class ShipperInfo {
 
-    /*
-    <elements xsi:type="service:MappedTransferObjectType" xmi:id="_OUfQ4IFSEemFzY3ZWApzVQ" name="ShipperInfo" entityType="_GnEEcINlEeiLE-B2bbL0fg">
-      <attributes xmi:id="_QqGdYIFSEemFzY3ZWApzVQ" name="companyName" dataType="_Nppx8IUcEeipmMyz9cMCRA" binding="_Pki0cINzEeiLE-B2bbL0fg"/>
-    </elements>
-    */
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
     public TransferAttribute companyName = newTransferAttributeBuilder().build();
     public TransferAttribute location = newTransferAttributeBuilder().build();
+
+    public UnboundOperation getAllShippers = newUnboundOperationBuilder().build();
+    public UnboundOperation createShipper = newUnboundOperationBuilder().build();
+    public UnboundOperation updateShipper = newUnboundOperationBuilder().build();
+    public UnboundOperation deleteShipper = newUnboundOperationBuilder().build();
 
     public void init(Package $package, String $string, Shipper $shipper, Company $company, Gps $gps) {
         useMappedTransferObjectType($)
@@ -41,6 +40,67 @@ public class ShipperInfo {
                         .withRequired(false)
                         .withDataType($gps.$)
                         .withBinding($company.location)
+                )
+                .withOperations(useUnboundOperation(getAllShippers)
+                        .withName("getAllShippers")
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(createShipper)
+                        .withName("createShipper")
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(updateShipper)
+                        .withName("updateShipper")
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(deleteShipper)
+                        .withName("deleteShipper")
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
                 )
                 .build();
         usePackage($package).withElements($).build();

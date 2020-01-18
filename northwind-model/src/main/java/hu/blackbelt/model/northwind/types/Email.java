@@ -7,12 +7,13 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useStringType;
 
-public class Phone {
+public class Email {
 
     public StringType $ = newStringTypeBuilder().build();
 
     public void init(Package $package) {
-        useStringType($).withName("Phone").withMaxLength(20).build();
+
+        useStringType($).withName("Email").withMaxLength(255).withRegExp("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$").build();
 
         usePackage($package).withElements($).build();
     }

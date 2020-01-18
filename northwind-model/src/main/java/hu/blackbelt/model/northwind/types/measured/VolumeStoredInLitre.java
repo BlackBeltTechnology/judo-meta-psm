@@ -10,9 +10,6 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 
 public class VolumeStoredInLitre {
 
-    /*
-          <elements xsi:type="measure:MeasuredType" xmi:id="_DTYUEB1eEemwg4NgOjaKeA" name="VolumeStoredInLitre" precision="15" scale="4" storeUnit="_CYY3AB1UEemwg4NgOjaKeA"/>
-    */
     public MeasuredType $ = newMeasuredTypeBuilder().build();
 
     public void init(Package $package, Volume $volume) {
