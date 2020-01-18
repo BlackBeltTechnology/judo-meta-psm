@@ -2,7 +2,6 @@ package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.*;
-import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.entities.Order;
 import hu.blackbelt.model.northwind.types.*;
 import hu.blackbelt.model.northwind.types.Boolean;
@@ -41,7 +40,7 @@ public class OrderInfo {
     public BoundTransferOperation createItem = newBoundTransferOperationBuilder().build();
     public BoundTransferOperation updateItem  = newBoundTransferOperationBuilder().build();
     public BoundTransferOperation deleteItem  = newBoundTransferOperationBuilder().build();
-    public BoundTransferOperation setProductOfItem  = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperationWithRelation setProductOfItem  = newBoundTransferOperationWithRelationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority, Boolean $boolean,
                      Gps $gps, Integer $integer, Double $double, MassStoredInGrams $massStoredInGrams,
@@ -175,9 +174,10 @@ public class OrderInfo {
                         .withBinding("deleteDetail")
                         .build()
                 )
-                .withOperations(useBoundTransferOperation(setProductOfItem)
+                .withOperations(useBoundTransferOperationWithRelation(setProductOfItem)
                         .withName("setProductOfItem")
                         .withBinding("setProductOfDetail")
+                        .withRelation($orderItem.product)
                         .build()
                 )
                 .build();

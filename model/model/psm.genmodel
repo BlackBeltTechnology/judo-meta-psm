@@ -367,7 +367,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/customImplementation"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/body"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//service/BoundOperationWithRelation"/>
+      <genClasses ecoreClass="psm.ecore#//service/BoundTransferOperationWithRelation"/>
       <genClasses ecoreClass="psm.ecore#//service/UnboundOperationWithRelation">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperationWithRelation/setOwnerExposedGraph"/>

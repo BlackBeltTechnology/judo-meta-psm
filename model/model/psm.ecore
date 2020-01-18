@@ -578,7 +578,8 @@
           lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="#//script/Script"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BoundOperationWithRelation" eSuperTypes="#//service/BoundOperation #//service/OperationWithRelation"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BoundTransferOperationWithRelation"
+        eSuperTypes="#//service/OperationWithRelation #//service/BoundTransferOperation"/>
     <eClassifiers xsi:type="ecore:EClass" name="UnboundOperationWithRelation" eSuperTypes="#//service/UnboundOperation #//service/OperationWithRelation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="setOwnerExposedGraph"
           eType="#//accesspoint/ExposedGraph" eOpposite="#//accesspoint/ExposedGraph/set"/>

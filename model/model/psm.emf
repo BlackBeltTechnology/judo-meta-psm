@@ -511,7 +511,7 @@ package service {
     attr script.Script body;
   }
 
-  class BoundOperationWithRelation extends BoundOperation, OperationWithRelation {
+  class BoundTransferOperationWithRelation extends OperationWithRelation, BoundTransferOperation {
   }
 
   class UnboundOperationWithRelation extends UnboundOperation, OperationWithRelation {

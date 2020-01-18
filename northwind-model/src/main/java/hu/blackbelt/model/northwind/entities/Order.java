@@ -8,7 +8,6 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.BoundOperation;
-import hu.blackbelt.judo.meta.psm.service.BoundOperationWithRelation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.services.OrderInfo;
 import hu.blackbelt.model.northwind.services.OrderItem;
@@ -59,7 +58,7 @@ public class Order {
     public BoundOperation createDetail = newBoundOperationBuilder().build();
     public BoundOperation updateDetail = newBoundOperationBuilder().build();
     public BoundOperation deleteDetail = newBoundOperationBuilder().build();
-    public BoundOperationWithRelation setProductOfDetail = newBoundOperationWithRelationBuilder().build();
+    public BoundOperation setProductOfDetail = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
                      Integer $integer, Gps $gps, Priority $priority, MassStoredInGrams $massStoredInGrams,
@@ -277,10 +276,9 @@ public class Order {
                         )
                         .build()
                 )
-                .withOperations(useBoundOperationWithRelation(setProductOfDetail)
+                .withOperations(useBoundOperation(setProductOfDetail)
                         .withName("setProductOfDetail")
                         .withInstanceRepresentation($orderInfo.$)
-                        .withRelation($orderItem.product)
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
