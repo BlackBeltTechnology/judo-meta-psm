@@ -660,10 +660,10 @@ public class PsmUtils {
      * @return list of unique mapped transfer object types being targeted by transfer object relations in mapped transfer objects
      */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(ResourceSet resourceSet, EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
-        EList<MappedTransferObjectType> newContainers = new UniqueEList<>(all(resourceSet, MappedTransferObjectType.class).filter(
-                mto -> mto.getRelations().stream().filter(relation -> relation.isEmbedded() && (relation.getTarget() instanceof MappedTransferObjectType)).anyMatch(
-                    relation -> topLevelContainers.contains((MappedTransferObjectType) relation.getTarget())
-                )).collect(Collectors.toList()));
+        EList<MappedTransferObjectType> newContainers = new UniqueEList<>(all(resourceSet, TransferObjectRelation.class)
+                .filter(relation -> relation.isEmbedded() && (relation.eContainer() instanceof MappedTransferObjectType) && (relation.getTarget() instanceof MappedTransferObjectType) && topLevelContainers.contains(relation.getTarget()))
+                .map(relation -> (MappedTransferObjectType) relation.eContainer())
+                .collect(Collectors.toList()));
 
         if (newContainers.isEmpty()) {
             return allContainers;
