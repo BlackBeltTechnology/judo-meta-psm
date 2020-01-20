@@ -3,9 +3,12 @@ package hu.blackbelt.model.northwind.services;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.*;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.ExternalAP;
+import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.Category;
 import hu.blackbelt.model.northwind.types.String;
 
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
@@ -20,11 +23,15 @@ public class CategoryInfo {
     public UnboundOperation createCategory = newUnboundOperationBuilder().build();
     public UnboundOperation updateCategory = newUnboundOperationBuilder().build();
     public UnboundOperation deleteCategory = newUnboundOperationBuilder().build();
-    public UnboundOperationWithRelation setProductsOfCategory = newUnboundOperationWithRelationBuilder().build();
-    public UnboundOperationWithRelation addProductsToCategory = newUnboundOperationWithRelationBuilder().build();
-    public UnboundOperationWithRelation removeProductsFromCategory = newUnboundOperationWithRelationBuilder().build();
+    public UnboundOperation setProductsOfCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation addProductsToCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation removeProductsFromCategory = newUnboundOperationBuilder().build();
 
-    public void init(Package $package, String $string, Category $category, ProductInfo $productInfo, AllProducts $allProducts) {
+    public UnboundOperation getAllCategoriesPublic = newUnboundOperationBuilder().build();
+
+    public void init(Package $package, String $string, Category $category, ProductInfo $productInfo,
+                     CategoryInfo $categoryInfo,  AllProducts $allProducts, InternalAP $internalAP,
+                     ExternalAP $externalAP) {
         useMappedTransferObjectType($)
                 .withName("CategoryInfo")
                 .withEntityType($category.$)
@@ -45,6 +52,26 @@ public class CategoryInfo {
                 )
                 .withOperations(useUnboundOperation(getAllCategories)
                         .withName("getAllCategories")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($internalAP.categories)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(getAllCategoriesPublic)
+                        .withName("getAllCategoriesPublic")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($externalAP.categories)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
                         )
@@ -57,6 +84,10 @@ public class CategoryInfo {
                 )
                 .withOperations(useUnboundOperation(createCategory)
                         .withName("createCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE)
+                                .withOwner($internalAP.categories)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -75,6 +106,10 @@ public class CategoryInfo {
                 )
                 .withOperations(useUnboundOperation(updateCategory)
                         .withName("updateCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.UPDATE)
+                                .withOwner($internalAP.categories)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -93,6 +128,10 @@ public class CategoryInfo {
                 )
                 .withOperations(useUnboundOperation(deleteCategory)
                         .withName("deleteCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.DELETE)
+                                .withOwner($internalAP.categories)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -104,9 +143,13 @@ public class CategoryInfo {
                         )
                         .build()
                 )
-                .withOperations(useUnboundOperationWithRelation(setProductsOfCategory)
+                .withOperations(useUnboundOperation(setProductsOfCategory)
                         .withName("setProductsOfCategory")
-                        .withRelation(products)
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
+                                .withOwner($internalAP.categories)
+                                .withRelation($categoryInfo.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -118,9 +161,13 @@ public class CategoryInfo {
                         )
                         .build()
                 )
-                .withOperations(useUnboundOperationWithRelation(addProductsToCategory)
+                .withOperations(useUnboundOperation(addProductsToCategory)
                         .withName("addProductsToCategory")
-                        .withRelation(products)
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.ADD_TOO_TO_RELATION)
+                                .withOwner($internalAP.categories)
+                                .withRelation($categoryInfo.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -132,9 +179,13 @@ public class CategoryInfo {
                         )
                         .build()
                 )
-                .withOperations(useUnboundOperationWithRelation(removeProductsFromCategory)
+                .withOperations(useUnboundOperation(removeProductsFromCategory)
                         .withName("removeProductsFromCategory")
-                        .withRelation(products)
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
+                                .withOwner($internalAP.categories)
+                                .withRelation($categoryInfo.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )

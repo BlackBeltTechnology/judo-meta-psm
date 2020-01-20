@@ -3,14 +3,16 @@ package hu.blackbelt.model.northwind.services;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
-import hu.blackbelt.judo.meta.psm.service.UnboundOperationWithRelation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.Company;
 import hu.blackbelt.model.northwind.entities.Shipper;
 import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.String;
 
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 
@@ -25,7 +27,8 @@ public class ShipperInfo {
     public UnboundOperation updateShipper = newUnboundOperationBuilder().build();
     public UnboundOperation deleteShipper = newUnboundOperationBuilder().build();
 
-    public void init(Package $package, String $string, Shipper $shipper, Company $company, Gps $gps) {
+    public void init(Package $package, String $string, Shipper $shipper, Company $company, Gps $gps,
+                     InternalAP $internalAP) {
         useMappedTransferObjectType($)
                 .withName("ShipperInfo")
                 .withEntityType($shipper.$)
@@ -43,6 +46,10 @@ public class ShipperInfo {
                 )
                 .withOperations(useUnboundOperation(getAllShippers)
                         .withName("getAllShippers")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($internalAP.shippers)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
                         )
@@ -55,6 +62,10 @@ public class ShipperInfo {
                 )
                 .withOperations(useUnboundOperation(createShipper)
                         .withName("createShipper")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE)
+                                .withOwner($internalAP.shippers)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -73,6 +84,10 @@ public class ShipperInfo {
                 )
                 .withOperations(useUnboundOperation(updateShipper)
                         .withName("updateShipper")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.UPDATE)
+                                .withOwner($internalAP.shippers)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -91,6 +106,10 @@ public class ShipperInfo {
                 )
                 .withOperations(useUnboundOperation(deleteShipper)
                         .withName("deleteShipper")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.DELETE)
+                                .withOwner($internalAP.shippers)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )

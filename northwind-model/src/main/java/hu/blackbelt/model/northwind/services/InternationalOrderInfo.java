@@ -3,12 +3,15 @@ package hu.blackbelt.model.northwind.services;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.InternationalOrder;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.String;
 
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 
@@ -24,7 +27,7 @@ public class InternationalOrderInfo {
     public UnboundOperation deleteInternationalOrder = newUnboundOperationBuilder().build();
 
     public void init(Package $package, String $string, Double $double, InternationalOrder $internationalOrder,
-                     OrderInfo $orderInfo) {
+                     OrderInfo $orderInfo, final InternalAP $internalAP) {
         useMappedTransferObjectType($)
                 .withName("InternationalOrderInfo")
                 .withEntityType($internationalOrder.$)
@@ -49,6 +52,10 @@ public class InternationalOrderInfo {
                 )
                 .withOperations(useUnboundOperation(getAllInternationalOrders)
                         .withName("getAllInternationalOrders")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($internalAP.allInternationalOrders)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
                         )
@@ -61,6 +68,10 @@ public class InternationalOrderInfo {
                 )
                 .withOperations(useUnboundOperation(createInternationalOrder)
                         .withName("createInternationalOrder")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE)
+                                .withOwner($internalAP.allInternationalOrders)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -79,6 +90,10 @@ public class InternationalOrderInfo {
                 )
                 .withOperations(useUnboundOperation(updateInternationalOrder)
                         .withName("updateInternationalOrder")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.UPDATE)
+                                .withOwner($internalAP.allInternationalOrders)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -97,6 +112,10 @@ public class InternationalOrderInfo {
                 )
                 .withOperations(useUnboundOperation(deleteInternationalOrder)
                         .withName("deleteInternationalOrder")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.DELETE)
+                                .withOwner($internalAP.allInternationalOrders)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )

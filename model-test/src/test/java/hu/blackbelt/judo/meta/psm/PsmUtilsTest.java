@@ -3,6 +3,7 @@ package hu.blackbelt.judo.meta.psm;
 import com.google.common.collect.ImmutableList;
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntitySequence;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.data.Relation;
@@ -10,7 +11,6 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.judo.meta.psm.service.BoundOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.NumericType;
 import org.eclipse.emf.common.util.URI;
@@ -67,7 +67,7 @@ public class PsmUtilsTest extends NorthwindTest {
 		BoundOperation operation = newBoundOperationBuilder().withName("operation").build();
 		EntityType entityType = newEntityTypeBuilder().withName("entityType").withAbstract_(false).withOperations(operation).build();
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
-				.withEntityType(entityType).withOperations(newBoundTransferOperationBuilder().withBinding("operation").withName("op").build()).build();
+				.withEntityType(entityType).withOperations(newBoundTransferOperationBuilder().withBinding(operation).withName("op").build()).build();
 
 		Model m = newModelBuilder().withName("M")
 				.withElements(ImmutableList.of(entityType,transferObject))

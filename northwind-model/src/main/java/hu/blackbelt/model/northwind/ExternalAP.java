@@ -1,6 +1,7 @@
 package hu.blackbelt.model.northwind;
 
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
+import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.model.northwind.services.AllCategories;
 import hu.blackbelt.model.northwind.services.AllProducts;
@@ -15,22 +16,25 @@ public class ExternalAP {
 
     public AccessPoint $ = newAccessPointBuilder().build();
 
+    public ExposedGraph categories = newExposedGraphBuilder().build();
+    public ExposedGraph products = newExposedGraphBuilder().build();
+
     public void init(Model $model, ProductInfo $productInfo, CategoryInfo $categoryInfo, AllProducts $allProducts,
                      AllCategories $allCategories) {
         useAccessPoint($)
                 .withName("externalAP")
-                .withExposedGraphs(newExposedGraphBuilder()
-                        .withName("products")
-                        .withMappedTransferObjectType($productInfo.$)
-                        .withSelector($allProducts.$)
+                .withExposedGraphs(useExposedGraph(categories)
+                        .withName("categories")
+                        .withMappedTransferObjectType($categoryInfo.$)
+                        .withSelector($allCategories.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(newExposedGraphBuilder()
-                        .withName("categories")
-                        .withMappedTransferObjectType($categoryInfo.$)
-                        .withSelector($allCategories.$)
+                .withExposedGraphs(useExposedGraph(products)
+                        .withName("products")
+                        .withMappedTransferObjectType($productInfo.$)
+                        .withSelector($allProducts.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()

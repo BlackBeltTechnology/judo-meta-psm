@@ -3,6 +3,8 @@ package hu.blackbelt.model.northwind.services;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.*;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.ExternalAP;
+import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.Product;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
@@ -10,6 +12,7 @@ import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
 
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
@@ -28,11 +31,14 @@ public class ProductInfo {
     public UnboundOperation createProduct = newUnboundOperationBuilder().build();
     public UnboundOperation updateProduct = newUnboundOperationBuilder().build();
     public UnboundOperation deleteProduct = newUnboundOperationBuilder().build();
-    public UnboundOperationWithRelation setCategoryOfProduct = newUnboundOperationWithRelationBuilder().build();
+    public UnboundOperation setCategoryOfProduct = newUnboundOperationBuilder().build();
+
+    public UnboundOperation getAllProductsPublic = newUnboundOperationBuilder().build();
 
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
-                     AllCategories $allCategories) {
+                     ProductInfo $productInfo, AllCategories $allCategories, InternalAP $internalAP,
+                     ExternalAP $externalAP) {
         useMappedTransferObjectType($)
                 .withName("ProductInfo")
                 .withEntityType($product.$)
@@ -74,6 +80,26 @@ public class ProductInfo {
                         ))
                 .withOperations(useUnboundOperation(getAllProducts)
                         .withName("getAllProducts")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($internalAP.products)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(getAllProductsPublic)
+                        .withName("getAllProductsPublic")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($externalAP.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
                         )
@@ -86,6 +112,10 @@ public class ProductInfo {
                 )
                 .withOperations(useUnboundOperation(createProduct)
                         .withName("createProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE)
+                                .withOwner($internalAP.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -104,6 +134,10 @@ public class ProductInfo {
                 )
                 .withOperations(useUnboundOperation(updateProduct)
                         .withName("updateProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.UPDATE)
+                                .withOwner($internalAP.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -122,6 +156,10 @@ public class ProductInfo {
                 )
                 .withOperations(useUnboundOperation(deleteProduct)
                         .withName("deleteProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.DELETE)
+                                .withOwner($internalAP.products)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
@@ -133,9 +171,13 @@ public class ProductInfo {
                         )
                         .build()
                 )
-                .withOperations(useUnboundOperationWithRelation(setCategoryOfProduct)
+                .withOperations(useUnboundOperation(setCategoryOfProduct)
                         .withName("setCategoryOfProduct")
-                        .withRelation(category)
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
+                                .withOwner($internalAP.products)
+                                .withRelation($productInfo.category)
+                                .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )

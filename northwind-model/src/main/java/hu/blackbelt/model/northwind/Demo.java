@@ -294,13 +294,13 @@ public class Demo {
         comment.init(services.$, string, text, timeStamp);
 
         // Mapped transfer objects
-        categoryInfo.init(services.$, string, category, productInfo, allProducts);
-        shipperInfo.init(services.$, string, shipper, company, gps);
-        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
+        categoryInfo.init(services.$, string, category, productInfo, categoryInfo, allProducts, internalAP, externalAP);
+        shipperInfo.init(services.$, string, shipper, company, gps, internalAP);
+        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, productInfo, allCategories, internalAP, externalAP);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo);
+        internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo, internalAP);
 
         // Static Navigation
         allCategories.init(services.$, category);
