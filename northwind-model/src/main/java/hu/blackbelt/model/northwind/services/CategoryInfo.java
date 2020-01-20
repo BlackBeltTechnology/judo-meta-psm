@@ -1,9 +1,12 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.service.*;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
-import hu.blackbelt.model.northwind.ExternalAP;
 import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.Category;
 import hu.blackbelt.model.northwind.types.String;
@@ -27,11 +30,8 @@ public class CategoryInfo {
     public UnboundOperation addProductsToCategory = newUnboundOperationBuilder().build();
     public UnboundOperation removeProductsFromCategory = newUnboundOperationBuilder().build();
 
-    public UnboundOperation getAllCategoriesPublic = newUnboundOperationBuilder().build();
-
     public void init(Package $package, String $string, Category $category, ProductInfo $productInfo,
-                     CategoryInfo $categoryInfo,  AllProducts $allProducts, InternalAP $internalAP,
-                     ExternalAP $externalAP) {
+                     CategoryInfo $categoryInfo,  AllProducts $allProducts, InternalAP $internalAP) {
         useMappedTransferObjectType($)
                 .withName("CategoryInfo")
                 .withEntityType($category.$)
@@ -55,22 +55,6 @@ public class CategoryInfo {
                         .withBehaviour(newTransferOperationBehaviourBuilder()
                                 .withBehaviourType(TransferOperationBehaviourType.GET)
                                 .withOwner($internalAP.categories)
-                                .build())
-                        .withImplementation(newOperationBodyBuilder()
-                                .withStateful(false)
-                        )
-                        .withOutput(newParameterBuilder().withName("output")
-                                .withType($)
-                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
-                                )
-                        )
-                        .build()
-                )
-                .withOperations(useUnboundOperation(getAllCategoriesPublic)
-                        .withName("getAllCategoriesPublic")
-                        .withBehaviour(newTransferOperationBehaviourBuilder()
-                                .withBehaviourType(TransferOperationBehaviourType.GET)
-                                .withOwner($externalAP.categories)
                                 .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)

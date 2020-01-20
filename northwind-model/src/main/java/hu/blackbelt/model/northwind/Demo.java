@@ -141,12 +141,14 @@ public class Demo {
     private Velocity velocity = new Velocity();
     private Volume volume = new Volume();
     private Work work = new Work();
+    private hu.blackbelt.model.northwind.services.Category category_ = new hu.blackbelt.model.northwind.services.Category();
     private CategoryInfo categoryInfo = new CategoryInfo();
     private Comment comment = new Comment();
     private TerritoryInfo territoryInfo = new TerritoryInfo();
     private InternationalOrderInfo internationalOrderInfo = new InternationalOrderInfo();
     private OrderInfo orderInfo = new OrderInfo();
     private OrderItem orderItem = new OrderItem();
+    private hu.blackbelt.model.northwind.services.Product product_ = new hu.blackbelt.model.northwind.services.Product();
     private ProductInfo productInfo = new ProductInfo();
     private ShipmentChange shipmentChange = new ShipmentChange();
     private ShipperInfo shipperInfo = new ShipperInfo();
@@ -294,9 +296,11 @@ public class Demo {
         comment.init(services.$, string, text, timeStamp);
 
         // Mapped transfer objects
-        categoryInfo.init(services.$, string, category, productInfo, categoryInfo, allProducts, internalAP, externalAP);
+        category_.init(services.$, string, category, product_, externalAP);
+        categoryInfo.init(services.$, string, category, productInfo, categoryInfo, allProducts, internalAP);
         shipperInfo.init(services.$, string, shipper, company, gps, internalAP);
-        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, productInfo, allCategories, internalAP, externalAP);
+        product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories, externalAP);
+        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, productInfo, allCategories, internalAP);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
         orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
@@ -316,7 +320,7 @@ public class Demo {
         // Access Points
         internalAP.init($, productInfo, categoryInfo, shipperInfo, orderInfo, internationalOrderInfo, allProducts,
                 allCategories, allShippers, orderAssignedToEmployee, ordersOfLastTwoWeeks, allInternationalOrders);
-        externalAP.init($, productInfo, categoryInfo, allProducts, allCategories);
+        externalAP.init($, product_, category_, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();
         psmModel.addContent($);

@@ -1,9 +1,13 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.service.*;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.Parameter;
+import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
-import hu.blackbelt.model.northwind.ExternalAP;
 import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.Product;
 import hu.blackbelt.model.northwind.types.Boolean;
@@ -37,8 +41,6 @@ public class ProductInfo {
     public Parameter inputOfUpdateProduct = newParameterBuilder().build();
     public Parameter inputOfSetCategoryOfProduct = newParameterBuilder().build();
 
-    public UnboundOperation getAllProductsPublic = newUnboundOperationBuilder().build();
-
     public UnboundOperation getAllCategoriesToCreateProduct = newUnboundOperationBuilder().build();
     public UnboundOperation getAllCategoriesToUpdateProduct = newUnboundOperationBuilder().build();
     public UnboundOperation getAllCategoriesToSetCategoryOfProduct = newUnboundOperationBuilder().build();
@@ -47,8 +49,7 @@ public class ProductInfo {
 
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
-                     ProductInfo $productInfo, AllCategories $allCategories, InternalAP $internalAP,
-                     ExternalAP $externalAP) {
+                     ProductInfo $productInfo, AllCategories $allCategories, InternalAP $internalAP) {
         useMappedTransferObjectType($)
                 .withName("ProductInfo")
                 .withEntityType($product.$)
@@ -93,22 +94,6 @@ public class ProductInfo {
                         .withBehaviour(newTransferOperationBehaviourBuilder()
                                 .withBehaviourType(TransferOperationBehaviourType.GET)
                                 .withOwner($internalAP.products)
-                                .build())
-                        .withImplementation(newOperationBodyBuilder()
-                                .withStateful(false)
-                        )
-                        .withOutput(newParameterBuilder().withName("output")
-                                .withType($)
-                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
-                                )
-                        )
-                        .build()
-                )
-                .withOperations(useUnboundOperation(getAllProductsPublic)
-                        .withName("getAllProductsPublic")
-                        .withBehaviour(newTransferOperationBehaviourBuilder()
-                                .withBehaviourType(TransferOperationBehaviourType.GET)
-                                .withOwner($externalAP.products)
                                 .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)

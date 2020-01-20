@@ -5,8 +5,8 @@ import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.model.northwind.services.AllCategories;
 import hu.blackbelt.model.northwind.services.AllProducts;
-import hu.blackbelt.model.northwind.services.CategoryInfo;
-import hu.blackbelt.model.northwind.services.ProductInfo;
+import hu.blackbelt.model.northwind.services.Category;
+import hu.blackbelt.model.northwind.services.Product;
 
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
@@ -19,13 +19,13 @@ public class ExternalAP {
     public ExposedGraph categories = newExposedGraphBuilder().build();
     public ExposedGraph products = newExposedGraphBuilder().build();
 
-    public void init(Model $model, ProductInfo $productInfo, CategoryInfo $categoryInfo, AllProducts $allProducts,
+    public void init(Model $model, Product $product, Category $category, AllProducts $allProducts,
                      AllCategories $allCategories) {
         useAccessPoint($)
                 .withName("externalAP")
                 .withExposedGraphs(useExposedGraph(categories)
                         .withName("categories")
-                        .withMappedTransferObjectType($categoryInfo.$)
+                        .withMappedTransferObjectType($category.$)
                         .withSelector($allCategories.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
@@ -33,7 +33,7 @@ public class ExternalAP {
                 )
                 .withExposedGraphs(useExposedGraph(products)
                         .withName("products")
-                        .withMappedTransferObjectType($productInfo.$)
+                        .withMappedTransferObjectType($product.$)
                         .withSelector($allProducts.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
