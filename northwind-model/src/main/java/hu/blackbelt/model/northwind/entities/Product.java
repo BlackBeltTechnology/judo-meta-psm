@@ -2,8 +2,10 @@ package hu.blackbelt.model.northwind.entities;
 
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
@@ -12,6 +14,7 @@ import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class Product {
@@ -30,9 +33,12 @@ public class Product {
     public AssociationEnd manufacturers = newAssociationEndBuilder().build();
     public AssociationEnd store = newAssociationEndBuilder().build();
 
+    public BoundOperation _getCategory = newBoundOperationBuilder().build();
+
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Category $category, Supplier $supplier,
-                     Company $company, Store $store) {
+                     Company $company, Store $store, hu.blackbelt.model.northwind.services.Product $product,
+                     hu.blackbelt.model.northwind.services.Category $category_) {
         useEntityType($)
                 .withName("Product")
                 .withAttributes(useAttribute(productName)
@@ -97,6 +103,19 @@ public class Product {
                         .withTarget($store.$)
                         .withPartner($store.products)
                         .withCardinality(newCardinalityBuilder())
+                        .build()
+                )
+                .withOperations(useBoundOperation(_getCategory)
+                        .withName("_getCategory")
+                        .withInstanceRepresentation($product.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($category_.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
+                                )
+                        )
                         .build()
                 )
                 .build();

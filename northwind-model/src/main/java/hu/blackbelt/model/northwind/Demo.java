@@ -266,7 +266,7 @@ public class Demo {
 
         // entities
         address.init(entities.$, string, city);
-        category.init(entities.$, string, text, binary, product, employee);
+        category.init(entities.$, string, text, binary, product, employee, category_, product_);
         city.init(entities.$, string);
         company.init(entities.$, string, phone, customer, product, gps);
         customer.init(entities.$, order, address);
@@ -284,7 +284,7 @@ public class Demo {
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
         product.init(entities.$, string, integer, double_, boolean_, massStoredInKilograms, category, supplier,
-                company, store);
+                company, store, product_, category_);
         region.init(entities.$, string, territory);
         shipper.init(entities.$, company, order, territory);
         store.init(entities.$, product);

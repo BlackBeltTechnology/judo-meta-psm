@@ -1,6 +1,7 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
@@ -22,6 +23,7 @@ public class Category {
     public TransferObjectRelation products = newTransferObjectRelationBuilder().build();
 
     public UnboundOperation getAllCategories = newUnboundOperationBuilder().build();
+    public BoundTransferOperation getProductsOfCategory = newBoundTransferOperationBuilder().build();
 
     public void init(Package $package, String $string, hu.blackbelt.model.northwind.entities.Category $category,
                      Product $product, ExternalAP $externalAP) {
@@ -57,6 +59,15 @@ public class Category {
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
                                 )
                         )
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(getProductsOfCategory)
+                        .withName("getProductsOfCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
+                                .withOwner(products)
+                                .build())
+                        .withBinding($category._getProducts)
                         .build()
                 )
                 .build();
