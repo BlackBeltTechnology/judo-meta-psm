@@ -27,7 +27,7 @@ public class Product {
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
     public UnboundOperation getAllProducts = newUnboundOperationBuilder().build();
-    public BoundTransferOperation getCategoryOfCategory = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation getCategoryOfProduct = newBoundTransferOperationBuilder().build();
 
     public void init(Package $package, String $string, Double $double, MassStoredInKilograms $massStoredInKilograms,
                      hu.blackbelt.model.northwind.entities.Product $product, Category $category,
@@ -77,8 +77,8 @@ public class Product {
                         )
                         .build()
                 )
-                .withOperations(useBoundTransferOperation(getCategoryOfCategory)
-                        .withName("getCategoryOfCategory")
+                .withOperations(useBoundTransferOperation(getCategoryOfProduct)
+                        .withName("getCategoryOfProduct")
                         .withBehaviour(newTransferOperationBehaviourBuilder()
                                 .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
                                 .withOwner(category)
