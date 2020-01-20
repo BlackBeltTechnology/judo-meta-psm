@@ -43,6 +43,8 @@ public class ProductInfo {
     public UnboundOperation getAllCategoriesToUpdateProduct = newUnboundOperationBuilder().build();
     public UnboundOperation getAllCategoriesToSetCategoryOfProduct = newUnboundOperationBuilder().build();
 
+    public UnboundOperation getTemplateOfProduct = newUnboundOperationBuilder().build();
+
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
                      ProductInfo $productInfo, AllCategories $allCategories, InternalAP $internalAP,
@@ -244,6 +246,22 @@ public class ProductInfo {
                         .withOutput(newParameterBuilder().withName("output")
                                 .withType($)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(getTemplateOfProduct)
+                        .withName("getTemplateOfProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_TEMPLATE)
+                                .withOwner($)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
                                 )
                         )
                         .build()
