@@ -164,7 +164,7 @@ public class CategoryInfo {
                 .withOperations(useUnboundOperation(addProductsToCategory)
                         .withName("addProductsToCategory")
                         .withBehaviour(newTransferOperationBehaviourBuilder()
-                                .withBehaviourType(TransferOperationBehaviourType.ADD_TOO_TO_RELATION)
+                                .withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
                                 .withOwner($internalAP.categories)
                                 .withRelation($categoryInfo.products)
                                 .build())
