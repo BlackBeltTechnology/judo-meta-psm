@@ -18,9 +18,8 @@ public class InitializerScript {
                         .withStateful(true)
                         .withCustomImplementation(true)
                         .withBody("var demo::services::CategoryInfo category := new demo::services::CategoryInfo(categoryName := 'Laptop')\n" +
-                                "var demo::services::ProductInfo product := new demo::services::ProductInfo(productName := 'Dell Vostro', unitPrice := 10000)\n" +
-                                "product.category := category;\n")
-                )
+                                "var demo::services::ProductInfo product := new demo::services::ProductInfo(productName := 'Dell Vostro', unitPrice := 10000, category := category)"
+                ))
                 .build();
 
         usePackage($package).withElements($).build();
