@@ -33,7 +33,15 @@ public class ProductInfo {
     public UnboundOperation deleteProduct = newUnboundOperationBuilder().build();
     public UnboundOperation setCategoryOfProduct = newUnboundOperationBuilder().build();
 
+    public Parameter inputOfCreateProduct = newParameterBuilder().build();
+    public Parameter inputOfUpdateProduct = newParameterBuilder().build();
+    public Parameter inputOfSetCategoryOfProduct = newParameterBuilder().build();
+
     public UnboundOperation getAllProductsPublic = newUnboundOperationBuilder().build();
+
+    public UnboundOperation getAllCategoriesToCreateProduct = newUnboundOperationBuilder().build();
+    public UnboundOperation getAllCategoriesToUpdateProduct = newUnboundOperationBuilder().build();
+    public UnboundOperation getAllCategoriesToSetCategoryOfProduct = newUnboundOperationBuilder().build();
 
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
@@ -119,7 +127,7 @@ public class ProductInfo {
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
-                        .withInput(newParameterBuilder()
+                        .withInput(useParameter(inputOfCreateProduct)
                                 .withName("input")
                                 .withType($)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
@@ -141,7 +149,7 @@ public class ProductInfo {
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
-                        .withInput(newParameterBuilder()
+                        .withInput(useParameter(inputOfUpdateProduct)
                                 .withName("input")
                                 .withType($)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
@@ -181,10 +189,61 @@ public class ProductInfo {
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(true)
                         )
-                        .withInput(newParameterBuilder()
+                        .withInput(useParameter(inputOfSetCategoryOfProduct)
                                 .withName("input")
                                 .withType($)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(getAllCategoriesToCreateProduct)
+                        .withName("getAllCategoriesToCreateProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RANGE_OF_RELATION)
+                                .withOwner(inputOfCreateProduct)
+                                .withRelation($productInfo.category)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(getAllCategoriesToUpdateProduct)
+                        .withName("getAllCategoriesToUpdateProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RANGE_OF_RELATION)
+                                .withOwner(inputOfUpdateProduct)
+                                .withRelation($productInfo.category)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(getAllCategoriesToSetCategoryOfProduct)
+                        .withName("getAllCategoriesToSetCategoryOfProduct")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RANGE_OF_RELATION)
+                                .withOwner(inputOfSetCategoryOfProduct)
+                                .withRelation($productInfo.category)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
                                 )
                         )
                         .build()
