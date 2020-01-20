@@ -38,9 +38,11 @@ public class OrderInfo {
 
     public BoundTransferOperation getOrderItems = newBoundTransferOperationBuilder().build();
     public BoundTransferOperation createItem = newBoundTransferOperationBuilder().build();
-    public BoundTransferOperation updateItem  = newBoundTransferOperationBuilder().build();
-    public BoundTransferOperation deleteItem  = newBoundTransferOperationBuilder().build();
-    public BoundTransferOperation setProductOfItem  = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation updateItem = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation deleteItem = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation setProductOfItem = newBoundTransferOperationBuilder().build();
+
+    public BoundTransferOperation getCategoriesOfItems = newBoundTransferOperationBuilder().build();
 
     public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority, Boolean $boolean,
                      Gps $gps, Integer $integer, Double $double, MassStoredInGrams $massStoredInGrams,
@@ -192,6 +194,15 @@ public class OrderInfo {
                                 .withBehaviourType(TransferOperationBehaviourType.SET_RELATION_OF_RELATION)
                                 .withOwner(items)
                                 .withRelation($orderItem.product)
+                                .build())
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(getCategoriesOfItems)
+                        .withName("getCategoriesOfItems")
+                        .withBinding($order._getCategories)
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
+                                .withOwner(categories)
                                 .build())
                         .build()
                 )

@@ -9,6 +9,7 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.services.CategoryInfo;
 import hu.blackbelt.model.northwind.services.OrderInfo;
 import hu.blackbelt.model.northwind.services.OrderItem;
 import hu.blackbelt.model.northwind.types.Boolean;
@@ -60,11 +61,13 @@ public class Order {
     public BoundOperation deleteDetail = newBoundOperationBuilder().build();
     public BoundOperation setProductOfDetail = newBoundOperationBuilder().build();
 
+    public BoundOperation _getCategories = newBoundOperationBuilder().build();
+
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
                      Integer $integer, Gps $gps, Priority $priority, MassStoredInGrams $massStoredInGrams,
                      Customer $customer, Shipper $shipper, Employee $employee,
                      InternationalAddress $internationalAddress, OrderDetail $orderDetail, Category $category,
-                     Territory $territory, OrderInfo $orderInfo, OrderItem $orderItem) {
+                     Territory $territory, OrderInfo $orderInfo, OrderItem $orderItem, CategoryInfo $categoryInfo) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
@@ -286,6 +289,19 @@ public class Order {
                                 .withName("input")
                                 .withType($orderItem.$)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(_getCategories)
+                        .withName("_getCategories")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($categoryInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
                                 )
                         )
                         .build()

@@ -266,7 +266,7 @@ public class Demo {
 
         // entities
         address.init(entities.$, string, city);
-        category.init(entities.$, string, text, binary, product, employee, category_, product_);
+        category.init(entities.$, string, text, binary, product, employee, category_, product_, categoryInfo, productInfo);
         city.init(entities.$, string);
         company.init(entities.$, string, phone, customer, product, gps);
         customer.init(entities.$, order, address);
@@ -279,12 +279,12 @@ public class Demo {
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
         order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, priority, massStoredInGrams,
-                customer, shipper, employee, internationalAddress, orderDetail, category, territory, orderInfo, orderItem);
-        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
+                customer, shipper, employee, internationalAddress, orderDetail, category, territory, orderInfo, orderItem, categoryInfo);
+        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category, orderInfo, productInfo);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
         product.init(entities.$, string, integer, double_, boolean_, massStoredInKilograms, category, supplier,
-                company, store, product_, category_);
+                company, store, product_, category_, productInfo, categoryInfo);
         region.init(entities.$, string, territory);
         shipper.init(entities.$, company, order, territory);
         store.init(entities.$, product);
@@ -302,7 +302,7 @@ public class Demo {
         product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories, externalAP);
         productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, productInfo, allCategories, internalAP);
         territoryInfo.init(services.$, string, territory);
-        orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
+        orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories, orderItem);
         orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
         internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo, internalAP);
 

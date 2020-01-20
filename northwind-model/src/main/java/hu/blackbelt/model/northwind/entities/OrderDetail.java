@@ -2,10 +2,14 @@ package hu.blackbelt.model.northwind.entities;
 
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.services.OrderInfo;
+import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
@@ -15,6 +19,7 @@ import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class OrderDetail {
@@ -31,8 +36,11 @@ public class OrderDetail {
     public NavigationProperty category = newNavigationPropertyBuilder().build();
     public AssociationEnd product = newAssociationEndBuilder().build();
 
+    public BoundOperation _getProduct = newBoundOperationBuilder().build();
+
     public void init(Package $package, String $string, Double $double, Integer $integer, Boolean $boolean,
-                     MassStoredInGrams $massStoredInGrams, Product $product, Category $category) {
+                     MassStoredInGrams $massStoredInGrams, Product $product, Category $category,
+                     OrderInfo $orderInfo, ProductInfo $productInfo) {
         useEntityType($)
                 .withName("OrderDetail")
                 .withAttributes(useAttribute(unitPrice)
@@ -101,6 +109,19 @@ public class OrderDetail {
                         .withGetterExpression(newReferenceSelectorTypeBuilder()
                                 .withExpression("self.product.category")
                         )
+                )
+                .withOperations(useBoundOperation(_getProduct)
+                        .withName("_getProduct")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
                 )
                 .build();
 

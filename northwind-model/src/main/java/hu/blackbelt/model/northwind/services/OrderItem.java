@@ -1,9 +1,11 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.model.northwind.entities.OrderDetail;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
@@ -29,9 +31,12 @@ public class OrderItem {
     public TransferObjectRelation product = newTransferObjectRelationBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
+    public BoundTransferOperation getProductOfItem = newBoundTransferOperationBuilder().build();
+
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInGrams $massStoredInGrams, OrderDetail $orderDetail, ProductInfo $productInfo,
-                     CategoryInfo $categoryInfo, AllProducts $allProducts, AllCategories $allCategories) {
+                     CategoryInfo $categoryInfo, AllProducts $allProducts, AllCategories $allCategories,
+                     OrderItem $orderItem) {
         useMappedTransferObjectType($)
                 .withName("OrderItem")
                 .withEntityType($orderDetail.$)
@@ -90,6 +95,15 @@ public class OrderItem {
                         .withName("weight")
                         .withDataType($massStoredInGrams.$)
                         .withBinding($orderDetail.weight)
+                )
+                .withOperations(useBoundTransferOperation(getProductOfItem)
+                        .withName("getProductOfItem")
+                        .withBinding($orderDetail._getProduct)
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
+                                .withOwner(product)
+                                .build())
+                        .build()
                 )
                 .build();
 

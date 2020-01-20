@@ -6,6 +6,8 @@ import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.services.CategoryInfo;
+import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
@@ -34,11 +36,13 @@ public class Product {
     public AssociationEnd store = newAssociationEndBuilder().build();
 
     public BoundOperation _getCategory = newBoundOperationBuilder().build();
+    public BoundOperation _getCategoryInternal = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Category $category, Supplier $supplier,
                      Company $company, Store $store, hu.blackbelt.model.northwind.services.Product $product,
-                     hu.blackbelt.model.northwind.services.Category $category_) {
+                     hu.blackbelt.model.northwind.services.Category $category_, ProductInfo $productInfo,
+                     CategoryInfo $categoryInfo) {
         useEntityType($)
                 .withName("Product")
                 .withAttributes(useAttribute(productName)
@@ -113,6 +117,19 @@ public class Product {
                         )
                         .withOutput(newParameterBuilder().withName("output")
                                 .withType($category_.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(_getCategoryInternal)
+                        .withName("_getCategoryInternal")
+                        .withInstanceRepresentation($productInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($categoryInfo.$)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
                                 )
                         )
