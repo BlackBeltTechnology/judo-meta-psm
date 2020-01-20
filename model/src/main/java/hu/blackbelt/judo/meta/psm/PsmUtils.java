@@ -663,6 +663,7 @@ public class PsmUtils {
         EList<MappedTransferObjectType> newContainers = new UniqueEList<>(all(resourceSet, TransferObjectRelation.class)
                 .filter(relation -> relation.isEmbedded() && (relation.eContainer() instanceof MappedTransferObjectType) && (relation.getTarget() instanceof MappedTransferObjectType) && topLevelContainers.contains(relation.getTarget()))
                 .map(relation -> (MappedTransferObjectType) relation.eContainer())
+                .filter(mto -> !allContainers.contains(mto))
                 .collect(Collectors.toList()));
 
         if (newContainers.isEmpty()) {
