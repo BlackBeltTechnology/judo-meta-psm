@@ -191,6 +191,11 @@ public class CategoryInfo {
                                 .withOwner(products)
                                 .build())
                         .withBinding($category._getProductsInternal)
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
                         .build()
                 )
                 .build();

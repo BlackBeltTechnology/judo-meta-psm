@@ -84,6 +84,11 @@ public class Product {
                                 .withOwner(category)
                                 .build())
                         .withBinding($product._getCategory)
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($category.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
+                                )
+                        )
                         .build()
                 )
                 .build();

@@ -6,6 +6,7 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.entities.OrderDetail;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
@@ -103,6 +104,11 @@ public class OrderItem {
                                 .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
                                 .withOwner(product)
                                 .build())
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
+                                )
+                        )
                         .build()
                 )
                 .build();

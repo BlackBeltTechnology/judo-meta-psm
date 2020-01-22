@@ -68,6 +68,11 @@ public class Category {
                                 .withOwner(products)
                                 .build())
                         .withBinding($category._getProducts)
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($product.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
                         .build()
                 )
                 .build();

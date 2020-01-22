@@ -118,7 +118,7 @@ public class OrderDetail {
                         )
                         .withOutput(newParameterBuilder().withName("output")
                                 .withType($productInfo.$)
-                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
                                 )
                         )
                         .build()

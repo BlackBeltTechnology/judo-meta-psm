@@ -328,6 +328,7 @@ package data {
   class BoundOperation extends namespace.NamedElement, service.OperationDeclaration {
     val OperationBody implementation;
     ref service.MappedTransferObjectType[1] instanceRepresentation;
+    attr boolean[1] ~abstract = false;
   }
 
   class OperationBody {
@@ -496,7 +497,7 @@ package service {
     ref TransferObjectType[1] type;
   }
 
-  class BoundTransferOperation extends TransferOperation {
+  class BoundTransferOperation extends TransferOperation, OperationDeclaration {
 
     @GenModel(body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding().getName()).orElse(null) : null;")
     !ordered op data.OperationBody getImplementation();

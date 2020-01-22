@@ -201,6 +201,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/BoundOperation/implementation"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//data/BoundOperation/instanceRepresentation"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/BoundOperation/abstract"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//data/OperationBody">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/OperationBody/stateful"/>
