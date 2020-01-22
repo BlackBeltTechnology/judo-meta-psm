@@ -488,7 +488,7 @@ package service {
   class UnmappedTransferObjectType extends TransferObjectType {
   }
 
-  class UnboundOperation extends OperationDeclaration, TransferOperation {
+  class UnboundOperation extends TransferOperation {
     val data.OperationBody[1] implementation;
   }
 
@@ -497,14 +497,14 @@ package service {
     ref TransferObjectType[1] type;
   }
 
-  class BoundTransferOperation extends TransferOperation, OperationDeclaration {
+  class BoundTransferOperation extends TransferOperation {
 
     @GenModel(body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding().getName()).orElse(null) : null;")
     !ordered op data.OperationBody getImplementation();
     ref data.BoundOperation[1] binding;
   }
 
-  abstract class TransferOperation extends namespace.NamedElement {
+  abstract class TransferOperation extends namespace.NamedElement, OperationDeclaration {
     !ordered op data.OperationBody getImplementation();
     val TransferOperationBehaviour behaviour;
   }
