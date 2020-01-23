@@ -10,9 +10,6 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 
 public class MassStoredInKilograms {
 
-    /*
-      <elements xsi:type="measure:MeasuredType" xmi:id="_h2iYkB1XEemwg4NgOjaKeA" name="MassStoredInKilograms" precision="15" scale="4" storeUnit="_C8XYsB1SEemwg4NgOjaKeA"/>
-    */
     public MeasuredType $ = newMeasuredTypeBuilder().build();
 
     public void init(Package $package, Mass $mass) {

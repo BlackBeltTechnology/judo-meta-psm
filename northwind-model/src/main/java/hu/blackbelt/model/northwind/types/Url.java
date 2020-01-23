@@ -9,9 +9,6 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useStrin
 
 public class Url {
 
-    /*
-        <elements xsi:type="type:StringType" xmi:id="_A5EFMIN4EeiLE-B2bbL0fg" name="URL" maxLength="1024"/>
-    */
     public StringType $ = newStringTypeBuilder().build();
 
     public void init(Package $package) {

@@ -9,9 +9,6 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useNumer
 
 public class Integer {
 
-    /*
-        <elements xsi:type="type:NumericType" xmi:id="_TXtg8IUcEeipmMyz9cMCRA" name="Integer" precision="9"/>
-    */
     public NumericType $ = newNumericTypeBuilder().build();
 
     public void init(Package $package) {

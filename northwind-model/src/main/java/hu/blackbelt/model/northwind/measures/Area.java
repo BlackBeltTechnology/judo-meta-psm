@@ -4,25 +4,11 @@ import hu.blackbelt.judo.meta.psm.measure.DerivedMeasure;
 import hu.blackbelt.judo.meta.psm.measure.Unit;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newDerivedMeasureBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newMeasureDefinitionTermBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newUnitBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useDerivedMeasure;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useUnit;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 
 public class Area {
-    /*
-    <elements xsi:type="measure:DerivedMeasure" xmi:id="_SGwCwB1TEemwg4NgOjaKeA" name="Area">
-      <units xmi:id="_TfYCkB1TEemwg4NgOjaKeA" name="squareMillimetre" rateDividend="1.0E-6" symbol="mm&#xb2;"/>
-      <units xmi:id="_bXi4sB1TEemwg4NgOjaKeA" name="squareCentimetre" rateDividend="1.0E-4" symbol="cm&#xb2;"/>
-      <units xmi:id="_cz3FsB1TEemwg4NgOjaKeA" name="squareDecimetre" rateDividend="0.01" symbol="dm&#xb2;"/>
-      <units xmi:id="_eD5KMB1TEemwg4NgOjaKeA" name="squareMetre" symbol="m&#xb2;"/>
-      <units xmi:id="_fIEkAB1TEemwg4NgOjaKeA" name="hectare" rateDividend="10000.0" symbol="ha"/>
-      <units xmi:id="_f9o6EB1TEemwg4NgOjaKeA" name="squareKilometre" rateDividend="1000000.0" symbol="km&#xb2;"/>
-      <terms xmi:id="_fxALgB8wEemH1tWVVVMmqg" exponent="2" unit="_5oYPYB1SEemwg4NgOjaKeA"/>
-    </elements>
-    */
+
     public DerivedMeasure $ = newDerivedMeasureBuilder().build();
     public Unit squareMillimetre = newUnitBuilder().build();
     public Unit squareCentimetre = newUnitBuilder().build();

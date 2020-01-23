@@ -2,58 +2,30 @@ package hu.blackbelt.model.northwind.entities;
 
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.Containment;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.services.CategoryInfo;
+import hu.blackbelt.model.northwind.services.OrderInfo;
+import hu.blackbelt.model.northwind.services.OrderItem;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
-import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.Integer;
-import hu.blackbelt.model.northwind.types.Priority;
 import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.TimeStamp;
+import hu.blackbelt.model.northwind.types.*;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class Order {
-
-    /*
-        <elements xsi:type="data:EntityType" xmi:id="_-H4RoINkEeiLE-B2bbL0fg" name="Order">
-          <attributes xmi:id="_WXvUoIN1EeiLE-B2bbL0fg" name="orderDate" dataType="_Z9J8IIN1EeiLE-B2bbL0fg"/>
-          <attributes xmi:id="_ebkoMIN1EeiLE-B2bbL0fg" name="requiredDate" dataType="_Z9J8IIN1EeiLE-B2bbL0fg"/>
-          <attributes xmi:id="_huP54IN1EeiLE-B2bbL0fg" name="shippedDate" dataType="_Z9J8IIN1EeiLE-B2bbL0fg"/>
-          <attributes xmi:id="_kUnfMIN1EeiLE-B2bbL0fg" name="freight" dataType="_VDVVQIUcEeipmMyz9cMCRA"/>
-          <attributes xmi:id="_muoDgIN1EeiLE-B2bbL0fg" name="shipName" dataType="_Nppx8IUcEeipmMyz9cMCRA"/>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_OL6RULwNEeiOuYiCo6IbXQ" name="customer" target="_86B-cINkEeiLE-B2bbL0fg" partner="_KCBq0LwNEeiOuYiCo6IbXQ">
-            <cardinality xmi:id="_98qutedSEeiJv53TEP0vvQ"/>
-          </relations>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_WVBGcLwNEeiOuYiCo6IbXQ" name="shipper" target="_GnEEcINlEeiLE-B2bbL0fg" partner="_Z9PKULwNEeiOuYiCo6IbXQ">
-            <cardinality xmi:id="_98qutudSEeiJv53TEP0vvQ"/>
-          </relations>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_gfRT8LwNEeiOuYiCo6IbXQ" name="employee" target="_ONN9gINlEeiLE-B2bbL0fg" partner="_jOFqoLwNEeiOuYiCo6IbXQ">
-            <cardinality xmi:id="_98qut-dSEeiJv53TEP0vvQ"/>
-          </relations>
-          <relations xsi:type="data:Containment" xmi:id="_spywELwNEeiOuYiCo6IbXQ" name="shipAddress" target="_vTNmEL2REeiOuYiCo6IbXQ">
-            <cardinality xmi:id="_98quuOdSEeiJv53TEP0vvQ"/>
-          </relations>
-          <relations xsi:type="data:Containment" xmi:id="_2CC44LwNEeiOuYiCo6IbXQ" name="orderDetails" target="__XzocINkEeiLE-B2bbL0fg">
-            <cardinality xmi:id="_98quuedSEeiJv53TEP0vvQ" lower="1" upper="-1"/>
-          </relations>
-          <dataProperties xmi:id="_5i40sCVQEemLpvUY7MQgng" name="shipperName" dataType="_Nppx8IUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_gs3QQDneEemsDIfvozHEKg" expression="self.shipper.companyName"/>
-          </dataProperties>
-          <navigationProperties xmi:id="_qMfVoHrHEemPuYxp6QV8dA" name="categories" target="_43ZPcINkEeiLE-B2bbL0fg">
-            <cardinality xmi:id="_sLQIYHrHEemPuYxp6QV8dA" upper="-1"/>
-            <getterExpression xmi:id="_uQwcUHrHEemPuYxp6QV8dA" expression="self.orderDetails.product.category"/>
-          </navigationProperties>
-        </elements>
-    */
 
     public EntityType $ = newEntityTypeBuilder().build();
 
@@ -83,11 +55,19 @@ public class Order {
     public NavigationProperty discountedItemsOutOfStock = newNavigationPropertyBuilder().build();
     public NavigationProperty categories = newNavigationPropertyBuilder().build();
 
+    public BoundOperation getDetails = newBoundOperationBuilder().build();
+    public BoundOperation createDetail = newBoundOperationBuilder().build();
+    public BoundOperation updateDetail = newBoundOperationBuilder().build();
+    public BoundOperation deleteDetail = newBoundOperationBuilder().build();
+    public BoundOperation setProductOfDetail = newBoundOperationBuilder().build();
+
+    public BoundOperation _getCategories = newBoundOperationBuilder().build();
+
     public void init(Package $package, String $string, TimeStamp $timeStamp, Double $double, Boolean $boolean,
                      Integer $integer, Gps $gps, Priority $priority, MassStoredInGrams $massStoredInGrams,
                      Customer $customer, Shipper $shipper, Employee $employee,
                      InternationalAddress $internationalAddress, OrderDetail $orderDetail, Category $category,
-                     Territory $territory) {
+                     Territory $territory, OrderInfo $orderInfo, OrderItem $orderItem, CategoryInfo $categoryInfo) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
@@ -234,7 +214,98 @@ public class Order {
                                 .withExpression("self.categories!sum(c | c.products!filter(p | p.discounted)!count())"))
                         .build()
                 )
-
+                .withOperations(useBoundOperation(getDetails)
+                        .withName("getDetails")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(createDetail)
+                        .withName("createDetail")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(updateDetail)
+                        .withName("updateDetail")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(deleteDetail)
+                        .withName("deleteDetail")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(setProductOfDetail)
+                        .withName("setProductOfDetail")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($orderItem.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(_getCategories)
+                        .withName("_getCategories")
+                        .withInstanceRepresentation($orderInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($categoryInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
                 .build();
 
         usePackage($package).withElements($).build();

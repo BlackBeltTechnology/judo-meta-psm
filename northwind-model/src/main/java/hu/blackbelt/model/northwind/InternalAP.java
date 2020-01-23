@@ -1,91 +1,84 @@
 package hu.blackbelt.model.northwind;
 
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
+import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.model.northwind.services.AllInternationalOrders;
-import hu.blackbelt.model.northwind.services.CreateCategory;
-import hu.blackbelt.model.northwind.services.CreateInternationalOrder;
-import hu.blackbelt.model.northwind.services.CreateOrder;
-import hu.blackbelt.model.northwind.services.CreateProduct;
-import hu.blackbelt.model.northwind.services.CreateShipper;
-import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
-import hu.blackbelt.model.northwind.services.GetAllOrders;
-import hu.blackbelt.model.northwind.services.InitializerScript;
-import hu.blackbelt.model.northwind.services.InternationalOrderInfoQuery;
-import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
-import hu.blackbelt.model.northwind.services.OrderInfoQuery;
-import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
+import hu.blackbelt.model.northwind.services.*;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedServiceBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.useAccessPoint;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class InternalAP {
 
-    /*
-      <elements xsi:type="accesspoint:AccessPoint" xmi:id="_X9vDsEZlEemHs64O5EYsyQ" name="internalAP">
-        <exposedGraphs xmi:id="_hanN0EZlEemHs64O5EYsyQ" name="ordersAssignedToEmployee" mappedTransferObjectType="_ETGEYCVQEemLpvUY7MQgng" selector="_EuQ5MCYbEemLpvUY7MQgng">
-          <cardinality xmi:id="_ApEPoKiXEemuF_XcMCHsqg" upper="-1"/>
-        </exposedGraphs>
-        <exposedServices xmi:id="_fvPm8EyhEemBn-SJ5OPvtg" operation="_mr1P4EWhEemHs64O5EYsyQ"/>
-        <exposedServices xmi:id="_R0KCoKiXEemuF_XcMCHsqg" operation="_Yp23UIFUEemFzY3ZWApzVQ"/>
-        <exposedServices xmi:id="_ErUCYHsLEemPuYxp6QV8dA" operation="_nkcqoHruEemPuYxp6QV8dA"/>
-        <exposedServices xmi:id="_GskDIKiXEemuF_XcMCHsqg" operation="_SZmaMIFUEemFzY3ZWApzVQ"/>
-        <exposedServices xmi:id="_G94coKiXEemuF_XcMCHsqg" operation="_99BAcKiTEemuF_XcMCHsqg"/>
-        <exposedServices xmi:id="_HEroMKiXEemuF_XcMCHsqg" operation="_5fazwKiTEemuF_XcMCHsqg"/>
-        <exposedServices xmi:id="_MVcXMKiXEemuF_XcMCHsqg" operation="__nxSEKiTEemuF_XcMCHsqg"/>
-      </elements>
-     */
     public AccessPoint $ = newAccessPointBuilder().build();
 
+    public ExposedGraph categories = newExposedGraphBuilder().build();
+    public ExposedGraph products = newExposedGraphBuilder().build();
+    public ExposedGraph shippers = newExposedGraphBuilder().build();
+    public ExposedGraph allInternationalOrders = newExposedGraphBuilder().build();
+    public ExposedGraph ordersAssignedToEmployee = newExposedGraphBuilder().build();
+    public ExposedGraph lastTwoWeekOrders = newExposedGraphBuilder().build();
 
-    public void init(Model $model, OrderInfoQuery $orderInfoQuery, InternationalOrderInfoQuery $internationalOrderInfoQuery,
-                     GetAllOrders $getAllOrders, GetAllInternationalOrders $getAllInternationalOrders,
-                     CreateOrder $createOrder, CreateInternationalOrder $createInternationalOrder,
-                     CreateShipper $createShipper, CreateProduct $createProduct, CreateCategory $createCategory,
+    public void init(Model $model, ProductInfo $productInfo, CategoryInfo $categoryInfo, ShipperInfo $shipperInfo,
+                     OrderInfo $orderInfo, InternationalOrderInfo $internationalOrderInfo, AllProducts $allProducts,
+                     AllCategories $allCategories, AllShippers $allShippers,
                      OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks,
-                     AllInternationalOrders $allInternationalOrders, InitializerScript $initializerScript
-    ) {
+                     AllInternationalOrders $allInternationalOrders) {
         useAccessPoint($)
                 .withName("internalAP")
-                .withExposedGraphs(newExposedGraphBuilder()
+                .withExposedGraphs(useExposedGraph(products)
+                        .withName("products")
+                        .withMappedTransferObjectType($productInfo.$)
+                        .withSelector($allProducts.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1))
+                        .build()
+                )
+                .withExposedGraphs(useExposedGraph(shippers)
+                        .withName("shippers")
+                        .withMappedTransferObjectType($shipperInfo.$)
+                        .withSelector($allShippers.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1))
+                        .build()
+                )
+                .withExposedGraphs(useExposedGraph(categories)
+                        .withName("categories")
+                        .withMappedTransferObjectType($categoryInfo.$)
+                        .withSelector($allCategories.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1))
+                        .build()
+                )
+                .withExposedGraphs(useExposedGraph(ordersAssignedToEmployee)
                         .withName("ordersAssignedToEmployee")
                         .withSelector($orderAssignedToEmployee.$)
-                        .withMappedTransferObjectType($orderInfoQuery.$)
+                        .withMappedTransferObjectType($orderInfo.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
-                        .withCreate($createOrder.$)
                         .build()
                 )
-                .withExposedGraphs(newExposedGraphBuilder()
+                .withExposedGraphs(useExposedGraph(allInternationalOrders)
                         .withName("allInternationalOrders")
                         .withSelector($allInternationalOrders.$)
-                        .withMappedTransferObjectType($internationalOrderInfoQuery.$)
+                        .withMappedTransferObjectType($internationalOrderInfo.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
-                        .withCreate($createInternationalOrder.$)
                         .build()
                 )
-                .withExposedGraphs(newExposedGraphBuilder()
+                .withExposedGraphs(useExposedGraph(lastTwoWeekOrders)
                         .withName("LastTwoWeekOrders")
                         .withSelector($ordersOfLastTwoWeeks.$)
-                        .withMappedTransferObjectType($orderInfoQuery.$)
+                        .withMappedTransferObjectType($orderInfo.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedServices(newExposedServiceBuilder().withOperation($getAllOrders.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($getAllInternationalOrders.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createOrder.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createInternationalOrder.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createShipper.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createProduct.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($createCategory.$))
-                .withExposedServices(newExposedServiceBuilder().withOperation($initializerScript.$))
-
+                .withExposedServices(newExposedServiceBuilder()
+                        .withName("exposed")
+                        .withOperationGroup($internationalOrderInfo.$)
+                )
                 .build();
         useModel($model).withElements($).build();
     }

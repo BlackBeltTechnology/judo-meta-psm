@@ -10,9 +10,6 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 
 public class VelocityStoredInKmPerHour {
 
-    /*
-             <elements xsi:type="measure:MeasuredType" xmi:id="_bfc2gB1eEemwg4NgOjaKeA" name="VelocityStoredInKmPerHour" precision="15" scale="4" storeUnit="_zR6KoB1UEemwg4NgOjaKeA"/>
-     */
     public MeasuredType $ = newMeasuredTypeBuilder().build();
 
     public void init(Package $package, Velocity $velocity) {

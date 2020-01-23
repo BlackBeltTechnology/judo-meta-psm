@@ -9,9 +9,6 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useNumer
 
 public class Long {
 
-    /*
-        <elements xsi:type="type:NumericType" xmi:id="_SZ-GUIUcEeipmMyz9cMCRA" name="Long" precision="18"/>
-    */
     public NumericType $ = newNumericTypeBuilder().build();
 
     public void init(Package $package) {

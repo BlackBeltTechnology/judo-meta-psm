@@ -8,9 +8,7 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newBoole
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useBooleanType;
 
 public class Boolean {
-    /*
-        <elements xsi:type="type:BooleanType" xmi:id="_Xos1AIUcEeipmMyz9cMCRA" name="Boolean"/>
-    */
+
     public BooleanType $ = newBooleanTypeBuilder().build();
 
     public void init(Package $package) {

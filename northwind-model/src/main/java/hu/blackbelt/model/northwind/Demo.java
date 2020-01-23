@@ -55,50 +55,14 @@ import hu.blackbelt.model.northwind.measures.Time;
 import hu.blackbelt.model.northwind.measures.Velocity;
 import hu.blackbelt.model.northwind.measures.Volume;
 import hu.blackbelt.model.northwind.measures.Work;
-import hu.blackbelt.model.northwind.services.AllCategories;
-import hu.blackbelt.model.northwind.services.AllInternationalOrders;
-import hu.blackbelt.model.northwind.services.AllProducts;
-import hu.blackbelt.model.northwind.services.CategoryInfo;
-import hu.blackbelt.model.northwind.services.Comment;
-import hu.blackbelt.model.northwind.services.CreateCategory;
-import hu.blackbelt.model.northwind.services.CreateInternationalOrder;
-import hu.blackbelt.model.northwind.services.CreateOrder;
-import hu.blackbelt.model.northwind.services.CreateProduct;
-import hu.blackbelt.model.northwind.services.CreateShipper;
-import hu.blackbelt.model.northwind.services.GetAllInternationalOrders;
-import hu.blackbelt.model.northwind.services.GetAllOrders;
-import hu.blackbelt.model.northwind.services.InitializerScript;
-import hu.blackbelt.model.northwind.services.InternationalOrderInfo;
-import hu.blackbelt.model.northwind.services.InternationalOrderInfoQuery;
-import hu.blackbelt.model.northwind.services.OrderAssignedToEmployee;
-import hu.blackbelt.model.northwind.services.OrderInfo;
-import hu.blackbelt.model.northwind.services.OrderInfoQuery;
-import hu.blackbelt.model.northwind.services.OrderItem;
-import hu.blackbelt.model.northwind.services.OrderItemQuery;
-import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
-import hu.blackbelt.model.northwind.services.ProductInfo;
-import hu.blackbelt.model.northwind.services.ProductInfoQuery;
-import hu.blackbelt.model.northwind.services.ShipmentChange;
-import hu.blackbelt.model.northwind.services.ShipperInfo;
-import hu.blackbelt.model.northwind.services.TerritoryInfo;
-import hu.blackbelt.model.northwind.services.TotalNumberOfOrders;
-import hu.blackbelt.model.northwind.types.Binary;
+import hu.blackbelt.model.northwind.services.*;
+import hu.blackbelt.model.northwind.types.*;
 import hu.blackbelt.model.northwind.types.Boolean;
-import hu.blackbelt.model.northwind.types.Countries;
-import hu.blackbelt.model.northwind.types.Date;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Float;
-import hu.blackbelt.model.northwind.types.Gps;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.Long;
-import hu.blackbelt.model.northwind.types.Measured;
-import hu.blackbelt.model.northwind.types.Phone;
-import hu.blackbelt.model.northwind.types.Priority;
 import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.Text;
-import hu.blackbelt.model.northwind.types.TimeStamp;
-import hu.blackbelt.model.northwind.types.Titles;
-import hu.blackbelt.model.northwind.types.Url;
 import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
@@ -177,24 +141,15 @@ public class Demo {
     private Velocity velocity = new Velocity();
     private Volume volume = new Volume();
     private Work work = new Work();
+    private hu.blackbelt.model.northwind.services.Category category_ = new hu.blackbelt.model.northwind.services.Category();
     private CategoryInfo categoryInfo = new CategoryInfo();
     private Comment comment = new Comment();
-    private CreateCategory createCategory = new CreateCategory();
-    private CreateInternationalOrder createInternationalOrder = new CreateInternationalOrder();
-    private CreateOrder createOrder = new CreateOrder();
-    private CreateProduct createProduct = new CreateProduct();
-    private CreateShipper createShipper = new CreateShipper();
-    private GetAllInternationalOrders getAllInternationalOrders = new GetAllInternationalOrders();
-    private GetAllOrders getAllOrders = new GetAllOrders();
     private TerritoryInfo territoryInfo = new TerritoryInfo();
     private InternationalOrderInfo internationalOrderInfo = new InternationalOrderInfo();
-    private InternationalOrderInfoQuery internationalOrderInfoQuery = new InternationalOrderInfoQuery();
     private OrderInfo orderInfo = new OrderInfo();
-    private OrderInfoQuery orderInfoQuery = new OrderInfoQuery();
     private OrderItem orderItem = new OrderItem();
-    private OrderItemQuery orderItemQuery = new OrderItemQuery();
+    private hu.blackbelt.model.northwind.services.Product product_ = new hu.blackbelt.model.northwind.services.Product();
     private ProductInfo productInfo = new ProductInfo();
-    private ProductInfoQuery productInfoQuery = new ProductInfoQuery();
     private ShipmentChange shipmentChange = new ShipmentChange();
     private ShipperInfo shipperInfo = new ShipperInfo();
     private AreaStoredInSquareMetre areaStoredInSquareMetre = new AreaStoredInSquareMetre();
@@ -203,6 +158,7 @@ public class Demo {
     private Countries countries = new Countries();
     private Date date = new Date();
     private Double double_ = new Double();
+    private Email email = new Email();
     private Float float_ = new Float();
     private Gps gps = new Gps();
     private Integer integer = new Integer();
@@ -221,15 +177,14 @@ public class Demo {
     private VelocityStoredInKmPerHour velocityStoredInKmPerHour = new VelocityStoredInKmPerHour();
     private VolumeStoredInLitre volumeStoredInLitre = new VolumeStoredInLitre();
     private InternalAP internalAP = new InternalAP();
-    private ExternallAP externallAP = new ExternallAP();
+    private ExternalAP externalAP = new ExternalAP();
     private AllCategories allCategories = new AllCategories();
     private AllInternationalOrders allInternationalOrders = new AllInternationalOrders();
     private AllProducts allProducts = new AllProducts();
+    private AllShippers allShippers = new AllShippers();
     private OrderAssignedToEmployee orderAssignedToEmployee = new OrderAssignedToEmployee();
     private OrdersOfLastTwoWeeks ordersOfLastTwoWeeks = new OrdersOfLastTwoWeeks();
     private TotalNumberOfOrders totalNumberOfOrders = new TotalNumberOfOrders();
-    private InitializerScript initializerScript = new InitializerScript();
-
 
     private PsmModel createPsmModel() {
         java.lang.String createdSourceModelName = "urn:psm.judo-meta-psm";
@@ -288,6 +243,7 @@ public class Demo {
         countries.init(types.$);
         date.init(types.$);
         double_.init(types.$);
+        email.init(types.$);
         float_.init(types.$);
         gps.init(types.$);
         integer.init(types.$);
@@ -310,7 +266,7 @@ public class Demo {
 
         // entities
         address.init(entities.$, string, city);
-        category.init(entities.$, string, text, binary, product, employee);
+        category.init(entities.$, string, text, binary, product, employee, category_, product_, categoryInfo, productInfo);
         city.init(entities.$, string);
         company.init(entities.$, string, phone, customer, product, gps);
         customer.init(entities.$, order, address);
@@ -323,12 +279,12 @@ public class Demo {
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
         order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, priority, massStoredInGrams,
-                customer, shipper, employee, internationalAddress, orderDetail, category, territory);
-        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category);
+                customer, shipper, employee, internationalAddress, orderDetail, category, territory, orderInfo, orderItem, categoryInfo);
+        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category, orderInfo, productInfo);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
         product.init(entities.$, string, integer, double_, boolean_, massStoredInKilograms, category, supplier,
-                company, store);
+                company, store, product_, category_, productInfo, categoryInfo);
         region.init(entities.$, string, territory);
         shipper.init(entities.$, company, order, territory);
         store.init(entities.$, product);
@@ -340,32 +296,21 @@ public class Demo {
         comment.init(services.$, string, text, timeStamp);
 
         // Mapped transfer objects
-        categoryInfo.init(services.$, string, category, productInfo, allProducts);
-        internationalOrderInfo.init(services.$, string, double_, timeStamp, priority, order, internationalOrder, orderItem, shipperInfo);
-        shipperInfo.init(services.$, string, shipper, company, gps);
-        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
-        productInfoQuery.init(services.$, string, double_, product, categoryInfo, allCategories);
+        category_.init(services.$, string, category, product_, externalAP);
+        categoryInfo.init(services.$, string, category, productInfo, categoryInfo, allProducts, internalAP);
+        shipperInfo.init(services.$, string, shipper, company, gps, internalAP);
+        product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories, externalAP);
+        productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, productInfo, allCategories, internalAP);
         territoryInfo.init(services.$, string, territory);
-        orderItem.init(services.$, string, integer, double_, orderDetail, productInfo, categoryInfo, allProducts, allCategories);
-        orderItemQuery.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfoQuery, categoryInfo, allProducts, allCategories);
-        orderInfo.init(services.$, string, timeStamp, priority, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        orderInfoQuery.init(services.$, string, timeStamp, boolean_, integer, double_, gps, priority, massStoredInGrams, order, orderItemQuery, categoryInfo, territoryInfo);
-        internationalOrderInfoQuery.init(services.$, internationalOrder, orderInfoQuery);
-
-        // Operations
-        createCategory.init(services.$, categoryInfo);
-        createInternationalOrder.init(services.$, internationalOrderInfo);
-        createOrder.init(services.$, orderInfo);
-        createProduct.init(services.$, productInfo);
-        createShipper.init(services.$, shipperInfo);
-        getAllOrders.init(services.$, orderInfoQuery);
-        initializerScript.init(services.$);
-        getAllInternationalOrders.init(services.$, internationalOrderInfoQuery);
+        orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories, orderItem);
+        orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
+        internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo, internalAP);
 
         // Static Navigation
         allCategories.init(services.$, category);
         allInternationalOrders.init(services.$, internationalOrder);
         allProducts.init(services.$, product);
+        allShippers.init(services.$, shipper);
         orderAssignedToEmployee.init(services.$, order);
         ordersOfLastTwoWeeks.init(services.$, order);
 
@@ -373,10 +318,9 @@ public class Demo {
         totalNumberOfOrders.init(services.$, integer);
 
         // Access Points
-        internalAP.init($, orderInfoQuery, internationalOrderInfoQuery, getAllOrders, getAllInternationalOrders,
-                createOrder, createInternationalOrder, createShipper, createProduct, createCategory, orderAssignedToEmployee,
-                ordersOfLastTwoWeeks, allInternationalOrders, initializerScript);
-        externallAP.init($, productInfo, categoryInfo, allProducts, allCategories);
+        internalAP.init($, productInfo, categoryInfo, shipperInfo, orderInfo, internationalOrderInfo, allProducts,
+                allCategories, allShippers, orderAssignedToEmployee, ordersOfLastTwoWeeks, allInternationalOrders);
+        externalAP.init($, product_, category_, allProducts, allCategories);
 
         PsmModel psmModel = createPsmModel();
         psmModel.addContent($);

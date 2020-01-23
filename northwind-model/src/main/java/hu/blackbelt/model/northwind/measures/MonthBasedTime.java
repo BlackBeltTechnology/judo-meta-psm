@@ -5,19 +5,11 @@ import hu.blackbelt.judo.meta.psm.measure.DurationUnit;
 import hu.blackbelt.judo.meta.psm.measure.Measure;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newDurationUnitBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.newMeasureBuilder;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useDurationUnit;
-import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.useMeasure;
+import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 
 public class MonthBasedTime {
-    /*
-    <elements xsi:type="measure:Measure" xmi:id="_tTcIcB1REemwg4NgOjaKeA" name="MonthBasedTime">
-      <units xsi:type="measure:DurationUnit" xmi:id="_yX3RgB2GEemwg4NgOjaKeA" name="month" unitType="month"/>
-      <units xsi:type="measure:DurationUnit" xmi:id="_zDfocB2GEemwg4NgOjaKeA" name="year" rateDividend="12.0" unitType="year"/>
-    </elements>
-    */
+
     public Measure $ = newMeasureBuilder().build();
     public DurationUnit month = newDurationUnitBuilder().build();
     public DurationUnit year = newDurationUnitBuilder().build();

@@ -9,12 +9,13 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class AllInternationalOrders {
+
     public StaticNavigation $ = newStaticNavigationBuilder().build();
 
-    public void init(Package $package, InternationalOrder $order) {
+    public void init(Package $package, InternationalOrder $internationalOrder) {
         useStaticNavigation($)
                 .withName("allInternationalOrders")
-                .withTarget($order.$)
+                .withTarget($internationalOrder.$)
                 .withCardinality(newCardinalityBuilder().withUpper(-1))
                 .withGetterExpression(newReferenceExpressionTypeBuilder()
                         .withExpression("demo::entities::InternationalOrder")

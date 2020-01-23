@@ -8,9 +8,7 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStrin
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.useStringType;
 
 public class String {
-    /*
-        <elements xsi:type="type:StringType" xmi:id="_Nppx8IUcEeipmMyz9cMCRA" name="String" maxLength="255"/>
-    */
+
     public StringType $ = newStringTypeBuilder().build();
 
     public void init(Package $package) {

@@ -114,6 +114,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/dataProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/navigationProperties"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/sequences"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/operations"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllSuperEntityTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperEntityTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAttribute" body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getAllSuperEntityTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
@@ -140,6 +141,18 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllNavigationProperties(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllSequences"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSequences(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getInheritedOperationImplementationByName"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationByName(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//data/EntityType/getInheritedOperationImplementationByName/name"/>
+        </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getInheritedOperationImplementationsByName"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationsByName(this,name);">
+          <genParameters ecoreParameter="psm.ecore#//data/EntityType/getInheritedOperationImplementationsByName/name"/>
+        </genOperations>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getInheritedOperationNames"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationNames(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllOperationNames"
+            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//data/Relation">
         <genOperations ecoreOperation="psm.ecore#//data/Relation/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);"/>
@@ -184,6 +197,17 @@
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//data/EntitySequence"/>
       <genClasses ecoreClass="psm.ecore#//data/NamespaceSequence"/>
+      <genClasses ecoreClass="psm.ecore#//data/BoundOperation">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/BoundOperation/implementation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/BoundOperation/instanceRepresentation"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/BoundOperation/abstract"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//data/OperationBody">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/OperationBody/stateful"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/OperationBody/customImplementation"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/OperationBody/body"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Constraint" basePackage="hu.blackbelt.judo.meta.psm"
         resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
@@ -240,6 +264,26 @@
     <nestedGenPackages prefix="Service" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
         disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
         childCreationExtenders="true" fileExtensions="judo-meta-psm-service" ecorePackage="psm.ecore#//service">
+      <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//service/TransferOperationBehaviourType">
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/CREATE"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UPDATE"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/DELETE"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/SET_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UNSET_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/ADD_ALL_TO_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/REMOVE_ALL_FROM_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/CREATE_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UPDATE_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/DELETE_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/SET_RELATION_OF_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UNSET_RELATION_OF_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/ADD_ALL_TO_RELATION_OF_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/REMOVE_ALL_FROM_RELATION_OF_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_RANGE_OF_RELATION"/>
+        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_TEMPLATE"/>
+      </genEnums>
       <genClasses image="false" ecoreClass="psm.ecore#//service/TransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/representation"/>
@@ -247,8 +291,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/attributes"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/superTransferObjectTypes"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/getTemplate"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/operations"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getAllSuperTransferObjectTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferAttributeNames"
@@ -270,22 +313,6 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embeddedCreate"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embeddedUpdate"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectRelation/embeddedDelete"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/get"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/create"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/update"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/delete"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/set"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/unset"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/addAll"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/removeAll"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectRelation/isCollection"
             body="if (getCardinality() == null) {&#xA;    return false;&#xA;} else {&#xA;    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;&#xA;}"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectRelation/isRequired"
@@ -309,24 +336,11 @@
       <genClasses ecoreClass="psm.ecore#//service/MappedTransferObjectType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/entityType"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/operations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/MappedTransferObjectType/filter"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isAbstract"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/isInstantiable"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);"/>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getAllOperationNames"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);"/>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationsByName"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationsByName(this,name);">
-          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationsByName/name"/>
-        </genOperations>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationByName"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationByName(this,name);">
-          <genParameters ecoreParameter="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationImplementationByName/name"/>
-        </genOperations>
-        <genOperations ecoreOperation="psm.ecore#//service/MappedTransferObjectType/getInheritedOperationNames"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationNames(this);"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/OperationDeclaration">
         <genFeatures children="true" createChild="true" propertySortChoices="true"
@@ -336,67 +350,30 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/OperationDeclaration/input"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/UnmappedTransferObjectType"/>
-      <genClasses ecoreClass="psm.ecore#//service/BoundOperation">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/implementation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/getOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/createOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/updateOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperation/deleteOwnerRelation"/>
-      </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/UnboundOperation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/implementation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/getTemplateOwnerTransferObjectType"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/getOwnerExposedGraph"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/createOwnerExposedGraph"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/updateOwnerExposedGraph"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/deleteOwnerExposedGraph"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/Parameter">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/cardinality"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/type"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/getRange"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//service/OperationBody">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/stateful"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/customImplementation"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/OperationBody/body"/>
+      <genClasses ecoreClass="psm.ecore#//service/BoundTransferOperation">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/BoundTransferOperation/binding"/>
+        <genOperations ecoreOperation="psm.ecore#//service/BoundTransferOperation/getImplementation"
+            body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding().getName()).orElse(null) : null;"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//service/BoundOperationWithRelation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/setOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/unsetOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/addAllOwnerRelation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/BoundOperationWithRelation/removeAllOwnerRelation"/>
+      <genClasses ecoreClass="psm.ecore#//service/TransferOperation">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferOperation/behaviour"/>
+        <genOperations ecoreOperation="psm.ecore#//service/TransferOperation/getImplementation"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//service/UnboundOperationWithRelation">
+      <genClasses ecoreClass="psm.ecore#//service/TransferOperationBehaviour">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferOperationBehaviour/behaviourType"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperationWithRelation/setOwnerExposedGraph"/>
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferOperationBehaviour/relation"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperationWithRelation/unsetOwnerExposedGraph"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperationWithRelation/addAllOwnerExposed"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperationWithRelation/removeAllOwnerExposedGraph"/>
-      </genClasses>
-      <genClasses ecoreClass="psm.ecore#//service/OperationWithRelation">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/OperationWithRelation/relation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/OperationWithRelation/getRangeOwnerParameter"/>
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferOperationBehaviour/owner"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Accesspoint" basePackage="hu.blackbelt.judo.meta.psm"
@@ -415,26 +392,10 @@
             ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/selector"/>
         <genFeatures children="true" createChild="true" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/cardinality"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/get"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/create"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/update"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/delete"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/set"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/unset"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/addAll"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/removeAll"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedService">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedService/operation"/>
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedService/operationGroup"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"

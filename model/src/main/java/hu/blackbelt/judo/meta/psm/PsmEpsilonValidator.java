@@ -22,7 +22,7 @@ public class PsmEpsilonValidator {
     public static void validatePsm(Log log,
                                    PsmModel psmModel,
                                    URI scriptRoot) throws ScriptExecutionException, URISyntaxException {
-        validatePsm(log, psmModel, scriptRoot, emptyList(), emptyList());
+        validatePsm(log, psmModel, scriptRoot, emptyList(), null);
     }
 
     public static void validatePsm(Log log,

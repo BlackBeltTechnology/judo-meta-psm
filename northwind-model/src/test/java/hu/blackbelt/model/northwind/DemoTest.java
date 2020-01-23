@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 
 import static hu.blackbelt.judo.meta.psm.PsmEpsilonValidator.calculatePsmValidationScriptURI;
 import static hu.blackbelt.judo.meta.psm.PsmEpsilonValidator.validatePsm;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 class DemoTest {
@@ -29,10 +30,11 @@ class DemoTest {
         Demo demo = new Demo();
         PsmModel psmModel = demo.fullDemo();
 
-        log.info(psmModel.asString());
+        log.debug(psmModel.asString());
 
         log.info(psmModel.getDiagnosticsAsString());
 
+        assertTrue(psmModel.isValid());
         validatePsm(new Slf4jLog(log), psmModel, calculatePsmValidationScriptURI());
     }
 }
