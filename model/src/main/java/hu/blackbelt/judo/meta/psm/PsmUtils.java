@@ -21,10 +21,11 @@ import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.OperationDeclaration;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.TransferOperation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -32,6 +33,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -654,6 +656,7 @@ public class PsmUtils {
 
     /**
      * Get all possible mapped transfer object types embedding given mapped transfer object types
+     *
      * @param mappedTransferObjectType
      * @return all mapped transfer object type embedding given mapped transfer object type
      */
@@ -666,9 +669,10 @@ public class PsmUtils {
 
     /**
      * Get all possible mapped transfer object types embedding at least one of listed of mapped transfer object types
+     *
      * @param resourceSet
      * @param topLevelContainers last list of unique mapped transfer object being embedded by mapped transfer object types
-     * @param allContainers all unique mapped transfer object types being targeted by transfer object relations so far in mapped transfer objects
+     * @param allContainers      all unique mapped transfer object types being targeted by transfer object relations so far in mapped transfer objects
      * @return list of unique mapped transfer object types being targeted by transfer object relations in mapped transfer objects
      */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(ResourceSet resourceSet, EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
@@ -690,15 +694,35 @@ public class PsmUtils {
 
     /**
      * Get all mapped transfer object types that are type of input parameter in operations
+     *
      * @param resourceSet
      * @return list of unique mapped transfer object types
      */
     public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
-        Stream<MappedTransferObjectType> streamResult = all(resourceSet, OperationBody.class)
-                .filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)
-                .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
+        EList<TransferOperationBehaviourType> behavioursToExtend = new UniqueEList<>(Arrays.asList(
+                TransferOperationBehaviourType.CREATE,
+                TransferOperationBehaviourType.UPDATE,
+                TransferOperationBehaviourType.SET_RELATION,
+                TransferOperationBehaviourType.ADD_ALL_TO_RELATION,
+                TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION,
+                TransferOperationBehaviourType.CREATE_RELATION,
+                TransferOperationBehaviourType.UPDATE_RELATION,
+                TransferOperationBehaviourType.SET_RELATION_OF_RELATION,
+                TransferOperationBehaviourType.ADD_ALL_TO_RELATION_OF_RELATION,
+                TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION_OF_RELATION
+        ));
+
+        Stream<MappedTransferObjectType> streamResult = all(resourceSet, TransferOperation.class)
+                .filter(transferOperation -> transferOperation.getInput() != null /*&& transferOperation.getInput().getType() != null*/)
+                .filter(transferOperation -> transferOperation.getBehaviour() != null && behavioursToExtend.contains(transferOperation.getBehaviour().getBehaviourType()))
+                .map(transferOperation -> transferOperation.getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
+
+                /*.filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)
+                .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
+                .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
+                .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);*/
 
         return new UniqueEList<>(streamResult.collect(Collectors.toList()));
     }
