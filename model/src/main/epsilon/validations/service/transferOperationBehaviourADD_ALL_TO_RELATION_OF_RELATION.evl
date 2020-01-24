@@ -1,0 +1,65 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfAddAllToRelationOfRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+		check: self.eContainer.isKindOf(PSM!BoundTransferOperation)
+		message: "'ADD_ALL_TO_RELATION_OF_RELATION' behaviour must be owned by a bound transfer operation"
+	}
+	
+	constraint OwnerOfAddAllToRelationOfRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
+		message: "Owner of 'ADD_ALL_TO_RELATION_OF_RELATION' behaviour must be a transfer object relation" + 
+		"inherited or owned by the transfer object type containing the operation"
+	}
+	
+	constraint RelationOfAddAllToRelationOfRelationBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+		check: self.relation.isDefined() and self.relation.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.owner.target).includes(self.relation)
+		message: "Relation must be undefined for 'ADD_ALL_TO_RELATION_OF_RELATION' behaviour"
+	}
+
+	constraint AddAllToRelationOfRelationOperationInputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+    		and self.satisfiesAll("OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'ADD_ALL_TO_RELATION_OF_RELATION' operation must have an input parameter named 'input'"
+    }
+    
+    constraint AddAllToRelationOfRelationOperationInputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+    		and self.satisfiesAll("AddAllToRelationOfRelationOperationInputParameterIsDefined","OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
+    		and self. eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.name == "input"
+    	message: "'ADD_ALL_TO_RELATION_OF_RELATION' operation's input parameter must be named 'input'"
+    }
+    
+    constraint AddAllToRelationOfRelationOperationInputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+    		and self.satisfiesAll("AddAllToRelationOfRelationOperationInputParameterIsDefined","OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.binding.input.type.entityType).includes(self.owner.target.entityType)
+    	message: "Type of 'ADD_ALL_TO_RELATION_OF_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint AddAllToRelationOfRelationOperationInputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+    		and self.satisfiesAll("AddAllToRelationOfRelationOperationInputParameterIsDefined","OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Cardinality of 'ADD_ALL_TO_RELATION_OF_RELATION' operation's input parameter must be 1..1"
+    }
+    
+    constraint AddAllToRelationOfRelationOperationOutputParameterIsNotDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION
+    		and self.satisfiesAll("OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.isUndefined()
+    	message: "'ADD_ALL_TO_RELATION_OF_RELATION' operation cannot have an output parameter"
+    }
+}
+	

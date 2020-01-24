@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ class PsmValidationTypeTest {
 
 	private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
 		try {
+			Assertions.assertTrue(psmModel.isValid());
 			PsmEpsilonValidator.validatePsm(log, psmModel,
 					new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."), expectedErrors,
 					expectedWarnings);

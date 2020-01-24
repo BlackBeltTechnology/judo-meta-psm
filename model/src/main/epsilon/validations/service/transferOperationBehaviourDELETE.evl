@@ -1,0 +1,56 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfDeleteBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE
+		check: self.eContainer.isKindOf(PSM!UnboundOperation)
+		message: "'DELETE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be unbound operation"
+	}
+	
+	constraint OwnerOfDeleteBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
+		message: "Owner of 'DELETE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph"
+	}
+	
+	constraint RelationOfDeleteBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE
+		check: self.relation.isUndefined()
+		message: "Relation must be undefined for 'DELETE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
+	}
+	
+	constraint DeleteOperationInputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE and
+    		self.satisfiesAll("OperationOfDeleteBehaviourIsValid", "OwnerOfDeleteBehaviourIsValid", "RelationOfDeleteBehaviourIsUndefined")
+    	check: self.eContainer.input.isDefined()
+    	message: "'DELETE' operation must have an input parameter named 'input'"
+    }
+    
+    constraint DeleteOperationInputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE and
+    		self.satisfiesAll("DeleteOperationInputParameterIsDefined", "OperationOfDeleteBehaviourIsValid", "OwnerOfDeleteBehaviourIsValid", "RelationOfDeleteBehaviourIsUndefined")
+    	check: self.eContainer.input.name == "input"
+    	message: "'DELETE' operation's input parameter must be named 'input'"
+    }
+    
+    constraint DeleteOperationInputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE and
+    		self.satisfiesAll("DeleteOperationInputParameterIsDefined", "OperationOfDeleteBehaviourIsValid", "OwnerOfDeleteBehaviourIsValid", "RelationOfDeleteBehaviourIsUndefined")
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
+    	message: "Type of 'DELETE' operation's input parameter must be kind of exposed graph's mapped transfer object type"
+    }
+    
+    constraint DeleteOperationInputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE and
+    		self.satisfiesAll("DeleteOperationInputParameterIsDefined", "OperationOfDeleteBehaviourIsValid", "OwnerOfDeleteBehaviourIsValid", "RelationOfDeleteBehaviourIsUndefined")
+    	check: self.eContainer.input.cardinality.lower == 1 and
+    		self.eContainer.input.cardinality.upper == 1 
+    	message: "Cardinality of 'DELETE' operation's input parameter must be 1..1"
+    }
+    
+    constraint DeleteOperationOutputParameterIsNotDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE and
+    		self.satisfiesAll("OperationOfDeleteBehaviourIsValid", "OwnerOfDeleteBehaviourIsValid", "RelationOfDeleteBehaviourIsUndefined")
+    	check: self.eContainer.output.isUndefined()
+    	message: "'DELETE' operation cannot have an output parameter"
+    }
+}

@@ -280,7 +280,7 @@ public class Demo {
         onlineOrder.init(entities.$, url, order);
         order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, priority, massStoredInGrams,
                 customer, shipper, employee, internationalAddress, orderDetail, category, territory, orderInfo, orderItem, categoryInfo);
-        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category, orderInfo, productInfo);
+        orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category, orderItem, productInfo);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
         product.init(entities.$, string, integer, double_, boolean_, massStoredInKilograms, category, supplier,

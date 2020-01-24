@@ -1,24 +1,153 @@
 context PSM!EntityType {
 
-    // entity type names should be unique
     critique EntityTypeNamesAreUnique {
         check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
         message: "Entity type name is not unique: " + self.name
     }
 
-    // recursive inheritance is not supported
 	constraint InheritanceIsNotRecursive {
 		check: not self.getAllSuperEntityTypes().contains(self)
 		message: "Entity type " + self.name + " is recursive"
 	}
+	
+	constraint InheritedOperationsAreValid {
+		check: psmUtils.getInheritedBoundOperations(self)
+				.forAll(o | psmUtils.getInheritedBoundOperations(self).excluding(o).forAll(other | other.name.toLowerCase() == o.name.toLowerCase() 
+							implies psmUtils.parametersAreTheSame(o,other)))
+		message: "Entity type: " + self.name + " is inheriting operations with the same name but different signature."
+	}
+	
+	constraint EntityTypeMustBeAbstractIfAnOperationIsAbstract {
+		check: psmUtils.getAllBoundOperations(self).exists(o | o.abstract) implies self.abstract
+		message: "Entity type: " + self.name + " must be abstract if it has an abstract operation"
+	}
+    
+    constraint NeedToOverrideMultipleOperationImplementations {
+        guard: self.getAllSuperEntityTypes()
+            .forAll(s | s.satisfiesAll("InheritanceIsNotRecursive","NeedToOverrideMultipleOperationImplementations"))
+        check: psmUtils.getAllOperationNames(self).forAll(opName | self.getInheritedOperationImplementationsByName(opName).size() > 1 implies 
+                        self.operations.exists(o | o.name.toLowerCase() == opName.toLowerCase() and not o.abstract))
+        message: "Entity type: " + self.name + " has inherited operations without implementation, "
+                + "but their bases have more than one implementation."
+    }
+    
+    constraint InheritedOperationAndAttributeNamesAreUnique {
+        check: not psmUtils.getInheritedAttributeNames(self).exists(name | self.getInheritedOperationNames().exists(a | name.toLowerCase() == a.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited operation(s) and inherited attribute(s) of the same name." 
+    }
 
-    // entity type is inheriting unique named element names
-    constraint InheritingNamedElementsOfTheSameNameIsNotAllowed {
-        check: psmUtils.getInheritedNamedElementNames(self)
-                    .forAll(n | self.getAllSuperEntityTypes()
-                                    .collect(s | s.eContents()).flatten()
-                                    .select(c | c.isKindOf(PSM!NamedElement))
-                                    .select(e | e.name.toLowerCase() == n.toLowerCase()).size() == 1 )
-        message: "Entity type: " + self.name + " has inherited named elements of the same name."
+    constraint InheritedOperationAndRelationNamesAreUnique {
+        check: not psmUtils.getInheritedRelationNames(self).exists(name | self.getInheritedOperationNames().exists(a | name.toLowerCase() == a.toLowerCase()))
+        message:  "Entity type: " + self.name + " has inherited operation(s) and inherited relation(s) of the same name."
+    }
+    
+    constraint InheritedOperationAndSequenceNamesAreUnique {
+        check: not psmUtils.getInheritedSequenceNames(self).exists(name | self.getInheritedOperationNames().exists(a | name.toLowerCase() == a.toLowerCase()))
+        message:  "Entity type: " + self.name + " has inherited operation(s) and inherited sequence(s) of the same name."
+    }
+    
+    constraint InheritedOperationAndNavigationPropertyNamesAreUnique {
+        check: not psmUtils.getInheritedNavigationPropertyNames(self).exists(name | self.getInheritedOperationNames().exists(a | name.toLowerCase() == a.toLowerCase()))
+        message:  "Entity type: " + self.name + " has inherited operation(s) and inherited navigation properties of the same name."
+    }
+    
+    constraint InheritedOperationAndDataPropertyNamesAreUnique {
+        check: not psmUtils.getInheritedDataPropertyNames(self).exists(name | self.getInheritedOperationNames().exists(a | name.toLowerCase() == a.toLowerCase()))
+        message:  "Entity type: " + self.name + " has inherited operation(s) and inherited data properties of the same name."
+    }
+        
+    constraint InheritingUniqueAttributeNames {
+        check: psmUtils.getInheritedAttributeNames(self)
+                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.attributes).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Entity type: " + self.name + " has inherited attributes of the same name."
+    }
+    
+    constraint InheritingUniqueRelationNames {
+        check: psmUtils.getInheritedRelationNames(self)
+                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.relations).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Entity type: " + self.name + " has inherited relations of the same name."
+    }
+     
+    constraint InheritingUniqueSequenceNames {
+        check: psmUtils.getInheritedSequenceNames(self)
+                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.sequences).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Entity type: " + self.name + " has inherited sequences of the same name."
+    }
+    
+    constraint InheritingUniqueDataPropertyNames {
+        check: psmUtils.getInheritedDataPropertyNames(self)
+                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.dataProperties).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Entity type: " + self.name + " has inherited data properties of the same name."
+    }
+    
+    constraint InheritingUniqueNavigationPropertyNames {
+        check: psmUtils.getInheritedNavigationPropertyNames(self)
+                    .forAll(n | self.getAllSuperEntityTypes().collect(s | s.navigationProperties).flatten()
+                                    .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
+        message: "Entity type: " + self.name + " has inherited navigation properties of the same name."
+    }
+    
+    constraint InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedAttributeNames(self)
+                .exists(name | psmUtils.getInheritedRelationNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited relation(s) and inherited attribute(s) of the same name."
+    }
+    
+    constraint InheritingAttributesAndSequencesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedAttributeNames(self)
+                .exists(name | psmUtils.getInheritedSequenceNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited sequence(s) and inherited transfer attribute(s) of the same name."
+    }
+    
+    constraint InheritingAttributesAndDataPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedAttributeNames(self)
+                .exists(name | psmUtils.getInheritedDataPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited attribute(s) and inherited data properties of the same name."
+    }
+    
+    constraint InheritingAttributesAndNavigationPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedAttributeNames(self)
+                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited attribute(s) and inherited navigation properties of the same name."
+    }
+    
+    constraint InheritingRelationsAndSequencesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedRelationNames(self)
+                .exists(name | psmUtils.getInheritedSequenceNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited sequence(s) and inherited relation(s) of the same name."
+    }
+    
+    constraint InheritingRelationsAndDataPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedRelationNames(self)
+                .exists(name | psmUtils.getInheritedDataPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited relation(s) and inherited data properties of the same name."
+    }
+    
+    constraint InheritingRelationsAndNavigationPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedRelationNames(self)
+                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited relation(s) and inherited navigation properties of the same name."
+    }
+    
+    constraint InheritingSequencesAndDataPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedSequenceNames(self)
+                .exists(name | psmUtils.getInheritedDataPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited sequence(s) and inherited data properties of the same name."
+    }
+    
+    constraint InheritingSequencesAndNavigationPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedSequenceNames(self)
+                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited sequence(s) and inherited navigation properties of the same name."
+    }
+    
+    constraint InheritingDataPropertiesAndNavigationPropertiesOfTheSameNameIsNotAllowed {
+        check: not psmUtils.getInheritedDataPropertyNames(self)
+                .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
+        message: "Entity type: " + self.name + " has inherited data properties and inherited navigation properties of the same name."
     }
 }

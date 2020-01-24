@@ -1,0 +1,63 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfDeleteRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+		check: self.eContainer.isKindOf(PSM!BoundTransferOperation) 
+		message: "'DELETE_RELATION' behaviour must be owned by a bound transfer operation"
+	}
+	
+	constraint OwnerOfDeleteRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
+		message: "Owner of 'DELETE_RELATION' behaviour must be a transfer object relation" + 
+		"inherited or owned by the transfer object type containing the operation"
+	}
+	
+	constraint RelationOfDeleteRelationBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+		check: self.relation.isUndefined()
+		message: "Relation must be undefined for 'DELETE_RELATION' behaviour"
+	}
+	
+	constraint DeleteOperationInputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+    		and self.satisfiesAll("OperationOfDeleteRelationBehaviourIsValid","OwnerOfDeleteRelationBehaviourIsValid","RelationOfDeleteRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'DELETE_RELATION' operation must have an input parameter named 'input'"
+    }
+    
+    constraint DeleteOperationInputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+    		and self.satisfiesAll("DeleteOperationInputParameterIsDefined","OperationOfDeleteRelationBehaviourIsValid","OwnerOfDeleteRelationBehaviourIsValid","RelationOfDeleteRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.name == "input"
+    	message: "'DELETE_RELATION' operation's input parameter must be named 'input'"
+    }
+    
+    constraint DeleteOperationInputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+    		and self.satisfiesAll("DeleteOperationInputParameterIsDefined","OperationOfDeleteRelationBehaviourIsValid","OwnerOfDeleteRelationBehaviourIsValid","RelationOfDeleteRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.input.type).includes(self.deleteOwnerRelation.target)
+    	message: "Type of 'DELETE_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint DeleteOperationInputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+    		and self.satisfiesAll("DeleteOperationInputParameterIsDefined","OperationOfDeleteRelationBehaviourIsValid","OwnerOfDeleteRelationBehaviourIsValid","RelationOfDeleteRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Cardinality of 'DELETE_RELATION' operation's input parameter must be 1..1"
+    }
+    
+    constraint DeleteOperationOutputParameterIsNotDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+    		and self.satisfiesAll("OperationOfDeleteRelationBehaviourIsValid","OwnerOfDeleteRelationBehaviourIsValid","RelationOfDeleteRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.isUndefined()
+    	message: "'DELETE_RELATION' operation cannot have an output parameter"
+    }
+}

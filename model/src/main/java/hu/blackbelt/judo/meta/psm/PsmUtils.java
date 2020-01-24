@@ -20,10 +20,14 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.OperationDeclaration;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
+
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -328,7 +332,6 @@ public class PsmUtils {
         return navigationProperties;
     }
 
-
     /**
      * Get unique list of all (inherited and not inherited) sequences of a given entity type.
      *
@@ -342,6 +345,74 @@ public class PsmUtils {
                 .flatMap(e -> e.getSequences().stream())
                 .collect(Collectors.toSet()));
         return sequences;
+    }
+    
+    /**
+     * Get unique list of all (inherited and not inherited) bound operations of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited and own bound operations of an entity type
+     */
+    public static EList<BoundOperation> getAllBoundOperations(final EntityType entityType) {
+    	EList<BoundOperation> operations = new UniqueEList<>();
+    	operations.addAll(entityType.getOperations());
+    	operations.addAll(entityType.getAllSuperEntityTypes().stream()
+                    .flatMap(e -> e.getOperations().stream())
+                    .collect(Collectors.toSet()));
+    	return operations; 
+    }
+    
+    /**
+     * Get unique list of inherited bound operations of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the inherited bound operations of an entity type
+     */
+    public static EList<BoundOperation> getInheritedBoundOperations(final EntityType entityType) {
+    	EList<BoundOperation> operations = new UniqueEList<>();
+    	operations.addAll(entityType.getAllSuperEntityTypes().stream()
+                    .flatMap(e -> e.getOperations().stream())
+                    .collect(Collectors.toSet()));
+    	return operations; 
+    }
+    
+    /**
+     * Compares input, output and fault parameters of two operation declarations. 
+     *
+     * @param op1 	operation declaration, op2	operation declaration
+     * @return true if the input, output and fault types and cardinalities are the same for both operations 
+     */
+    public static boolean parametersAreTheSame(final OperationDeclaration op1, final OperationDeclaration op2) {
+    	if (op1.getInput() != null)
+    	{ 
+    		if (op2.getInput() == null) return false;
+    		if (!op1.getInput().getType().equals(op2.getInput().getType())) return false;
+    		if (op1.getInput().getCardinality().getLower() != op2.getInput().getCardinality().getLower() || 
+        			op1.getInput().getCardinality().getUpper() != op2.getInput().getCardinality().getUpper() ) return false;
+    	} else if (op2.getInput() != null) return false;
+    	
+    	if (op1.getOutput() != null)
+    	{ 
+    		if (op2.getOutput() == null) return false;
+    		if (!op1.getOutput().getType().equals(op2.getOutput().getType())) return false;
+    		if (op1.getOutput().getCardinality().getLower() != op2.getOutput().getCardinality().getLower() || 
+    			op1.getOutput().getCardinality().getUpper() != op2.getOutput().getCardinality().getUpper() ) return false;
+    	} else if (op2.getOutput() != null) return false;
+    		
+    	if (op1.getFaults().size() != op2.getFaults().size()) return false;
+    	else if (op1.getFaults().isEmpty() && op2.getFaults().isEmpty()) return true;
+    	
+    	return op1.getFaults().stream()
+    			.allMatch( f -> op2.getFaults().stream()
+    								.anyMatch(f2 -> f.getType().equals(f2.getType()) &&
+    												f.getCardinality().getLower() == f2.getCardinality().getLower() &&
+    												f.getCardinality().getUpper() == f2.getCardinality().getUpper()))
+    			&&
+    			op2.getFaults().stream()
+    			.allMatch( f -> op1.getFaults().stream()
+    							.anyMatch(f1 -> f.getType().equals(f1.getType()) &&
+    											f.getCardinality().getLower() == f1.getCardinality().getLower() &&
+    											f.getCardinality().getUpper() == f1.getCardinality().getUpper())); 
     }
 
     /**
@@ -408,6 +479,24 @@ public class PsmUtils {
                 .map(n -> n.getName())
                 .collect(Collectors.toSet());
     }
+    
+    /**
+     * Get unique list of all inherited bound operation names of a given entity type.
+     *
+     * @param entityType entity type
+     * @return unique list of the names of inherited bound operations
+     */
+    public static EList<String> getInheritedBoundOperationNames(final EntityType entityType) {
+        EList<String> operationNames = new UniqueEList<>();
+
+        Set<String> operationNamesSet = entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+
+        operationNames.addAll(operationNamesSet);
+        return operationNames;
+    }
 
     /**
      * Get set of all inherited named element names of a given entity type.
@@ -420,7 +509,8 @@ public class PsmUtils {
                 getInheritedRelationNames(entityType),
                 getInheritedDataPropertyNames(entityType),
                 getInheritedNavigationPropertyNames(entityType),
-                getInheritedSequenceNames(entityType))
+                getInheritedSequenceNames(entityType),
+        		getInheritedBoundOperationNames(entityType))
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
     }
@@ -478,6 +568,115 @@ public class PsmUtils {
                 .map(r -> r.getName())
                 .collect(Collectors.toSet()));
         return relationNames;
+    }
+    
+    /**
+     * Get unique list of all (inherited and not inherited) transfer object relations of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of inherited and not inherited transfer object relations
+     */
+    public static EList<TransferObjectRelation> getAllTransferObjectRelations(final TransferObjectType transferObjectType) {
+        EList<TransferObjectRelation> relations = new UniqueEList<>();
+        relations.addAll(transferObjectType.getRelations());
+        relations.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(to -> to.getRelations().stream())
+                .collect(Collectors.toSet()));
+        return relations;
+    }
+    
+    /**
+     * Get unique list of all inherited transfer operation names of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the names of inherited transfer operations
+     */
+    public static EList<String> getInheritedTransferOperationNames(final TransferObjectType transferObjectType) {
+        EList<String> operationNames = new UniqueEList<>();
+
+        Set<String> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+
+        operationNames.addAll(operationNamesSet);
+        return operationNames;
+    }
+    
+    /**
+     * Get unique list of all inherited bound transfer operation names of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the names of inherited bound transfer operations
+     */
+    public static EList<String> getInheritedBoundTransferOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
+        EList<String> operationNames = new UniqueEList<>();
+
+        Set<String> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .filter(o -> o instanceof BoundTransferOperation)
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+
+        operationNames.addAll(operationNamesSet);
+        return operationNames;
+    }
+    
+    /**
+     * Get unique list of all inherited unbound operation names of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the names of inherited unbound operations
+     */
+    public static EList<String> getInheritedUnboundOperationNames(final TransferObjectType transferObjectType) {
+        EList<String> operationNames = new UniqueEList<>();
+
+        Set<String> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .filter(o -> o instanceof UnboundOperation)
+                .map(o -> o.getName())
+                .collect(Collectors.toSet());
+
+        operationNames.addAll(operationNamesSet);
+        return operationNames;
+    }
+    
+    /**
+     * Get unique list of all inherited bound transfer operations of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the inherited bound transfer operations
+     */
+    public static EList<BoundTransferOperation> getInheritedBoundTransferOperations(final MappedTransferObjectType mappedTransferObjectType) {
+        EList<BoundTransferOperation> operations = new UniqueEList<>();
+
+        Set<BoundTransferOperation> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .filter(o -> o instanceof BoundTransferOperation)
+                .map(o -> (BoundTransferOperation)o)
+                .collect(Collectors.toSet());
+
+        operations.addAll(operationNamesSet);
+        return operations;
+    }
+    
+    /**
+     * Get unique list of all inherited unbound operations of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of the inherited unbound operations
+     */
+    public static EList<UnboundOperation> getInheritedUnboundOperations(final TransferObjectType transferObjectType) {
+        EList<UnboundOperation> operations = new UniqueEList<>();
+
+        Set<UnboundOperation> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .filter(o -> o instanceof UnboundOperation)
+                .map(o -> (UnboundOperation)o)
+                .collect(Collectors.toSet());
+
+        operations.addAll(operationNamesSet);
+        return operations;
     }
 
     /**
@@ -625,8 +824,8 @@ public class PsmUtils {
     /**
      * Check if a mapped transfer object type is instantiable.
      * <p>
-     * A mapped transfer object type is not instantiable if it has (its own or inherited) bound operation without operation body
-     * or referenced entity type is abstract.
+     * A mapped transfer object type is not instantiable if the referenced entity type has (own or inherited) bound operation without operation body
+     * or the referenced entity type is abstract.
      *
      * @param mappedTransferObjectType mapped transfer object type
      * @return <code>true</code> if mapped transfer object type is instantiable, <code>false</code> otherwise

@@ -1,0 +1,63 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfGetRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+		check: self.eContainer.isKindOf(PSM!BoundTransferOperation) 
+		message: "'GET_RELATION' behaviour must be owned by a bound transfer operation"
+	}
+	
+	constraint OwnerOfGetRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
+		message: "Owner of 'GET_RELATION' behaviour must be a transfer object relation" + 
+		"inherited or owned by the transfer object type containing the operation"
+	}
+	
+	constraint RelationOfGetRelationBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+		check: self.relation.isUndefined()
+		message: "Relation must be undefined for 'GET_RELATION' behaviour"
+	}
+	
+	constraint GetOperationInputParameterIsNotDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+    		and self.satisfiesAll("OperationOfGetRelationBehaviourIsValid","OwnerOfGetRelationBehaviourIsValid","RelationOfGetRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.isUndefined()
+    	message: "'GET_RELATION' operation cannot have an input parameter"
+    }
+    
+    constraint GetOperationOutputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+    		and self.satisfiesAll("OperationOfGetRelationBehaviourIsValid","OwnerOfGetRelationBehaviourIsValid","RelationOfGetRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.isDefined()
+    	message: "'GET_RELATION' operation must have an output parameter named 'output'"
+    }
+    
+    constraint GetOperationOutputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+    		and self.satisfiesAll("GetOperationOutputParameterIsDefined","OperationOfGetRelationBehaviourIsValid","OwnerOfGetRelationBehaviourIsValid","RelationOfGetRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.name == "output"
+    	message: "'GET_RELATION' operation's output parameter must be named 'output'"
+    }
+    
+    constraint GetOperationOutputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+    		and self.satisfiesAll("GetOperationOutputParameterIsDefined","OperationOfGetRelationBehaviourIsValid","OwnerOfGetRelationBehaviourIsValid","RelationOfGetRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.output.type).includes(self.owner.target.entityType)
+    	message: "Type of 'GET_RELATION' operation's output parameter must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint GetOperationOutputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+    		and self.satisfiesAll("GetOperationOutputParameterIsDefined","OperationOfGetRelationBehaviourIsValid","OwnerOfGetRelationBehaviourIsValid","RelationOfGetRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.cardinality.lower == self.owner.cardinality.lower and
+    		self.eContainer.binding.output.cardinality.upper == self.owner.cardinality.upper 
+    	message: "Cardinality of 'GET_RELATION' operation's output parameter must be the same as its owner's"
+    }
+}

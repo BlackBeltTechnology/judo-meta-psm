@@ -1,105 +1,28 @@
-/*context PSM!BoundTransferOperation {
-    
-    constraint GetOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.getOwnerRelation.isDefined() implies (self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'get'"
-    }
-
-    constraint CreateOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.createOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'create'"
-    }
-
-    constraint UpdateOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.updateOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'update'"
-    }
-
-    constraint DeleteOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.deleteOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'delete'"
-    }
-}
-
 context PSM!BoundTransferOperation {
-    constraint GetOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
 
-        check: self.getOwnerRelation.isDefined() implies (self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined() and
-                                                          self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'get'"
-    }
-
-    constraint CreateOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.createOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined() and
-                                                             self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'create'"
-    }
-
-    constraint UpdateOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.updateOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined() and
-                                                             self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'update'"
-    }
-
-    constraint DeleteOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer")
-
-        check: self.deleteOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined() and
-                                                             self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'delete'"
-    }
-
-    constraint SetOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer") 
-
-        check: self.setOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and
-                                                          self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined())
-        message: "No other behaviour must be defined than 'set'"        
-    }
-    
-    constraint UnsetOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer") 
-
-        check: self.unsetOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and
-                                                            self.setOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined())
-        message: "No other behaviour must be defined than 'unset'"       
-    }
-
-    constraint AddAllOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer") 
-
-        check: self.addAllOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and
-                                                             self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined())
-        message: "No other behaviour must be defined than 'addAll'"        
-    }
-
-    constraint RemoveAllOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer") 
-
-        check: self.removeAllOwnerRelation.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and
-                                                                self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.getRangeOwnerParameter.isUndefined())
-        message: "No other behaviour must be defined than 'removeAll'"        
-    }
-    
-    constraint GetRangeOperationBehaviourIsValid {
-        guard: self.satisfies("NamedElementHasContainer") 
-
-        check: self.getRangeOwnerParameter.isDefined() implies (self.getOwnerRelation.isUndefined() and self.createOwnerRelation.isUndefined() and self.updateOwnerRelation.isUndefined() and self.deleteOwnerRelation.isUndefined() and
-                                                                self.setOwnerRelation.isUndefined() and self.unsetOwnerRelation.isUndefined() and self.addAllOwnerRelation.isUndefined() and self.removeAllOwnerRelation.isUndefined())
-        message: "No other behaviour must be defined than 'getRange'"        
-    }
+	constraint OwnerIsMappedTransferObjectType {
+		guard: self.satisfies("NamedElementHasContainer")
+		check: self.eContainer.isKindOf(PSM!MappedTransferObjectType)
+		message: "Container of bound transfer operation must be mapped transfer object type (operation: " + self.name + ")"
+	}
+	
+	constraint BindingIsValid {
+		guard: self.satisfies("OwnerIsMappedTransferObjectType") and self.binding.isDefined()
+		check: psmUtils.getAllBoundOperations(self.eContainer.entityType).includes(self.binding) 
+		message: "Binding of bound transfer operation must be an operation of the owner transfer object type (operation: " + self.name + ")"
+	}
+     
+     constraint ParametersAreValid {
+     	guard: self.satisfies("BindingIsValid")
+     	check: psmUtils.parametersAreTheSame(self,self.binding)
+     	message: "Parameters of bound transfer operation must match binding's parameters (operation: " + self.name + ")"
+     }
+     
+     constraint OverridingWithValidParameters {
+     	guard: self.satisfiesAll("NamedElementHasContainer","OwnerIsMappedTransferObjectType","BindingIsValid")
+     	check: self.eContainer.getAllSuperTransferObjectTypes()
+        		.collect(t | t.operations.select(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | psmUtils.parametersAreTheSame(self,o))
+        message: "Overriding of bound transfer operation cannot change parameters (bound transfer operation " + self.name + " in " + self.eContainer.name + ")"
+     }
 }
-*/
