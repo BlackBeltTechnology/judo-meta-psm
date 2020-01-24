@@ -64,8 +64,8 @@ public class PsmUtilsTest extends NorthwindTest {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 
-		BoundOperation operation = newBoundOperationBuilder().withName("operation").build();
-		EntityType entityType = newEntityTypeBuilder().withName("entityType").withAbstract_(false).withOperations(operation).build();
+		BoundOperation operation = newBoundOperationBuilder().withName("operation").withAbstract_(true).build();
+		EntityType entityType = newEntityTypeBuilder().withName("entityType").withAbstract_(true).withOperations(operation).build();
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
 				.withEntityType(entityType).withOperations(newBoundTransferOperationBuilder().withBinding(operation).withName("op").build()).build();
 

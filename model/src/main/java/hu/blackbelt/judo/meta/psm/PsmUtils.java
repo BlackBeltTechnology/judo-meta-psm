@@ -517,12 +517,11 @@ public class PsmUtils {
     }
 
     public static Optional<OperationBody> getOperationImplementationByName(final EntityType entityType, final String name) {
-        final Optional<OperationBody> body = entityType.getOperations().stream().filter(o -> o.getName().equalsIgnoreCase(name))
-                .map(o -> o.getImplementation())
+        final Optional<BoundOperation> boundOperation = entityType.getOperations().stream().filter(o -> o.getName().equalsIgnoreCase(name))
                 .findAny();
 
-        if (body.isPresent()) {
-            return body;
+        if (boundOperation.isPresent()) {
+            return boundOperation.get().isAbstract() ? Optional.empty() : Optional.ofNullable(boundOperation.get().getImplementation());
         } else {
             return Optional.ofNullable(getInheritedOperationImplementationByName(entityType, name));
         }
@@ -541,9 +540,11 @@ public class PsmUtils {
         entityType.getSuperEntityTypes().stream()
                 .forEach(s -> {
                     final Optional<BoundOperation> boundOperation = s.getOperations().stream()
-                            .filter(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null).findAny();
+                            .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
                     if (boundOperation.isPresent()) {
-                        implementations.add(boundOperation.get().getImplementation());
+                        if (!boundOperation.get().isAbstract()) {
+                            implementations.add(boundOperation.get().getImplementation());
+                        }
                     } else {
                         implementations.addAll(getInheritedOperationImplementationsByName(s, name));
                     }
@@ -637,7 +638,7 @@ public class PsmUtils {
 
         return getAllOperationNames(entityType).stream().allMatch(
                 name -> entityType.getOperations().stream()
-                        .anyMatch(o -> o.getName().equalsIgnoreCase(name) && o.getImplementation() != null)
+                        .anyMatch(o -> o.getName().equalsIgnoreCase(name) && !o.isAbstract())
                         || getInheritedOperationImplementationsByName(entityType, name).size() == 1);
     }
 
