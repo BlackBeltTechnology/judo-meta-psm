@@ -35,7 +35,7 @@ context PSM!TransferOperationBehaviour {
     constraint UnsetRelationOperationInputTypeIsValid {
     	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION and
     		self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
-    	check: self.eContainer.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.input.type.entityType).includes(self.unsetOwnerExposedGraph.target.entityType)
+    	check: self.eContainer.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.input.type.entityType).includes(self.owner.mappedTransferObjectType.entityType)
     	message: "Type of 'UNSET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
     }
     
