@@ -1,4 +1,5 @@
 context PSM!EntitySequence {
+
     constraint InheritedAndOwnSequenceNameIsUniqueInEntityType {
         guard: self.satisfies("NamedElementHasContainer")
         check: not self.eContainer().getAllSuperEntityTypes()

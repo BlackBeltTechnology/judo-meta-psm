@@ -6,6 +6,7 @@ import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionExcep
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.Containment;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
@@ -15,6 +16,7 @@ import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
@@ -23,6 +25,7 @@ import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.NumericType;
 import hu.blackbelt.judo.meta.psm.type.StringType;
 import org.eclipse.emf.common.util.URI;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -58,6 +61,7 @@ class PsmValidationServiceTest {
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
+        	Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,
                     new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
@@ -75,483 +79,305 @@ class PsmValidationServiceTest {
         }
     }
 
-//    @Test
-//    void testOverridingWithValidInput() throws Exception {
-//        log.info("Testing constraint: OverridingWithValidInput");
-//
-//        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
-//        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
-//
-//        BoundOperation operation1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation2 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden2 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation3 = newBoundOperationBuilder().withName("operation3")
-//                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden3 = newBoundOperationBuilder().withName("operation3")
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation4 = newBoundOperationBuilder().withName("operation4")
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden4 = newBoundOperationBuilder().withName("operation4")
-//                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
-//        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
-//                .withOperations(ImmutableList.of(
-//                        operation1,operation2,operation3
-//                        ))
-//                .build();
-//
-//        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//        		.withOperations(overriden1)
-//                .build();
-//
-//        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//        		.withOperations(ImmutableList.of(operation4,overriden2))
-//                .build();
-//
-//        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-//                .withSuperTransferObjectTypes(transferObjectType2)
-//        		.withOperations(ImmutableList.of(overriden1,overriden4))
-//                .build();
-//
-//        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
-//        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-//                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
-//        		.withOperations(ImmutableList.of(overriden1,overriden3))
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                            correctType,wrongType,
-//                            entityType0,entityType1,entityType2,entityType3,entityType4,
-//                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
-//                        )).build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//            "OverridingWithValidInput|Overriding of bound operation: operation2 of mapped transfer object type: transferObjectType2 cannot change input type.",
-//            "OverridingWithValidInput|Overriding of bound operation: operation3 of mapped transfer object type: transferObjectType4 cannot change input type.",
-//            "OverridingWithValidInput|Overriding of bound operation: operation4 of mapped transfer object type: transferObjectType3 cannot change input type."),
-//            Collections.emptyList());
-//    }
+    @Test
+    void testOverridingWithValidInput() throws Exception {
+        log.info("Testing constraint: OverridingWithValidInput");
 
-//    @Test
-//    void testOverridingWithValidOutput() throws Exception {
-//        log.info("Testing constraint: OverridingWithValidOutput");
-//
-//        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
-//        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
-//
-//        BoundOperation operation1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation2 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden2 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation3 = newBoundOperationBuilder().withName("operation3")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden3 = newBoundOperationBuilder().withName("operation3")
-//        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation4 = newBoundOperationBuilder().withName("operation4")
-//        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden4 = newBoundOperationBuilder().withName("operation4")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
-//        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
-//                .withOperations(ImmutableList.of(
-//                        operation1,operation2,operation3
-//                        ))
-//                .build();
-//
-//        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//        		.withOperations(overriden1)
-//                .build();
-//
-//        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//        		.withOperations(ImmutableList.of(operation4,overriden2))
-//                .build();
-//
-//        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-//                .withSuperTransferObjectTypes(transferObjectType2)
-//        		.withOperations(ImmutableList.of(overriden1,overriden4))
-//                .build();
-//
-//        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
-//        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-//                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
-//        		.withOperations(ImmutableList.of(overriden1,overriden3))
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                            correctType,wrongType,
-//                            entityType0,entityType1,entityType2,entityType3,entityType4,
-//                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
-//                        )).build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//            "OverridingWithValidOutput|Overriding of bound operation: operation2 of mapped transfer object type: transferObjectType2 cannot change output type.",
-//            "OverridingWithValidOutput|Overriding of bound operation: operation3 of mapped transfer object type: transferObjectType4 cannot change output type.",
-//            "OverridingWithValidOutput|Overriding of bound operation: operation4 of mapped transfer object type: transferObjectType3 cannot change output type."),
-//            Collections.emptyList());
-//    }
+        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
+        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
 
-//    @Test
-//    void testOverridingWithValidFaults() throws Exception {
-//        log.info("Testing constraint: OverridingWithValidFaults");
-//
-//        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
-//        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
-//
-//        BoundOperation operation1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(ImmutableList.of(
-//                		newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().build()).build()
-//                		))
-//                .build();
-//        BoundOperation overriden1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(ImmutableList.of(
-//                		newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().build()).build()
-//                		))
-//                .build();
-//
-//        BoundOperation operation2 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(ImmutableList.of(
-//                		newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault3").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault4").withType(correctType).withCardinality(newCardinalityBuilder().build()).build()
-//                		))
-//                .build();
-//        BoundOperation overriden2 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(ImmutableList.of(
-//                		newParameterBuilder().withName("fault1").withType(wrongType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault3").withType(correctType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault4").withType(correctType).withCardinality(newCardinalityBuilder().build()).build()
-//                		))
-//                .build();
-//
-//        BoundOperation operation3 = newBoundOperationBuilder().withName("operation3")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().build()).build())
-//                .build();
-//        BoundOperation overriden3 = newBoundOperationBuilder().withName("operation3")
-//        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//        		.withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(ImmutableList.of(
-//                		newParameterBuilder().withName("fault1").withType(wrongType).withCardinality(newCardinalityBuilder().build()).build(),
-//                		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().build()).build()
-//                		))
-//                .build();
-//
-//        BoundOperation operation4 = newBoundOperationBuilder().withName("operation4")
-//        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//        		.withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation overriden4 = newBoundOperationBuilder().withName("operation4")
-//                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-//                .withFaults(newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().build()).build())
-//                .build();
-//
-//        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
-//        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
-//                .withOperations(ImmutableList.of(
-//                        operation1,operation2,operation3
-//                        ))
-//                .build();
-//
-//        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//        		.withOperations(overriden1)
-//                .build();
-//
-//        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//        		.withOperations(ImmutableList.of(operation4,overriden2))
-//                .build();
-//
-//        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-//                .withSuperTransferObjectTypes(transferObjectType2)
-//        		.withOperations(ImmutableList.of(overriden1,overriden4))
-//                .build();
-//
-//        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
-//        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-//                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
-//        		.withOperations(ImmutableList.of(overriden1,overriden3))
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                            correctType,wrongType,
-//                            entityType0,entityType1,entityType2,entityType3,entityType4,
-//                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
-//                        )).build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//            "OverridingWithValidFaults|Overriding of bound operation: operation2 of mapped transfer object type: transferObjectType2 cannot change the type of faults.",
-//            "OverridingWithValidFaults|Overriding of bound operation: operation3 of mapped transfer object type: transferObjectType4 cannot change the type of faults.",
-//            "OverridingWithValidFaults|Overriding of bound operation: operation4 of mapped transfer object type: transferObjectType3 cannot change the type of faults."),
-//            Collections.emptyList());
-//    }
+        UnboundOperation operation1 = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
 
-//    @Test
-//    void testInheritedBoundOperationHasNoImplementation() throws Exception {
-//        log.info("Testing constraint: InheritedBoundOperationHasNoImplementation");
-//
-//        UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
-//
-//        BoundOperation correctOperation1 = newBoundOperationBuilder().withName("correct")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation correctOperation2 = newBoundOperationBuilder().withName("correct")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//        BoundOperation correctOperation3 = newBoundOperationBuilder().withName("correct")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//
-//        BoundOperation withImplementation1 = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//        BoundOperation withImplementation2 = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//        BoundOperation withImplementation3 = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//        BoundOperation opWithoutImpl = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
-//        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
-//                .withOperations(ImmutableList.of(withImplementation1,correctOperation1))
-//                .build();
-//
-//        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//                .withOperations(withImplementation2)
-//                .build();
-//
-//        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//                .withOperations(correctOperation2)
-//                .build();
-//
-//        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-//                .withSuperTransferObjectTypes(transferObjectType2)
-//                .withOperations(withImplementation3)
-//                .build();
-//
-//        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
-//        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-//                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
-//                .withOperations(ImmutableList.of(opWithoutImpl,correctOperation3))
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                            type,
-//                            entityType0,entityType1,entityType2,entityType3,entityType4,
-//                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
-//                        )).build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//            "InheritedBoundOperationHasNoImplementation|Bases of bound operation: operation cannot have implementation, if operation in"
-//            + " mapped transfer object type: transferObjectType4 doesn't have one.",
-//            "NeedToOverrideMultipleOperationImplementations|Mapped transfer object type: transferObjectType4 has inherited operations without implementation, "
-//                    + "but their bases have more than one implementation."),
-//            Collections.emptyList());
-//    }
+        UnboundOperation operation2 = newUnboundOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden2 = newUnboundOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
 
-//    @Test
-//    void testNeedToOverrideMultipleOperationImplementations() throws Exception {
-//        log.info("Testing constraint: NeedToOverrideMultipleOperationImplementations");
-//
-//        UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
-//
-//        BoundOperation correctOperation1 = newBoundOperationBuilder().withName("correctOperation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//        BoundOperation correctOperation2 = newBoundOperationBuilder().withName("correctOperation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//
-//        EntityType correctEntityType0 = newEntityTypeBuilder().withName("correctEntityType0").build();
-//        MappedTransferObjectType correctTransferObjectType0 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType0").withEntityType(correctEntityType0)
-//                .withOperations(correctOperation1)
-//                .build();
-//
-//        EntityType correctEntityType1 = newEntityTypeBuilder().withName("correctEntityType1").withSuperEntityTypes(correctEntityType0).build();
-//        MappedTransferObjectType correctTransferObjectType1 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType1").withEntityType(correctEntityType1)
-//                .withSuperTransferObjectTypes(correctTransferObjectType0)
-//                .withOperations(correctOperation2)
-//                .build();
-//
-//        EntityType correctEntityType2 = newEntityTypeBuilder().withName("correctEntityType2").withSuperEntityTypes(correctEntityType1).build();
-//        MappedTransferObjectType correctTransferObjectType2 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType2").withEntityType(correctEntityType2)
-//                .withSuperTransferObjectTypes(correctTransferObjectType1)
-//                .build();
-//
-//        BoundOperation withImplementation1 = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//        BoundOperation withImplementation2 = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//        BoundOperation withImplementation3 = newBoundOperationBuilder().withName("operation")
-//                .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//
-//        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
-//        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
-//                .withOperations(withImplementation1)
-//                .build();
-//
-//        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//                .withOperations(withImplementation2)
-//                .build();
-//
-//        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//                .withOperations(correctOperation2)
-//                .build();
-//
-//        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType0).build();
-//        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-//                .withSuperTransferObjectTypes(transferObjectType0)
-//                .withOperations(withImplementation3)
-//                .build();
-//
-//        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(entityType1).build();
-//        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-//                .withSuperTransferObjectTypes(transferObjectType1)
-//                .withOperations(withImplementation3)
-//                .build();
-//
-//        EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(entityType2).build();
-//        MappedTransferObjectType transferObjectType5 = newMappedTransferObjectTypeBuilder().withName("transferObjectType5").withEntityType(entityType5)
-//                .withSuperTransferObjectTypes(transferObjectType2)
-//                .build();
-//
-//        EntityType entityType6 = newEntityTypeBuilder().withName("entityType6").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4,entityType5)).build();
-//        MappedTransferObjectType transferObjectType6 = newMappedTransferObjectTypeBuilder().withName("transferObjectType6").withEntityType(entityType6)
-//                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType3,transferObjectType4,transferObjectType5))
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                            type,
-//                            correctEntityType0,correctEntityType1,correctEntityType2,
-//                            correctTransferObjectType0,correctTransferObjectType1,correctTransferObjectType2,
-//                            entityType0,entityType1,entityType2,entityType3,entityType4,entityType5,entityType6,
-//                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4,transferObjectType5,transferObjectType6
-//                        )).build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//            "NeedToOverrideMultipleOperationImplementations|Mapped transfer object type: transferObjectType6 has inherited operations without implementation, "
-//                    + "but their bases have more than one implementation."),
-//            Collections.emptyList());
-//    }
+        UnboundOperation operation3 = newUnboundOperationBuilder().withName("operation3")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden3 = newUnboundOperationBuilder().withName("operation3")
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        UnboundOperation operation4 = newUnboundOperationBuilder().withName("operation4")
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden4 = newUnboundOperationBuilder().withName("operation4")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
+        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
+                .withOperations(ImmutableList.of(
+                        operation1,operation2,operation3))
+                .build();
+
+        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
+                .withSuperTransferObjectTypes(transferObjectType0)
+        		.withOperations(overriden1)
+                .build();
+
+        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
+                .withSuperTransferObjectTypes(transferObjectType0)
+        		.withOperations(ImmutableList.of(operation4,overriden2))
+                .build();
+
+        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
+                .withSuperTransferObjectTypes(transferObjectType2)
+        		.withOperations(ImmutableList.of(overriden1,overriden4))
+                .build();
+
+        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
+        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
+                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
+        		.withOperations(ImmutableList.of(overriden1,overriden3))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            correctType,wrongType,
+                            entityType0,entityType1,entityType2,entityType3,entityType4,
+                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
+                        )).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation2 in transferObjectType2)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation3 in transferObjectType4)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation4 in transferObjectType3)"),
+            Collections.emptyList());
+    }
+
+    @Test
+    void testOverridingWithValidOutput() throws Exception {
+        log.info("Testing constraint: OverridingWithValidOutput");
+
+        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
+        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
+
+        UnboundOperation operation1 = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        UnboundOperation operation2 = newUnboundOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden2 = newUnboundOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        UnboundOperation operation3 = newUnboundOperationBuilder().withName("operation3")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden3 = newUnboundOperationBuilder().withName("operation3")
+        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        UnboundOperation operation4 = newUnboundOperationBuilder().withName("operation4")
+        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden4 = newUnboundOperationBuilder().withName("operation4")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
+        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
+                .withOperations(ImmutableList.of(
+                        operation1,operation2,operation3
+                        ))
+                .build();
+
+        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
+                .withSuperTransferObjectTypes(transferObjectType0)
+        		.withOperations(overriden1)
+                .build();
+
+        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
+                .withSuperTransferObjectTypes(transferObjectType0)
+        		.withOperations(ImmutableList.of(operation4,overriden2))
+                .build();
+
+        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
+                .withSuperTransferObjectTypes(transferObjectType2)
+        		.withOperations(ImmutableList.of(overriden1,overriden4))
+                .build();
+
+        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
+        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
+                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
+        		.withOperations(ImmutableList.of(overriden1,overriden3))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            correctType,wrongType,
+                            entityType0,entityType1,entityType2,entityType3,entityType4,
+                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
+                        )).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation2 in transferObjectType2)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation3 in transferObjectType4)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation4 in transferObjectType3)"),
+            Collections.emptyList());
+    }
+
+    @Test
+    void testOverridingWithValidFaults() throws Exception {
+        log.info("Testing constraint: OverridingWithValidFaults");
+
+        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
+        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
+
+        UnboundOperation operation1 = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType)
+                		.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .build();
+        UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType)
+                		.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .build();
+
+        UnboundOperation operation2 = newUnboundOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault3").withType(correctType)
+            				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+            			newParameterBuilder().withName("fault4").withType(correctType)
+            				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .build();
+        UnboundOperation overriden2 = newUnboundOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(wrongType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault3").withType(correctType)
+            				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+            			newParameterBuilder().withName("fault4").withType(correctType)
+            				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .build();
+
+        UnboundOperation operation3 = newUnboundOperationBuilder().withName("operation3")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build())
+                .build();
+        UnboundOperation overriden3 = newUnboundOperationBuilder().withName("operation3")
+        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+        		.withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(wrongType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .build();
+
+        UnboundOperation operation4 = newUnboundOperationBuilder().withName("operation4")
+        		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+        		.withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        UnboundOperation overriden4 = newUnboundOperationBuilder().withName("operation4")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build())
+                .build();
+
+        EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
+        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
+                .withOperations(ImmutableList.of(
+                        operation1,operation2,operation3
+                        ))
+                .build();
+
+        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
+                .withSuperTransferObjectTypes(transferObjectType0)
+        		.withOperations(overriden1)
+                .build();
+
+        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
+                .withSuperTransferObjectTypes(transferObjectType0)
+        		.withOperations(ImmutableList.of(operation4,overriden2))
+                .build();
+
+        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
+                .withSuperTransferObjectTypes(transferObjectType2)
+        		.withOperations(ImmutableList.of(overriden1,overriden4))
+                .build();
+
+        EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
+        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
+                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
+        		.withOperations(ImmutableList.of(overriden1,overriden3))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            correctType,wrongType,
+                            entityType0,entityType1,entityType2,entityType3,entityType4,
+                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
+                        )).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation2 in transferObjectType2)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation3 in transferObjectType4)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation4 in transferObjectType3)"),
+            Collections.emptyList());
+    }
 
     @Test
     void testEntityTypeMatchesEntityTypeOfBaseMappedTransferObject() throws Exception {
@@ -591,6 +417,8 @@ class PsmValidationServiceTest {
                 entityType2,
                 entityType3,
                 childEntityType,
+                parentEntityType3,
+                parentEntityType4,
                 parentTransferObject1,
                 parentTransferObject2,
                 parentTransferObject3,
@@ -610,62 +438,6 @@ class PsmValidationServiceTest {
                 Collections.emptyList());
     }
 
-//    @Test
-//    void testBoundOperationInheritanceIsValid() throws Exception {
-//        log.info("Testing constraint: BoundOperationInheritanceIsValid");
-//
-//        UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("parent").build();
-//        UnmappedTransferObjectType child = newUnmappedTransferObjectTypeBuilder().withName("child").withSuperTransferObjectTypes(parent).build();
-//
-//        BoundOperation operation1 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(child).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(parent).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation2 = newBoundOperationBuilder().withName("operation1")
-//                .withInput(newParameterBuilder().withName("input").withType(parent).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(child).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation3 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(child).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(parent).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        BoundOperation operation4 = newBoundOperationBuilder().withName("operation2")
-//                .withInput(newParameterBuilder().withName("input").withType(parent).withCardinality(newCardinalityBuilder().build()))
-//                .withOutput(newParameterBuilder().withName("output").withType(child).withCardinality(newCardinalityBuilder().build()))
-//                .build();
-//
-//        EntityType parentEntityType1 = newEntityTypeBuilder().withName("parentEntityType1").build();
-//        MappedTransferObjectType parentTransferObject1 = newMappedTransferObjectTypeBuilder().withName("parentTransferObject1").withEntityType(parentEntityType1)
-//                .withOperations(ImmutableList.of(operation1,operation3)).build();
-//
-//        EntityType parentEntityType2 = newEntityTypeBuilder().withName("parentEntityType2").build();
-//        MappedTransferObjectType parentTransferObject2 = newMappedTransferObjectTypeBuilder().withName("parentTransferObject2").withEntityType(parentEntityType2)
-//                .withOperations(operation2).build();
-//
-//        EntityType childEntityType1 = newEntityTypeBuilder().withName("childEntityType").withSuperEntityTypes(parentEntityType2).build();
-//        MappedTransferObjectType childTransferObject = newMappedTransferObjectTypeBuilder().withName("childTransferObject").withEntityType(childEntityType1)
-//                .withSuperTransferObjectTypes(parentTransferObject2).withOperations(operation4).build();
-//
-//        EntityType childEntityType2 = newEntityTypeBuilder().withName("childEntityType2").withSuperEntityTypes(ImmutableList.of(parentEntityType1,childEntityType1)).build();
-//        MappedTransferObjectType grandChildTransferObject = newMappedTransferObjectTypeBuilder().withName("grandChildTransferObject").withEntityType(childEntityType2)
-//                .withSuperTransferObjectTypes(ImmutableList.of(parentTransferObject1,childTransferObject)).build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                            parent, child,
-//                            parentEntityType1, parentEntityType2, childEntityType1, childEntityType2,
-//                            parentTransferObject1, parentTransferObject2, childTransferObject, grandChildTransferObject
-//                        )).build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//            "BoundOperationInheritanceIsValid|Mapped transfer object type: grandChildTransferObject is inheriting operation(s) having the same name from unrelated mapped transfer object."),
-//            Collections.emptyList());
-//    }
-
     @Test
     void testUnmappedTransferObjectTypeHasNoAttributeBinding() throws Exception {
         log.info("Testing constraint: UnmappedTransferObjectTypeHasNoAttributeBinding");
@@ -677,7 +449,7 @@ class PsmValidationServiceTest {
         TransferAttribute a = newTransferAttributeBuilder().withName("A").withDataType(string).withBinding(d).build();
         UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withAttributes(a).build();
 
-        Model m = newModelBuilder().withName("M").withElements(t).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(t,string,d)).build();
 
         psmModel.addContent(m);
 
@@ -727,8 +499,7 @@ class PsmValidationServiceTest {
                         transferAttribute2,
                         transferAttribute3,
                         transferAttribute4,
-                        transferAttribute5
-                ))
+                        transferAttribute5))
                 .withEntityType(entity)
                 .build();
 
@@ -738,9 +509,7 @@ class PsmValidationServiceTest {
                 entity,
                 transferObject,
                 staticData0,
-                staticData1
-        ))
-                .build();
+                staticData1)).build();
 
         psmModel.addContent(model);
 
@@ -806,7 +575,7 @@ class PsmValidationServiceTest {
                 entity,
                 transferObject,
                 staticData0,
-                staticData1
+                staticData1, integerType
         ))
                 .build();
 
@@ -912,12 +681,19 @@ class PsmValidationServiceTest {
     void testUnmappedTransferObjectTypeHasNoRelationBinding() throws Exception {
         log.info("Testing constraint: UnmappedTransferObjectTypeHasNoRelationBinding");
 
-        StaticNavigation n = newStaticNavigationBuilder().withName("N").withCardinality(newCardinalityBuilder().build()).build();
-        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).withCardinality(newCardinalityBuilder().build()).build();
+        EntityType target = newEntityTypeBuilder().withName("target").build();
+        MappedTransferObjectType mappedTarget = newMappedTransferObjectTypeBuilder().withName("mappedTarget").withEntityType(target).build();
+        
+        StaticNavigation n = newStaticNavigationBuilder().withName("N")
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp").build())
+        		.withCardinality(newCardinalityBuilder().build())
+        		.withTarget(target).build();
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).withCardinality(newCardinalityBuilder().build())
+        		.withTarget(mappedTarget).build();
 
         UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withRelations(r).build();
 
-        Model m = newModelBuilder().withName("M").withElements(t).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(t, n, target, mappedTarget)).build();
 
         psmModel.addContent(m);
 
@@ -1048,75 +824,73 @@ class PsmValidationServiceTest {
     void testCardinalityMatchesBindingCardinality() throws Exception {
         log.info("Testing constraint: CardinalityMatchesBindingCardinality");
 
+        EntityType target0 = newEntityTypeBuilder().withName("target0").build();
+        MappedTransferObjectType mappedTarget0 = newMappedTransferObjectTypeBuilder().withName("mappedTarget0").withEntityType(target0).build();
         AssociationEnd end0 = newAssociationEndBuilder().withName("end0")
-                .withCardinality(
-                        newCardinalityBuilder().withLower(0).withUpper(5).build()
-                )
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build())
+                .withTarget(target0)
                 .build();
         TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder().withName("TransferRelation0")
-                .withBinding(end0).withCardinality(
-                        newCardinalityBuilder().withLower(0).withUpper(5).build()
-                )
+                .withBinding(end0).withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build())
+                .withTarget(mappedTarget0)
                 .build();
 
+        EntityType target1 = newEntityTypeBuilder().withName("target1").build();
+        MappedTransferObjectType mappedTarget1 = newMappedTransferObjectTypeBuilder().withName("mappedTarget1").withEntityType(target1).build();
         AssociationEnd end1 = newAssociationEndBuilder().withName("end1")
-                .withCardinality(
-                        newCardinalityBuilder().withLower(1).withUpper(1).build()
-                )
+                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                .withTarget(target1)
                 .build();
         TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder().withName("TransferRelation1")
-                .withBinding(end1).withCardinality(
-                        newCardinalityBuilder().withLower(0).withUpper(5).build()
-                )
+                .withBinding(end1).withCardinality(newCardinalityBuilder().withLower(0).withUpper(5).build())
+                .withTarget(mappedTarget1)
                 .build();
 
+        EntityType target2 = newEntityTypeBuilder().withName("target2").build();
+        MappedTransferObjectType mappedTarget2 = newMappedTransferObjectTypeBuilder().withName("mappedTarget2").withEntityType(target2).build();
         Containment containment = newContainmentBuilder().withName("containment")
-                .withCardinality(
-                        newCardinalityBuilder().withLower(2).withUpper(3).build()
-                )
+                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withTarget(target2)
                 .build();
         TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder().withName("TransferRelation2")
-                .withBinding(containment).withCardinality(
-                        newCardinalityBuilder().withLower(2).withUpper(3).build()
-                )
+                .withBinding(containment).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withTarget(mappedTarget2)
                 .build();
 
+        EntityType target3 = newEntityTypeBuilder().withName("target3").build();
+        MappedTransferObjectType mappedTarget3 = newMappedTransferObjectTypeBuilder().withName("mappedTarget3").withEntityType(target3).build();
         NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation")
-                .withCardinality(
-                        newCardinalityBuilder().withLower(2).withUpper(3).build()
-                )
-                .withGetterExpression(
-                        newReferenceExpressionTypeBuilder().withExpression("self.containment").build()
-                )
+                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.containment").build())
+                .withTarget(target3)
                 .build();
         TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder().withName("TransferRelation3")
-                .withBinding(navigation).withCardinality(
-                        newCardinalityBuilder().withLower(1).withUpper(1).build()
-                )
+                .withBinding(navigation).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                .withTarget(mappedTarget3)
                 .build();
 
+        EntityType target4 = newEntityTypeBuilder().withName("target4").build();
+        MappedTransferObjectType mappedTarget4 = newMappedTransferObjectTypeBuilder().withName("mappedTarget4").withEntityType(target4).build();
         StaticNavigation staticNav0 = newStaticNavigationBuilder().withName("staticNav0")
                 .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
-                .withGetterExpression(
-                        newReferenceExpressionTypeBuilder().withExpression("entity").build()
-                )
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
+                .withTarget(target4)
                 .build();
         TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4")
-                .withBinding(staticNav0).withCardinality(
-                        newCardinalityBuilder().withLower(2).withUpper(3).build()
-                )
+                .withBinding(staticNav0).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withTarget(mappedTarget4)
                 .build();
 
+        EntityType target5 = newEntityTypeBuilder().withName("target5").build();
+        MappedTransferObjectType mappedTarget5 = newMappedTransferObjectTypeBuilder().withName("mappedTarget5").withEntityType(target5).build();
         StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
                 .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-                .withGetterExpression(
-                        newReferenceExpressionTypeBuilder().withExpression("entity").build()
-                )
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
+                .withTarget(target5)
                 .build();
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
-                .withBinding(staticNav1).withCardinality(
-                        newCardinalityBuilder().withLower(3).withUpper(4).build()
-                )
+                .withBinding(staticNav1).withCardinality(newCardinalityBuilder().withLower(3).withUpper(4).build())
+                .withTarget(mappedTarget5)
                 .build();
 
         EntityType entity = newEntityTypeBuilder().withName("entity")
@@ -1126,21 +900,12 @@ class PsmValidationServiceTest {
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
                 .withName("TransferObject").withRelations(ImmutableList.of(
-                        transferRelation0,
-                        transferRelation1,
-                        transferRelation2,
-                        transferRelation3,
-                        transferRelation4,
-                        transferRelation5
-                ))
+                        transferRelation0,transferRelation1,transferRelation2,transferRelation3,transferRelation4,transferRelation5))
                 .withEntityType(entity)
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                entity,
-                transferObject,
-                staticNav0,
-                staticNav1
+                entity, transferObject, staticNav0, staticNav1,target0,mappedTarget0,target1,mappedTarget1,target2,mappedTarget2,target3,mappedTarget3,target4,mappedTarget4,target5,mappedTarget5
         ))
                 .build();
 
@@ -1156,16 +921,19 @@ class PsmValidationServiceTest {
     @Test
     void testTransferObjectRelationIsEmbedded() throws Exception {
         log.info("Testing constraint: TransferObjectRelationIsEmbedded");
-
-        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").build();
+        
+        UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+        
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withTarget(target)
+        		.withCardinality(newCardinalityBuilder().build()).build();
+        
         UnmappedTransferObjectType o = newUnmappedTransferObjectTypeBuilder().withName("O").withRelations(r).build();
-        r.setTarget(o);
 
-        Model m = newModelBuilder().withName("M").withElements(o).build();
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(o,target)).build();
 
         psmModel.addContent(m);
 
-        runEpsilon(ImmutableList.of("TransferObjectRelationIsEmbedded|Transfer object relation R is referencing to unembedded unmapped transfer object type: O"),
+        runEpsilon(ImmutableList.of("TransferObjectRelationIsEmbedded|Transfer object relation R is referencing to unembedded unmapped transfer object type: target"),
                 Collections.emptyList());
     }
 
@@ -1177,39 +945,53 @@ class PsmValidationServiceTest {
         AssociationEnd e1 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build()).build();
         AssociationEnd e2 = newAssociationEndBuilder().withName("e3").withCardinality(newCardinalityBuilder().build()).build();
 
-        NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
-                newReferenceExpressionTypeBuilder().withExpression("self.e0").build()
-        )
+        EntityType target0 = newEntityTypeBuilder().withName("target0").build();
+        MappedTransferObjectType target0Mapping = newMappedTransferObjectTypeBuilder().withName("target0Mapping").withEntityType(target0).build();
+        NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build())
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e0").build())
+        		.withTarget(target0)
                 .build();
-        NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
-                newReferenceExpressionTypeBuilder().withExpression("self.e1").build()
-        )
+        
+        EntityType target1 = newEntityTypeBuilder().withName("target1").build();
+        MappedTransferObjectType target1Mapping = newMappedTransferObjectTypeBuilder().withName("target1Mapping").withEntityType(target1).build();
+        NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build())
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e1").build())
+        		.withTarget(target1)
                 .build();
-        NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build()).withGetterExpression(
-                newReferenceExpressionTypeBuilder().withExpression("self.e2").build()
-        )
-                .build();
+        
+        EntityType target2 = newEntityTypeBuilder().withName("target2").build();
+        MappedTransferObjectType target2Mapping = newMappedTransferObjectTypeBuilder().withName("target2Mapping").withEntityType(target2).build();
+        NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build())
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e2").build())
+        		.withTarget(target2)
+        		.build();
 
+        EntityType target = newEntityTypeBuilder().withName("target3").build();
+        MappedTransferObjectType targetMapping = newMappedTransferObjectTypeBuilder().withName("targetMapping").withEntityType(target).build();
         StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav")
                 .withCardinality(newCardinalityBuilder().build())
-                .withGetterExpression(
-                        newReferenceExpressionTypeBuilder().withExpression("child").build()
-                )
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("child").build())
+        		.withTarget(target)
                 .build();
 
         EntityType parent = newEntityTypeBuilder().withName("parent")
                 .withRelations(e0)
                 .withNavigationProperties(n0)
                 .build();
+        MappedTransferObjectType parentMapping = newMappedTransferObjectTypeBuilder().withName("parentMapping").withEntityType(parent).build();
         EntityType child = newEntityTypeBuilder().withName("child")
                 .withSuperEntityTypes(parent)
                 .withRelations(e1)
                 .withNavigationProperties(n1)
                 .build();
+        MappedTransferObjectType childMapping = newMappedTransferObjectTypeBuilder().withName("childMapping")
+        		.withSuperTransferObjectTypes(parentMapping)
+        		.withEntityType(child).build();
         EntityType friend = newEntityTypeBuilder().withName("friend")
                 .withRelations(e2)
                 .withNavigationProperties(n2)
                 .build();
+        MappedTransferObjectType friendMapping = newMappedTransferObjectTypeBuilder().withName("friendMapping").withEntityType(friend).build();
 
         e0.setTarget(friend);
         e1.setTarget(friend);
@@ -1218,40 +1000,36 @@ class PsmValidationServiceTest {
         e2.setPartner(e1);
 
         TransferObjectRelation transferRelation0 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation0").withCardinality(newCardinalityBuilder().build()).withBinding(e0).build();
+                .withName("TransferRelation0").withCardinality(newCardinalityBuilder().build())
+                .withTarget(friendMapping).withBinding(e0).build();
         TransferObjectRelation transferRelation1 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation1").withBinding(e1).withCardinality(newCardinalityBuilder().build()).build();
+                .withName("TransferRelation1").withBinding(e1).withCardinality(newCardinalityBuilder().build())
+                .withTarget(friendMapping).build();
         TransferObjectRelation transferRelation2 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation2").withCardinality(newCardinalityBuilder().build()).withBinding(e2).build();
+                .withName("TransferRelation2").withCardinality(newCardinalityBuilder().build())
+                .withTarget(childMapping).withBinding(e2).build();
         TransferObjectRelation transferRelation3 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation3").withCardinality(newCardinalityBuilder().build()).withBinding(n0).build();
+                .withName("TransferRelation3").withCardinality(newCardinalityBuilder().build())
+                .withBinding(n0).withTarget(target0Mapping).build();
         TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation4").withCardinality(newCardinalityBuilder().build()).withBinding(n1).build();
+                .withName("TransferRelation4").withCardinality(newCardinalityBuilder().build())
+                .withTarget(target1Mapping).withBinding(n1).build();
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation5").withCardinality(newCardinalityBuilder().build()).withBinding(n2).build();
+                .withName("TransferRelation5").withCardinality(newCardinalityBuilder().build())
+                .withTarget(target2Mapping).withBinding(n2).build();
         TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation6").withCardinality(newCardinalityBuilder().build()).withBinding(staticNav).build();
+                .withName("TransferRelation6").withCardinality(newCardinalityBuilder().build())
+                .withTarget(targetMapping).withBinding(staticNav).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
                 .withName("TransferObject").withRelations(ImmutableList.of(
-                        transferRelation0,
-                        transferRelation1,
-                        transferRelation2,
-                        transferRelation3,
-                        transferRelation4,
-                        transferRelation5,
-                        transferRelation6
-                ))
+                        transferRelation0,transferRelation1,transferRelation2,transferRelation3,transferRelation4,transferRelation5,transferRelation6))
                 .withEntityType(child)
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                parent,
-                child,
-                friend,
-                transferObject,
-                staticNav
-        ))
+                parent,child,friend,transferObject,staticNav,
+                target,target0,target1,target2,target0Mapping,target1Mapping,target2Mapping,targetMapping,friendMapping,childMapping,parentMapping))
                 .build();
 
         psmModel.addContent(model);
@@ -1267,10 +1045,13 @@ class PsmValidationServiceTest {
     @Test
     void testTransferObjectTypeNamesAreUnique() throws Exception {
         log.info("Testing critique: TransferObjectTypeNamesAreUnique");
-
-        MappedTransferObjectType transferObject1 = newMappedTransferObjectTypeBuilder().withName("TransferObject").build();
+        
+        EntityType entity = newEntityTypeBuilder().withName("entity").build();
+        MappedTransferObjectType transferObject1 = newMappedTransferObjectTypeBuilder().withName("TransferObject")
+        		.withEntityType(entity).build();
         UnmappedTransferObjectType transferObject2 = newUnmappedTransferObjectTypeBuilder().withName("transferObject").build();
-        Package p1 = newPackageBuilder().withName("pkg1").withElements(transferObject1).build();
+        
+        Package p1 = newPackageBuilder().withName("pkg1").withElements(ImmutableList.of(transferObject1,entity)).build();
         Package p2 = newPackageBuilder().withName("pkg2").withElements(transferObject2).build();
 
         Model m = newModelBuilder().withName("M")
@@ -1281,38 +1062,7 @@ class PsmValidationServiceTest {
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of(
                         "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: TransferObject",
-                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: transferObject"
-                ));
-    }
-
-    @Test
-    void testUnboundOperationNamesAreUnique() throws Exception {
-        log.info("Testing critique: UnboundOperationNamesAreUnique");
-
-        UnboundOperation unboundOp1 = newUnboundOperationBuilder().withName("unboundoperation")
-                .withImplementation(newOperationBodyBuilder().withBody("body").build())
-                .build();
-        UnboundOperation unboundOp2 = newUnboundOperationBuilder().withName("UNBOUNDOPERATION")
-                .withImplementation(newOperationBodyBuilder().withBody("body").build())
-                .build();
-
-        Model m = newModelBuilder().withName("M")
-                .withElements(newUnmappedTransferObjectTypeBuilder()
-                        .withName("exposed1")
-                        .withOperations(unboundOp1)
-                        .build())
-                .withElements(newUnmappedTransferObjectTypeBuilder()
-                        .withName("exposed2")
-                        .withOperations(unboundOp2)
-                        .build())
-                .build();
-
-        psmModel.addContent(m);
-        runEpsilon(Collections.emptyList(),
-                ImmutableList.of(
-                        "UnboundOperationNamesAreUnique|Unbound operation name is not unique: unboundoperation",
-                        "UnboundOperationNamesAreUnique|Unbound operation name is not unique: UNBOUNDOPERATION"
-                ));
+                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: transferObject"));
     }
 
     @Test
@@ -1508,7 +1258,7 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-                "InheritingUniqueAttributeNames|Transfer object type: child has inherited transfer attributes of the same name."),
+                "InheritingUniqueTransferAttributeNames|Transfer object type: child has inherited transfer attributes of the same name."),
                 Collections.emptyList());
     }
 
@@ -1549,7 +1299,7 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-                "InheritingUniqueAttributeNames|Transfer object type: child has inherited transfer attributes of the same name."),
+                "InheritingUniqueTransferAttributeNames|Transfer object type: child has inherited transfer attributes of the same name."),
                 Collections.emptyList());
     }
 
@@ -1587,17 +1337,16 @@ class PsmValidationServiceTest {
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                string,
+                string,target1,target2,
                 entityType1, entityType2, entityType3,
                 mappedParent1, mappedParent2, parent,
                 child
-        ))
-                .build();
+        )).build();
 
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-                "InheritingUniqueRelationNames|Transfer object type: child has inherited transfer object relations of the same name."),
+                "InheritingUniqueTransferObjectRelationNames|Transfer object type: child has inherited transfer object relations of the same name."),
                 Collections.emptyList());
     }
 
@@ -1635,17 +1384,15 @@ class PsmValidationServiceTest {
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                string,
+                string, target1,target2,
                 entityType1, entityType2, entityType3,
                 mappedParent1, mappedParent2, parent,
-                child
-        ))
-                .build();
+                child)).build();
 
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-                "InheritingUniqueRelationNames|Transfer object type: child has inherited transfer object relations of the same name."),
+                "InheritingUniqueTransferObjectRelationNames|Transfer object type: child has inherited transfer object relations of the same name."),
                 Collections.emptyList());
     }
 
@@ -1682,7 +1429,7 @@ class PsmValidationServiceTest {
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                string,
+                string,target1,
                 entityType1, entityType2, entityType3,
                 mappedParent1, mappedParent2, parent,
                 child
@@ -1729,7 +1476,7 @@ class PsmValidationServiceTest {
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                string,
+                string,target1,
                 entityType1, entityType2, entityType3,
                 mappedParent1, mappedParent2, parent,
                 child
@@ -1743,197 +1490,197 @@ class PsmValidationServiceTest {
                 Collections.emptyList());
     }
 
-//   @Test
-//   void testInheritedOperationAndTransferAttributeNamesAreUniqueLowerCase() throws Exception {
-//      log.info("Testing constraint: InheritedOperationAndTransferAttributeNamesAreUnique");
-//
-//      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
-//      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
-//
-//      TransferAttribute attribute = newTransferAttributeBuilder().withName("content").withDataType(string).build();
-//
-//      BoundOperation operation = newBoundOperationBuilder().withName("content")
-//              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//              .build();
-//
-//      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
-//      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
-//              .withOperations(operation)
-//              .build();
-//
-//      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
-//      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
-//    		  .withSuperTransferObjectTypes(mappedParent1)
-//              .build();
-//
-//      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute).build();
-//
-//      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
-//              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
-//              .build();
-//
-//      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//              			string,type,
-//              			entityType1,entityType2,entityType3,
-//              			mappedParent1,mappedParent2,parent,
-//              			child
-//                      ))
-//    		  .build();
-//
-//      psmModel.addContent(model);
-//
-//      runEpsilon(ImmutableList.of(
-//          "InheritedOperationAndTransferAttributeNamesAreUnique|"
-//          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer attribute(s) of the same name."),
-//          Collections.emptyList());
-//   }
+   @Test
+   void testInheritedTransferOperationAndTransferAttributeNamesAreUniqueLowerCase() throws Exception {
+      log.info("Testing constraint: InheritedTransferOperationAndTransferAttributeNamesAreUnique");
 
-//   @Test
-//   void testInheritedOperationAndTransferAttributeNamesAreUniqueMixedCase() throws Exception {
-//	      log.info("Testing constraint: InheritedOperationAndTransferAttributeNamesAreUnique");
-//
-//	      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
-//	      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
-//
-//	      TransferAttribute attribute = newTransferAttributeBuilder().withName("content").withDataType(string).build();
-//
-//	      BoundOperation operation = newBoundOperationBuilder().withName("Content")
-//	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//	              .build();
-//
-//	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
-//	      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
-//	              .withOperations(operation)
-//	              .build();
-//
-//	      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
-//	      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
-//	    		  .withSuperTransferObjectTypes(mappedParent1)
-//	              .build();
-//
-//	      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute).build();
-//
-//	      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//	      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
-//	              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
-//	              .build();
-//
-//	      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//	              			string,type,
-//	              			entityType1,entityType2,entityType3,
-//	              			mappedParent1,mappedParent2,parent,
-//	              			child
-//	                      ))
-//	    		  .build();
-//
-//	      psmModel.addContent(model);
-//
-//	      runEpsilon(ImmutableList.of(
-//	          "InheritedOperationAndTransferAttributeNamesAreUnique|"
-//	          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer attribute(s) of the same name."),
-//	          Collections.emptyList());
-//   }
+      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
 
-//   @Test
-//   void testInheritedOperationAndTransferObjectRelationNamesAreUniqueLowerCase() throws Exception {
-//      log.info("Testing constraint: InheritedOperationAndTransferObjectRelationNamesAreUnique");
-//
-//      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
-//
-//      BoundOperation operation = newBoundOperationBuilder().withName("content")
-//              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//              .build();
-//
-//      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
-//      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("content").withTarget(target)
-//    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
-//    		  .withEmbedded(true).build();
-//
-//      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
-//      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
-//              .withOperations(operation)
-//              .build();
-//
-//      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
-//      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
-//    		  .withSuperTransferObjectTypes(mappedParent1)
-//              .build();
-//
-//      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
-//
-//      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
-//              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
-//              .build();
-//
-//      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//              			type,
-//    		  			entityType1,entityType2,entityType3,
-//              			mappedParent1,mappedParent2,parent,
-//              			child
-//                      ))
-//    		  .build();
-//
-//      psmModel.addContent(model);
-//
-//      runEpsilon(ImmutableList.of(
-//          "InheritedOperationAndTransferObjectRelationNamesAreUnique|"
-//          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer object relation(s) of the same name."),
-//          Collections.emptyList());
-//   }
+      TransferAttribute attribute = newTransferAttributeBuilder().withName("content").withDataType(string).build();
 
-//   @Test
-//   void testInheritedOperationAndTransferObjectRelationNamesAreUniqueMixedCase() throws Exception {
-//	      log.info("Testing constraint: InheritedOperationAndTransferObjectRelationNamesAreUnique");
-//
-//	      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
-//
-//	      BoundOperation operation = newBoundOperationBuilder().withName("content")
-//	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
-//	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
-//	              .build();
-//
-//	      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
-//	      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("CONTENT").withTarget(target)
-//	    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
-//	    		  .withEmbedded(true).build();
-//
-//	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
-//	      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
-//	              .withOperations(operation)
-//	              .build();
-//
-//	      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
-//	      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
-//	    		  .withSuperTransferObjectTypes(mappedParent1)
-//	              .build();
-//
-//	      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
-//
-//	      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
-//	      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
-//	              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
-//	              .build();
-//
-//	      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//	              			type,
-//	    		  			entityType1,entityType2,entityType3,
-//	              			mappedParent1,mappedParent2,parent,
-//	              			child
-//	                      ))
-//	    		  .build();
-//
-//	      psmModel.addContent(model);
-//
-//	      runEpsilon(ImmutableList.of(
-//	          "InheritedOperationAndTransferObjectRelationNamesAreUnique|"
-//	          + "Mapped transfer object type: child has inherited operation(s) and inherited transfer object relation(s) of the same name."),
-//	          Collections.emptyList());
-//   }
+      UnboundOperation operation = newUnboundOperationBuilder().withName("content")
+              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .build();
+
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withOperations(operation)
+              .build();
+
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute).build();
+
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			string,type,
+              			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child
+                      ))
+    		  .build();
+
+      psmModel.addContent(model);
+
+      runEpsilon(ImmutableList.of(
+          "InheritedTransferOperationAndTransferAttributeNamesAreUnique|"
+          + "Transfer object type: child has inherited transfer operation(s) and inherited transfer attribute(s) of the same name."),
+          Collections.emptyList());
+   }
+
+   @Test
+   void testInheritedTransferOperationAndTransferAttributeNamesAreUniqueMixedCase() throws Exception {
+	      log.info("Testing constraint: InheritedTransferOperationAndTransferAttributeNamesAreUnique");
+
+	      StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+	      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+
+	      TransferAttribute attribute = newTransferAttributeBuilder().withName("content").withDataType(string).build();
+
+	      UnboundOperation operation = newUnboundOperationBuilder().withName("Content")
+	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .build();
+
+	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+	      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+	              .withOperations(operation)
+	              .build();
+
+	      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+	      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+	    		  .withSuperTransferObjectTypes(mappedParent1)
+	              .build();
+
+	      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withAttributes(attribute).build();
+
+	      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+	      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+	              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+	              .build();
+
+	      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+	              			string,type,
+	              			entityType1,entityType2,entityType3,
+	              			mappedParent1,mappedParent2,parent,
+	              			child
+	                      ))
+	    		  .build();
+
+	      psmModel.addContent(model);
+
+	      runEpsilon(ImmutableList.of(
+	          "InheritedTransferOperationAndTransferAttributeNamesAreUnique|"
+	          + "Transfer object type: child has inherited transfer operation(s) and inherited transfer attribute(s) of the same name."),
+	          Collections.emptyList());
+   }
+
+   @Test
+   void testInheritedTransferOperationAndTransferObjectRelationNamesAreUniqueLowerCase() throws Exception {
+      log.info("Testing constraint: InheritedTransferOperationAndTransferObjectRelationNamesAreUnique");
+
+      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+
+      UnboundOperation operation = newUnboundOperationBuilder().withName("content")
+              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .build();
+
+      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("content").withTarget(target)
+    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+    		  .withEmbedded(true).build();
+
+      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+              .withOperations(operation)
+              .build();
+
+      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+    		  .withSuperTransferObjectTypes(mappedParent1)
+              .build();
+
+      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
+
+      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+              .build();
+
+      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+              			type,
+    		  			entityType1,entityType2,entityType3,
+              			mappedParent1,mappedParent2,parent,
+              			child, target
+                      ))
+    		  .build();
+
+      psmModel.addContent(model);
+
+      runEpsilon(ImmutableList.of(
+          "InheritedTransferOperationAndTransferObjectRelationNamesAreUnique|"
+          + "Transfer object type: child has inherited transfer operation(s) and inherited transfer object relation(s) of the same name."),
+          Collections.emptyList());
+   }
+
+   @Test
+   void testInheritedTransferOperationAndTransferObjectRelationNamesAreUniqueMixedCase() throws Exception {
+	      log.info("Testing constraint: InheritedTransferOperationAndTransferObjectRelationNamesAreUnique");
+
+	      UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+
+	      UnboundOperation operation = newUnboundOperationBuilder().withName("content")
+	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .build();
+
+	      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
+	      TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("CONTENT").withTarget(target)
+	    		  .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+	    		  .withEmbedded(true).build();
+
+	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+	      MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+	              .withOperations(operation)
+	              .build();
+
+	      EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+	      MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+	    		  .withSuperTransferObjectTypes(mappedParent1)
+	              .build();
+
+	      UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation).build();
+
+	      EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+	      MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+	              .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2,parent))
+	              .build();
+
+	      Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+	              			type,target,
+	    		  			entityType1,entityType2,entityType3,
+	              			mappedParent1,mappedParent2,parent,
+	              			child
+	                      ))
+	    		  .build();
+
+	      psmModel.addContent(model);
+
+	      runEpsilon(ImmutableList.of(
+	          "InheritedTransferOperationAndTransferObjectRelationNamesAreUnique|"
+	          + "Transfer object type: child has inherited transfer operation(s) and inherited transfer object relation(s) of the same name."),
+	          Collections.emptyList());
+   }
 
     @Test
     void testCardinalityLowerIsGreaterThanOrEqualToZeroRelation() throws Exception {
@@ -1967,7 +1714,6 @@ class PsmValidationServiceTest {
 
         UnmappedTransferObjectType transferObject = newUnmappedTransferObjectTypeBuilder().withName("unmapped")
                 .withRelations(relation).build();
-        ;
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(target, transferObject)).build();
 
@@ -1988,7 +1734,6 @@ class PsmValidationServiceTest {
 
         UnmappedTransferObjectType transferObject = newUnmappedTransferObjectTypeBuilder().withName("unmapped")
                 .withRelations(relation).build();
-        ;
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(target, transferObject)).build();
 
@@ -1999,102 +1744,190 @@ class PsmValidationServiceTest {
                 Collections.emptyList());
     }
 
-//    @Test
-//    void testCardinalityLowerIsGreaterThanOrEqualToZeroParameter() throws Exception {
-//        log.info("Testing constraint: CardinalityLowerIsGreaterThanOrEqualToZero");
-//
-//        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
-//
-//        BoundOperation bound = newBoundOperationBuilder().withName("bound").withInput(
-//                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(-1).build()).withType(unmapped).build())
-//                .build();
-//
-//        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
-//                .withEntityType(newEntityTypeBuilder().withName("entity").build())
-//                .withOperations(bound)
-//                .build();
-//
-//        UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
-//                .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(-2).build()).withType(unmapped).build())
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                unmapped, mapped, unbound
-//        ))
-//                .build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//                "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: output must be greater than or equal to zero",
-//                "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: input must be greater than or equal to zero"),
-//                Collections.emptyList());
-//    }
+    @Test
+    void testCardinalityLowerIsGreaterThanOrEqualToZeroParameter() throws Exception {
+        log.info("Testing constraint: CardinalityLowerIsGreaterThanOrEqualToZero");
 
-//    @Test
-//    void testCardinalityLowerMustBeLessOrEqualToUpperParameter() throws Exception {
-//        log.info("Testing constraint: CardinalityLowerMustBeLessOrEqualToUpper");
-//
-//        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
-//
-//        BoundOperation bound = newBoundOperationBuilder().withName("bound").withInput(
-//                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(2).withUpper(1).build()).withType(unmapped).build())
-//                .build();
-//
-//        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
-//                .withEntityType(newEntityTypeBuilder().withName("entity").build())
-//                .withOperations(bound)
-//                .build();
-//
-//        UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
-//                .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build()).withType(unmapped).build())
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                unmapped, mapped, unbound
-//        ))
-//                .build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//                "CardinalityLowerMustBeLessOrEqualToUpper|Lower (2) must be less or equal to upper (1) of element: input",
-//                "CardinalityLowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (2) of element: output"),
-//                Collections.emptyList());
-//    }
+        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
 
-//    @Test
-//    void testCardinalityUpperIsAtLeastOneParameter() throws Exception {
-//        log.info("Testing constraint: CardinalityUpperIsAtLeastOne");
-//
-//        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
-//
-//        BoundOperation bound = newBoundOperationBuilder().withName("bound").withInput(
-//                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
-//                .build();
-//
-//        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
-//                .withEntityType(newEntityTypeBuilder().withName("entity").build())
-//                .withOperations(bound)
-//                .build();
-//
-//        UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
-//                .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
-//                .withImplementation(newOperationBodyBuilder().build())
-//                .build();
-//
-//        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-//                unmapped, mapped, unbound
-//        ))
-//                .build();
-//
-//        psmModel.addContent(model);
-//
-//        runEpsilon(ImmutableList.of(
-//                "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: output",
-//                "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: input"),
-//                Collections.emptyList());
-//    }
+        UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
+                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(-1).build()).withType(unmapped).build())
+                .build();
+        UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
+                .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(-2).build()).withType(unmapped).build())
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        
+        EntityType entity = newEntityTypeBuilder().withName("entity").build();
+        
+        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+                .withEntityType(entity)
+                .withOperations(ImmutableList.of(unbound1,unbound2))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(unmapped, mapped, entity)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+                "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: output must be greater than or equal to zero",
+                "CardinalityLowerIsGreaterThanOrEqualToZero|Lower attribute of element: input must be greater than or equal to zero"),
+                Collections.emptyList());
+    }
+
+    @Test
+    void testCardinalityLowerMustBeLessOrEqualToUpperParameter() throws Exception {
+        log.info("Testing constraint: CardinalityLowerMustBeLessOrEqualToUpper");
+
+        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
+
+        UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
+                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(2).withUpper(1).build()).withType(unmapped).build())
+                .build();
+        UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
+                .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build()).withType(unmapped).build())
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+
+        EntityType entity = newEntityTypeBuilder().withName("entity").build();
+        
+        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+                .withEntityType(entity)
+                .withOperations(ImmutableList.of(unbound1, unbound2))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(unmapped, mapped, entity)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+                "CardinalityLowerMustBeLessOrEqualToUpper|Lower (2) must be less or equal to upper (1) of element: input",
+                "CardinalityLowerMustBeLessOrEqualToUpper|Lower (3) must be less or equal to upper (2) of element: output"),
+                Collections.emptyList());
+    }
+
+    @Test
+    void testCardinalityUpperIsAtLeastOneParameter() throws Exception {
+        log.info("Testing constraint: CardinalityUpperIsAtLeastOne");
+
+        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
+
+        UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
+                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
+                .build();
+        UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
+                .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        
+        EntityType entityType = newEntityTypeBuilder().withName("entity").build();
+        
+        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+                .withEntityType(entityType)
+                .withOperations(ImmutableList.of(unbound1,unbound2))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(unmapped, mapped, entityType)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+                "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: output",
+                "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: input"),
+                Collections.emptyList());
+    }
+    
+    @Test
+    void testOwnerIsMappedTransferObjectType() throws Exception {
+        log.info("Testing constraint: OwnerIsMappedTransferObjectType");
+        
+        BoundOperation operation1 = newBoundOperationBuilder().withName("operation1").build();
+        
+        EntityType entityType = newEntityTypeBuilder().withName("entityType").withOperations(operation1).build();
+        MappedTransferObjectType transferObjectType = newMappedTransferObjectTypeBuilder().withName("transferObjectType")
+        		.withEntityType(entityType).build();
+        operation1.setInstanceRepresentation(transferObjectType);
+        
+        BoundTransferOperation transferOp = newBoundTransferOperationBuilder().withName("transferOp").withBinding(operation1).build();
+        
+        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withOperations(transferOp).build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            entityType,transferObjectType,unmapped)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+            "OwnerIsMappedTransferObjectType|Container of bound transfer operation must be mapped transfer object type (operation: transferOp)"),
+            Collections.emptyList());
+    }
+    
+    @Test
+    void testBindingIsValid() throws Exception {
+        log.info("Testing constraint: BindingIsValid");
+        
+        BoundOperation operation = newBoundOperationBuilder().withName("operation").build();
+        
+        EntityType entityType = newEntityTypeBuilder().withName("entityType").withOperations(operation).build();
+        MappedTransferObjectType transferObjectType = newMappedTransferObjectTypeBuilder().withName("transferObjectType")
+        		.withEntityType(entityType).build();
+        operation.setInstanceRepresentation(transferObjectType);
+        
+        BoundTransferOperation transferOp = newBoundTransferOperationBuilder().withName("transferOp").withBinding(operation).build();
+        
+        EntityType otherEntityType = newEntityTypeBuilder().withName("other").build();
+        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+        		.withEntityType(otherEntityType)
+        		.withOperations(transferOp).build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            entityType,transferObjectType,mapped,otherEntityType)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+            "BindingIsValid|Binding of bound transfer operation must be an operation of the owner transfer object type (operation: transferOp)"),
+            Collections.emptyList());
+    }
+    
+    @Test
+    void testParametersAreValid() throws Exception {
+        log.info("Testing constraint: ParametersAreValid");
+
+        UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+        UnmappedTransferObjectType otherType = newUnmappedTransferObjectTypeBuilder().withName("otherType").build();
+
+        BoundOperation operation1 = newBoundOperationBuilder()
+        		.withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().build()).build()).withName("operation1").build();
+        BoundOperation operation2 = newBoundOperationBuilder()
+        		.withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().build()).build()).withName("operation2").build();
+        BoundOperation operation3 = newBoundOperationBuilder().withName("operation3").build();
+        
+        EntityType entityType = newEntityTypeBuilder().withName("entityType").withOperations(ImmutableList.of(operation1,operation2,operation3)).build();
+        MappedTransferObjectType transferObjectType = newMappedTransferObjectTypeBuilder().withName("transferObjectType")
+        		.withEntityType(entityType).build();
+        operation1.setInstanceRepresentation(transferObjectType);
+        operation2.setInstanceRepresentation(transferObjectType);
+        operation3.setInstanceRepresentation(transferObjectType);
+        
+        BoundTransferOperation transferOp1 = newBoundTransferOperationBuilder().withName("transferOp1")
+        		.withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build()).withBinding(operation1).build();
+        BoundTransferOperation transferOp2 = newBoundTransferOperationBuilder().withName("transferOp2")
+        		.withInput(newParameterBuilder().withName("inp").withType(otherType).withCardinality(newCardinalityBuilder().build()).build()).withBinding(operation2).build();
+        BoundTransferOperation transferOp3 = newBoundTransferOperationBuilder().withName("transferOp3")
+        		.withInput(newParameterBuilder().withName("inp").withType(otherType).withCardinality(newCardinalityBuilder().build()).build()).withBinding(operation3).build();
+        
+        transferObjectType.getOperations().addAll(ImmutableList.of(transferOp1,transferOp2,transferOp3));
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            entityType,transferObjectType,type,otherType)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+            "ParametersAreValid|Parameters of bound transfer operation must match binding's parameters (operation: transferOp1)",
+            "ParametersAreValid|Parameters of bound transfer operation must match binding's parameters (operation: transferOp2)",
+            "ParametersAreValid|Parameters of bound transfer operation must match binding's parameters (operation: transferOp3)"),
+            Collections.emptyList());
+    }
 }

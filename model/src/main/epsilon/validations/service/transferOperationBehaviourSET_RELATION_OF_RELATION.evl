@@ -1,0 +1,64 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfSetRelationOfRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+		check: self.eContainer.isKindOf(PSM!BoundTransferOperation)
+		message: "'SET_RELATION_OF_RELATION' behaviour must be owned by a bound transfer operation"
+	}
+	
+	constraint OwnerOfSetRelationOfRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
+		message: "Owner of 'SET_RELATION_OF_RELATION' behaviour must be a transfer object relation" + 
+		"inherited or owned by the transfer object type containing the operation"
+	}
+	
+	constraint RelationOfSetRelationOfRelationBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+		check: self.relation.isDefined() and self.relation.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.owner.target).includes(self.relation)
+		message: "Relation must be undefined for 'SET_RELATION_OF_RELATION' behaviour"
+	}
+	
+	constraint SetOperationInputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+    		and self.satisfiesAll("OperationOfSetRelationOfRelationBehaviourIsValid","OwnerOfSetRelationOfRelationBehaviourIsValid","RelationOfSetRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'SET_RELATION_OF_RELATION' operation must have an input parameter named 'input'"
+    }
+    
+    constraint SetOperationInputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+    		and self.satisfiesAll("SetOperationInputParameterIsDefined","OperationOfSetRelationOfRelationBehaviourIsValid","OwnerOfSetRelationOfRelationBehaviourIsValid","RelationOfSetRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.name == "input"
+    	message: "'SET_RELATION_OF_RELATION' operation's input parameter must be named 'input'"
+    }
+    
+    constraint SetOperationInputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+    		and self.satisfiesAll("SetOperationInputParameterIsDefined","OperationOfSetRelationOfRelationBehaviourIsValid","OwnerOfSetRelationOfRelationBehaviourIsValid","RelationOfSetRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.binding.input.type.entityType).includes(self.owner.target.entityType)
+    	message: "Type of 'SET_RELATION_OF_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint SetOperationInputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+    		and self.satisfiesAll("SetOperationInputParameterIsDefined","OperationOfSetRelationOfRelationBehaviourIsValid","OwnerOfSetRelationOfRelationBehaviourIsValid","RelationOfSetRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Cardinality of 'SET_RELATION_OF_RELATION' operation's input parameter must be 1..1"
+    }
+    
+    constraint SetOperationOutputParameterIsNotDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION
+    		and self.satisfiesAll("OperationOfSetRelationOfRelationBehaviourIsValid","OwnerOfSetRelationOfRelationBehaviourIsValid","RelationOfSetRelationOfRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.isUndefined()
+    	message: "'SET_RELATION_OF_RELATION' operation cannot have an output parameter"
+    }
+}

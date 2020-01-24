@@ -1,8 +1,10 @@
 context PSM!UnboundOperation {
     
-    // static navigation type names should be unique
-    critique UnboundOperationNamesAreUnique {
-        check: not PSM!UnboundOperation.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
-        message: "Unbound operation name is not unique: " + self.name
-    }
+     constraint OverridingWithValidParameters {
+     	guard: self.satisfies("NamedElementHasContainer")
+     	check: self.eContainer.getAllSuperTransferObjectTypes()
+        		.collect(t | t.operations.select(o | o.isKindOf(PSM!UnboundOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | psmUtils.parametersAreTheSame(self,o))
+        message: "Overriding of unbound operation cannot change parameters (unbound operation " + self.name + " in " + self.eContainer.name + ")"
+     }
 }

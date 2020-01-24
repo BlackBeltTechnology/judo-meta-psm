@@ -1,0 +1,8 @@
+context PSM!Parameter {
+	
+	constraint FaultCardinalityIsValid {
+		guard: self.satisfies("NamedElementHasContainer") and self.eContainer.faults.includes(self)
+		check: self.cardinality.lower == 1 and self.cardinality.upper == 1
+		message: "Cardinality of fault parameter: " + self.name  + " must be 1..1"
+	}
+}

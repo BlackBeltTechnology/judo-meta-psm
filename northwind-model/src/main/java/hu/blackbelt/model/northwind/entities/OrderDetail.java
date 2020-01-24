@@ -9,6 +9,7 @@ import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.services.OrderInfo;
+import hu.blackbelt.model.northwind.services.OrderItem;
 import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
@@ -40,7 +41,7 @@ public class OrderDetail {
 
     public void init(Package $package, String $string, Double $double, Integer $integer, Boolean $boolean,
                      MassStoredInGrams $massStoredInGrams, Product $product, Category $category,
-                     OrderInfo $orderInfo, ProductInfo $productInfo) {
+                     OrderItem $orderItem, ProductInfo $productInfo) {
         useEntityType($)
                 .withName("OrderDetail")
                 .withAttributes(useAttribute(unitPrice)
@@ -112,7 +113,7 @@ public class OrderDetail {
                 )
                 .withOperations(useBoundOperation(_getProduct)
                         .withName("_getProduct")
-                        .withInstanceRepresentation($orderInfo.$)
+                        .withInstanceRepresentation($orderItem.$)
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
                         )

@@ -7,7 +7,7 @@ context PSM!TransferObjectType {
     }
     
     // check if transfer object type is inheriting unique transfer attributes
-    constraint InheritingUniqueAttributeNames {
+    constraint InheritingUniqueTransferAttributeNames {
         check: self.getInheritedTransferAttributeNames()
                     .forAll(n | self.getAllSuperTransferObjectTypes().collect(s | s.getAttributes()).flatten()
                                     .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
@@ -15,11 +15,21 @@ context PSM!TransferObjectType {
     }
     
     // check if transfer object type is inheriting unique transfer object relations
-    constraint InheritingUniqueRelationNames {
+    constraint InheritingUniqueTransferObjectRelationNames {
         check: self.getInheritedTransferObjectRelationNames()
                     .forAll(n | self.getAllSuperTransferObjectTypes().collect(s | s.getRelations()).flatten()
                                     .select(a | a.name.toLowerCase() == n.toLowerCase()).size() == 1)
         message: "Transfer object type: " + self.name + " has inherited transfer object relations of the same name."
+    }
+    
+    constraint InheritedTransferOperationAndTransferAttributeNamesAreUnique {
+        check: not self.getInheritedTransferAttributeNames().exists(name | psmUtils.getInheritedTransferOperationNames(self).exists(a | name.toLowerCase() == a.toLowerCase()))
+        message: "Transfer object type: " + self.name + " has inherited transfer operation(s) and inherited transfer attribute(s) of the same name." 
+    }
+
+    constraint InheritedTransferOperationAndTransferObjectRelationNamesAreUnique {
+        check: not self.getInheritedTransferObjectRelationNames().exists(name | psmUtils.getInheritedTransferOperationNames(self).exists(a | name.toLowerCase() == a.toLowerCase()))
+        message:  "Transfer object type: " + self.name + " has inherited transfer operation(s) and inherited transfer object relation(s) of the same name."
     }
     
     // check if transfer object type is inheriting unique transfer attribute and transfer object relation names

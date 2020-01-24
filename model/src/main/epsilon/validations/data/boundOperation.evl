@@ -1,0 +1,30 @@
+context PSM!BoundOperation {
+	
+	constraint AbstractOperationIsValid {
+		guard: self.satisfies("NamedElementHasContainer")
+		check: self.abstract implies self.eContainer
+				.getSuperEntityTypes.collect(s | s.operations).flatten()
+				.select(o | o.name.toLowerCase() == self.name.toLowerCase())
+				.forAll(o | o.abstract)
+		message: "Bound operation cannot be abstract if it's overriding a non-abstract bound operation"
+	}
+    
+    constraint AbstractOperationHasNoImplementation {
+    	check: self.abstract implies self.implementation.isUndefined()
+    	message: "Abstract bound operation: " + self.name + " cannot have implementation."
+    }
+    
+    constraint InstanceRepresentationMatchesOwnerEntityType {
+    	guard: self.satisfies("NamedElementHasContainer")
+    	check: self.instanceRepresentation.entityType == self.eContainer
+    	message: "Instance representation of bound operation: " + self.name + " must match the owner entity type: " + self.eContainer.name
+    }
+ 
+ 	constraint OverridingWithValidParameters {
+     	guard: self.satisfies("NamedElementHasContainer")
+     	check: self.eContainer.getAllSuperEntityTypes()
+        		.collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | psmUtils.parametersAreTheSame(self,o))
+        message: "Overriding of bound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
+     }
+}
