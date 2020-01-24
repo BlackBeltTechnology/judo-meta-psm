@@ -1,31 +1,22 @@
 package hu.blackbelt.judo.meta.psm;
 
 import com.google.common.collect.ImmutableList;
-import hu.blackbelt.judo.meta.psm.PsmUtils;
-import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.judo.meta.psm.service.BoundOperation;
-import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.OperationBody;
-import hu.blackbelt.judo.meta.psm.type.NumericType;
-import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
+import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
+import hu.blackbelt.judo.meta.psm.data.EntitySequence;
+import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.data.OperationBody;
+import hu.blackbelt.judo.meta.psm.data.Relation;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
+import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.type.NumericType;
+import hu.blackbelt.judo.meta.psm.type.StringType;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -33,20 +24,30 @@ import org.eclipse.emf.common.util.UniqueEList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class PsmUtilsTest extends NorthwindTest {
 
 	private final String createdSourceModelName = "urn:psm.judo-meta-psm";
 
 	@Test
 	public void testIsInstantiableMappedTransferObjectType() {
-		Assertions
-				.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderInfo")));
-		Assertions
-				.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderItem")));
-		Assertions.assertTrue(
-				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("ProductInfo")));
-		Assertions.assertTrue(
-				PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("CategoryInfo")));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderInfo")));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("OrderItem")));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("ProductInfo")));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(getMappedTransferObjectType("CategoryInfo")));
 	}
 
 	@Test
@@ -62,7 +63,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		psmModel.addContent(m);
 
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(transferObject));
+		assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(transferObject));
 	}
 
 	@Test
@@ -70,18 +71,18 @@ public class PsmUtilsTest extends NorthwindTest {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 
-		EntityType entityType = newEntityTypeBuilder().withName("entityType").withAbstract_(false).build();
-		BoundOperation operation = newBoundOperationBuilder().withName("operation").build();
+		BoundOperation operation = newBoundOperationBuilder().withName("operation").withAbstract_(true).build();
+		EntityType entityType = newEntityTypeBuilder().withName("entityType").withAbstract_(true).withOperations(operation).build();
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
-				.withEntityType(entityType).withOperations(operation).build();
+				.withEntityType(entityType).withOperations(newBoundTransferOperationBuilder().withBinding(operation).withName("op").build()).build();
 
 		Model m = newModelBuilder().withName("M")
 				.withElements(ImmutableList.of(entityType,transferObject))
 				.build();
 
 		psmModel.addContent(m);
-		
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(transferObject));
+
+		assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(transferObject));
 	}
 	
 	@Test
@@ -90,70 +91,83 @@ public class PsmUtilsTest extends NorthwindTest {
 				.build();
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(true).build();
-		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withAbstract_(false).build();
-
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withAbstract_(false).withSuperEntityTypes(entityType1).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withAbstract_(false).withSuperEntityTypes(entityType1).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withAbstract_(false).withSuperEntityTypes(entityType2).build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withAbstract_(false)
+				.withSuperEntityTypes(ImmutableList.of(entityType2,entityType3)).build();
+		
 		BoundOperation operation1 = newBoundOperationBuilder().withName("operation1").withImplementation(newOperationBodyBuilder().build()).build();
-		BoundOperation operation2 = newBoundOperationBuilder().withName("operation2").build();
+		BoundOperation operation2 = newBoundOperationBuilder().withName("operation2").withAbstract_(true).build();
 		BoundOperation operation3 = newBoundOperationBuilder().withName("operation3").withImplementation(newOperationBodyBuilder().build()).build();
 		BoundOperation operation4 = newBoundOperationBuilder().withName("operation4").withImplementation(newOperationBodyBuilder().build()).build();
-		
+
 		MappedTransferObjectType parentOfParent = newMappedTransferObjectTypeBuilder().withName("parentOfParent")
-				.withEntityType(entityType1).withOperations(operation1).build();
+				.withEntityType(entityType1).build();
 		MappedTransferObjectType parent1 = newMappedTransferObjectTypeBuilder().withName("parent1").withSuperTransferObjectTypes(parentOfParent)
-				.withEntityType(entityType2).withOperations(operation2).build();
+				.withEntityType(entityType2).build();
 		MappedTransferObjectType parent2 = newMappedTransferObjectTypeBuilder().withName("parent2").withSuperTransferObjectTypes(parentOfParent)
-				.withEntityType(entityType2).withOperations(operation1).build();
+				.withEntityType(entityType3).build();
 		MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withSuperTransferObjectTypes(parent1)
-				.withEntityType(entityType2).withOperations(ImmutableList.of(operation3,operation4)).build();
+				.withEntityType(entityType4).build();
 		MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child2")
 				.withSuperTransferObjectTypes(ImmutableList.of(parent1,parent2))
-				.withEntityType(entityType2).withOperations(ImmutableList.of(operation3,operation4)).build();
+				.withEntityType(entityType5).build();
 		
-
+		entityType2.getOperations().add(operation1);
+		entityType3.getOperations().add(operation2);
+		entityType4.getOperations().add(operation3);
+		entityType5.getOperations().add(operation4);
+		
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parentOfParent,parent1,child1))
+				.withElements(ImmutableList.of(entityType1,entityType2,parentOfParent,parent1,child1,parent2,child2,entityType3,entityType4,entityType5))
 				.build();
 
 		psmModel.addContent(m);
-		
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(parentOfParent));
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(parent1));
-		Assertions.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(parent2));
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(child1));
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(child2));	
+
+		assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(parentOfParent));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(parent1));
+		assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(parent2));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(child1));
+		assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(child2));
 	}
-	
+
 	@Test
 	public void testMappedTransferObjectBoundOperationsWithSameName() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
-		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withAbstract_(false).build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withAbstract_(false).withSuperEntityTypes(entityType1).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType2").withAbstract_(false).withSuperEntityTypes(entityType2).build();
 
-		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").build();
+		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").withAbstract_(true).build();
 		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
 		BoundOperation operation3 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
-		
+
 		MappedTransferObjectType parent = newMappedTransferObjectTypeBuilder().withName("parent")
-				.withEntityType(entityType1).withOperations(operation1).build();
+				.withEntityType(entityType1).build();
 		MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType1).withOperations(operation2).build();
+				.withEntityType(entityType2).build();
 		MappedTransferObjectType grandChild = newMappedTransferObjectTypeBuilder().withName("grandChild")
 				.withSuperTransferObjectTypes(child)
-				.withEntityType(entityType2).withOperations(operation3).build();
+				.withEntityType(entityType3).build();
 		
+		entityType1.getOperations().add(operation1);
+		entityType2.getOperations().add(operation2);
+		entityType3.getOperations().add(operation3);
+
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parent,child,grandChild))
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,parent,child,grandChild))
 				.build();
 
 		psmModel.addContent(m);
-		
-		Assertions.assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(parent));
-		Assertions.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(child));
-		Assertions.assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(grandChild));	
+
+		assertFalse(PsmUtils.isInstantiableMappedTransferObjectType(parent));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(child));
+		assertTrue(PsmUtils.isInstantiableMappedTransferObjectType(grandChild));
 	}
-	
+
 	@Test
 	public void testgetAllOperationNames() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
@@ -161,36 +175,40 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
 		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withAbstract_(false).build();
-		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).withAbstract_(false).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType1).withAbstract_(false).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType2,entityType3)).withAbstract_(false).build();
 
 		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").build();
 		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").build();
 		BoundOperation ownOperation = newBoundOperationBuilder().withName("ownOperation").build();
-		
+
 		MappedTransferObjectType parent = newMappedTransferObjectTypeBuilder().withName("parent")
 				.withEntityType(entityType1).build();
 		MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType2).withOperations(operation1).build();
+				.withEntityType(entityType2).build();
 		MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child2").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType2).withOperations(operation2).build();
+				.withEntityType(entityType2).build();
 		MappedTransferObjectType grandChild = newMappedTransferObjectTypeBuilder().withName("grandChild")
 				.withSuperTransferObjectTypes(ImmutableList.of(child1,child2))
-				.withOperations(ownOperation)
 				.withEntityType(entityType3).build();
 		
+		entityType2.getOperations().add(operation1);
+		entityType3.getOperations().add(operation2);
+		entityType4.getOperations().add(ownOperation);
+
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parent,child1,child2,grandChild))
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,parent,child1,child2,grandChild))
 				.build();
 
 		psmModel.addContent(m);
-		
+
 		EList<String> expected = new UniqueEList<>();
 		expected.add("ownOperation");
 		expected.add("operation");
-		
-		Assertions.assertEquals(expected,PsmUtils.getAllOperationNames(grandChild));
+
+		Assertions.assertEquals(expected,PsmUtils.getAllOperationNames(entityType4));
 	}
-	
+
 	@Test
 	public void testGetOperationImplementationZeroInherited() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
@@ -198,140 +216,157 @@ public class PsmUtilsTest extends NorthwindTest {
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
 		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withAbstract_(false).build();
-		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).withAbstract_(false).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType1).withAbstract_(false).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType2,entityType3)).withAbstract_(false).build();
 
-		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").build();
-		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").build();
-		BoundOperation ownOperation = newBoundOperationBuilder().withName("ownOperation").build();
-		
+		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").withAbstract_(true).build();
+		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").withAbstract_(true).build();
+		BoundOperation ownOperation = newBoundOperationBuilder().withName("ownOperation").withAbstract_(true).build();
+
 		MappedTransferObjectType parent = newMappedTransferObjectTypeBuilder().withName("parent")
-				.withEntityType(entityType1).withOperations(operation1).build();
+				.withEntityType(entityType1).build();
 		MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withSuperTransferObjectTypes(parent)
 				.withEntityType(entityType2).build();
 		MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child2").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType2).withOperations(operation2).build();
+				.withEntityType(entityType3).build();
 		MappedTransferObjectType grandChild = newMappedTransferObjectTypeBuilder().withName("grandChild")
 				.withSuperTransferObjectTypes(ImmutableList.of(child1,child2))
-				.withOperations(ownOperation)
-				.withEntityType(entityType3).build();
+				.withEntityType(entityType4).build();
 		
+		entityType1.getOperations().add(operation1);
+		entityType3.getOperations().add(operation2);
+		entityType4.getOperations().add(ownOperation);
+
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parent,child1,child2,grandChild))
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,parent,child1,child2,grandChild))
 				.build();
 
 		psmModel.addContent(m);
-		
-		Assertions.assertTrue(PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation").size() == 0);
-		Assertions.assertTrue(PsmUtils.getInheritedOperationImplementationsByName(grandChild, "ownOperation").size() == 0);
+
+		assertTrue(PsmUtils.getInheritedOperationImplementationsByName(entityType4, "operation").size() == 0);
+		assertTrue(PsmUtils.getInheritedOperationImplementationsByName(entityType4, "ownOperation").size() == 0);
 	}
-	
+
 	@Test
 	public void testGetOperationImplementationOneInherited() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 
-		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
-		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withAbstract_(false).build();
-		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).withAbstract_(false).build();
-
 		OperationBody implementation1 = newOperationBodyBuilder().build();
 		OperationBody implementation2 = newOperationBodyBuilder().build();
-		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").withImplementation(implementation1).build();
-		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").withImplementation(implementation2).build();
+		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").withAbstract_(false).withImplementation(implementation1).build();
+		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").withAbstract_(false).withImplementation(implementation2).build();
 		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false)
+				.withOperations(operation1).build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withOperations(operation2).withAbstract_(false).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).withAbstract_(false).build();
+
 		MappedTransferObjectType parent = newMappedTransferObjectTypeBuilder().withName("parent")
-				.withEntityType(entityType1).withOperations(operation1).build();
+				.withEntityType(entityType1).build();
 		MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType1).withOperations(operation2).build();
+				.withEntityType(entityType2).build();
 		MappedTransferObjectType grandChild = newMappedTransferObjectTypeBuilder().withName("grandChild")
 				.withSuperTransferObjectTypes(child)
 				.withEntityType(entityType3).build();
 		
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parent,child,grandChild))
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,parent,child,grandChild))
 				.build();
 
 		psmModel.addContent(m);
-				
+
 		EList<OperationBody> expected = new UniqueEList<>(Arrays.asList(implementation2));
-		
-		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation"));
+
+		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(entityType3, "operation"));
 	}
-	
+
 	@Test
 	public void testGetOperationImplementationTwoInherited() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 
-		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
-		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withAbstract_(false).build();
-		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).withAbstract_(false).build();
-
 		OperationBody implementation1 = newOperationBodyBuilder().build();
 		OperationBody implementation2 = newOperationBodyBuilder().build();
 		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").withImplementation(implementation1).build();
 		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").withImplementation(implementation2).build();
 		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withOperations(operation1).withAbstract_(false).build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withOperations(operation2).withAbstract_(false).build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType1).withAbstract_(false).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType2,entityType3)).withAbstract_(false).build();
+
 		MappedTransferObjectType parent = newMappedTransferObjectTypeBuilder().withName("parent")
-				.withEntityType(entityType1).withOperations(operation1).build();
+				.withEntityType(entityType1).build();
 		MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withSuperTransferObjectTypes(parent)
 				.withEntityType(entityType2).build();
 		MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child2").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType2).withOperations(operation2).build();
+				.withEntityType(entityType3).build();
 		MappedTransferObjectType grandChild = newMappedTransferObjectTypeBuilder().withName("grandChild")
 				.withSuperTransferObjectTypes(ImmutableList.of(child1,child2))
 				.withEntityType(entityType3).build();
-		
+
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parent,child1,child2,grandChild))
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,parent,child1,child2,grandChild))
 				.build();
 
 		psmModel.addContent(m);
-		
-		EList<OperationBody> expected = new UniqueEList<>(Arrays.asList(implementation1,implementation2));
-		
-		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation"));
+
+		Assertions.assertEquals(2,PsmUtils.getInheritedOperationImplementationsByName(entityType4, "operation").size());
+		assertTrue(PsmUtils.getInheritedOperationImplementationsByName(entityType4, "operation").contains(implementation1));
+		assertTrue(PsmUtils.getInheritedOperationImplementationsByName(entityType4, "operation").contains(implementation2));
 	}
-	
+
 	@Test
 	public void testGetOperationImplementationThreeInherited() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 
-		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
-		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).withAbstract_(false).build();
-		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).withAbstract_(false).build();
-
 		OperationBody implementation1 = newOperationBodyBuilder().build();
 		OperationBody implementation2 = newOperationBodyBuilder().build();
 		OperationBody implementation3 = newOperationBodyBuilder().build();
+		
 		BoundOperation operation1 = newBoundOperationBuilder().withName("operation").withImplementation(implementation1).build();
 		BoundOperation operation2 = newBoundOperationBuilder().withName("operation").withImplementation(implementation2).build();
 		BoundOperation operation3 = newBoundOperationBuilder().withName("operation").withImplementation(implementation3).build();
 		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withAbstract_(false).withOperations(operation1).build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2")
+				.withSuperEntityTypes(entityType1).withAbstract_(false).build();
+		EntityType entityType3 = newEntityTypeBuilder().withOperations(operation2).withName("entityType3")
+				.withSuperEntityTypes(entityType1).withAbstract_(false).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withSuperEntityTypes(entityType1).withOperations(operation3).withAbstract_(false).build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5")
+				.withSuperEntityTypes(ImmutableList.of(entityType2,entityType3,entityType4)).withAbstract_(false).build();
+
 		MappedTransferObjectType parent = newMappedTransferObjectTypeBuilder().withName("parent")
-				.withEntityType(entityType1).withOperations(operation1).build();
-		
+				.withEntityType(entityType1).build();
+
 		MappedTransferObjectType child1 = newMappedTransferObjectTypeBuilder().withName("child1").withSuperTransferObjectTypes(parent)
 				.withEntityType(entityType2).build();
 		MappedTransferObjectType child2 = newMappedTransferObjectTypeBuilder().withName("child2").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType2).withOperations(operation2).build();
+				.withEntityType(entityType3).build();
 		MappedTransferObjectType child3 = newMappedTransferObjectTypeBuilder().withName("child3").withSuperTransferObjectTypes(parent)
-				.withEntityType(entityType2).withOperations(operation3).build();
-		
+				.withEntityType(entityType4).build();
+
 		MappedTransferObjectType grandChild = newMappedTransferObjectTypeBuilder().withName("grandChild")
 				.withSuperTransferObjectTypes(ImmutableList.of(child1,child2,child3))
-				.withEntityType(entityType3).build();
-		
+				.withEntityType(entityType5).build();
+
 		Model m = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(entityType1,entityType2,parent,child1,child2,child3,grandChild))
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5,parent,child1,child2,child3,grandChild))
 				.build();
 
 		psmModel.addContent(m);
-		
+
 		EList<OperationBody> expected = new UniqueEList<>(Arrays.asList(implementation1,implementation2,implementation3));
-		
-		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(grandChild, "operation"));
+
+		Assertions.assertEquals(expected,PsmUtils.getInheritedOperationImplementationsByName(entityType5, "operation"));
 	}
 	
 	@Test
@@ -534,5 +569,96 @@ public class PsmUtilsTest extends NorthwindTest {
 		Set<EntitySequence> actual = new HashSet<>(PsmUtils.getAllSequences(entityType5));
 		
 		Assertions.assertEquals(expected,actual);
+	}
+	
+	@Test
+	public void testGetAllBoundOperations() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+		BoundOperation operation1 = newBoundOperationBuilder().withName("operation1").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation operation2 = newBoundOperationBuilder().withName("operation2").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation operation3 = newBoundOperationBuilder().withName("operation3").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation operation4 = newBoundOperationBuilder().withName("operation4").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation operation5 = newBoundOperationBuilder().withName("operation5").withImplementation(newOperationBodyBuilder().build()).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withOperations(operation1)
+				.build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withOperations(operation2)
+				.build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withOperations(ImmutableList.of(operation3,operation4))
+				.build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4))
+				.withOperations(operation5)
+				.build();
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5))
+				.build();
+
+		psmModel.addContent(m);
+		
+		Set<BoundOperation> expected = new HashSet<>(new UniqueEList<>(Arrays.asList(operation1,operation2,operation3,operation4,operation5)));
+		Set<BoundOperation> actual = new HashSet<>(PsmUtils.getAllBoundOperations(entityType5));
+		
+		Assertions.assertEquals(expected,actual);
+	}
+	
+	@Test
+	public void testgetAllTransferObjectRelations() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+        StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+
+        UnmappedTransferObjectType target1 = newUnmappedTransferObjectTypeBuilder().withName("target1").build();
+        TransferObjectRelation relation1 = newTransferObjectRelationBuilder().withName("relation1").withTarget(target1)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+                .withEmbedded(true).build();
+
+        UnmappedTransferObjectType target2 = newUnmappedTransferObjectTypeBuilder().withName("target2").build();
+        TransferObjectRelation relation2 = newTransferObjectRelationBuilder().withName("relation2").withTarget(target2)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+                .withEmbedded(true).build();
+        
+        UnmappedTransferObjectType target3 = newUnmappedTransferObjectTypeBuilder().withName("target3").build();
+        TransferObjectRelation relation3 = newTransferObjectRelationBuilder().withName("relation3").withTarget(target3)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
+                .withEmbedded(true).build();
+
+        EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+        MappedTransferObjectType mappedParent1 = newMappedTransferObjectTypeBuilder().withName("mappedParent1").withEntityType(entityType1)
+                .withRelations(relation1)
+                .build();
+
+        EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1).build();
+        MappedTransferObjectType mappedParent2 = newMappedTransferObjectTypeBuilder().withName("mappedParent2").withEntityType(entityType2)
+                .withSuperTransferObjectTypes(mappedParent1)
+                .build();
+
+        UnmappedTransferObjectType parent = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withRelations(relation2).build();
+
+        EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
+        MappedTransferObjectType child = newMappedTransferObjectTypeBuilder().withName("child").withEntityType(entityType3)
+                .withSuperTransferObjectTypes(ImmutableList.of(mappedParent2, parent))
+                .withRelations(relation3)
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                string,
+                entityType1, entityType2, entityType3,
+                mappedParent1, mappedParent2, parent,
+                child)).build();
+
+        psmModel.addContent(model);
+		
+        Assertions.assertEquals(PsmUtils.getAllTransferObjectRelations(child).size(),3);
+        assertTrue(PsmUtils.getAllTransferObjectRelations(child).contains(relation1));
+		assertTrue(PsmUtils.getAllTransferObjectRelations(child).contains(relation2));
+		assertTrue(PsmUtils.getAllTransferObjectRelations(child).contains(relation3));
 	}
 }

@@ -232,6 +232,18 @@ package data {
     !ordered op ~derived.DataProperty[*] getAllDataProperties();
     !ordered op ~derived.NavigationProperty[*] getAllNavigationProperties();
     !ordered op EntitySequence[*] getAllSequences();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationByName(this,name);")
+    !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationsByName(this,name);")
+    !unique op OperationBody[*] getInheritedOperationImplementationsByName(String name);
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationNames(this);")
+    op String[*] getInheritedOperationNames();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);")
+    op String[*] getAllOperationNames();
     ref EntityType[*] superEntityTypes;
     attr boolean[1] ~abstract;
     val Attribute[*] attributes;
@@ -239,6 +251,7 @@ package data {
     val ~derived.DataProperty[*] dataProperties;
     val ~derived.NavigationProperty[*] navigationProperties;
     val EntitySequence[*] sequences;
+    val BoundOperation[*] operations;
   }
 
   abstract class Relation extends ReferenceTypedElement, EntityMember {
@@ -310,6 +323,18 @@ package data {
   }
 
   class NamespaceSequence extends Sequence, namespace.NamespaceElement {
+  }
+
+  class BoundOperation extends namespace.NamedElement, service.OperationDeclaration {
+    val OperationBody implementation;
+    ref service.MappedTransferObjectType[1] instanceRepresentation;
+    attr boolean[1] ~abstract = false;
+  }
+
+  class OperationBody {
+    attr boolean[1] stateful;
+    attr boolean[1] customImplementation;
+    attr script.Script body;
   }
 
 }
@@ -401,7 +426,7 @@ package service {
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
     ref TransferObjectType[*] superTransferObjectTypes;
-    ref UnboundOperation#getTemplateOwnerTransferObjectType getTemplate;
+    val TransferOperation[*] operations;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -431,14 +456,6 @@ package service {
     attr boolean[1] embeddedCreate;
     attr boolean[1] embeddedUpdate;
     attr boolean[1] embeddedDelete = false;
-    ref BoundOperation#getOwnerRelation get;
-    ref BoundOperation#createOwnerRelation create;
-    ref BoundOperation#updateOwnerRelation update;
-    ref BoundOperation#deleteOwnerRelation delete;
-    ref BoundOperationWithRelation[*]#setOwnerRelation set;
-    ref BoundOperationWithRelation[*]#unsetOwnerRelation unset;
-    ref BoundOperationWithRelation[*]#addAllOwnerRelation addAll;
-    ref BoundOperationWithRelation[*]#removeAllOwnerRelation removeAll;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -458,12 +475,7 @@ package service {
 
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);")
     op boolean[1] isInstantiable();
-    op String[*] getAllOperationNames();
-    !unique op OperationBody[*] getInheritedOperationImplementationsByName(String name);
-    !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
-    op String[*] getInheritedOperationNames();
     ref data.EntityType[1] entityType;
-    val BoundOperation[*] operations;
     val ~derived.LogicalExpressionType filter;
   }
 
@@ -476,52 +488,52 @@ package service {
   class UnmappedTransferObjectType extends TransferObjectType {
   }
 
-  class BoundOperation extends namespace.NamedElement, OperationDeclaration {
-    val OperationBody implementation;
-    ref TransferObjectRelation#get getOwnerRelation;
-    ref TransferObjectRelation#create createOwnerRelation;
-    ref TransferObjectRelation#update updateOwnerRelation;
-    ref TransferObjectRelation#delete deleteOwnerRelation;
-  }
-
-  class UnboundOperation extends namespace.NamespaceElement, OperationDeclaration {
-    val OperationBody[1] implementation;
-    ref TransferObjectType#getTemplate getTemplateOwnerTransferObjectType;
-    ref accesspoint.ExposedGraph#get getOwnerExposedGraph;
-    ref accesspoint.ExposedGraph#create createOwnerExposedGraph;
-    ref accesspoint.ExposedGraph#update updateOwnerExposedGraph;
-    ref accesspoint.ExposedGraph#delete deleteOwnerExposedGraph;
+  class UnboundOperation extends TransferOperation {
+    val data.OperationBody implementation;
   }
 
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
-    ref OperationWithRelation[*]#getRangeOwnerParameter getRange;
   }
 
-  class OperationBody {
-    attr boolean[1] stateful;
-    attr boolean[1] customImplementation;
-    attr script.Script body;
+  class BoundTransferOperation extends TransferOperation {
+
+    @GenModel(body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding().getName()).orElse(null) : null;")
+    !ordered op data.OperationBody getImplementation();
+    ref data.BoundOperation[1] binding;
   }
 
-  class BoundOperationWithRelation extends BoundOperation, OperationWithRelation {
-    ref TransferObjectRelation#set setOwnerRelation;
-    ref TransferObjectRelation#unset unsetOwnerRelation;
-    ref TransferObjectRelation#addAll addAllOwnerRelation;
-    ref TransferObjectRelation#removeAll removeAllOwnerRelation;
+  abstract class TransferOperation extends namespace.NamedElement, OperationDeclaration {
+    !ordered op data.OperationBody getImplementation();
+    val TransferOperationBehaviour behaviour;
   }
 
-  class UnboundOperationWithRelation extends UnboundOperation, OperationWithRelation {
-    ref accesspoint.ExposedGraph#set setOwnerExposedGraph;
-    ref accesspoint.ExposedGraph#unset unsetOwnerExposedGraph;
-    ref accesspoint.ExposedGraph#addAll addAllOwnerExposed;
-    ref accesspoint.ExposedGraph#removeAll removeAllOwnerExposedGraph;
+  class TransferOperationBehaviour {
+    attr TransferOperationBehaviourType[1] behaviourType;
+    ref TransferObjectRelation relation;
+    ref namespace.NamedElement[1] owner;
   }
 
-  abstract class OperationWithRelation extends OperationDeclaration {
-    ref TransferObjectRelation[1] relation;
-    ref Parameter#getRange getRangeOwnerParameter;
+  enum TransferOperationBehaviourType {
+    GET = 0;
+    CREATE = 1;
+    UPDATE = 2;
+    DELETE = 3;
+    SET_RELATION = 4;
+    UNSET_RELATION = 5;
+    ADD_ALL_TO_RELATION = 6;
+    REMOVE_ALL_FROM_RELATION = 7;
+    GET_RELATION = 8;
+    CREATE_RELATION = 9;
+    UPDATE_RELATION = 10;
+    DELETE_RELATION = 11;
+    SET_RELATION_OF_RELATION = 12;
+    UNSET_RELATION_OF_RELATION = 13;
+    ADD_ALL_TO_RELATION_OF_RELATION = 14;
+    REMOVE_ALL_FROM_RELATION_OF_RELATION = 15;
+    GET_RANGE_OF_RELATION = 16;
+    GET_TEMPLATE = 17;
   }
 
 }
@@ -537,18 +549,10 @@ package accesspoint {
     ref service.MappedTransferObjectType[1] mappedTransferObjectType;
     ref ~derived.StaticNavigation[1] selector;
     val type.Cardinality[1] cardinality;
-    ref service.UnboundOperation#getOwnerExposedGraph get;
-    ref service.UnboundOperation#createOwnerExposedGraph create;
-    ref service.UnboundOperation#updateOwnerExposedGraph update;
-    ref service.UnboundOperation#deleteOwnerExposedGraph delete;
-    ref service.UnboundOperationWithRelation[*]#setOwnerExposedGraph set;
-    ref service.UnboundOperationWithRelation[*]#unsetOwnerExposedGraph unset;
-    ref service.UnboundOperationWithRelation[*]#addAllOwnerExposed addAll;
-    ref service.UnboundOperationWithRelation[*]#removeAllOwnerExposedGraph removeAll;
   }
 
-  class ExposedService {
-    ref service.UnboundOperation[1] operation;
+  class ExposedService extends namespace.NamedElement {
+    ref service.TransferObjectType[1] operationGroup;
   }
 
 }

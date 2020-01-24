@@ -2,10 +2,15 @@ package hu.blackbelt.model.northwind.entities;
 
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.services.OrderInfo;
+import hu.blackbelt.model.northwind.services.OrderItem;
+import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Integer;
@@ -15,34 +20,10 @@ import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class OrderDetail {
-
-    /*
-        <elements xsi:type="data:EntityType" xmi:id="__XzocINkEeiLE-B2bbL0fg" name="OrderDetail">
-          <attributes xmi:id="_bG7OUIN6EeiLE-B2bbL0fg" name="unitPrice" dataType="_VDVVQIUcEeipmMyz9cMCRA" required="true"/>
-          <attributes xmi:id="_d3obYIN6EeiLE-B2bbL0fg" name="quantity" dataType="_TXtg8IUcEeipmMyz9cMCRA" required="true"/>
-          <attributes xmi:id="_jIROkIN6EeiLE-B2bbL0fg" name="discount" dataType="_VDVVQIUcEeipmMyz9cMCRA" required="true"/>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_6QtRsLwNEeiOuYiCo6IbXQ" name="product" target="_6XH80INkEeiLE-B2bbL0fg">
-            <cardinality xmi:id="_98quuudSEeiJv53TEP0vvQ" lower="1"/>
-          </relations>
-          <dataProperties xmi:id="_mr-oACVvEemLpvUY7MQgng" name="productName" dataType="_Nppx8IUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_oHyJsDneEemsDIfvozHEKg" expression="self.product.productName"/>
-          </dataProperties>
-          <dataProperties xmi:id="_2MDDoCVvEemLpvUY7MQgng" name="categoryName" dataType="_Nppx8IUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_pXNKMDneEemsDIfvozHEKg" expression="self.product.category.categoryName"/>
-          </dataProperties>
-          <dataProperties xmi:id="__vG3MECrEemcEMUWkvDcXg" name="price" dataType="_VDVVQIUcEeipmMyz9cMCRA">
-            <getterExpression xmi:id="_ECYDMECsEemcEMUWkvDcXg" expression="self.quantity * self.unitPrice * (1 - self.discount)"/>
-          </dataProperties>
-          <navigationProperties xmi:id="_rYlgkEZqEemHs64O5EYsyQ" name="category" target="_43ZPcINkEeiLE-B2bbL0fg">
-            <cardinality xmi:id="_sAcx0EZqEemHs64O5EYsyQ" lower="1"/>
-            <getterExpression xsi:type="derived:ReferenceSelectorType" xmi:id="_vLkC8EZqEemHs64O5EYsyQ" expression="self.product.category"/>
-            <setterExpression xmi:id="_xMOTIEZqEemHs64O5EYsyQ" expression="self.product.category"/>
-          </navigationProperties>
-        </elements>
-    */
 
     public EntityType $ = newEntityTypeBuilder().build();
     public Attribute unitPrice = newAttributeBuilder().build();
@@ -56,8 +37,11 @@ public class OrderDetail {
     public NavigationProperty category = newNavigationPropertyBuilder().build();
     public AssociationEnd product = newAssociationEndBuilder().build();
 
+    public BoundOperation _getProduct = newBoundOperationBuilder().build();
+
     public void init(Package $package, String $string, Double $double, Integer $integer, Boolean $boolean,
-                     MassStoredInGrams $massStoredInGrams, Product $product, Category $category) {
+                     MassStoredInGrams $massStoredInGrams, Product $product, Category $category,
+                     OrderItem $orderItem, ProductInfo $productInfo) {
         useEntityType($)
                 .withName("OrderDetail")
                 .withAttributes(useAttribute(unitPrice)
@@ -126,6 +110,19 @@ public class OrderDetail {
                         .withGetterExpression(newReferenceSelectorTypeBuilder()
                                 .withExpression("self.product.category")
                         )
+                )
+                .withOperations(useBoundOperation(_getProduct)
+                        .withName("_getProduct")
+                        .withInstanceRepresentation($orderItem.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
+                                )
+                        )
+                        .build()
                 )
                 .build();
 

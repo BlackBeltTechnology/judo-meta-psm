@@ -10,9 +10,6 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 
 public class AreaStoredInSquareMetre {
 
-    /*
-          <elements xsi:type="measure:MeasuredType" xmi:id="_fdkrMB1ZEemwg4NgOjaKeA" name="AreaStoredInSquareMetre" precision="15" scale="4" storeUnit="_eD5KMB1TEemwg4NgOjaKeA"/>
-    */
     public MeasuredType $ = newMeasuredTypeBuilder().build();
 
     public void init(Package $package, Area $area) {

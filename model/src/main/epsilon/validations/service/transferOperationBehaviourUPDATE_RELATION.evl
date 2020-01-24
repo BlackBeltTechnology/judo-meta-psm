@@ -1,0 +1,91 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfUpdateRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+		check: self.eContainer.isKindOf(PSM!BoundTransferOperation) 
+		message: "'UPDATE_RELATION' behaviour must be owned by a bound transfer operation"
+	}
+	
+	constraint OwnerOfUpdateRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
+		message: "Owner of 'UPDATE_RELATION' behaviour must be a transfer object relation" + 
+		"inherited or owned by the transfer object type containing the operation"
+	}
+	
+	constraint RelationOfUpdateRelationBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+		check: self.relation.isUndefined()
+		message: "Relation must be undefined for 'UPDATE_RELATION' behaviour"
+	}
+	
+	constraint UpdateOperationInputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'UPDATE_RELATION' operation must have an input parameter named 'input'"
+    }
+    
+    constraint UpdateOperationInputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.name == "input"
+    	message: "'UPDATE_RELATION' operation's input parameter must be named 'input'"
+    }
+    
+    constraint UpdateOperationInputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
+    	message: "Type of 'UPDATE_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint UpdateOperationInputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Cardinality of 'UPDATE_RELATION' operation's input parameter must be 1..1"
+    }
+    
+    constraint UpdateOperationOutputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.isDefined()
+    	message: "'UPDATE_RELATION' operation must have an output parameter named 'output'"
+    }
+    
+    constraint UpdateOperationOutputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.name == "output"
+    	message: "'UPDATE_RELATION' operation's output parameter must be named 'output'"
+    }
+    
+    constraint UpdateOperationOutputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.owner.target.getAllSuperTransferObjectTypes()
+    			.including(self.owner.target)
+    			.includes(self.eContainer.binding.output.type)
+    	message: "Type of 'UPDATE_RELATION' operation's output parameter must be the referenced mapped transfer object type or its supertype"
+    }
+    
+    constraint UpdateOperationOutputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION
+    		and self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateRelationBehaviourIsValid","OwnerOfUpdateRelationBehaviourIsValid","RelationOfUpdateRelationBehaviourIsUndefined") 
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.cardinality.lower == 1 and
+    		self.eContainer.binding.output.cardinality.upper == 1 
+    	message: "Cardinality of 'UPDATE_RELATION' operation's output parameter must be 1..1"
+    }
+}
+	

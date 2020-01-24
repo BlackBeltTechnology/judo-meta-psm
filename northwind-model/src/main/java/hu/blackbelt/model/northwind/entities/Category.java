@@ -2,36 +2,22 @@ package hu.blackbelt.model.northwind.entities;
 
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.services.CategoryInfo;
+import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.types.Binary;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.Text;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAssociationEnd;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useAttribute;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.useEntityType;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class Category {
-
-    /*
-        <elements xsi:type="data:EntityType" xmi:id="_43ZPcINkEeiLE-B2bbL0fg" name="Category">
-          <attributes xmi:id="_v7k5EINmEeiLE-B2bbL0fg" name="categoryName" dataType="_Nppx8IUcEeipmMyz9cMCRA" required="true"/>
-          <attributes xmi:id="_Vsjt0INuEeiLE-B2bbL0fg" name="description" dataType="_tXQUoIOGEeiLE-B2bbL0fg"/>
-          <attributes xmi:id="_cwpboINuEeiLE-B2bbL0fg" name="picture" dataType="_j-zrcINuEeiLE-B2bbL0fg"/>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_892OYLwCEeiOuYiCo6IbXQ" name="products" target="_6XH80INkEeiLE-B2bbL0fg" partner="_CkXK8LwDEeiOuYiCo6IbXQ">
-            <cardinality xmi:id="_98qusOdSEeiJv53TEP0vvQ" upper="-1"/>
-          </relations>
-          <relations xsi:type="data:AssociationEnd" xmi:id="_NACAMOdTEeiJv53TEP0vvQ" name="owner" target="_ONN9gINlEeiLE-B2bbL0fg" partner="_Y1GwwOdTEeiJv53TEP0vvQ">
-            <cardinality xmi:id="_rzreIOdUEeiJv53TEP0vvQ"/>
-          </relations>
-        </elements>
-    */
 
     public EntityType $ = newEntityTypeBuilder().build();
     public Attribute categoryName = newAttributeBuilder().build();
@@ -40,8 +26,12 @@ public class Category {
     public AssociationEnd products = newAssociationEndBuilder().build();
     public AssociationEnd owner = newAssociationEndBuilder().build();
 
+    public BoundOperation _getProducts = newBoundOperationBuilder().build();
+    public BoundOperation _getProductsInternal = newBoundOperationBuilder().build();
 
-    public void init(Package $package, String $string, Text $text, Binary $binary, Product $product, Employee $employee) {
+    public void init(Package $package, String $string, Text $text, Binary $binary, Product $product, Employee $employee,
+                     hu.blackbelt.model.northwind.services.Category $category, hu.blackbelt.model.northwind.services.Product $product_,
+                     CategoryInfo $categoryInfo, ProductInfo $productInfo) {
         useEntityType($).withName("Category")
                 .withAttributes(useAttribute(categoryName).withName("categoryName")
                         .withDataType($string.$)
@@ -63,6 +53,32 @@ public class Category {
                         .withTarget($employee.$)
                         .withPartner($employee.category)
                         .withCardinality(newCardinalityBuilder())
+                        .build()
+                )
+                .withOperations(useBoundOperation(_getProducts)
+                        .withName("_getProducts")
+                        .withInstanceRepresentation($category.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($product_.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(_getProductsInternal)
+                        .withName("_getProductsInternal")
+                        .withInstanceRepresentation($categoryInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
                         .build()
                 )
                 .build();

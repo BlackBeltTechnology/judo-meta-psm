@@ -1,0 +1,20 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfGetTemplateBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_TEMPLATE
+		check: self.eContainer.isKindOf(PSM!UnboundOperation)
+		message: "'GET_TEMPLATE' behaviour type must be owned by unbound operation"
+	}
+	
+	constraint OwnerOfGetTemplateBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_TEMPLATE
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectType)
+		message: "Owner of 'GET_TEMPLATE' behaviour must be a transfer object type"
+	}
+	
+	constraint RelationOfGetTemplateBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_TEMPLATE
+		check: self.relation.isUndefined()
+		message: "Relation for 'GET_TEMPLATE' behaviour types must be undefined"
+	}
+}

@@ -1,36 +1,40 @@
 package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
+import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
+import hu.blackbelt.model.northwind.InternalAP;
 import hu.blackbelt.model.northwind.entities.Category;
 import hu.blackbelt.model.northwind.types.String;
 
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useMappedTransferObjectType;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferAttribute;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.useTransferObjectRelation;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class CategoryInfo {
 
-    /*
-    <elements xsi:type="service:MappedTransferObjectType" xmi:id="_xxeTIEWXEemHs64O5EYsyQ" name="CategoryInfo" entityType="_43ZPcINkEeiLE-B2bbL0fg">
-      <relations xmi:id="_iy32wEWgEemHs64O5EYsyQ" name="products" binding="_892OYLwCEeiOuYiCo6IbXQ" range="_vA7SgEZlEemHs64O5EYsyQ" target="_o7IkkEWXEemHs64O5EYsyQ">
-        <cardinality xmi:id="_Paez0EWiEemHs64O5EYsyQ" upper="-1"/>
-      </relations>
-      <attributes xmi:id="_zWg-UEWXEemHs64O5EYsyQ" name="categoryName" required="true" dataType="_Nppx8IUcEeipmMyz9cMCRA" binding="_v7k5EINmEeiLE-B2bbL0fg"/>
-    </elements>
-    */
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
     public TransferAttribute categoryName = newTransferAttributeBuilder().build();
     public TransferObjectRelation products = newTransferObjectRelationBuilder().build();
 
-    public void init(Package $package, String $string, Category $category, ProductInfo $productInfo, AllProducts $allProducts) {
+    public UnboundOperation getAllCategories = newUnboundOperationBuilder().build();
+    public UnboundOperation createCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation updateCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation deleteCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation setProductsOfCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation addProductsToCategory = newUnboundOperationBuilder().build();
+    public UnboundOperation removeProductsFromCategory = newUnboundOperationBuilder().build();
+
+    public BoundTransferOperation getProductsOfCategory = newBoundTransferOperationBuilder().build();
+
+    public void init(Package $package, String $string, Category $category, ProductInfo $productInfo,
+                     CategoryInfo $categoryInfo,  AllProducts $allProducts, InternalAP $internalAP) {
         useMappedTransferObjectType($)
                 .withName("CategoryInfo")
                 .withEntityType($category.$)
@@ -48,6 +52,151 @@ public class CategoryInfo {
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
                         )
+                )
+                .withOperations(useUnboundOperation(getAllCategories)
+                        .withName("getAllCategories")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET)
+                                .withOwner($internalAP.categories)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(false)
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(createCategory)
+                        .withName("createCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE)
+                                .withOwner($internalAP.categories)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(updateCategory)
+                        .withName("updateCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.UPDATE)
+                                .withOwner($internalAP.categories)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(deleteCategory)
+                        .withName("deleteCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.DELETE)
+                                .withOwner($internalAP.categories)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(setProductsOfCategory)
+                        .withName("setProductsOfCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
+                                .withOwner($internalAP.categories)
+                                .withRelation($categoryInfo.products)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(addProductsToCategory)
+                        .withName("addProductsToCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
+                                .withOwner($internalAP.categories)
+                                .withRelation($categoryInfo.products)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useUnboundOperation(removeProductsFromCategory)
+                        .withName("removeProductsFromCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
+                                .withOwner($internalAP.categories)
+                                .withRelation($categoryInfo.products)
+                                .build())
+                        .withImplementation(newOperationBodyBuilder()
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder()
+                                .withName("input")
+                                .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(getProductsOfCategory)
+                        .withName("getProductsOfCategory")
+                        .withBehaviour(newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
+                                .withOwner(products)
+                                .build())
+                        .withBinding($category._getProductsInternal)
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
                 )
                 .build();
 

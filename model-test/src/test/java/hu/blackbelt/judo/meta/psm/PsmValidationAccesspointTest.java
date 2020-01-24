@@ -1,42 +1,37 @@
 package hu.blackbelt.judo.meta.psm;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedServiceBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newOperationBodyBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnboundOperationBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.eclipse.emf.common.util.URI;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.ImmutableList;
-
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
 import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
-import hu.blackbelt.judo.meta.psm.accesspoint.ExposedService;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
+import org.eclipse.emf.common.util.URI;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 class PsmValidationAccesspointTest {
 
@@ -54,6 +49,7 @@ class PsmValidationAccesspointTest {
 
 	private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
 		try {
+			Assertions.assertTrue(psmModel.isValid());
 			PsmEpsilonValidator.validatePsm(log, psmModel,
 					new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."), expectedErrors,
 					expectedWarnings);
@@ -99,6 +95,7 @@ class PsmValidationAccesspointTest {
 
 		StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav")
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).withTarget(separate)
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp"))
 				.build();
 
 		ExposedGraph graph = newExposedGraphBuilder().withName("graph")
@@ -125,6 +122,7 @@ class PsmValidationAccesspointTest {
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
 				.withEntityType(entity).build();
 		StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp"))
 				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
 
 		ExposedGraph graph = newExposedGraphBuilder().withName("graph")
@@ -143,33 +141,6 @@ class PsmValidationAccesspointTest {
 	}
 
 	@Test
-	void testAccessPointUnboundOperationsAreUnique() throws Exception {
-		log.info("Testing constraint: AccessPointUnboundOperationsAreUnique");
-
-		UnboundOperation unboundOperation1 = newUnboundOperationBuilder().withName("unboundOperation1")
-				.withImplementation(newOperationBodyBuilder().build()).build();
-		ExposedService exposedService1 = newExposedServiceBuilder().withOperation(unboundOperation1).build();
-
-		UnboundOperation unboundOperation2 = newUnboundOperationBuilder().withName("unboundOperation2")
-				.withImplementation(newOperationBodyBuilder().build()).build();
-		ExposedService exposedService2 = newExposedServiceBuilder().withOperation(unboundOperation2).build();
-
-		ExposedService exposedService3 = newExposedServiceBuilder().withOperation(unboundOperation2).build();
-
-		AccessPoint accessPoint = newAccessPointBuilder().withName("accessPoint")
-				.withExposedServices(ImmutableList.of(exposedService1, exposedService2, exposedService3)).build();
-
-		Model model = newModelBuilder().withName("M")
-				.withElements(ImmutableList.of(unboundOperation1, unboundOperation2, accessPoint)).build();
-
-		psmModel.addContent(model);
-
-		runEpsilon(ImmutableList.of(
-				"AccessPointUnboundOperationsAreUnique|Exposed services of access point accessPoint are referencing to the same unbound operation."),
-				Collections.emptyList());
-	}
-
-	@Test
 	void testCardinalityLowerIsGreaterThanOrEqualToZero() throws Exception {
 		log.info("Testing constraint: CardinalityLowerIsGreaterThanOrEqualToZero");
 
@@ -177,6 +148,7 @@ class PsmValidationAccesspointTest {
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
 				.withEntityType(entity).build();
 		StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp"))
 				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
 
 		ExposedGraph graph = newExposedGraphBuilder().withName("graph")
@@ -203,7 +175,8 @@ class PsmValidationAccesspointTest {
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
 				.withEntityType(entity).build();
 		StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
-				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
+				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build())
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp")).build();
 
 		ExposedGraph graph = newExposedGraphBuilder().withName("graph")
 				.withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build()).withSelector(staticNav)
@@ -229,6 +202,7 @@ class PsmValidationAccesspointTest {
 		MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder().withName("transferObject")
 				.withEntityType(entity).build();
 		StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav").withTarget(entity)
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp"))
 				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(5).build()).build();
 
 		ExposedGraph graph = newExposedGraphBuilder().withName("graph")

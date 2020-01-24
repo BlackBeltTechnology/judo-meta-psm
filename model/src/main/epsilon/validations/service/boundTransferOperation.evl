@@ -1,0 +1,28 @@
+context PSM!BoundTransferOperation {
+
+	constraint OwnerIsMappedTransferObjectType {
+		guard: self.satisfies("NamedElementHasContainer")
+		check: self.eContainer.isKindOf(PSM!MappedTransferObjectType)
+		message: "Container of bound transfer operation must be mapped transfer object type (operation: " + self.name + ")"
+	}
+	
+	constraint BindingIsValid {
+		guard: self.satisfies("OwnerIsMappedTransferObjectType") and self.binding.isDefined()
+		check: psmUtils.getAllBoundOperations(self.eContainer.entityType).includes(self.binding) 
+		message: "Binding of bound transfer operation must be an operation of the owner transfer object type (operation: " + self.name + ")"
+	}
+     
+     constraint ParametersAreValid {
+     	guard: self.satisfies("BindingIsValid")
+     	check: psmUtils.parametersAreTheSame(self,self.binding)
+     	message: "Parameters of bound transfer operation must match binding's parameters (operation: " + self.name + ")"
+     }
+     
+     constraint OverridingWithValidParameters {
+     	guard: self.satisfiesAll("NamedElementHasContainer","OwnerIsMappedTransferObjectType","BindingIsValid")
+     	check: self.eContainer.getAllSuperTransferObjectTypes()
+        		.collect(t | t.operations.select(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
+                .forAll(o | psmUtils.parametersAreTheSame(self,o))
+        message: "Overriding of bound transfer operation cannot change parameters (bound transfer operation " + self.name + " in " + self.eContainer.name + ")"
+     }
+}

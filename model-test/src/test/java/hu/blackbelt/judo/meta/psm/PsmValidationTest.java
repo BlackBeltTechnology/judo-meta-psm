@@ -10,6 +10,7 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.type.*;
 import org.eclipse.emf.common.util.URI;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ class PsmValidationTest {
 
     private void runEpsilon (Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
+        	Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,
                     PsmEpsilonValidator.calculatePsmValidationScriptURI(),

@@ -1,0 +1,91 @@
+context PSM!TransferOperationBehaviour {
+	
+	constraint OperationOfCreateRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+		check: self.eContainer.isKindOf(PSM!BoundTransferOperation) 
+		message: "'CREATE_RELATION' behaviour must be owned by a bound transfer operation"
+	}
+	
+	constraint OwnerOfCreateRelationBehaviourIsValid {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
+		message: "Owner of 'CREATE_RELATION' behaviour must be a transfer object relation" + 
+		"inherited or owned by the transfer object type containing the operation"
+	}
+	
+	constraint RelationOfCreateRelationBehaviourIsUndefined {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+		check: self.relation.isUndefined()
+		message: "Relation must be undefined for 'CREATE_RELATION' behaviour"
+	}
+	
+	constraint CreateOperationInputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'CREATE_RELATION' operation must have an input parameter named 'input'"
+    }
+    
+    constraint CreateOperationInputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("CreateOperationInputParameterIsDefined","OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.input.name == "input"
+    	message: "'CREATE_RELATION' operation's input parameter must be named 'input'"
+    }
+    
+    constraint CreateOperationInputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("CreateOperationInputParameterIsDefined","OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
+    	message: "Type of 'CREATE_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint CreateOperationInputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("CreateOperationInputParameterIsDefined","OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Cardinality of 'CREATE_RELATION' operation's input parameter must be 1..1"
+    }
+    
+    constraint CreateOperationOutputParameterIsDefined {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.isDefined()
+    	message: "Create operation must have an output parameter named 'output'"
+    }
+    
+    constraint CreateOperationOutputNameIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("CreateOperationOutputParameterIsDefined","OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.name == "output"
+    	message: "'CREATE_RELATION' operation's output parameter must be named 'output'"
+    }
+    
+    constraint CreateOperationOutputTypeIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("CreateOperationOutputParameterIsDefined","OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.owner.target.getAllSuperTransferObjectTypes()
+    			.including(self.owner.target)
+    			.includes(self.eContainer.binding.output.type)
+    	message: "Type of 'CREATE_RELATION' operation's output parameter must be the referenced mapped transfer object type or its supertype"
+    }
+    
+    constraint CreateOperationOutputCardinalityIsValid {
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION
+    		and self.satisfiesAll("CreateOperationOutputParameterIsDefined","OperationOfCreateRelationBehaviourIsValid","OwnerOfCreateRelationBehaviourIsValid","RelationOfCreateRelationBehaviourIsUndefined")
+    		and self.eContainer.satisfies("BindingIsValid")
+    	check: self.eContainer.binding.output.cardinality.lower == 1 and
+    		self.eContainer.binding.output.cardinality.upper == 1 
+    	message: "Cardinality of 'CREATE_RELATION' operation's output parameter must be 1..1"
+    }
+}
+	
