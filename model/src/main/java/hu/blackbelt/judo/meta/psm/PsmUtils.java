@@ -899,7 +899,18 @@ public class PsmUtils {
      * @return list of unique mapped transfer object types
      */
     public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
-        EList<TransferOperationBehaviourType> behavioursToExtend = new UniqueEList<>(Arrays.asList(
+        Stream<MappedTransferObjectType> streamResult = all(resourceSet, TransferOperation.class)
+                .filter(transferOperation -> transferOperation.getInput() != null /*&& transferOperation.getInput().getType() != null*/)
+                .filter(transferOperation -> transferOperation.getBehaviour() != null && getBehaviourTypesToExtend().contains(transferOperation.getBehaviour().getBehaviourType()))
+                .map(transferOperation -> transferOperation.getInput().getType())
+                .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
+                .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
+
+        return new UniqueEList<>(streamResult.collect(Collectors.toList()));
+    }
+
+    public EList<TransferOperationBehaviourType> getBehaviourTypesToExtend() {
+        return new UniqueEList<>(Arrays.asList(
                 TransferOperationBehaviourType.CREATE,
                 TransferOperationBehaviourType.UPDATE,
                 TransferOperationBehaviourType.SET_RELATION,
@@ -911,20 +922,6 @@ public class PsmUtils {
                 TransferOperationBehaviourType.ADD_ALL_TO_RELATION_OF_RELATION,
                 TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION_OF_RELATION
         ));
-
-        Stream<MappedTransferObjectType> streamResult = all(resourceSet, TransferOperation.class)
-                .filter(transferOperation -> transferOperation.getInput() != null /*&& transferOperation.getInput().getType() != null*/)
-                .filter(transferOperation -> transferOperation.getBehaviour() != null && behavioursToExtend.contains(transferOperation.getBehaviour().getBehaviourType()))
-                .map(transferOperation -> transferOperation.getInput().getType())
-                .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
-                .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
-
-                /*.filter(implementation -> implementation.isStateful() && ((OperationDeclaration) implementation.eContainer()).getInput() != null && ((OperationDeclaration) implementation.eContainer()).getInput().getType() != null)
-                .map(implementation -> ((OperationDeclaration) implementation.eContainer()).getInput().getType())
-                .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
-                .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);*/
-
-        return new UniqueEList<>(streamResult.collect(Collectors.toList()));
     }
 
     /**
