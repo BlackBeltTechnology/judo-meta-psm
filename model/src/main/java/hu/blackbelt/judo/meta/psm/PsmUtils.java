@@ -875,18 +875,17 @@ public class PsmUtils {
      * @return all mapped transfer object type embedding given mapped transfer object type
      */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjects(MappedTransferObjectType mappedTransferObjectType) {
-        ResourceSet resourceSet = mappedTransferObjectType.eResource().getResourceSet();
         EList<MappedTransferObjectType> sourceList = new UniqueEList<>();
         sourceList.add(mappedTransferObjectType);
-        return getAllContainingMappedTransferObjectsRecursively(resourceSet, sourceList, sourceList);
+        return getAllContainingMappedTransferObjectsRecursively(mappedTransferObjectType.eResource().getResourceSet(), sourceList, sourceList);
     }
 
     /**
-     * Get all possible mapped transfer object types embedding at least one of listed of mapped transfer object types
+     * Get all possible mapped transfer object types embedding at least one in listed of mapped transfer object types
      *
      * @param resourceSet
      * @param topLevelContainers last list of unique mapped transfer object being embedded by mapped transfer object types
-     * @param allContainers      all unique mapped transfer object types being targeted by transfer object relations so far in mapped transfer objects
+     * @param allContainers      list of all unique mapped transfer object types being embedded by mapped transfer objects
      * @return list of unique mapped transfer object types being targeted by transfer object relations in mapped transfer objects
      */
     public EList<MappedTransferObjectType> getAllContainingMappedTransferObjectsRecursively(ResourceSet resourceSet, EList<MappedTransferObjectType> topLevelContainers, EList<MappedTransferObjectType> allContainers) {
@@ -913,16 +912,19 @@ public class PsmUtils {
      * @return list of unique mapped transfer object types
      */
     public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
-        Stream<MappedTransferObjectType> streamResult = all(resourceSet, TransferOperation.class)
-                .filter(transferOperation -> transferOperation.getInput() != null /*&& transferOperation.getInput().getType() != null*/)
-                .filter(transferOperation -> transferOperation.getBehaviour() != null && behaviourTypesToExtend.contains(transferOperation.getBehaviour().getBehaviourType()))
+        return new UniqueEList<>(all(resourceSet, TransferOperation.class)
+                .filter(transferOperation -> transferOperation.getInput() != null && transferOperation.getBehaviour() != null && behaviourTypesToExtend.contains(transferOperation.getBehaviour().getBehaviourType()))
                 .map(transferOperation -> transferOperation.getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
-                .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
-
-        return new UniqueEList<>(streamResult.collect(Collectors.toList()));
+                .collect(Collectors.toList()));
     }
 
+    /**
+     * Check if given parameter's type should be extended.
+     *
+     * @param parameter
+     * @return
+     */
     public boolean isParameterTypeExtended(Parameter parameter) {
         if (parameter.getType() instanceof MappedTransferObjectType) {
             if (parameter.eContainer() instanceof TransferOperation) {
