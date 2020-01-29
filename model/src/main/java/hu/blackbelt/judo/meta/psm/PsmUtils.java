@@ -57,7 +57,7 @@ public class PsmUtils {
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
 
-    private static final EList<TransferOperationBehaviourType> behaviourTypesToExtend = new UniqueEList<>(Arrays.asList(
+    private static final List<TransferOperationBehaviourType> BEHAVIOUR_TYPES_TO_EXTEND = Arrays.asList(
             TransferOperationBehaviourType.CREATE,
             TransferOperationBehaviourType.UPDATE,
             TransferOperationBehaviourType.SET_RELATION,
@@ -68,7 +68,7 @@ public class PsmUtils {
             TransferOperationBehaviourType.SET_RELATION_OF_RELATION,
             TransferOperationBehaviourType.ADD_ALL_TO_RELATION_OF_RELATION,
             TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION_OF_RELATION
-    ));
+    );
 
     /**
      * Convert namespace to string.
@@ -913,7 +913,7 @@ public class PsmUtils {
      */
     public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
         return new UniqueEList<>(all(resourceSet, TransferOperation.class)
-                .filter(transferOperation -> transferOperation.getInput() != null && transferOperation.getBehaviour() != null && behaviourTypesToExtend.contains(transferOperation.getBehaviour().getBehaviourType()))
+                .filter(transferOperation -> transferOperation.getInput() != null && transferOperation.getBehaviour() != null && BEHAVIOUR_TYPES_TO_EXTEND.contains(transferOperation.getBehaviour().getBehaviourType()))
                 .map(transferOperation -> transferOperation.getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .collect(Collectors.toList()));
@@ -930,7 +930,7 @@ public class PsmUtils {
             if (parameter.eContainer() instanceof TransferOperation) {
                 TransferOperationBehaviour containingOperationBehaviour = ((TransferOperation) parameter.eContainer()).getBehaviour();
                 if (containingOperationBehaviour != null) {
-                    return behaviourTypesToExtend.contains(containingOperationBehaviour.getBehaviourType());
+                    return BEHAVIOUR_TYPES_TO_EXTEND.contains(containingOperationBehaviour.getBehaviourType());
                 } else {
                     return false;
                 }
