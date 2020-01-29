@@ -23,13 +23,14 @@ import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.OperationDeclaration;
+import hu.blackbelt.judo.meta.psm.service.Parameter;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferOperation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviour;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
-
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -55,6 +56,19 @@ public class PsmUtils {
 
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
+
+    private static final EList<TransferOperationBehaviourType> behaviourTypesToExtend = new UniqueEList<>(Arrays.asList(
+            TransferOperationBehaviourType.CREATE,
+            TransferOperationBehaviourType.UPDATE,
+            TransferOperationBehaviourType.SET_RELATION,
+            TransferOperationBehaviourType.ADD_ALL_TO_RELATION,
+            TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION,
+            TransferOperationBehaviourType.CREATE_RELATION,
+            TransferOperationBehaviourType.UPDATE_RELATION,
+            TransferOperationBehaviourType.SET_RELATION_OF_RELATION,
+            TransferOperationBehaviourType.ADD_ALL_TO_RELATION_OF_RELATION,
+            TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION_OF_RELATION
+    ));
 
     /**
      * Convert namespace to string.
@@ -350,7 +364,7 @@ public class PsmUtils {
                 .collect(Collectors.toSet()));
         return sequences;
     }
-    
+
     /**
      * Get unique list of all (inherited and not inherited) bound operations of a given entity type.
      *
@@ -358,14 +372,14 @@ public class PsmUtils {
      * @return unique list of the inherited and own bound operations of an entity type
      */
     public static EList<BoundOperation> getAllBoundOperations(final EntityType entityType) {
-    	EList<BoundOperation> operations = new UniqueEList<>();
-    	operations.addAll(entityType.getOperations());
-    	operations.addAll(entityType.getAllSuperEntityTypes().stream()
-                    .flatMap(e -> e.getOperations().stream())
-                    .collect(Collectors.toSet()));
-    	return operations; 
+        EList<BoundOperation> operations = new UniqueEList<>();
+        operations.addAll(entityType.getOperations());
+        operations.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .collect(Collectors.toSet()));
+        return operations;
     }
-    
+
     /**
      * Get unique list of inherited bound operations of a given entity type.
      *
@@ -373,50 +387,50 @@ public class PsmUtils {
      * @return unique list of the inherited bound operations of an entity type
      */
     public static EList<BoundOperation> getInheritedBoundOperations(final EntityType entityType) {
-    	EList<BoundOperation> operations = new UniqueEList<>();
-    	operations.addAll(entityType.getAllSuperEntityTypes().stream()
-                    .flatMap(e -> e.getOperations().stream())
-                    .collect(Collectors.toSet()));
-    	return operations; 
+        EList<BoundOperation> operations = new UniqueEList<>();
+        operations.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getOperations().stream())
+                .collect(Collectors.toSet()));
+        return operations;
     }
-    
+
     /**
-     * Compares input, output and fault parameters of two operation declarations. 
+     * Compares input, output and fault parameters of two operation declarations.
      *
-     * @param op1 	operation declaration, op2	operation declaration
-     * @return true if the input, output and fault types and cardinalities are the same for both operations 
+     * @param op1 operation declaration, op2	operation declaration
+     * @return true if the input, output and fault types and cardinalities are the same for both operations
      */
     public static boolean parametersAreTheSame(final OperationDeclaration op1, final OperationDeclaration op2) {
-    	if (op1.getInput() != null)
-    	{ 
-    		if (op2.getInput() == null) return false;
-    		if (!op1.getInput().getType().equals(op2.getInput().getType())) return false;
-    		if (op1.getInput().getCardinality().getLower() != op2.getInput().getCardinality().getLower() || 
-        			op1.getInput().getCardinality().getUpper() != op2.getInput().getCardinality().getUpper() ) return false;
-    	} else if (op2.getInput() != null) return false;
-    	
-    	if (op1.getOutput() != null)
-    	{ 
-    		if (op2.getOutput() == null) return false;
-    		if (!op1.getOutput().getType().equals(op2.getOutput().getType())) return false;
-    		if (op1.getOutput().getCardinality().getLower() != op2.getOutput().getCardinality().getLower() || 
-    			op1.getOutput().getCardinality().getUpper() != op2.getOutput().getCardinality().getUpper() ) return false;
-    	} else if (op2.getOutput() != null) return false;
-    		
-    	if (op1.getFaults().size() != op2.getFaults().size()) return false;
-    	else if (op1.getFaults().isEmpty() && op2.getFaults().isEmpty()) return true;
-    	
-    	return op1.getFaults().stream()
-    			.allMatch( f -> op2.getFaults().stream()
-    								.anyMatch(f2 -> f.getType().equals(f2.getType()) &&
-    												f.getCardinality().getLower() == f2.getCardinality().getLower() &&
-    												f.getCardinality().getUpper() == f2.getCardinality().getUpper()))
-    			&&
-    			op2.getFaults().stream()
-    			.allMatch( f -> op1.getFaults().stream()
-    							.anyMatch(f1 -> f.getType().equals(f1.getType()) &&
-    											f.getCardinality().getLower() == f1.getCardinality().getLower() &&
-    											f.getCardinality().getUpper() == f1.getCardinality().getUpper())); 
+        if (op1.getInput() != null) {
+            if (op2.getInput() == null) return false;
+            if (!op1.getInput().getType().equals(op2.getInput().getType())) return false;
+            if (op1.getInput().getCardinality().getLower() != op2.getInput().getCardinality().getLower() ||
+                    op1.getInput().getCardinality().getUpper() != op2.getInput().getCardinality().getUpper())
+                return false;
+        } else if (op2.getInput() != null) return false;
+
+        if (op1.getOutput() != null) {
+            if (op2.getOutput() == null) return false;
+            if (!op1.getOutput().getType().equals(op2.getOutput().getType())) return false;
+            if (op1.getOutput().getCardinality().getLower() != op2.getOutput().getCardinality().getLower() ||
+                    op1.getOutput().getCardinality().getUpper() != op2.getOutput().getCardinality().getUpper())
+                return false;
+        } else if (op2.getOutput() != null) return false;
+
+        if (op1.getFaults().size() != op2.getFaults().size()) return false;
+        else if (op1.getFaults().isEmpty() && op2.getFaults().isEmpty()) return true;
+
+        return op1.getFaults().stream()
+                .allMatch(f -> op2.getFaults().stream()
+                        .anyMatch(f2 -> f.getType().equals(f2.getType()) &&
+                                f.getCardinality().getLower() == f2.getCardinality().getLower() &&
+                                f.getCardinality().getUpper() == f2.getCardinality().getUpper()))
+                &&
+                op2.getFaults().stream()
+                        .allMatch(f -> op1.getFaults().stream()
+                                .anyMatch(f1 -> f.getType().equals(f1.getType()) &&
+                                        f.getCardinality().getLower() == f1.getCardinality().getLower() &&
+                                        f.getCardinality().getUpper() == f1.getCardinality().getUpper()));
     }
 
     /**
@@ -483,7 +497,7 @@ public class PsmUtils {
                 .map(n -> n.getName())
                 .collect(Collectors.toSet());
     }
-    
+
     /**
      * Get unique list of all inherited bound operation names of a given entity type.
      *
@@ -514,7 +528,7 @@ public class PsmUtils {
                 getInheritedDataPropertyNames(entityType),
                 getInheritedNavigationPropertyNames(entityType),
                 getInheritedSequenceNames(entityType),
-        		getInheritedBoundOperationNames(entityType))
+                getInheritedBoundOperationNames(entityType))
                 .flatMap(s -> s.stream())
                 .collect(Collectors.toSet());
     }
@@ -573,7 +587,7 @@ public class PsmUtils {
                 .collect(Collectors.toSet()));
         return relationNames;
     }
-    
+
     /**
      * Get unique list of all (inherited and not inherited) transfer object relations of a given transfer object type.
      *
@@ -588,7 +602,7 @@ public class PsmUtils {
                 .collect(Collectors.toSet()));
         return relations;
     }
-    
+
     /**
      * Get unique list of all inherited transfer operation names of a given transfer object type.
      *
@@ -606,7 +620,7 @@ public class PsmUtils {
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-    
+
     /**
      * Get unique list of all inherited bound transfer operation names of a given transfer object type.
      *
@@ -625,7 +639,7 @@ public class PsmUtils {
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-    
+
     /**
      * Get unique list of all inherited unbound operation names of a given transfer object type.
      *
@@ -644,7 +658,7 @@ public class PsmUtils {
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-    
+
     /**
      * Get unique list of all inherited bound transfer operations of a given transfer object type.
      *
@@ -657,13 +671,13 @@ public class PsmUtils {
         Set<BoundTransferOperation> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
                 .flatMap(e -> e.getOperations().stream())
                 .filter(o -> o instanceof BoundTransferOperation)
-                .map(o -> (BoundTransferOperation)o)
+                .map(o -> (BoundTransferOperation) o)
                 .collect(Collectors.toSet());
 
         operations.addAll(operationNamesSet);
         return operations;
     }
-    
+
     /**
      * Get unique list of all inherited unbound operations of a given transfer object type.
      *
@@ -676,7 +690,7 @@ public class PsmUtils {
         Set<UnboundOperation> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
                 .flatMap(e -> e.getOperations().stream())
                 .filter(o -> o instanceof UnboundOperation)
-                .map(o -> (UnboundOperation)o)
+                .map(o -> (UnboundOperation) o)
                 .collect(Collectors.toSet());
 
         operations.addAll(operationNamesSet);
@@ -901,7 +915,7 @@ public class PsmUtils {
     public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
         Stream<MappedTransferObjectType> streamResult = all(resourceSet, TransferOperation.class)
                 .filter(transferOperation -> transferOperation.getInput() != null /*&& transferOperation.getInput().getType() != null*/)
-                .filter(transferOperation -> transferOperation.getBehaviour() != null && getBehaviourTypesToExtend().contains(transferOperation.getBehaviour().getBehaviourType()))
+                .filter(transferOperation -> transferOperation.getBehaviour() != null && behaviourTypesToExtend.contains(transferOperation.getBehaviour().getBehaviourType()))
                 .map(transferOperation -> transferOperation.getInput().getType())
                 .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .map(transferObjectType -> (MappedTransferObjectType) transferObjectType);
@@ -909,19 +923,21 @@ public class PsmUtils {
         return new UniqueEList<>(streamResult.collect(Collectors.toList()));
     }
 
-    public EList<TransferOperationBehaviourType> getBehaviourTypesToExtend() {
-        return new UniqueEList<>(Arrays.asList(
-                TransferOperationBehaviourType.CREATE,
-                TransferOperationBehaviourType.UPDATE,
-                TransferOperationBehaviourType.SET_RELATION,
-                TransferOperationBehaviourType.ADD_ALL_TO_RELATION,
-                TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION,
-                TransferOperationBehaviourType.CREATE_RELATION,
-                TransferOperationBehaviourType.UPDATE_RELATION,
-                TransferOperationBehaviourType.SET_RELATION_OF_RELATION,
-                TransferOperationBehaviourType.ADD_ALL_TO_RELATION_OF_RELATION,
-                TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION_OF_RELATION
-        ));
+    public boolean isParameterTypeExtended(Parameter parameter) {
+        if (parameter.getType() instanceof MappedTransferObjectType) {
+            if (parameter.eContainer() instanceof TransferOperation) {
+                TransferOperationBehaviour containingOperationBehaviour = ((TransferOperation) parameter.eContainer()).getBehaviour();
+                if (containingOperationBehaviour != null) {
+                    return behaviourTypesToExtend.contains(containingOperationBehaviour.getBehaviourType());
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
