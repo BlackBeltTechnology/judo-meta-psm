@@ -31,7 +31,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint AddAllToRelationOperationInputTypeIsValid {
     	guard: self.satisfiesAll("AddAllToRelationOperationInputParameterIsDefined","OperationOfAddAllToRelationBehaviourIsValid","OwnerOfAddAllToRelationBehaviourIsValid","RelationOfAddAllToRelationBehaviourIsValid")
-    	check: self.eContainer.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.input.type.entityType).includes(self.owner.mappedTransferObjectType.entityType)
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
     	message: "Type of 'ADD_ALL_TO_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
     }
     

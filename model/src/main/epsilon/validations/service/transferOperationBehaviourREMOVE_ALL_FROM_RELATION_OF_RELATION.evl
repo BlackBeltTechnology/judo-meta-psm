@@ -37,7 +37,7 @@ context PSM!TransferOperationBehaviour {
     constraint RemoveAllFromRelationOfRelationOperationInputTypeIsValid {
     	guard: self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
-    	check: self.eContainer.binding.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.binding.input.type.entityType).includes(self.owner.target.entityType)
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
     	message: "Type of 'REMOVE_ALL_FROM_RELATION_OF_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
     }
     

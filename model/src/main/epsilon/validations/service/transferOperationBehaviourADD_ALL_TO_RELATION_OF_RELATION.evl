@@ -29,7 +29,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint AddAllToRelationOfRelationOperationInputNameIsValid {
     	guard: self.satisfiesAll("AddAllToRelationOfRelationOperationInputParameterIsDefined","OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
-    		and self. eContainer.satisfies("BindingIsValid")
+    		and self.eContainer.satisfies("BindingIsValid")
     	check: self.eContainer.binding.input.name == "input"
     	message: "'ADD_ALL_TO_RELATION_OF_RELATION' operation's input parameter must be named 'input'"
     }
@@ -37,7 +37,7 @@ context PSM!TransferOperationBehaviour {
     constraint AddAllToRelationOfRelationOperationInputTypeIsValid {
     	guard: self.satisfiesAll("AddAllToRelationOfRelationOperationInputParameterIsDefined","OperationOfAddAllToRelationOfRelationBehaviourIsValid","OwnerOfAddAllToRelationOfRelationBehaviourIsValid","RelationOfAddAllToRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
-    	check: self.eContainer.binding.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.binding.input.type.entityType).includes(self.owner.target.entityType)
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
     	message: "Type of 'ADD_ALL_TO_RELATION_OF_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
     }
     

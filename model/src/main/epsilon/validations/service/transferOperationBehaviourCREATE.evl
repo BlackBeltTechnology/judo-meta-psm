@@ -31,7 +31,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateOperationInputTypeIsValid {
     	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
-    	check: self.eContainer.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.input.type.entityType).includes(self.owner.mappedTransferObjectType.entityType)
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
     	message: "Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type"
     }
     
@@ -56,9 +56,9 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateOperationOutputTypeIsValid {
     	guard: self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
-    	check: self.owner.mappedTransferObjectType.entityType.getAllSuperEntityTypes()
-    			.including(self.owner.mappedTransferObjectType.entityType)
-    			.includes(self.eContainer.output.type.entityType)
+    	check: self.owner.mappedTransferObjectType.getAllSuperTransferObjectTypes()
+    			.including(self.owner.mappedTransferObjectType)
+    			.includes(self.eContainer.output.type)
     	message: "Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype"
     }
     

@@ -42,7 +42,7 @@ context PSM!TransferOperationBehaviour {
     constraint GetRelationOperationOutputTypeIsValid {
     	guard: self.satisfiesAll("GetRelationOperationOutputParameterIsDefined","OperationOfGetRelationBehaviourIsValid","OwnerOfGetRelationBehaviourIsValid","RelationOfGetRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
-    	check: self.eContainer.binding.output.type.entityType.getAllSuperEntityTypes().including(self.eContainer.binding.output.type.entityType).includes(self.owner.target.entityType)
+    	check: self.eContainer.binding.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.output.type).includes(self.owner.target)
     	message: "Type of 'GET_RELATION' operation's (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") output parameter must be kind of referenced mapped transfer object type"
     }
     
