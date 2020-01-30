@@ -1,69 +1,61 @@
 context PSM!TransferOperationBehaviour {
+
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE
 	
 	constraint OperationOfCreateBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE
 		check: self.eContainer.isKindOf(PSM!UnboundOperation)
 		message: "'CREATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be unbound operation"
 	}
 	
 	constraint OwnerOfCreateBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE
 		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
 		message: "Owner of 'CREATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph"
 	}
 	
 	constraint RelationOfCreateBehaviourIsUndefined {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE
 		check: self.relation.isUndefined()
 		message: "Relation must be undefined for 'CREATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 
 	 constraint CreateOperationInputParameterIsDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and 
-    		self.satisfiesAll("OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.isDefined()
     	message: "'CREATE' operation must have an input parameter named 'input'"
     }
     
     constraint CreateOperationInputNameIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and
-    		self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.name == "input"
     	message: "'CREATE' operation's input parameter must be named 'input'"
     }
     
     constraint CreateOperationInputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and
-    		self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.input.type.entityType).includes(self.owner.mappedTransferObjectType.entityType)
     	message: "Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type"
     }
     
     constraint CreateOperationInputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and
-    		self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.cardinality.lower == 1 and
     		self.eContainer.input.cardinality.upper == 1 
     	message: "Cardinality of 'CREATE' operation's input parameter must be 1..1"
     }
     
     constraint CreateOperationOutputParameterIsDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and 
-    		self.satisfiesAll("OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.output.isDefined()
     	message: "'CREATE' operation must have an output parameter named 'output'"
     }
     
     constraint CreateOperationOutputNameIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and 
-    		self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.output.name == "output"
     	message: "'CREATE' operation's output parameter must be named 'output'"
     }
     
     constraint CreateOperationOutputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and
-    		self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.owner.mappedTransferObjectType.entityType.getAllSuperEntityTypes()
     			.including(self.owner.mappedTransferObjectType.entityType)
     			.includes(self.eContainer.output.type.entityType)
@@ -71,8 +63,7 @@ context PSM!TransferOperationBehaviour {
     }
     
     constraint CreateOperationOutputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#CREATE and 
-    		self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.output.cardinality.lower == 1 and
     		self.eContainer.output.cardinality.upper == 1 
     	message: "Cardinality of 'CREATE' operation's output parameter must be 1..1"

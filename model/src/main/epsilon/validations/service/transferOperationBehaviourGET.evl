@@ -1,54 +1,48 @@
 context PSM!TransferOperationBehaviour {
 	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET
+	
 	constraint OperationOfGetBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET
 		check: self.eContainer.isKindOf(PSM!UnboundOperation)
 		message: "'GET' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be unbound operation"
 	}
 	
 	constraint OwnerOfGetBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET
 		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
 		message: "Owner of 'GET' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph"
 	}
 	
 	constraint RelationOfGetBehaviourIsUndefined {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET
 		check: self.relation.isUndefined()
 		message: "Relation must be undefined for 'GET' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 	
 	constraint GetOperationInputParameterIsNotDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET and 
-    		self.satisfiesAll("OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
     	check: self.eContainer.input.isUndefined()
     	message: "'GET' operation cannot have an input parameter"
     }
     
     constraint GetOperationOutputParameterIsDefined {
-    	guard:  self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET and 
-    		self.satisfiesAll("OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
     	check: self.eContainer.output.isDefined()
     	message: "'GET' operation must have an output parameter named 'output'"
     }
     
     constraint GetOperationOutputNameIsValid {
-    	guard:  self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET and 
-    		self.satisfiesAll("GetOperationOutputParameterIsDefined", "OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
+    	guard: self.satisfiesAll("GetOperationOutputParameterIsDefined", "OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
     	check: self.eContainer.output.name == "output"
     	message: "'GET' operation's output parameter must be named 'output'"
     }
     
     constraint GetOperationOutputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET and 
-    		self.satisfiesAll("GetOperationOutputParameterIsDefined", "OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
+    	guard: self.satisfiesAll("GetOperationOutputParameterIsDefined", "OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
     	check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner.mappedTransferObjectType)
     	message: "Type of 'GET' operation's output parameter must be kind of exposed graph's mapped transfer object type"
     }
     
     constraint GetOperationOutputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET and 
-    		self.satisfiesAll("GetOperationOutputParameterIsDefined", "OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
+    	guard: self.satisfiesAll("GetOperationOutputParameterIsDefined", "OperationOfGetBehaviourIsValid", "OwnerOfGetBehaviourIsValid", "RelationOfGetBehaviourIsUndefined")
     	check: self.eContainer.output.cardinality.lower == self.owner.cardinality.lower and
     		self.eContainer.output.cardinality.upper == self.owner.cardinality.upper 
     	message: "Cardinality of 'GET' operation's output parameter must be the same as its owner's"

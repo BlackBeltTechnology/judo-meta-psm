@@ -89,35 +89,43 @@ class PsmValidationServiceTest {
         UnboundOperation operation1 = newUnboundOperationBuilder().withName("operation1")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation2 = newUnboundOperationBuilder().withName("operation2")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden2 = newUnboundOperationBuilder().withName("operation2")
                 .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation3 = newUnboundOperationBuilder().withName("operation3")
                 .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden3 = newUnboundOperationBuilder().withName("operation3")
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation4 = newUnboundOperationBuilder().withName("operation4")
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden4 = newUnboundOperationBuilder().withName("operation4")
                 .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
@@ -159,9 +167,9 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation2 in transferObjectType2)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation3 in transferObjectType4)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation4 in transferObjectType3)"),
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType2.operation2)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType3.operation4)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType4.operation3)"),
             Collections.emptyList());
     }
 
@@ -175,35 +183,43 @@ class PsmValidationServiceTest {
         UnboundOperation operation1 = newUnboundOperationBuilder().withName("operation1")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation2 = newUnboundOperationBuilder().withName("operation2")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden2 = newUnboundOperationBuilder().withName("operation2")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation3 = newUnboundOperationBuilder().withName("operation3")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden3 = newUnboundOperationBuilder().withName("operation3")
         		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+        		.withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation4 = newUnboundOperationBuilder().withName("operation4")
         		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+        		.withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden4 = newUnboundOperationBuilder().withName("operation4")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
@@ -246,9 +262,9 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation2 in transferObjectType2)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation3 in transferObjectType4)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation4 in transferObjectType3)"),
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType2.operation2)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType3.operation4)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType4.operation3)"),
             Collections.emptyList());
     }
 
@@ -268,6 +284,7 @@ class PsmValidationServiceTest {
                 		newParameterBuilder().withName("fault2").withType(correctType)
                 		.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
                 		))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
@@ -278,6 +295,7 @@ class PsmValidationServiceTest {
                 		newParameterBuilder().withName("fault2").withType(correctType)
                 		.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
                 		))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation2 = newUnboundOperationBuilder().withName("operation2")
@@ -293,6 +311,7 @@ class PsmValidationServiceTest {
             			newParameterBuilder().withName("fault4").withType(correctType)
             				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
                 		))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden2 = newUnboundOperationBuilder().withName("operation2")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
@@ -307,12 +326,14 @@ class PsmValidationServiceTest {
             			newParameterBuilder().withName("fault4").withType(correctType)
             				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
                 		))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation3 = newUnboundOperationBuilder().withName("operation3")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withFaults(newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build())
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
         UnboundOperation overriden3 = newUnboundOperationBuilder().withName("operation3")
         		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
@@ -321,16 +342,19 @@ class PsmValidationServiceTest {
                 		newParameterBuilder().withName("fault1").withType(wrongType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
                 		newParameterBuilder().withName("fault2").withType(correctType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
                 		))
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         UnboundOperation operation4 = newUnboundOperationBuilder().withName("operation4")
         		.withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
         		.withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
-                .build();
+        		.withImplementation(newOperationBodyBuilder().build())
+        		.build();
         UnboundOperation overriden4 = newUnboundOperationBuilder().withName("operation4")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withFaults(newParameterBuilder().withName("fault1").withType(correctType).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build())
+                .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         EntityType entityType0 = newEntityTypeBuilder().withName("entityType0").build();
@@ -373,9 +397,9 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation2 in transferObjectType2)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation3 in transferObjectType4)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (unbound operation operation4 in transferObjectType3)"),
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType2.operation2)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType3.operation4)",
+                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType4.operation3)"),
             Collections.emptyList());
     }
 
@@ -1502,6 +1526,7 @@ class PsmValidationServiceTest {
       UnboundOperation operation = newUnboundOperationBuilder().withName("content")
               .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
               .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .withImplementation(newOperationBodyBuilder().build())
               .build();
 
       EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
@@ -1549,6 +1574,7 @@ class PsmValidationServiceTest {
 	      UnboundOperation operation = newUnboundOperationBuilder().withName("Content")
 	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
 	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .withImplementation(newOperationBodyBuilder().build())
 	              .build();
 
 	      EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
@@ -1593,6 +1619,7 @@ class PsmValidationServiceTest {
       UnboundOperation operation = newUnboundOperationBuilder().withName("content")
               .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
               .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+              .withImplementation(newOperationBodyBuilder().build())
               .build();
 
       UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
@@ -1642,6 +1669,7 @@ class PsmValidationServiceTest {
 	      UnboundOperation operation = newUnboundOperationBuilder().withName("content")
 	              .withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()))
 	              .withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()))
+	              .withImplementation(newOperationBodyBuilder().build())
 	              .build();
 
 	      UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
@@ -1692,7 +1720,6 @@ class PsmValidationServiceTest {
 
         UnmappedTransferObjectType transferObject = newUnmappedTransferObjectTypeBuilder().withName("unmapped")
                 .withRelations(relation).build();
-        ;
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(target, transferObject)).build();
 
@@ -1752,7 +1779,8 @@ class PsmValidationServiceTest {
 
         UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
                 newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(-1).build()).withType(unmapped).build())
-                .build();
+                .withImplementation(newOperationBodyBuilder().build())
+        		.build();
         UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
                 .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(-2).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())
@@ -1783,7 +1811,8 @@ class PsmValidationServiceTest {
 
         UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
                 newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(2).withUpper(1).build()).withType(unmapped).build())
-                .build();
+        		.withImplementation(newOperationBodyBuilder().build())
+        		.build();
         UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
                 .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())
@@ -1812,9 +1841,10 @@ class PsmValidationServiceTest {
 
         UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
 
-        UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
-                newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
-                .build();
+        UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound")
+        		.withInput(newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
+        		.withImplementation(newOperationBodyBuilder().build())
+        		.build();
         UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
                 .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())

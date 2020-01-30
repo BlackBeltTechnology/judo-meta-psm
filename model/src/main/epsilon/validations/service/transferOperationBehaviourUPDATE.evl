@@ -1,69 +1,61 @@
 context PSM!TransferOperationBehaviour {
 	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE
+	
 	constraint OperationOfUpdateBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE
 		check: self.eContainer.isKindOf(PSM!UnboundOperation)
 		message: "'UPDATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be unbound operation"
 	}
 	
 	constraint OwnerOfUpdateBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE
 		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
 		message: "Owner of 'UPDATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph"
 	}
 	
 	constraint RelationOfUpdateBehaviourIsUndefined {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE
 		check: self.relation.isUndefined()
 		message: "Relation must be undefined for 'UPDATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 	
 	constraint UpdateOperationInputParameterIsDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.input.isDefined()
     	message: "'UPDATE' operation must have an input parameter named 'input'"
     }
     
     constraint UpdateOperationInputNameIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.input.name == "input"
     	message: "'UPDATE' operation's input parameter must be named 'input'"
     }
     
     constraint UpdateOperationInputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
     	message: "Type of 'UPDATE' operation's input parameter must be kind of exposed graph's mapped transfer object type"
     }
     
     constraint UpdateOperationInputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("UpdateOperationInputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.input.cardinality.lower == 1 and
     		self.eContainer.input.cardinality.upper == 1 
     	message: "Cardinality of 'UPDATE' operation's input parameter must be 1..1"
     }
     
     constraint UpdateOperationOutputParameterIsDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.output.isDefined()
     	message: "'UPDATE' operation must have an output parameter named 'output'"
     }
     
     constraint UpdateOperationOutputNameIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.output.name == "output"
     	message: "'UPDATE' operation's output parameter must be named 'output'"
     }
     
     constraint UpdateOperationOutputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.owner.mappedTransferObjectType.getAllSuperTransferObjectTypes()
     			.including(self.owner.mappedTransferObjectType)
     			.includes(self.eContainer.output.type)
@@ -71,8 +63,7 @@ context PSM!TransferOperationBehaviour {
     }
     
     constraint UpdateOperationOutputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE and 
-    		self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
+    	guard: self.satisfiesAll("UpdateOperationOutputParameterIsDefined","OperationOfUpdateBehaviourIsValid", "OwnerOfUpdateBehaviourIsValid", "RelationOfUpdateBehaviourIsUndefined")
     	check: self.eContainer.output.cardinality.lower == 1 and
     		self.eContainer.output.cardinality.upper == 1 
     	message: "Cardinality of 'UPDATE' operation's output parameter must be 1..1"

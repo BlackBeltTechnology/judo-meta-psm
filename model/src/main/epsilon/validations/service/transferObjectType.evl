@@ -2,6 +2,7 @@ context PSM!TransferObjectType {
 
     // transfer object type names should be unique
     critique TransferObjectTypeNamesAreUnique {
+        guard: self.satisfies("NamedElementIsUniqueInItsContainer")
         check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
         message: "Transfer object type name is not unique: " + self.name
     }
@@ -38,4 +39,9 @@ context PSM!TransferObjectType {
                 .exists(name | self.getInheritedTransferObjectRelationNames().exists(r | name.toLowerCase() == r.toLowerCase()))
         message: "Transfer object type: " + self.name + " has inherited transfer object relation(s) and inherited transfer attribute(s) of the same name."
     }
+    
+    constraint InheritanceIsNotRecursive {
+		check: not self.getAllSuperTransferObjectTypes().contains(self)
+		message: "Transfer object type " + self.name + " is recursive"
+	}
 }
