@@ -23,12 +23,10 @@ import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.OperationDeclaration;
-import hu.blackbelt.judo.meta.psm.service.Parameter;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferOperation;
-import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviour;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import org.eclipse.emf.common.notify.Notifier;
@@ -913,30 +911,20 @@ public class PsmUtils {
      */
     public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
         return new UniqueEList<>(all(resourceSet, TransferOperation.class)
-                .filter(transferOperation -> transferOperation.getInput() != null && transferOperation.getBehaviour() != null && BEHAVIOUR_TYPES_TO_EXTEND.contains(transferOperation.getBehaviour().getBehaviourType()))
+                .filter(transferOperation -> isTransferOperationParameterTypeExtended(transferOperation))
                 .map(transferOperation -> transferOperation.getInput().getType())
-                .filter(transferObject -> transferObject instanceof MappedTransferObjectType)
                 .collect(Collectors.toList()));
     }
 
     /**
-     * Check if given parameter's type should be extended.
+     * Check if given transfer operation's parameter type should be extended.
      *
-     * @param parameter
+     * @param transferOperation
      * @return
      */
-    public boolean isParameterTypeExtended(Parameter parameter) {
-        if (parameter.getType() instanceof MappedTransferObjectType) {
-            if (parameter.eContainer() instanceof TransferOperation) {
-                TransferOperationBehaviour containingOperationBehaviour = ((TransferOperation) parameter.eContainer()).getBehaviour();
-                if (containingOperationBehaviour != null) {
-                    return BEHAVIOUR_TYPES_TO_EXTEND.contains(containingOperationBehaviour.getBehaviourType());
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
+    public boolean isTransferOperationParameterTypeExtended(TransferOperation transferOperation) {
+        if (transferOperation.getInput() != null && transferOperation.getBehaviour() != null && transferOperation.getInput().getType() instanceof MappedTransferObjectType) {
+            return BEHAVIOUR_TYPES_TO_EXTEND.contains(transferOperation.getBehaviour().getBehaviourType());
         } else {
             return false;
         }
