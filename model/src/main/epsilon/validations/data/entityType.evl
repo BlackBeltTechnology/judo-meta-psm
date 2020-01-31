@@ -13,7 +13,8 @@ context PSM!EntityType {
 	
 	constraint InheritedOperationsAreValid {
 		check: psmUtils.getInheritedBoundOperations(self)
-				.forAll(o | psmUtils.getInheritedBoundOperations(self).excluding(o).forAll(other | other.name.toLowerCase() == o.name.toLowerCase() 
+				.forAll(o | psmUtils.getDirectBaseBoundOperationsByName(self,o.name).size() == 1 or 
+							psmUtils.getInheritedBoundOperations(self).excluding(o).forAll(other | other.name.toLowerCase() == o.name.toLowerCase() 
 							implies psmUtils.parametersAreCompatible(o,other)))
 		message: "Entity type: " + self.name + " is inheriting operations with the same name but different signature."
 	}

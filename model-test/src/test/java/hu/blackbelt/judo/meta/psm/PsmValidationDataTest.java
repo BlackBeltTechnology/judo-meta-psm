@@ -1006,6 +1006,77 @@ class PsmValidationDataTest {
 				Collections.emptyList());
 	}
 	
+	@Test
+	void testInheritedOperationsAreValid() throws Exception {
+		log.info("Testing constraint: ValidMaximumValue");
+		
+		UnmappedTransferObjectType type = newUnmappedTransferObjectTypeBuilder().withName("type").build();
+		
+		BoundOperation op1 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation op2 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
+		
+		BoundOperation op3 = newBoundOperationBuilder().withName("operation")
+				.withInput(newParameterBuilder().withName("input").withType(type).withCardinality(newCardinalityBuilder().build()).build())
+				.withImplementation(newOperationBodyBuilder().build()).build();
+		
+		BoundOperation op4 = newBoundOperationBuilder().withName("operation")
+				.withOutput(newParameterBuilder().withName("output").withType(type).withCardinality(newCardinalityBuilder().build()).build())
+				.withImplementation(newOperationBodyBuilder().build()).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withOperations(op1)
+				.build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withOperations(op2)
+				.build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2)
+				.withOperations(op3)
+				.build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withOperations(ImmutableList.of(op4))
+				.build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4))
+				.build();
+		
+		MappedTransferObjectType mapped1 = newMappedTransferObjectTypeBuilder().withName("mapped1")
+				.withEntityType(entityType1)
+				.build();
+		MappedTransferObjectType mapped2 = newMappedTransferObjectTypeBuilder().withName("mapped2")
+				.withSuperTransferObjectTypes(mapped1)
+				.withEntityType(entityType2)
+				.build();
+		MappedTransferObjectType mapped3 = newMappedTransferObjectTypeBuilder().withName("mapped3")
+				.withSuperTransferObjectTypes(mapped2)
+				.withEntityType(entityType3)
+				.build();
+		MappedTransferObjectType mapped4 = newMappedTransferObjectTypeBuilder().withName("mapped4")
+				.withEntityType(entityType4)
+				.build();
+		MappedTransferObjectType mapped5 = newMappedTransferObjectTypeBuilder().withName("mapped5")
+				.withEntityType(entityType5)
+				.withSuperTransferObjectTypes(ImmutableList.of(mapped3,mapped4))
+				.build();
+		
+		op1.setInstanceRepresentation(mapped1);
+		op2.setInstanceRepresentation(mapped2);
+		op3.setInstanceRepresentation(mapped3);
+		op4.setInstanceRepresentation(mapped4);
+	
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                entityType1,entityType2,entityType3,entityType4,entityType5,type,
+                mapped1,mapped2,mapped3,mapped4,mapped5
+            )).build();
+		
+		psmModel.addContent(model);
+		
+		runEpsilon(ImmutableList.of(
+				"InheritedOperationsAreValid|Entity type: entityType5 is inheriting operations with the same name but different signature.",
+				"NeedToOverrideMultipleOperationImplementations|Entity type: entityType5 has inherited operations without implementation, but their bases have more than one implementation.",
+				"OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation in entityType3)"),
+		Collections.emptyList());
+	
+	}
+	
     @Test
     void testOverridingWithValidInput() throws Exception {
         log.info("Testing constraint: OverridingWithValidInput");
@@ -1099,7 +1170,6 @@ class PsmValidationDataTest {
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation2 in entityType2)",
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation4 in entityType3)",
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation3 in entityType4)",
-            "InheritedOperationsAreValid|Entity type: entityType3 is inheriting operations with the same name but different signature.",
             "InheritedOperationsAreValid|Entity type: entityType4 is inheriting operations with the same name but different signature."),
             Collections.emptyList());
     }
@@ -1224,7 +1294,6 @@ class PsmValidationDataTest {
     		"OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation2 in entityType2)",
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation4 in entityType3)",
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation3 in entityType4)",
-            "InheritedOperationsAreValid|Entity type: entityType3 is inheriting operations with the same name but different signature.",
             "InheritedOperationsAreValid|Entity type: entityType4 is inheriting operations with the same name but different signature."),
             Collections.emptyList());
     }
@@ -1366,7 +1435,6 @@ class PsmValidationDataTest {
     		"OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation2 in entityType2)",
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation4 in entityType3)",
             "OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation operation3 in entityType4)",
-            "InheritedOperationsAreValid|Entity type: entityType3 is inheriting operations with the same name but different signature.",
             "InheritedOperationsAreValid|Entity type: entityType4 is inheriting operations with the same name but different signature."),
             Collections.emptyList());
     }

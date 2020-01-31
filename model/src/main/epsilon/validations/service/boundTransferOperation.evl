@@ -19,10 +19,9 @@ context PSM!BoundTransferOperation {
      }
      
      constraint OverridingWithValidParameters {
-     	guard: self.satisfiesAll("NamedElementHasContainer","OwnerIsMappedTransferObjectType","BindingIsValid")
-     	check: self.eContainer.getAllSuperTransferObjectTypes()
-        		.collect(t | t.operations.select(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                .forAll(o | psmUtils.parametersAreCompatible(self,o))
-        message: "Overriding of bound transfer operation cannot change parameters (bound transfer operation " + self.name + " in " + self.eContainer.name + ")"
+     	guard: self.satisfiesAll("NamedElementHasContainer","OwnerIsMappedTransferObjectType")
+     			and psmUtils.getDirectBaseBoundTransferOperationsByName(self.eContainer, self.name).forAll(o | o.satisfies("OverridingWithValidParameters"))
+     	check: psmUtils.getDirectBaseBoundTransferOperationsByName(self.eContainer, self.name).forAll(o | psmUtils.parametersAreCompatible(self,o))
+        message: "Overriding of bound transfer operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
      }
 }

@@ -730,16 +730,39 @@ public class PsmUtils {
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-
-    public static Optional<OperationBody> getOperationImplementationByName(final EntityType entityType, final String name) {
-        final Optional<BoundOperation> boundOperation = entityType.getOperations().stream().filter(o -> o.getName().equalsIgnoreCase(name))
-                .findAny();
-
-        if (boundOperation.isPresent()) {
-            return boundOperation.get().isAbstract() ? Optional.empty() : Optional.ofNullable(boundOperation.get().getImplementation());
-        } else {
-            return Optional.ofNullable(getInheritedOperationImplementationByName(entityType, name));
-        }
+    
+    /**
+     * Get unique list of all (inherited and not inherited) bound transfer operations of a given transfer object type.
+     *
+     * @param transferObjectType mapped transfer object type
+     * @return unique list of the inherited and own bound transfer operations of a transfer object type
+     */
+    public static EList<BoundTransferOperation> getAllBoundTransferOperations(final MappedTransferObjectType transferObjectType) {
+    	EList<BoundTransferOperation> operations = new UniqueEList<>();
+    	operations.addAll(transferObjectType.getOperations()
+    			.stream()
+    			.filter(o -> o instanceof BoundTransferOperation)
+    			.map(b -> (BoundTransferOperation)b)
+    			.collect(Collectors.toSet()));
+    	operations.addAll(getInheritedBoundTransferOperations(transferObjectType));
+    	return operations; 
+    }
+    
+    /**
+     * Get unique list of all (inherited and not inherited) unbound operations of a given transfer object type.
+     *
+     * @param transferObjectType mapped transfer object type
+     * @return unique list of the inherited and own unbound operations of a transfer object type
+     */
+    public static EList<UnboundOperation> getAllUnboundOperations(final TransferObjectType transferObjectType) {
+    	EList<UnboundOperation> operations = new UniqueEList<>();
+    	operations.addAll(transferObjectType.getOperations()
+    			.stream()
+    			.filter(o -> o instanceof UnboundOperation)
+    			.map(u -> (UnboundOperation)u)
+    			.collect(Collectors.toSet()));
+    	operations.addAll(getInheritedUnboundOperations(transferObjectType));
+    	return operations; 
     }
 
     /**
@@ -766,6 +789,16 @@ public class PsmUtils {
                 });
         return implementations;
     }
+    
+    public static Optional<OperationBody> getOperationImplementationByName(final EntityType entityType, final String name) {
+        final Optional<BoundOperation> boundOperation = entityType.getOperations().stream().filter(o -> o.getName().equalsIgnoreCase(name))
+                .findAny();
+        if (boundOperation.isPresent()) {
+            return boundOperation.get().isAbstract() ? Optional.empty() : Optional.ofNullable(boundOperation.get().getImplementation());
+        } else {
+            return Optional.ofNullable(getInheritedOperationImplementationByName(entityType, name));
+        }
+    }
 
     /**
      * Get the implementation of a given inherited operation.
@@ -783,6 +816,77 @@ public class PsmUtils {
         } else {
             return implementations.get(0);
         }
+    }
+
+    /**
+     * Get list of the directly inherited base operations of a bound operation in an entity type.
+     *
+     * @param entityType entity type
+     * @param name       bound operation name
+     * @return list of the direct base operations of a given bound operation
+     */
+    public static EList<BoundOperation> getDirectBaseBoundOperationsByName(final EntityType entityType, final String name) {
+        EList<BoundOperation> operations = new UniqueEList<>();
+
+        entityType.getSuperEntityTypes().stream()
+                .forEach(s -> {
+                    final Optional<BoundOperation> boundOperation = s.getOperations().stream()
+                            .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
+                    if (boundOperation.isPresent()) {
+                        	operations.add(boundOperation.get());
+                    } else {
+                    	operations.addAll(getDirectBaseBoundOperationsByName(s, name));
+                    }
+                });
+        return operations;
+    }
+    
+    /**
+     * Get list of the directly inherited base bound transfer operations of a bound transfer operation in a mapped transfer object type.
+     *
+     * @param transferObjectType mapped transfer object type
+     * @param name       bound transfer operation name
+     * @return list of the direct base operations of a given bound transfer operation
+     */
+    public static EList<BoundTransferOperation> getDirectBaseBoundTransferOperationsByName(final MappedTransferObjectType transferObjectType, final String name) {
+        EList<BoundTransferOperation> operations = new UniqueEList<>();
+
+        transferObjectType.getSuperTransferObjectTypes().stream()
+                .forEach(s -> {
+                    final Optional<BoundTransferOperation> boundOperation = s.getOperations().stream()
+                    		.filter(o -> o instanceof BoundTransferOperation).map(b -> (BoundTransferOperation)b)
+                            .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
+                    if (boundOperation.isPresent()) {
+                        	operations.add(boundOperation.get());
+                    } else {
+                    	if (s instanceof MappedTransferObjectType) operations.addAll(getDirectBaseBoundTransferOperationsByName((MappedTransferObjectType)s, name));
+                    }
+                });
+        return operations;
+    }
+    
+    /**
+     * Get list of the directly inherited base unbound operations of a unbound operation in a transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @param name       unbound transfer operation name
+     * @return list of the direct base operations of a given unbound operation
+     */
+    public static EList<UnboundOperation> getDirectBaseUnboundOperationsByName(final TransferObjectType transferObjectType, final String name) {
+        EList<UnboundOperation> operations = new UniqueEList<>();
+
+        transferObjectType.getSuperTransferObjectTypes().stream()
+                .forEach(s -> {
+                    final Optional<UnboundOperation> unboundOperation = s.getOperations().stream()
+                    		.filter(o -> o instanceof UnboundOperation).map(b -> (UnboundOperation)b)
+                            .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
+                    if (unboundOperation.isPresent()) {
+                        	operations.add(unboundOperation.get());
+                    } else {
+                    	operations.addAll(getDirectBaseUnboundOperationsByName(s, name));
+                    }
+                });
+        return operations;
     }
 
     /**
@@ -936,11 +1040,11 @@ public class PsmUtils {
      * @param mappedTransferObjectType
      * @return
      */
-    public EList<MappedTransferObjectType> getAllContainers(final MappedTransferObjectType mappedTransferObjectType) {
+    public static EList<MappedTransferObjectType> getAllContainers(final MappedTransferObjectType mappedTransferObjectType) {
         return getAllContainers(new UniqueEList<>(), mappedTransferObjectType);
     }
 
-    private EList<MappedTransferObjectType> getAllContainers(final EList<MappedTransferObjectType> result, final MappedTransferObjectType mappedTransferObjectType) {
+    private static EList<MappedTransferObjectType> getAllContainers(final EList<MappedTransferObjectType> result, final MappedTransferObjectType mappedTransferObjectType) {
         final List<MappedTransferObjectType> newContainers = getAllContents(mappedTransferObjectType, TransferObjectRelation.class)
                 .filter(r -> EcoreUtil.equals(mappedTransferObjectType, r.eContainer()) && (r.getTarget() instanceof MappedTransferObjectType))
                 .map(r -> (MappedTransferObjectType) r.getTarget())
