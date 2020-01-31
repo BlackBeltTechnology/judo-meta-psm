@@ -14,7 +14,7 @@ context PSM!MappedTransferObjectType{
     constraint InheritedBoundTransferOperationsAreValid {
 		check: psmUtils.getInheritedBoundTransferOperations(self)
 				.forAll(o | psmUtils.getInheritedBoundTransferOperations(self).excluding(o).forAll(other | other.name.toLowerCase() == o.name.toLowerCase() 
-							implies psmUtils.parametersAreTheSame(o,other)))
+							implies psmUtils.parametersAreCompatible(o,other)))
 		message: "Transfer object type: " + self.name + " is inheriting bound transfer operations with the same name but different signature."
 	}
 /*

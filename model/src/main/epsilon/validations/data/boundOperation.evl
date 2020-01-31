@@ -24,7 +24,7 @@ context PSM!BoundOperation {
      	guard: self.satisfies("NamedElementHasContainer")
      	check: self.eContainer.getAllSuperEntityTypes()
         		.collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                .forAll(o | psmUtils.parametersAreTheSame(self,o))
+                .forAll(o | psmUtils.parametersAreCompatible(self,o))
         message: "Overriding of bound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
      }
 }

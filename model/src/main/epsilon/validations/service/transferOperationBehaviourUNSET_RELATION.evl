@@ -1,55 +1,49 @@
 context PSM!TransferOperationBehaviour {
 	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION
+	
 	constraint OperationOfUnsetRelationBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION
 		check: self.eContainer.isKindOf(PSM!UnboundOperation)
 		message: "'UNSET_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by an unbound operation"
 	}
 	
 	constraint OwnerOfUnsetRelationBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION
 		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
 		message: "Owner of 'UNSET_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be an exposed graph"
 	}
 	
 	constraint RelationOfUnsetRelationBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION
 		check: self.relation.isDefined() and self.relation.eContainer == self.owner.mappedTransferObjectType
 		message: "Relation must be defined for 'UNSET_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 	
 	constraint UnsetRelationOperationInputParameterIsDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION and
-    		self.satisfiesAll("OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
+    	guard: self.satisfiesAll("OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
     	check: self.eContainer.input.isDefined()
     	message: "'UNSET_RELATION' operation must have an input parameter named 'input'"
     }
     
     constraint UnsetRelationOperationInputNameIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION and
-    		self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
+    	guard: self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
     	check: self.eContainer.input.name == "input"
     	message: "'UNSET_RELATION' operation's input parameter must be named 'input'"
     }
     
     constraint UnsetRelationOperationInputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION and
-    		self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
-    	check: self.eContainer.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.input.type.entityType).includes(self.owner.mappedTransferObjectType.entityType)
+    	guard: self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
     	message: "Type of 'UNSET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
     }
     
     constraint UnsetRelationOperationInputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION and
-    		self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
+    	guard: self.satisfiesAll("UnsetRelationOperationInputParameterIsDefined","OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
     	check: self.eContainer.input.cardinality.lower == 1 and
     		self.eContainer.input.cardinality.upper == 1 
     	message: "Cardinality of 'UNSET_RELATION' operation's input parameter must be 1..1"
     }
     
     constraint UnsetRelationOperationOutputParameterIsNotDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION and
-    		self.satisfiesAll("OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
+    	guard: self.satisfiesAll("OperationOfUnsetRelationBehaviourIsValid","OwnerOfUnsetRelationBehaviourIsValid","RelationOfUnsetRelationBehaviourIsValid")
     	check: self.eContainer.output.isUndefined()
     	message: "'UNSET_RELATION' operation cannot have an output parameter"
     }

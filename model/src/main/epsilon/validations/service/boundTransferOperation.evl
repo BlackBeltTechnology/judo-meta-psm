@@ -14,7 +14,7 @@ context PSM!BoundTransferOperation {
      
      constraint ParametersAreValid {
      	guard: self.satisfies("BindingIsValid")
-     	check: psmUtils.parametersAreTheSame(self,self.binding)
+     	check: psmUtils.parametersAreCompatible(self,self.binding)
      	message: "Parameters of bound transfer operation must match binding's parameters (operation: " + self.name + ")"
      }
      
@@ -22,7 +22,7 @@ context PSM!BoundTransferOperation {
      	guard: self.satisfiesAll("NamedElementHasContainer","OwnerIsMappedTransferObjectType","BindingIsValid")
      	check: self.eContainer.getAllSuperTransferObjectTypes()
         		.collect(t | t.operations.select(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                .forAll(o | psmUtils.parametersAreTheSame(self,o))
+                .forAll(o | psmUtils.parametersAreCompatible(self,o))
         message: "Overriding of bound transfer operation cannot change parameters (bound transfer operation " + self.name + " in " + self.eContainer.name + ")"
      }
 }

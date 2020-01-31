@@ -398,7 +398,7 @@ public class PsmUtils {
      * @param op1 operation declaration, op2	operation declaration
      * @return true if the input, output and fault types and cardinalities are the same for both operations
      */
-    public static boolean parametersAreTheSame(final OperationDeclaration op1, final OperationDeclaration op2) {
+    public static boolean parametersAreCompatible(final OperationDeclaration op1, final OperationDeclaration op2) {
         if (op1.getInput() != null) {
             if (op2.getInput() == null) return false;
             if (!op1.getInput().getType().equals(op2.getInput().getType())) return false;

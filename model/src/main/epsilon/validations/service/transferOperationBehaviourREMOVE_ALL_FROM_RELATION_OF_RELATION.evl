@@ -1,13 +1,13 @@
 context PSM!TransferOperationBehaviour {
 	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
+	
 	constraint OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
 		check: self.eContainer.isKindOf(PSM!BoundTransferOperation)
 		message: "'REMOVE_ALL_FROM_RELATION_OF_RELATION' behaviour must be owned by a bound transfer operation"
 	}
 	
 	constraint OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
 		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
 			and psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
 		message: "Owner of 'REMOVE_ALL_FROM_RELATION_OF_RELATION' behaviour must be a transfer object relation" + 
@@ -15,39 +15,34 @@ context PSM!TransferOperationBehaviour {
 	}
 	
 	constraint RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined {
-		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
 		check: self.relation.isDefined() and self.relation.isKindOf(PSM!TransferObjectRelation)
 			and psmUtils.getAllTransferObjectRelations(self.owner.target).includes(self.relation)
 		message: "Relation must be undefined for 'REMOVE_ALL_FROM_RELATION_OF_RELATION' behaviour"
 	}
 	
 	constraint RemoveAllFromRelationOfRelationOperationInputParameterIsDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
-    		and self.satisfiesAll("OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
     	check: self.eContainer.binding.input.isDefined()
     	message: "'REMOVE_ALL_FROM_RELATION_OF_RELATION' operation must have an input parameter named 'input'"
     }
     
     constraint RemoveAllFromRelationOfRelationOperationInputNameIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
-    		and self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
+    	guard: self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
     	check: self.eContainer.binding.input.name == "input"
     	message: "'REMOVE_ALL_FROM_RELATION_OF_RELATION' operation's input parameter must be named 'input'"
     }
     
     constraint RemoveAllFromRelationOfRelationOperationInputTypeIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
-    		and self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
+    	guard: self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
-    	check: self.eContainer.binding.input.type.entityType.getAllSuperEntityTypes().including(self.eContainer.binding.input.type.entityType).includes(self.owner.target.entityType)
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
     	message: "Type of 'REMOVE_ALL_FROM_RELATION_OF_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
     }
     
     constraint RemoveAllFromRelationOfRelationOperationInputCardinalityIsValid {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
-    		and self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
+    	guard: self.satisfiesAll("RemoveAllFromRelationOfRelationOperationInputParameterIsDefined","OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
     	check: self.eContainer.binding.input.cardinality.lower == 1 and
     		self.eContainer.binding.input.cardinality.upper == 1 
@@ -55,8 +50,7 @@ context PSM!TransferOperationBehaviour {
     }
     
     constraint RemoveAllFromRelationOfRelationOperationOutputParameterIsNotDefined {
-    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION
-    		and self.satisfiesAll("OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
+    	guard: self.satisfiesAll("OperationOfRemoveAllFromRelationOfRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationOfRelationBehaviourIsValid","RelationOfRemoveAllFromRelationOfRelationBehaviourIsUndefined")
     		and self.eContainer.satisfies("BindingIsValid")
     	check: self.eContainer.binding.output.isUndefined()
     	message: "'REMOVE_ALL_FROM_RELATION_OF_RELATION' operation cannot have an output parameter"

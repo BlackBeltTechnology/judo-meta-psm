@@ -4,7 +4,12 @@ context PSM!UnboundOperation {
      	guard: self.satisfies("NamedElementHasContainer")
      	check: self.eContainer.getAllSuperTransferObjectTypes()
         		.collect(t | t.operations.select(o | o.isKindOf(PSM!UnboundOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                .forAll(o | psmUtils.parametersAreTheSame(self,o))
-        message: "Overriding of unbound operation cannot change parameters (unbound operation " + self.name + " in " + self.eContainer.name + ")"
+                .forAll(o | psmUtils.parametersAreCompatible(self,o))
+        message: "Overriding of unbound operation cannot change parameters (" + self.eContainer.name + "." + self.name + ")"
+     }
+     
+     constraint BehaviourOrImplementationIsRequired {
+     	check: self.implementation.isDefined() or self.behaviour.isDefined()
+     	message: "Unbound operation must have implementation or behaviour (" + self.eContainer.name + "." + self.name + ")"
      }
 }
