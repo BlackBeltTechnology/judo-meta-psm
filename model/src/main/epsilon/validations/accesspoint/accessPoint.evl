@@ -2,6 +2,7 @@ context PSM!AccessPoint {
     
     // static navigation type names should be unique
     critique AccessPointNamesAreUnique {
+    	guard: self.satisfies("NamedElementIsUniqueInItsContainer")
         check: not PSM!AccessPoint.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
         message: "Access point name is not unique: " + self.name
     }
