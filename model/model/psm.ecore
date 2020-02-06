@@ -544,6 +544,9 @@
     <eClassifiers xsi:type="ecore:EClass" name="UnboundOperation" eSuperTypes="#//service/TransferOperation">
       <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" eType="#//data/OperationBody"
           containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="initializer" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"

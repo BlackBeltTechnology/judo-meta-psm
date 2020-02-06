@@ -352,6 +352,7 @@
       <genClasses ecoreClass="psm.ecore#//service/UnmappedTransferObjectType"/>
       <genClasses ecoreClass="psm.ecore#//service/UnboundOperation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/UnboundOperation/implementation"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/UnboundOperation/initializer"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/Parameter">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/cardinality"/>

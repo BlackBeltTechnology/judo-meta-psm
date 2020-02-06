@@ -490,6 +490,7 @@ package service {
 
   class UnboundOperation extends TransferOperation {
     val data.OperationBody implementation;
+    attr boolean[1] initializer = false;
   }
 
   class Parameter extends namespace.NamedElement {
