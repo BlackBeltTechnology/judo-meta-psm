@@ -15,7 +15,7 @@ context PSM!TransferOperationBehaviour {
 	}
 	
 	constraint RelationOfGetRangeOfRelationBehaviourIsValid {
-		check: self.relation.isDefined() and self.relation.eContainer == self.owner.type
+	    check: self.relation.isDefined() and psmUtils.getAllSuperTransferObjectTypes(self.owner.type).including(self.owner.type).contains(self.relation.eContainer)
 		message: "Relation for 'GET_RANGE_OF_RELATION' behaviour type must belong to the operation owner's type"
 	}
 	

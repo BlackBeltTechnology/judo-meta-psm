@@ -13,7 +13,7 @@ context PSM!TransferOperationBehaviour {
 	}
 	
 	constraint RelationOfUnsetRelationBehaviourIsValid {
-		check: self.relation.isDefined() and self.relation.eContainer == self.owner.mappedTransferObjectType
+		check: self.relation.isDefined() and psmUtils.getAllSuperTransferObjectTypes(self.owner.mappedTransferObjectType).including(self.owner.mappedTransferObjectType).contains(self.relation.eContainer)
 		message: "Relation must be defined for 'UNSET_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 	
