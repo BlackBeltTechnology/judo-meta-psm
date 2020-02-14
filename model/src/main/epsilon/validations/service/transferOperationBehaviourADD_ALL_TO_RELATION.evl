@@ -13,7 +13,7 @@ context PSM!TransferOperationBehaviour {
 	}
 	
 	constraint RelationOfAddAllToRelationBehaviourIsValid {
-		check: self.relation.isDefined() and psmUtils.getAllSuperTransferObjectTypes(self.owner.mappedTransferObjectType).including(self.owner.mappedTransferObjectType).contains(self.relation.eContainer)
+		check: self.relation.isDefined() and psmUtils.getAllTransferObjectRelations(self.owner.mappedTransferObjectType).includes(self.relation)
 		message: "Relation must be defined for 'ADD_ALL_TO_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 	
