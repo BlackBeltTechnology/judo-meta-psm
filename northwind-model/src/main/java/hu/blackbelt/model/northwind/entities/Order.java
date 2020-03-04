@@ -154,7 +154,7 @@ public class Order {
                         .withTarget($orderDetail.$)
                         .withCardinality(newCardinalityBuilder().withUpper(-1))
                         .withGetterExpression(newReferenceExpressionTypeBuilder()
-                                .withExpression("self.orderDetails!filter(od | od.discount > 0 and od.product.unitsInStock = 0)"))
+                                .withExpression("self.orderDetails!filter(od | od.discount > 0 and od.product.unitsInStock == 0)"))
                         .build()
                 )
                 .withNavigationProperties(useNavigationProperty(categories)
