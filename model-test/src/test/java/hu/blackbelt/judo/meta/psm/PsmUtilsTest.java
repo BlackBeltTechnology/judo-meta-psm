@@ -12,8 +12,10 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.NumericType;
 import hu.blackbelt.judo.meta.psm.type.StringType;
@@ -609,7 +611,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	}
 	
 	@Test
-	public void testgetAllTransferObjectRelations() {
+	public void testGetAllTransferObjectRelations() {
 		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
 				.build();
 		
@@ -660,5 +662,92 @@ public class PsmUtilsTest extends NorthwindTest {
         assertTrue(PsmUtils.getAllTransferObjectRelations(child).contains(relation1));
 		assertTrue(PsmUtils.getAllTransferObjectRelations(child).contains(relation2));
 		assertTrue(PsmUtils.getAllTransferObjectRelations(child).contains(relation3));
+	}
+	
+	@Test
+	public void testGetInheritedOperationsByName() {
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+				.build();
+		
+		BoundOperation binding1 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation binding2 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation binding3 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
+		BoundOperation binding4 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
+		
+		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
+				.withOperations(binding1)
+				.build();
+		EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType1)
+				.withOperations(binding2)
+				.build();
+		EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2)
+				.withOperations(binding3)
+				.build();
+		EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
+				.withOperations(ImmutableList.of(binding4))
+				.build();
+		EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4))
+				.build();
+		
+		BoundTransferOperation operation1 = newBoundTransferOperationBuilder().withName("bound").withBinding(binding1).build();
+		BoundTransferOperation operation2 = newBoundTransferOperationBuilder().withName("bound").withBinding(binding2).build();
+		BoundTransferOperation operation3 = newBoundTransferOperationBuilder().withName("bound").withBinding(binding3).build();
+		BoundTransferOperation operation4 = newBoundTransferOperationBuilder().withName("bound").withBinding(binding4).build();
+		
+		UnboundOperation unbound1 = newUnboundOperationBuilder().withName("unbound").withImplementation(newOperationBodyBuilder().withCustomImplementation(true)).build();
+		UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound").withImplementation(newOperationBodyBuilder().withCustomImplementation(true)).build();
+		UnboundOperation unbound3 = newUnboundOperationBuilder().withName("unbound").withImplementation(newOperationBodyBuilder().withCustomImplementation(true)).build();
+		UnboundOperation unbound4 = newUnboundOperationBuilder().withName("unbound").withImplementation(newOperationBodyBuilder().withCustomImplementation(true)).build();
+		
+		MappedTransferObjectType mapped1 = newMappedTransferObjectTypeBuilder().withName("mapped1")
+				.withEntityType(entityType1)
+				.withOperations(ImmutableList.of(operation1,unbound1))
+				.build();
+		MappedTransferObjectType mapped2 = newMappedTransferObjectTypeBuilder().withName("mapped2")
+				.withSuperTransferObjectTypes(mapped1)
+				.withEntityType(entityType2)
+				.withOperations(ImmutableList.of(operation2,unbound2))
+				.build();
+		MappedTransferObjectType mapped3 = newMappedTransferObjectTypeBuilder().withName("mapped3")
+				.withSuperTransferObjectTypes(mapped2)
+				.withEntityType(entityType3)
+				.withOperations(ImmutableList.of(operation3,unbound3))
+				.build();
+		MappedTransferObjectType mapped4 = newMappedTransferObjectTypeBuilder().withName("mapped4")
+				.withEntityType(entityType4)
+				.withOperations(ImmutableList.of(operation4,unbound4))
+				.build();
+		MappedTransferObjectType mapped5 = newMappedTransferObjectTypeBuilder().withName("mapped5")
+				.withEntityType(entityType5)
+				.withSuperTransferObjectTypes(ImmutableList.of(mapped3,mapped4))
+				.build();
+		
+		binding1.setInstanceRepresentation(mapped1);
+		binding2.setInstanceRepresentation(mapped2);
+		binding3.setInstanceRepresentation(mapped3);
+		binding4.setInstanceRepresentation(mapped4);
+		
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(entityType1,entityType2,entityType3,entityType4,entityType5,
+						mapped1,mapped2,mapped3,mapped4,mapped5))
+				.build();
+
+		psmModel.addContent(m);
+		
+		EList<BoundOperation> expected1 = PsmUtils.getInheritedBoundOperationsByName(entityType5, "operation");
+		EList<BoundTransferOperation> expected2 = PsmUtils.getInheritedBoundTransferOperationsByName(mapped5, "bound");
+		EList<UnboundOperation> expected3 = PsmUtils.getInheritedUnboundOperationsByName(mapped5, "unbound");
+		
+		Assertions.assertEquals(2,expected1.size());
+		assertTrue(expected1.contains(binding4));
+		assertTrue(expected1.contains(binding3));
+		
+		Assertions.assertEquals(2,expected1.size());
+		assertTrue(expected2.contains(operation4));
+		assertTrue(expected2.contains(operation3));
+		
+		Assertions.assertEquals(expected3.size(),2);
+		assertTrue(expected3.contains(unbound4));
+		assertTrue(expected3.contains(unbound3));
 	}
 }

@@ -167,9 +167,12 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType2.operation2)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType3.operation4)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType4.operation3)"),
+        		"InheritedUnboundOperationsAreValid|Transfer object type: transferObjectType4 is inheriting unbound operations with the same name but different signature.",
+        		"NeedToOverrideMultipleUnboundOperations|Transfer object type: transferObjectType4 must override inherited unbound operations of the same name.",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation2 in transferObjectType2)",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation4 in transferObjectType3)",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation3 in transferObjectType4)"
+        		),
             Collections.emptyList());
     }
 
@@ -262,9 +265,11 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType2.operation2)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType3.operation4)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType4.operation3)"),
+        		"InheritedUnboundOperationsAreValid|Transfer object type: transferObjectType4 is inheriting unbound operations with the same name but different signature.",
+        		"NeedToOverrideMultipleUnboundOperations|Transfer object type: transferObjectType4 must override inherited unbound operations of the same name.",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation2 in transferObjectType2)",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation4 in transferObjectType3)",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation3 in transferObjectType4)"),
             Collections.emptyList());
     }
 
@@ -286,7 +291,29 @@ class PsmValidationServiceTest {
                 		))
                 .withImplementation(newOperationBodyBuilder().build())
                 .build();
-        UnboundOperation overriden1 = newUnboundOperationBuilder().withName("operation1")
+        UnboundOperation overriden1a = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType)
+                		.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        UnboundOperation overriden1b = newUnboundOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withFaults(ImmutableList.of(
+                		newParameterBuilder().withName("fault1").withType(correctType)
+                			.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build(),
+                		newParameterBuilder().withName("fault2").withType(correctType)
+                		.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).build()
+                		))
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
+        UnboundOperation overriden1c = newUnboundOperationBuilder().withName("operation1")
                 .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
                 .withFaults(ImmutableList.of(
@@ -367,25 +394,25 @@ class PsmValidationServiceTest {
         EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
                 .withSuperTransferObjectTypes(transferObjectType0)
-        		.withOperations(overriden1)
+        		.withOperations(ImmutableList.of(overriden1a,operation4))
                 .build();
 
         EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
                 .withSuperTransferObjectTypes(transferObjectType0)
-        		.withOperations(ImmutableList.of(operation4,overriden2))
+        		.withOperations(ImmutableList.of(overriden2))
                 .build();
 
         EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withSuperEntityTypes(entityType2).build();
         MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
                 .withSuperTransferObjectTypes(transferObjectType2)
-        		.withOperations(ImmutableList.of(overriden1,overriden4))
+        		.withOperations(ImmutableList.of(overriden1b,overriden4))
                 .build();
 
         EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
         MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
                 .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
-        		.withOperations(ImmutableList.of(overriden1,overriden3))
+        		.withOperations(ImmutableList.of(overriden1c,overriden3))
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
@@ -397,9 +424,162 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType2.operation2)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType3.operation4)",
-                "OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (transferObjectType4.operation3)"),
+        		"InheritedUnboundOperationsAreValid|Transfer object type: transferObjectType4 is inheriting unbound operations with the same name but different signature.",
+        		"NeedToOverrideMultipleUnboundOperations|Transfer object type: transferObjectType4 must override inherited unbound operations of the same name.",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation2 in transferObjectType2)",
+        		"OverridingWithValidParameters|Overriding of unbound operation cannot change parameters (bound operation operation3 in transferObjectType4)"),
+            Collections.emptyList());
+    }
+    
+    @Test
+    void testOverridingWithValidInputBoundTransferoperation() throws Exception {
+        log.info("Testing constraint: OverridingWithValidInput");
+
+        UnmappedTransferObjectType correctType = newUnmappedTransferObjectTypeBuilder().withName("correctType").build();
+        UnmappedTransferObjectType wrongType = newUnmappedTransferObjectTypeBuilder().withName("wrongType").build();
+
+        BoundOperation bound1 = newBoundOperationBuilder().withName("bound1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        BoundOperation boundOverriden1 = newBoundOperationBuilder().withName("bound1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        BoundOperation bound2 = newBoundOperationBuilder().withName("bound2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        BoundOperation boundOverriden2 = newBoundOperationBuilder().withName("bound2")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        BoundOperation bound3 = newBoundOperationBuilder().withName("bound3")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        BoundOperation boundOverriden3 = newBoundOperationBuilder().withName("bound3")
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+
+        BoundOperation bound4 = newBoundOperationBuilder().withName("bound4")
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        BoundOperation boundOverriden4 = newBoundOperationBuilder().withName("bound4")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .build();
+        
+        BoundTransferOperation operation1 = newBoundTransferOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(bound1)
+                .build();
+        BoundTransferOperation overriden1 = newBoundTransferOperationBuilder().withName("operation1")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(boundOverriden1)
+                .build();
+
+        BoundTransferOperation operation2 = newBoundTransferOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(bound2)
+                .build();
+        BoundTransferOperation overriden2 = newBoundTransferOperationBuilder().withName("operation2")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(boundOverriden2)
+                .build();
+
+        BoundTransferOperation operation3 = newBoundTransferOperationBuilder().withName("operation3")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(bound3)
+                .build();
+        BoundTransferOperation overriden3 = newBoundTransferOperationBuilder().withName("operation3")
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(boundOverriden3)
+                .build();
+
+        BoundTransferOperation operation4 = newBoundTransferOperationBuilder().withName("operation4")
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(bound4)
+                .build();
+        BoundTransferOperation overriden4 = newBoundTransferOperationBuilder().withName("operation4")
+                .withInput(newParameterBuilder().withName("input").withType(wrongType).withCardinality(newCardinalityBuilder().build()))
+                .withOutput(newParameterBuilder().withName("output").withType(correctType).withCardinality(newCardinalityBuilder().build()))
+                .withBinding(boundOverriden4)
+                .build();
+
+        EntityType entityType0 = newEntityTypeBuilder()
+                        .withName("entityType0")
+                        .withOperations(ImmutableList.of(
+                        bound1,bound2,bound3)).build();
+        MappedTransferObjectType transferObjectType0 = newMappedTransferObjectTypeBuilder().withName("transferObjectType0").withEntityType(entityType0)
+                .withOperations(ImmutableList.of(
+                        operation1,operation2,operation3))
+                .build();
+        bound1.setInstanceRepresentation(transferObjectType0);
+        bound2.setInstanceRepresentation(transferObjectType0);
+        bound3.setInstanceRepresentation(transferObjectType0);
+
+        EntityType entityType1 = newEntityTypeBuilder()
+                        .withOperations(boundOverriden1).withName("entityType1").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
+                .withSuperTransferObjectTypes(transferObjectType0)
+                        .withOperations(overriden1)
+                .build();
+        boundOverriden1.setInstanceRepresentation(transferObjectType1);
+
+        EntityType entityType2 = newEntityTypeBuilder()
+                        .withOperations(ImmutableList.of(bound4,boundOverriden2)).withName("entityType2").withSuperEntityTypes(entityType0).build();
+        MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
+                .withSuperTransferObjectTypes(transferObjectType0)
+                        .withOperations(ImmutableList.of(operation4,overriden2))
+                .build();
+        bound4.setInstanceRepresentation(transferObjectType2);
+        boundOverriden2.setInstanceRepresentation(transferObjectType2);
+
+        EntityType entityType3 = newEntityTypeBuilder()
+                        .withOperations(ImmutableList.of(boundOverriden1,boundOverriden4)).withName("entityType3").withSuperEntityTypes(entityType2).build();
+        MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
+                .withSuperTransferObjectTypes(transferObjectType2)
+                        .withOperations(ImmutableList.of(overriden1,overriden4))
+                .build();
+        boundOverriden1.setInstanceRepresentation(transferObjectType3);
+        boundOverriden4.setInstanceRepresentation(transferObjectType3);
+
+        EntityType entityType4 = newEntityTypeBuilder()
+                        .withOperations(ImmutableList.of(boundOverriden1,boundOverriden3))
+                        .withName("entityType4").withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
+        MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
+                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
+                        .withOperations(ImmutableList.of(overriden1,overriden3))
+                .build();
+        boundOverriden1.setInstanceRepresentation(transferObjectType4);
+        boundOverriden3.setInstanceRepresentation(transferObjectType4);
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
+                            correctType,wrongType,
+                            entityType0,entityType1,entityType2,entityType3,entityType4,
+                            transferObjectType0,transferObjectType1,transferObjectType2,transferObjectType3,transferObjectType4
+                        )).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+        		"NeedToOverrideMultipleBoundTransferOperations|Transfer object type: transferObjectType4 must override inherited bound transfer operations of the same name.",
+        		"OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation bound3 in entityType4)",
+        		"OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation bound4 in entityType3)",
+        		"OverridingWithValidParameters|Overriding of bound transfer operation cannot change parameters (bound operation operation2 in transferObjectType2)",
+        		"OverridingWithValidParameters|Overriding of bound transfer operation cannot change parameters (bound operation operation4 in transferObjectType3)",
+        		"OverridingWithValidParameters|Overriding of bound operation cannot change parameters (bound operation bound2 in entityType2)",
+        		"InheritedBoundTransferOperationsAreValid|Transfer object type: transferObjectType4 is inheriting bound transfer operations with the same name but different signature.",
+        		"InheritedOperationsAreValid|Entity type: entityType4 is inheriting operations with the same name but different signature.",
+        		"OverridingWithValidParameters|Overriding of bound transfer operation cannot change parameters (bound operation operation3 in transferObjectType4)"),
             Collections.emptyList());
     }
 

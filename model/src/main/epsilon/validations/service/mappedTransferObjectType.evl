@@ -10,19 +10,22 @@ context PSM!MappedTransferObjectType{
         check: not psmUtils.getInheritedBoundTransferOperationNames(self).exists(name | psmUtils.getInheritedUnboundOperationNames(self).exists(a | name.toLowerCase() == a.toLowerCase()))
         message: "Entity type: " + self.name + " has inherited bound transfer operation(s) and inherited unbound transfer operation(s) of the same name." 
     }
-    
-    constraint InheritedBoundTransferOperationsAreValid {
+
+	constraint InheritedBoundTransferOperationsAreValid {
 		check: psmUtils.getInheritedBoundTransferOperations(self)
-				.forAll(o | psmUtils.getInheritedBoundTransferOperations(self).excluding(o).forAll(other | other.name.toLowerCase() == o.name.toLowerCase() 
-							implies psmUtils.parametersAreCompatible(o,other)))
+				.forAll(o | psmUtils.getInheritedBoundTransferOperationsByName(self,o.name).size() > 1 implies 
+							psmUtils.getInheritedBoundTransferOperationsByName(self,o.name).excluding(o)
+								.forAll(other | psmUtils.parametersAreCompatible(o,other)))
 		message: "Transfer object type: " + self.name + " is inheriting bound transfer operations with the same name but different signature."
 	}
-/*
-    constraint NeedToOverrideMultipleOperationImplementations {
-        guard: self.satisfiesAll("InheritanceIsNotRecursive","InheritedOperationsAreValid")
-        check: self.getAllOperationNames().forAll(opName | psmUtils.getInheritedNonAbstractOperationsByName(self,opName).size() > 1 implies 
-                        self.operations.exists(o | o.name.toLowerCase() == opName.toLowerCase()))
-        message: "Transfer object type: " + self.name + " has inherited operations without implementation, "
-                + "but their bases have more than one implementation."
-    }*/
+    
+   constraint NeedToOverrideMultipleBoundTransferOperations {
+        guard: self.getAllSuperTransferObjectTypes().select(s | s.isKindOf(PSM!MappedTransferObjectType))
+            .forAll(s | s.satisfiesAll("InheritanceIsNotRecursive","NeedToOverrideMultipleBoundTransferOperations"))
+        check: psmUtils.getAllBoundTransferOperations(self)
+        		.collect(o | o.name.toLowerCase())
+        		.forAll(opName | psmUtils.getInheritedBoundTransferOperationsByName(self,opName).size() > 1 implies 
+                        self.operations.exists(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == opName.toLowerCase()))
+        message: "Transfer object type: " + self.name + " must override inherited bound transfer operations of the same name."
+    }
 }

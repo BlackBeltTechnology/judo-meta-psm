@@ -2,10 +2,7 @@ context PSM!BoundOperation {
 	
 	constraint AbstractOperationIsValid {
 		guard: self.satisfies("NamedElementHasContainer")
-		check: self.abstract implies self.eContainer
-				.getSuperEntityTypes.collect(s | s.operations).flatten()
-				.select(o | o.name.toLowerCase() == self.name.toLowerCase())
-				.forAll(o | o.abstract)
+		check: self.abstract implies self.eContainer.getInheritedOperationImplementationsByName(self.name).size() == 0
 		message: "Bound operation cannot be abstract if it's overriding a non-abstract bound operation"
 	}
     
@@ -21,10 +18,9 @@ context PSM!BoundOperation {
     }
  
  	constraint OverridingWithValidParameters {
-     	guard: self.satisfies("NamedElementHasContainer")
-     	check: self.eContainer.getAllSuperEntityTypes()
-        		.collect(t | t.operations.select(o | o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                .forAll(o | psmUtils.parametersAreCompatible(self,o))
+     	guard: self.satisfiesAll("NamedElementHasContainer","AbstractOperationIsValid")
+     	     			and psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).forAll(o | o.satisfies("OverridingWithValidParameters"))
+     	check: psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).forAll(o | psmUtils.parametersAreCompatible(self,o))
         message: "Overriding of bound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
      }
 }
