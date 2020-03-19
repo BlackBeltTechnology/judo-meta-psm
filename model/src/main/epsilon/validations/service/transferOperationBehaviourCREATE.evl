@@ -4,54 +4,61 @@ context PSM!TransferOperationBehaviour {
 	
 	constraint OperationOfCreateBehaviourIsValid {
 		check: self.eContainer.isKindOf(PSM!UnboundOperation)
-		message: "'CREATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be unbound operation"
+		message: "'CREATE' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be unbound operation"
+	}
+	
+	constraint OwnerOfCreateBehaviourIsExposedGraph {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph)
+		message: "Owner of 'CREATE' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph."
 	}
 	
 	constraint OwnerOfCreateBehaviourIsValid {
-		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
-		message: "Owner of 'CREATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph"
+		guard: self.satisfies("OwnerOfCreateBehaviourIsExposedGraph") 
+		check: self.owner.mappedTransferObjectType == self.eContainer.eContainer
+		message: "Mapped transfer object of owner exposed graph of 'CREATE' operation: " + self.eContainer.name  + 
+			" (in: " + self.eContainer.eContainer.name + ") must match the operation's container."
 	}
 	
 	constraint RelationOfCreateBehaviourIsUndefined {
 		check: self.relation.isUndefined()
-		message: "Relation must be undefined for 'CREATE' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
+		message: "Relation must be undefined for 'CREATE' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 
 	 constraint CreateOperationInputParameterIsDefined {
     	guard: self.satisfiesAll("OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.isDefined()
-    	message: "'CREATE' operation must have an input parameter named 'input'"
+    	message: "'CREATE' operation must have an input parameter named 'input' (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationInputNameIsValid {
     	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.name == "input"
-    	message: "'CREATE' operation's input parameter must be named 'input'"
+    	message: "'CREATE' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationInputTypeIsValid {
     	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
-    	message: "Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type"
+    	message: "Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationInputCardinalityIsValid {
     	guard: self.satisfiesAll("CreateOperationInputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.input.cardinality.lower == 1 and
     		self.eContainer.input.cardinality.upper == 1 
-    	message: "Cardinality of 'CREATE' operation's input parameter must be 1..1"
+    	message: "Cardinality of 'CREATE' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationOutputParameterIsDefined {
     	guard: self.satisfiesAll("OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.output.isDefined()
-    	message: "'CREATE' operation must have an output parameter named 'output'"
+    	message: "'CREATE' operation must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationOutputNameIsValid {
     	guard: self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.output.name == "output"
-    	message: "'CREATE' operation's output parameter must be named 'output'"
+    	message: "'CREATE' operation's output parameter must be named 'output' (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationOutputTypeIsValid {
@@ -59,13 +66,13 @@ context PSM!TransferOperationBehaviour {
     	check: self.owner.mappedTransferObjectType.getAllSuperTransferObjectTypes()
     			.including(self.owner.mappedTransferObjectType)
     			.includes(self.eContainer.output.type)
-    	message: "Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype"
+    	message: "Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateOperationOutputCardinalityIsValid {
     	guard: self.satisfiesAll("CreateOperationOutputParameterIsDefined", "OperationOfCreateBehaviourIsValid", "OwnerOfCreateBehaviourIsValid", "RelationOfCreateBehaviourIsUndefined")
     	check: self.eContainer.output.cardinality.lower == 1 and
     		self.eContainer.output.cardinality.upper == 1 
-    	message: "Cardinality of 'CREATE' operation's output parameter must be 1..1"
+    	message: "Cardinality of 'CREATE' operation's output parameter must be 1..1 (operation: " + self.eContainer.name + ")"
     }
 }

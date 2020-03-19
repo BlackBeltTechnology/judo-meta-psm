@@ -4,48 +4,62 @@ context PSM!TransferOperationBehaviour {
 	
 	constraint OperationOfRemoveAllFromRelationBehaviourIsValid {
 		check: self.eContainer.isKindOf(PSM!UnboundOperation)
-		message: "'REMOVE_ALL_FROM_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by an unbound operation"
+		message: "'REMOVE_ALL_FROM_RELATION' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by an unbound operation"
+	}
+	
+	constraint OwnerOfRemoveAllFromRelationBehaviourIsExposedGraph {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph)
+		message: "Owner of 'REMOVE_ALL_FROM_RELATION' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph."
 	}
 	
 	constraint OwnerOfRemoveAllFromRelationBehaviourIsValid {
-		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph) and self.owner.mappedTransferObjectType == self.eContainer.eContainer
-		message: "Owner of 'REMOVE_ALL_FROM_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be an exposed graph"
+		guard: self.satisfies("OwnerOfRemoveAllFromRelationBehaviourIsExposedGraph") 
+		check: self.owner.mappedTransferObjectType == self.eContainer.eContainer
+		message: "Mapped transfer object of owner exposed graph of 'REMOVE_ALL_FROM_RELATION' operation: " + self.eContainer.name  + 
+			" (in: " + self.eContainer.eContainer.name + ") must match the operation's container."
+	}
+	
+	constraint RelationOfRemoveAllFromRelationBehaviourIsDefined {
+		guard: self.satisfies("OwnerOfRemoveAllFromRelationBehaviourIsValid")
+		check: self.relation.isDefined() 
+		message: "Relation must be defined for 'REMOVE_ALL_FROM_RELATION' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
 	}
 	
 	constraint RelationOfRemoveAllFromRelationBehaviourIsValid {
-		check: self.relation.isDefined() and psmUtils.getAllTransferObjectRelations(self.owner.mappedTransferObjectType).includes(self.relation)
-		message: "Relation must be defined for 'REMOVE_ALL_FROM_RELATION' behaviour: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
+		guard: self.satisfiesAll("OwnerOfRemoveAllFromRelationBehaviourIsValid","RelationOfRemoveAllFromRelationBehaviourIsDefined")
+		check: psmUtils.getAllTransferObjectRelations(self.owner.mappedTransferObjectType).includes(self.relation)
+		message: "Relation of 'REMOVE_ALL_FROM_RELATION' operation: " + self.eContainer.name  + " must be one of the transfer object type referenced by the operation's owner"
 	}
 	
 	constraint RemoveAllFromRelationOperationInputParameterIsDefined {
     	guard: self.satisfiesAll("OwnerOfRemoveAllFromRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationBehaviourIsValid","RelationOfRemoveAllFromRelationBehaviourIsValid")
     	check: self.eContainer.input.isDefined()
-    	message: "'REMOVE_ALL_FROM_RELATION' operation must have an input parameter named 'input'"
+    	message: "'REMOVE_ALL_FROM_RELATION' operation must have an input parameter named 'input' (operation: " + self.eContainer.name + ")"
     }
     
     constraint RemoveAllFromRelationOperationInputNameIsValid {
     	guard: self.satisfiesAll("RemoveAllFromRelationOperationInputParameterIsDefined","OwnerOfRemoveAllFromRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationBehaviourIsValid","RelationOfRemoveAllFromRelationBehaviourIsValid")
     	check: self.eContainer.input.name == "input"
-    	message: "'REMOVE_ALL_FROM_RELATION' operation's input parameter must be named 'input'"
+    	message: "'REMOVE_ALL_FROM_RELATION' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
     }
     
     constraint RemoveAllFromRelationOperationInputTypeIsValid {
     	guard: self.satisfiesAll("RemoveAllFromRelationOperationInputParameterIsDefined","OwnerOfRemoveAllFromRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationBehaviourIsValid","RelationOfRemoveAllFromRelationBehaviourIsValid")
     	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
-    	message: "Type of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be kind of referenced mapped transfer object type"
+    	message: "Type of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
     
     constraint RemoveAllFromRelationOperationInputCardinalityIsValid {
     	guard: self.satisfiesAll("RemoveAllFromRelationOperationInputParameterIsDefined","OwnerOfRemoveAllFromRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationBehaviourIsValid","RelationOfRemoveAllFromRelationBehaviourIsValid")
     	check: self.eContainer.input.cardinality.lower == 1 and
     		self.eContainer.input.cardinality.upper == 1 
-    	message: "Cardinality of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be 1..1"
+    	message: "Cardinality of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")"
     }
     
     constraint RemoveAllFromRelationOperationOutputParameterIsNotDefined {
     	guard: self.satisfiesAll("OwnerOfRemoveAllFromRelationBehaviourIsValid","OwnerOfRemoveAllFromRelationBehaviourIsValid","RelationOfRemoveAllFromRelationBehaviourIsValid")
     	check: self.eContainer.output.isUndefined()
-    	message: "'REMOVE_ALL_FROM_RELATION' operation cannot have an output parameter"
+    	message: "'REMOVE_ALL_FROM_RELATION' operation cannot have an output parameter (operation: " + self.eContainer.name + ")"
     }
 }
 	
