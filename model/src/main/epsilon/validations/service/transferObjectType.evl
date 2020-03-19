@@ -44,4 +44,22 @@ context PSM!TransferObjectType {
 		check: not self.getAllSuperTransferObjectTypes().contains(self)
 		message: "Transfer object type " + self.name + " is recursive"
 	}
+	
+	constraint InheritedUnboundOperationsAreValid {
+		check: psmUtils.getInheritedUnboundOperations(self)
+				.forAll(o | psmUtils.getInheritedUnboundOperationsByName(self,o.name).size() > 1 implies
+							psmUtils.getInheritedUnboundOperationsByName(self,o.name).excluding(o)
+								.forAll(other | psmUtils.parametersAreCompatible(o,other)))
+		message: "Transfer object type: " + self.name + " is inheriting unbound operations with the same name but different signature."
+	}
+	
+	constraint NeedToOverrideMultipleUnboundOperations {
+        guard: self.getAllSuperTransferObjectTypes().select(s | s.isKindOf(PSM!TransferObjectType))
+            .forAll(s | s.satisfiesAll("InheritanceIsNotRecursive","NeedToOverrideMultipleUnboundOperations"))
+        check: psmUtils.getAllUnboundOperations(self)
+        		.collect(o | o.name.toLowerCase())
+        		.forAll(opName | psmUtils.getInheritedUnboundOperationsByName(self,opName).size() > 1 implies 
+                        self.operations.exists(o | o.isKindOf(PSM!UnboundOperation) and o.name.toLowerCase() == opName.toLowerCase()))
+        message: "Transfer object type: " + self.name + " must override inherited unbound operations of the same name."
+    }
 }

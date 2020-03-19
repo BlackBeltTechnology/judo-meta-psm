@@ -1,11 +1,9 @@
 context PSM!UnboundOperation {
     
      constraint OverridingWithValidParameters {
-     	guard: self.satisfies("NamedElementHasContainer")
-     	check: self.eContainer.getAllSuperTransferObjectTypes()
-        		.collect(t | t.operations.select(o | o.isKindOf(PSM!UnboundOperation) and o.name.toLowerCase() == self.name.toLowerCase())).flatten()
-                .forAll(o | psmUtils.parametersAreCompatible(self,o))
-        message: "Overriding of unbound operation cannot change parameters (" + self.eContainer.name + "." + self.name + ")"
+     	guard: self.satisfiesAll("NamedElementHasContainer") and psmUtils.getInheritedUnboundOperationsByName(self.eContainer, self.name).forAll(o | o.satisfies("OverridingWithValidParameters"))
+     	check: psmUtils.getInheritedUnboundOperationsByName(self.eContainer, self.name).forAll(o | psmUtils.parametersAreCompatible(self,o))
+        message: "Overriding of unbound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
      }
      
      constraint BehaviourOrImplementationIsRequired {
