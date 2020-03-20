@@ -100,28 +100,32 @@ class PsmValidationOperationBehaviourTest {
 	final String UNSET_RELATION_OPERATION_NAME = "unset";
 	final String ADD_ALL_TO_RELATION_OPERATION_NAME = "addAll";
 	final String REMOVE_ALL_FROM_RELATION_OPERATION_NAME = "removeAll";
-	
 	final String WRONG_EXPOSEDGRAPH_NAME = "wrong_eg";
 	final String WRONG_SELECTOR_NAME = "wrong_sn";
 	final String BOUND_OP = "bound";
-	
 	final String WRONG_CONTAINER = "WRONG_CONTAINER";
 	final String WRONG_OWNER_TYPE = "WRONG_OWNER_TYPE";
 	final String WRONG_OWNER_MTO = "WRONG_OWNER_MTO";
 	final String UNDEFINED_OUTPUT = "UNDEFINED_OUTPUT";
 	final String DEFINED_INPUT = "DEFINED_INPUT";
+	final String DEFINED_OUTPUT = "DEFINED_OUTPUT";
 	final String WRONG_OUTPUT_NAME = "WRONG_OUTPUT_NAME";
 	final String WRONG_OUTPUT_TYPE = "WRONG_OUTPUT_TYPE";
 	final String WRONG_OUTPUT_CARDINALITY = "WRONG_OUTPUT_CARDINALITY";
 	final String DEFINED_RELATION = "DEFINED_RELATION";
-	
+	final String UNDEFINED_RELATION = "UNDEFINED_RELATION";
 	final String UNDEFINED_PARAMS = "UNDEFINED_PARAMS";
 	final String WRONG_PARAM_NAMES = "WRONG_PARAM_NAMES";
 	final String WRONG_PARAM_TYPES = "WRONG_PARAM_TYPES";
 	final String WRONG_PARAM_CARDINALITY = "WRONG_PARAM_CARDINALITY";
-	
 	final String WRONG_TRANSFER_OBJECT_RELATION = "wrong_r";
+	final String UNDEFINED_INPUT = "UNDEFINED_INPUT";
+	final String WRONG_INPUT_NAME = "WRONG_INPUT_NAME";
+	final String WRONG_INPUT_TYPE = "WRONG_INPUT_TYPE";
+	final String WRONG_INPUT_CARDINALITY = "WRONG_INPUT_CARDINALITY";
+	final String WRONG_RELATION = "WRONG_RELATION";
 
+	
     @Test
     void testValidUnboundOperations() throws Exception {
 
@@ -738,23 +742,6 @@ class PsmValidationOperationBehaviourTest {
     
     @Test
     void testUpdateOperationUnboundOperations() throws Exception {
-      
-    	final String MODEL_NAME = "model";
-    	final String ACCESSPOINT_NAME = "ap";
-    	final String EXPOSEDGRAPH_NAME = "eg";
-    	final String WRONG_EXPOSEDGRAPH_NAME = "wrong_eg";
-    	final String PARENT_ENTITY_TYPE  = "pe";
-    	final String CHILD_ENTITY_TYPE  = "ce";
-    	final String NAME_OF_ENTITY_TYPE_FOR_T1  = "e1";
-    	final String NAME_OF_ENTITY_TYPE_FOR_T2 = "e2";
-    	final String NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH  = "t1";
-    	final String SELECTOR_NAME = "sn";
-    	final String WRONG_SELECTOR_NAME = "wrong_sn";
-    	final String PARENT_TRANSFER_OBJECT = "p";
-    	final String CHILD_TRANSFER_OBJECT = "c";
-    	final String NAME_OF_TRANSFER_RELATION_TARGET = "t2";
-    	final String TRANSFER_OBJECT_RELATION = "r";
-    	final String BOUND_OP = "bound";
     	
     	EntityType p = newEntityTypeBuilder().withName(PARENT_ENTITY_TYPE).build();
     	
@@ -835,15 +822,6 @@ class PsmValidationOperationBehaviourTest {
 					.withInstanceRepresentation(t1)
     				.build()
     			);
-    	
-    	final String WRONG_CONTAINER = "WRONG_CONTAINER";
-    	final String WRONG_OWNER_TYPE = "WRONG_OWNER_TYPE";
-    	final String WRONG_OWNER_MTO = "WRONG_OWNER_MTO";
-    	final String UNDEFINED_PARAMS = "UNDEFINED_PARAMS";
-    	final String WRONG_PARAM_NAMES = "WRONG_PARAM_NAMES";
-    	final String WRONG_PARAM_TYPES = "WRONG_PARAM_TYPES";
-    	final String WRONG_PARAM_CARDINALITY = "WRONG_PARAM_CARDINALITY";
-    	final String DEFINED_RELATION = "DEFINED_RELATION";
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
@@ -999,23 +977,6 @@ class PsmValidationOperationBehaviourTest {
     
     @Test
     void testDeleteOperationUnboundOperations() throws Exception {
-      
-    	final String MODEL_NAME = "model";
-    	final String ACCESSPOINT_NAME = "ap";
-    	final String EXPOSEDGRAPH_NAME = "eg";
-    	final String WRONG_EXPOSEDGRAPH_NAME = "wrong_eg";
-    	final String PARENT_ENTITY_TYPE  = "pe";
-    	final String CHILD_ENTITY_TYPE  = "ce";
-    	final String NAME_OF_ENTITY_TYPE_FOR_T1  = "e1";
-    	final String NAME_OF_ENTITY_TYPE_FOR_T2 = "e2";
-    	final String NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH  = "t1";
-    	final String SELECTOR_NAME = "sn";
-    	final String WRONG_SELECTOR_NAME = "wrong_sn";
-    	final String PARENT_TRANSFER_OBJECT = "p";
-    	final String CHILD_TRANSFER_OBJECT = "c";
-    	final String NAME_OF_TRANSFER_RELATION_TARGET = "t2";
-    	final String TRANSFER_OBJECT_RELATION = "r";
-    	final String BOUND_OP = "bound";
     	
     	EntityType p = newEntityTypeBuilder().withName(PARENT_ENTITY_TYPE).build();
     	
@@ -1091,16 +1052,6 @@ class PsmValidationOperationBehaviourTest {
 					.withInstanceRepresentation(t1)
     				.build()
     			);
-    	
-    	final String WRONG_CONTAINER = "WRONG_CONTAINER";
-    	final String WRONG_OWNER_TYPE = "WRONG_OWNER_TYPE";
-    	final String WRONG_OWNER_MTO = "WRONG_OWNER_MTO";
-    	final String UNDEFINED_INPUT = "UNDEFINED_INPUT";
-    	final String DEFINED_OUTPUT = "DEFINED_OUTPUT";
-    	final String WRONG_INPUT_NAME = "WRONG_INPUT_NAME";
-    	final String WRONG_INPUT_TYPE = "WRONG_INPUT_TYPE";
-    	final String WRONG_INPUT_CARDINALITY = "WRONG_INPUT_CARDINALITY";
-    	final String DEFINED_RELATION = "DEFINED_RELATION";
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
@@ -1318,20 +1269,11 @@ class PsmValidationOperationBehaviourTest {
     				.build()
     			);
     	
-    	final String WRONG_CONTAINER_SET = "WRONG_CONTAINER_SET";
-    	final String WRONG_OWNER_TYPE_SET = "WRONG_OWNER_TYPE_SET";
-    	final String WRONG_OWNER_MTO_SET = "WRONG_OWNER_MTO_SET";
-    	final String UNDEFINED_INPUT_SET = "UNDEFINED_INPUT_SET";
-    	final String DEFINED_OUTPUT_SET = "DEFINED_OUTPUT_SET";
-    	final String WRONG_INPUT_NAME_SET = "WRONG_INPUT_NAME_SET";
-    	final String WRONG_INPUT_TYPE_SET = "WRONG_INPUT_TYPE_SET";
-    	final String WRONG_INPUT_CARDINALITY_SET = "WRONG_INPUT_CARDINALITY_SET";
-    	final String WRONG_RELATION_SET = "WRONG_RELATION_SET";
-    	final String UNDEFINED_RELATION_SET = "UNDEFINED_RELATION_SET";
+    	final String SET = "_SET";
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
-    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER_SET)
+    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER + SET)
 					.withBehaviour(newTransferOperationBehaviourBuilder()
 							.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
 							.withOwner(eg)
@@ -1345,7 +1287,7 @@ class PsmValidationOperationBehaviourTest {
 							.build())
 					.build(),
 					
-		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION_SET)
+		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION + SET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
     						.withOwner(eg)
@@ -1357,7 +1299,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     			
-	    		newUnboundOperationBuilder().withName(WRONG_RELATION_SET)
+	    		newUnboundOperationBuilder().withName(WRONG_RELATION + SET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
     						.withOwner(eg)
@@ -1371,7 +1313,7 @@ class PsmValidationOperationBehaviourTest {
     				.build(),
 					
 					
-    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE_SET)
+    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE + SET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
     						.withOwner(pt)
@@ -1384,7 +1326,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO_SET)
+        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO + SET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
     						.withOwner(wrong_eg)
@@ -1397,7 +1339,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT_SET)
+    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT + SET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
         						.withOwner(eg)
@@ -1405,7 +1347,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT_SET)
+            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT + SET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
         						.withOwner(eg)
@@ -1423,7 +1365,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME_SET)
+        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME + SET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
         						.withOwner(eg)
@@ -1436,7 +1378,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE_SET)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE + SET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
         						.withOwner(eg)
@@ -1449,7 +1391,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY_SET)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY + SET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.SET_RELATION)
         						.withOwner(eg)
@@ -1463,20 +1405,11 @@ class PsmValidationOperationBehaviourTest {
         				.build()
     			));
     	
-    	final String WRONG_CONTAINER_UNSET = "WRONG_CONTAINER_UNSET";
-    	final String WRONG_OWNER_TYPE_UNSET = "WRONG_OWNER_TYPE_UNSET";
-    	final String WRONG_OWNER_MTO_UNSET = "WRONG_OWNER_MTO_UNSET";
-    	final String UNDEFINED_INPUT_UNSET = "UNDEFINED_INPUT_UNSET";
-    	final String DEFINED_OUTPUT_UNSET = "DEFINED_OUTPUT_UNSET";
-    	final String WRONG_INPUT_NAME_UNSET = "WRONG_INPUT_NAME_UNSET";
-    	final String WRONG_INPUT_TYPE_UNSET = "WRONG_INPUT_TYPE_UNSET";
-    	final String WRONG_INPUT_CARDINALITY_UNSET = "WRONG_INPUT_CARDINALITY_UNSET";
-    	final String WRONG_RELATION_UNSET = "WRONG_RELATION_UNSET";
-    	final String UNDEFINED_RELATION_UNSET = "UNDEFINED_RELATION_UNSET";
+    	final String UNSET = "_UNSET";
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
-    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER_UNSET)
+    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER + UNSET)
 					.withBehaviour(newTransferOperationBehaviourBuilder()
 							.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
 							.withOwner(eg)
@@ -1490,7 +1423,7 @@ class PsmValidationOperationBehaviourTest {
 							.build())
 					.build(),
 					
-		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION_UNSET)
+		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION + UNSET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
     						.withOwner(eg)
@@ -1502,7 +1435,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     			
-	    		newUnboundOperationBuilder().withName(WRONG_RELATION_UNSET)
+	    		newUnboundOperationBuilder().withName(WRONG_RELATION + UNSET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
     						.withOwner(eg)
@@ -1516,7 +1449,7 @@ class PsmValidationOperationBehaviourTest {
     				.build(),
 					
 					
-    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE_UNSET)
+    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE + UNSET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
     						.withOwner(pt)
@@ -1529,7 +1462,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO_UNSET)
+        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO + UNSET)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
     						.withOwner(wrong_eg)
@@ -1542,7 +1475,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT_UNSET)
+    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT + UNSET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
         						.withOwner(eg)
@@ -1550,7 +1483,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT_UNSET)
+            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT + UNSET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
         						.withOwner(eg)
@@ -1568,7 +1501,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME_UNSET)
+        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME + UNSET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
         						.withOwner(eg)
@@ -1581,7 +1514,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE_UNSET)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE + UNSET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
         						.withOwner(eg)
@@ -1594,7 +1527,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY_UNSET)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY + UNSET)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.UNSET_RELATION)
         						.withOwner(eg)
@@ -1608,20 +1541,11 @@ class PsmValidationOperationBehaviourTest {
         				.build()
     			));
 
-    	final String WRONG_CONTAINER_ADDALL = "WRONG_CONTAINER_ADDALL";
-    	final String WRONG_OWNER_TYPE_ADDALL = "WRONG_OWNER_TYPE_ADDALL";
-    	final String WRONG_OWNER_MTO_ADDALL = "WRONG_OWNER_MTO_ADDALL";
-    	final String UNDEFINED_INPUT_ADDALL = "UNDEFINED_INPUT_ADDALL";
-    	final String DEFINED_OUTPUT_ADDALL = "DEFINED_OUTPUT_ADDALL";
-    	final String WRONG_INPUT_NAME_ADDALL = "WRONG_INPUT_NAME_ADDALL";
-    	final String WRONG_INPUT_TYPE_ADDALL = "WRONG_INPUT_TYPE_ADDALL";
-    	final String WRONG_INPUT_CARDINALITY_ADDALL = "WRONG_INPUT_CARDINALITY_ADDALL";
-    	final String WRONG_RELATION_ADDALL = "WRONG_RELATION_ADDALL";
-    	final String UNDEFINED_RELATION_ADDALL = "UNDEFINED_RELATION_ADDALL";
+    	final String ADDALL = "_ADDALL";
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
-    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER_ADDALL)
+    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER + ADDALL)
 					.withBehaviour(newTransferOperationBehaviourBuilder()
 							.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
 							.withOwner(eg)
@@ -1635,7 +1559,7 @@ class PsmValidationOperationBehaviourTest {
 							.build())
 					.build(),
 					
-		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION_ADDALL)
+		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION + ADDALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
     						.withOwner(eg)
@@ -1647,7 +1571,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     			
-	    		newUnboundOperationBuilder().withName(WRONG_RELATION_ADDALL)
+	    		newUnboundOperationBuilder().withName(WRONG_RELATION + ADDALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
     						.withOwner(eg)
@@ -1661,7 +1585,7 @@ class PsmValidationOperationBehaviourTest {
     				.build(),
 					
 					
-    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE_ADDALL)
+    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE + ADDALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
     						.withOwner(pt)
@@ -1674,7 +1598,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO_ADDALL)
+        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO + ADDALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
     						.withOwner(wrong_eg)
@@ -1687,7 +1611,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT_ADDALL)
+    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT + ADDALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
         						.withOwner(eg)
@@ -1695,7 +1619,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT_ADDALL)
+            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT + ADDALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
         						.withOwner(eg)
@@ -1713,7 +1637,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME_ADDALL)
+        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME + ADDALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
         						.withOwner(eg)
@@ -1726,7 +1650,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE_ADDALL)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE + ADDALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
         						.withOwner(eg)
@@ -1739,7 +1663,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY_ADDALL)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY + ADDALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.ADD_ALL_TO_RELATION)
         						.withOwner(eg)
@@ -1753,20 +1677,11 @@ class PsmValidationOperationBehaviourTest {
         				.build()
     			));
     	
-    	final String WRONG_CONTAINER_REMOVEALL = "WRONG_CONTAINER_REMOVEALL";
-    	final String WRONG_OWNER_TYPE_REMOVEALL = "WRONG_OWNER_TYPE_REMOVEALL";
-    	final String WRONG_OWNER_MTO_REMOVEALL = "WRONG_OWNER_MTO_REMOVEALL";
-    	final String UNDEFINED_INPUT_REMOVEALL = "UNDEFINED_INPUT_REMOVEALL";
-    	final String DEFINED_OUTPUT_REMOVEALL = "DEFINED_OUTPUT_REMOVEALL";
-    	final String WRONG_INPUT_NAME_REMOVEALL = "WRONG_INPUT_NAME_REMOVEALL";
-    	final String WRONG_INPUT_TYPE_REMOVEALL = "WRONG_INPUT_TYPE_REMOVEALL";
-    	final String WRONG_INPUT_CARDINALITY_REMOVEALL = "WRONG_INPUT_CARDINALITY_REMOVEALL";
-    	final String WRONG_RELATION_REMOVEALL = "WRONG_RELATION_REMOVEALL";
-    	final String UNDEFINED_RELATION_REMOVEALL = "UNDEFINED_RELATION_REMOVEALL";
+    	final String REMOVEALL = "_REMOVEALL";
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
-    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER_REMOVEALL)
+    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER + REMOVEALL)
 					.withBehaviour(newTransferOperationBehaviourBuilder()
 							.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
 							.withOwner(eg)
@@ -1780,7 +1695,7 @@ class PsmValidationOperationBehaviourTest {
 							.build())
 					.build(),
 					
-		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION_REMOVEALL)
+		    	newUnboundOperationBuilder().withName(UNDEFINED_RELATION + REMOVEALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
     						.withOwner(eg)
@@ -1792,7 +1707,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     			
-	    		newUnboundOperationBuilder().withName(WRONG_RELATION_REMOVEALL)
+	    		newUnboundOperationBuilder().withName(WRONG_RELATION + REMOVEALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
     						.withOwner(eg)
@@ -1806,7 +1721,7 @@ class PsmValidationOperationBehaviourTest {
     				.build(),
 					
 					
-    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE_REMOVEALL)
+    			newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE + REMOVEALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
     						.withOwner(pt)
@@ -1819,7 +1734,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO_REMOVEALL)
+        		newUnboundOperationBuilder().withName(WRONG_OWNER_MTO + REMOVEALL)
     				.withBehaviour(newTransferOperationBehaviourBuilder()
     						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
     						.withOwner(wrong_eg)
@@ -1832,7 +1747,7 @@ class PsmValidationOperationBehaviourTest {
     						.build())
     				.build(),
     				
-    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT_REMOVEALL)
+    			newUnboundOperationBuilder().withName(UNDEFINED_INPUT + REMOVEALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
         						.withOwner(eg)
@@ -1840,7 +1755,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT_REMOVEALL)
+            	newUnboundOperationBuilder().withName(DEFINED_OUTPUT + REMOVEALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
         						.withOwner(eg)
@@ -1858,7 +1773,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME_REMOVEALL)
+        		newUnboundOperationBuilder().withName(WRONG_INPUT_NAME + REMOVEALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
         						.withOwner(eg)
@@ -1871,7 +1786,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE_REMOVEALL)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE + REMOVEALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
         						.withOwner(eg)
@@ -1884,7 +1799,7 @@ class PsmValidationOperationBehaviourTest {
         						.build())
         				.build(),
         				
-            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY_REMOVEALL)
+            	newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY + REMOVEALL)
         				.withBehaviour(newTransferOperationBehaviourBuilder()
         						.withBehaviourType(TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION)
         						.withOwner(eg)
