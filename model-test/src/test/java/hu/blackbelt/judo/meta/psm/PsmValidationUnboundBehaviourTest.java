@@ -18,8 +18,12 @@ import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardi
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.UniqueEList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,18 +37,21 @@ import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionExcep
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
 import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
+import hu.blackbelt.judo.meta.psm.data.BoundOperation;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
+import hu.blackbelt.judo.meta.psm.service.util.builder.BoundTransferOperationBuilder;
 
 
-class PsmValidationOperationBehaviourTest {
+class PsmValidationUnboundBehaviourTest {
 
-    Logger logger = LoggerFactory.getLogger(PsmValidationOperationBehaviourTest.class);
+    Logger logger = LoggerFactory.getLogger(PsmValidationUnboundBehaviourTest.class);
 
     private final String createdSourceModelName = "urn:psm.judo-meta-psm";
 
@@ -124,7 +131,6 @@ class PsmValidationOperationBehaviourTest {
 	final String WRONG_INPUT_TYPE = "WRONG_INPUT_TYPE";
 	final String WRONG_INPUT_CARDINALITY = "WRONG_INPUT_CARDINALITY";
 	final String WRONG_RELATION = "WRONG_RELATION";
-
 	
     @Test
     void testValidUnboundOperations() throws Exception {
@@ -376,7 +382,9 @@ class PsmValidationOperationBehaviourTest {
     	
     	t1.getOperations().addAll(ImmutableList.of(
     			
-    			newBoundTransferOperationBuilder().withName(WRONG_CONTAINER)
+    			newBoundTransferOperationBuilder()
+    			
+    				.withName(WRONG_CONTAINER)
 					.withBehaviour(newTransferOperationBehaviourBuilder()
 							.withBehaviourType(TransferOperationBehaviourType.GET)
 							.withOwner(eg)
@@ -387,6 +395,8 @@ class PsmValidationOperationBehaviourTest {
 							.withType(t1)
 							.withCardinality(newCardinalityBuilder().withLower(eg.getCardinality().getLower()).withUpper(eg.getCardinality().getUpper()).build())
 							.build())
+					
+					
 					.build(),
 					
 				newUnboundOperationBuilder().withName(DEFINED_RELATION)
@@ -493,12 +503,12 @@ class PsmValidationOperationBehaviourTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"RelationOfGetBehaviourIsUndefined|Relation must be undefined for 'GET' operation: DEFINED_RELATION (in: t1)",
-        		"OperationOfGetBehaviourIsValid|'GET' operation: WRONG_CONTAINER (in: t1) must be unbound operation",
+        		"RelationIsUndefinedUnboundWithoutRelation|Relation must be undefined for 'GET' operation: DEFINED_RELATION (in: t1)",
+        		"OperationIsValidUnboundBehaviour|'GET' operation: WRONG_CONTAINER (in: t1) must be owned by an unbound operation.",
         		"GetOperationOutputParameterIsDefined|'GET' operation must have an output parameter named 'output' (operation: UNDEFINED_OUTPUT)",
         		"GetOperationOutputTypeIsValid|Type of 'GET' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_OUTPUT_TYPE)",
-        		"OwnerOfGetBehaviourIsValid|Mapped transfer object of owner exposed graph of 'GET' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
-        		"OwnerOfGetBehaviourIsExposedGraph|Owner of 'GET' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'GET' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'GET' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
         		"GetOperationOutputCardinalityIsValid|Cardinality of 'GET' operation's output parameter must be the same as its owner's (operation: WRONG_OUTPUT_CARDINALITY)",
         		"GetOperationInputParameterIsNotDefined|'GET' operation cannot have an input parameter (operation: DEFINED_INPUT)",
         		"GetOperationOutputNameIsValid|'GET' operation's output parameter must be named 'output' (operation: WRONG_OUTPUT_NAME)"),
@@ -585,8 +595,7 @@ class PsmValidationOperationBehaviourTest {
 						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
 						.build())
 					.withInstanceRepresentation(t1)
-    				.build()
-    			);
+    				.build());
 
     	t1.getOperations().addAll(ImmutableList.of(
     			
@@ -725,18 +734,18 @@ class PsmValidationOperationBehaviourTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"RelationOfCreateBehaviourIsUndefined|Relation must be undefined for 'CREATE' operation: DEFINED_RELATION (in: t1)",
-        		"CreateOperationOutputCardinalityIsValid|Cardinality of 'CREATE' operation's output parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)",
-        		"CreateOperationOutputParameterIsDefined|'CREATE' operation must have an output parameter named 'output' (operation: UNDEFINED_PARAMS)",
-        		"CreateOperationOutputNameIsValid|'CREATE' operation's output parameter must be named 'output' (operation: WRONG_PARAM_NAMES)",
-        		"CreateOperationInputParameterIsDefined|'CREATE' operation must have an input parameter named 'input' (operation: UNDEFINED_PARAMS)",
-        		"CreateOperationInputNameIsValid|'CREATE' operation's input parameter must be named 'input' (operation: WRONG_PARAM_NAMES)",
-        		"OperationOfCreateBehaviourIsValid|'CREATE' operation: WRONG_CONTAINER (in: t1) must be unbound operation",
-        		"OwnerOfCreateBehaviourIsValid|Mapped transfer object of owner exposed graph of 'CREATE' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
-        		"OwnerOfCreateBehaviourIsExposedGraph|Owner of 'CREATE' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
-        		"CreateOperationInputTypeIsValid|Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
-        		"CreateOperationOutputTypeIsValid|Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: WRONG_PARAM_TYPES)",
-        		"CreateOperationInputCardinalityIsValid|Cardinality of 'CREATE' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
+        		"RelationIsUndefinedUnboundWithoutRelation|Relation must be undefined for 'CREATE' operation: DEFINED_RELATION (in: t1)",
+        		"CreateUpdateOperationOutputCardinalityIsValid|Cardinality of 'CREATE' operation's output parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)",
+        		"CreateUpdateOperationOutputParameterIsDefined|'CREATE' operation must have an output parameter named 'output' (operation: UNDEFINED_PARAMS)",
+        		"CreateUpdateOperationOutputNameIsValid|'CREATE' operation's output parameter must be named 'output' (operation: WRONG_PARAM_NAMES)",
+        		"CreateUpdateOperationInputParameterIsDefined|'CREATE' operation must have an input parameter named 'input' (operation: UNDEFINED_PARAMS)",
+        		"CreateUpdateOperationInputNameIsValid|'CREATE' operation's input parameter must be named 'input' (operation: WRONG_PARAM_NAMES)",
+        		"OperationIsValidUnboundBehaviour|'CREATE' operation: WRONG_CONTAINER (in: t1) must be owned by an unbound operation.",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'CREATE' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'CREATE' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
+        		"CreateUpdateOperationInputTypeIsValid|Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
+        		"CreateUpdateOperationOutputTypeIsValid|Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: WRONG_PARAM_TYPES)",
+        		"CreateUpdateOperationInputCardinalityIsValid|Cardinality of 'CREATE' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
             Collections.emptyList());
     }
     
@@ -960,18 +969,18 @@ class PsmValidationOperationBehaviourTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"RelationOfUpdateBehaviourIsUndefined|Relation must be undefined for 'UPDATE' operation: DEFINED_RELATION (in: t1)",
-        		"UpdateOperationOutputCardinalityIsValid|Cardinality of 'UPDATE' operation's output parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)",
-        		"UpdateOperationOutputParameterIsDefined|'UPDATE' operation must have an output parameter named 'output' (operation: UNDEFINED_PARAMS)",
-        		"UpdateOperationOutputNameIsValid|'UPDATE' operation's output parameter must be named 'output' (operation: WRONG_PARAM_NAMES)",
-        		"UpdateOperationInputParameterIsDefined|'UPDATE' operation must have an input parameter named 'input' (operation: UNDEFINED_PARAMS)",
-        		"UpdateOperationInputNameIsValid|'UPDATE' operation's input parameter must be named 'input' (operation: WRONG_PARAM_NAMES)",
-        		"OperationOfUpdateBehaviourIsValid|'UPDATE' operation: WRONG_CONTAINER (in: t1) must be unbound operation",
-        		"OwnerOfUpdateBehaviourIsValid|Mapped transfer object of owner exposed graph of 'UPDATE' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
-        		"OwnerOfUpdateBehaviourIsExposedGraph|Owner of 'UPDATE' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
-        		"UpdateOperationInputTypeIsValid|Type of 'UPDATE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
-        		"UpdateOperationOutputTypeIsValid|Type of 'UPDATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: WRONG_PARAM_TYPES)",
-        		"UpdateOperationInputCardinalityIsValid|Cardinality of 'UPDATE' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
+        		"RelationIsUndefinedUnboundWithoutRelation|Relation must be undefined for 'UPDATE' operation: DEFINED_RELATION (in: t1)",
+        		"CreateUpdateOperationOutputCardinalityIsValid|Cardinality of 'UPDATE' operation's output parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)",
+        		"CreateUpdateOperationOutputParameterIsDefined|'UPDATE' operation must have an output parameter named 'output' (operation: UNDEFINED_PARAMS)",
+        		"CreateUpdateOperationOutputNameIsValid|'UPDATE' operation's output parameter must be named 'output' (operation: WRONG_PARAM_NAMES)",
+        		"CreateUpdateOperationInputParameterIsDefined|'UPDATE' operation must have an input parameter named 'input' (operation: UNDEFINED_PARAMS)",
+        		"CreateUpdateOperationInputNameIsValid|'UPDATE' operation's input parameter must be named 'input' (operation: WRONG_PARAM_NAMES)",
+        		"OperationIsValidUnboundBehaviour|'UPDATE' operation: WRONG_CONTAINER (in: t1) must be owned by an unbound operation.",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'UPDATE' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'UPDATE' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
+        		"CreateUpdateOperationInputTypeIsValid|Type of 'UPDATE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
+        		"CreateUpdateOperationOutputTypeIsValid|Type of 'UPDATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: WRONG_PARAM_TYPES)",
+        		"CreateUpdateOperationInputCardinalityIsValid|Cardinality of 'UPDATE' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
             Collections.emptyList());
     }
     
@@ -1172,13 +1181,13 @@ class PsmValidationOperationBehaviourTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"RelationOfDeleteBehaviourIsUndefined|Relation must be undefined for 'DELETE' operation: DEFINED_RELATION (in: t1)",
-        		"OperationOfDeleteBehaviourIsValid|'DELETE' operation: WRONG_CONTAINER (in: t1) must be unbound operation",
+        		"RelationIsUndefinedUnboundWithoutRelation|Relation must be undefined for 'DELETE' operation: DEFINED_RELATION (in: t1)",
+        		"OperationIsValidUnboundBehaviour|'DELETE' operation: WRONG_CONTAINER (in: t1) must be owned by an unbound operation.",
         		"DeleteOperationInputParameterIsDefined|'DELETE' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT)",
         		"DeleteOperationInputTypeIsValid|Type of 'DELETE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_INPUT_TYPE)",
         		"DeleteOperationInputCardinalityIsValid|Cardinality of 'DELETE' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY)",
-        		"OwnerOfDeleteBehaviourIsValid|Mapped transfer object of owner exposed graph of 'DELETE' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
-        		"OwnerOfDeleteBehaviourIsExposedGraph|Owner of 'DELETE' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'DELETE' operation: WRONG_OWNER_MTO (in: t1) must match the operation's container.",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'DELETE' operation: WRONG_OWNER_TYPE (in: t1) must be exposed graph.",
         		"DeleteOperationOutputParameterIsNotDefined|'DELETE' operation cannot have an output parameter (operation: DEFINED_OUTPUT)",
         		"DeleteOperationInputNameIsValid|'DELETE' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME)"),
             Collections.emptyList());
@@ -1819,49 +1828,49 @@ class PsmValidationOperationBehaviourTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-        		"OwnerOfSetRelationBehaviourIsValid|Mapped transfer object of owner exposed graph of 'SET_RELATION' operation: WRONG_OWNER_MTO_SET (in: t1) must match the operation's container.",
-        		"SetRelationOperationInputTypeIsValid|Type of 'SET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_SET)",
-        		"RelationOfSetRelationBehaviourIsDefined|Relation must be defined for 'SET_RELATION' operation: UNDEFINED_RELATION_SET (in: t1)",
-        		"RelationOfSetRelationBehaviourIsValid|Relation of 'SET_RELATION' operation: WRONG_RELATION_SET must be one of the transfer object type referenced by the operation's owner",
-        		"OperationOfSetRelationBehaviourIsValid|'SET_RELATION' operation: WRONG_CONTAINER_SET (in: t1) must be owned by an unbound operation",
-        		"SetRelationOperationInputParameterIsDefined|'SET_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_SET)",
-        		"SetRelationOperationOutputParameterIsNotDefined|'SET_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_SET)",
-        		"OwnerOfSetRelationBehaviourIsExposedGraph|Owner of 'SET_RELATION' operation: WRONG_OWNER_TYPE_SET (in: t1) must be exposed graph.",
-        		"SetRelationOperationInputNameIsValid|'SET_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_SET)",
-        		"SetRelationOperationInputCardinalityIsValid|Cardinality of 'SET_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_SET)",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'SET_RELATION' operation: WRONG_OWNER_MTO_SET (in: t1) must match the operation's container.",
+        		"InputTypeIsValidUnboundWithRelation|Type of 'SET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_SET).",
+        		"RelationIsDefinedUnboundWithRelation|Relation must be defined for 'SET_RELATION' operation: UNDEFINED_RELATION_SET (in: t1).",
+        		"RelationIsValidUnboundWithRelation|Relation of 'SET_RELATION' operation: WRONG_RELATION_SET must be one of the transfer object type referenced by the operation's owner.",
+        		"OperationIsValidUnboundBehaviour|'SET_RELATION' operation: WRONG_CONTAINER_SET (in: t1) must be owned by an unbound operation.",
+        		"InputParameterIsDefinedUnboundWithRelation|'SET_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_SET).",
+        		"OutputParameterIsNotDefinedUnboundWithRelation|'SET_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_SET).",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'SET_RELATION' operation: WRONG_OWNER_TYPE_SET (in: t1) must be exposed graph.",
+        		"InputNameIsValidUnboundWithRelation|'SET_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_SET).",
+        		"InputCardinalityIsValidUnboundWithRelation|Cardinality of 'SET_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_SET).",
         		
-        		"OwnerOfUnsetRelationBehaviourIsValid|Mapped transfer object of owner exposed graph of 'UNSET_RELATION' operation: WRONG_OWNER_MTO_UNSET (in: t1) must match the operation's container.",
-        		"UnsetRelationOperationInputTypeIsValid|Type of 'UNSET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_UNSET)",
-        		"RelationOfUnsetRelationBehaviourIsDefined|Relation must be defined for 'UNSET_RELATION' operation: UNDEFINED_RELATION_UNSET (in: t1)",
-        		"RelationOfUnsetRelationBehaviourIsValid|Relation of 'UNSET_RELATION' operation: WRONG_RELATION_UNSET must be one of the transfer object type referenced by the operation's owner",
-        		"OperationOfUnsetRelationBehaviourIsValid|'UNSET_RELATION' operation: WRONG_CONTAINER_UNSET (in: t1) must be owned by an unbound operation",
-        		"UnsetRelationOperationInputParameterIsDefined|'UNSET_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_UNSET)",
-        		"UnsetRelationOperationOutputParameterIsNotDefined|'UNSET_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_UNSET)",
-        		"OwnerOfUnsetRelationBehaviourIsExposedGraph|Owner of 'UNSET_RELATION' operation: WRONG_OWNER_TYPE_UNSET (in: t1) must be exposed graph.",
-        		"UnsetRelationOperationInputNameIsValid|'UNSET_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_UNSET)",
-        		"UnsetRelationOperationInputCardinalityIsValid|Cardinality of 'UNSET_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_UNSET)",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'UNSET_RELATION' operation: WRONG_OWNER_MTO_UNSET (in: t1) must match the operation's container.",
+        		"InputTypeIsValidUnboundWithRelation|Type of 'UNSET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_UNSET).",
+        		"RelationIsDefinedUnboundWithRelation|Relation must be defined for 'UNSET_RELATION' operation: UNDEFINED_RELATION_UNSET (in: t1).",
+        		"RelationIsValidUnboundWithRelation|Relation of 'UNSET_RELATION' operation: WRONG_RELATION_UNSET must be one of the transfer object type referenced by the operation's owner.",
+        		"OperationIsValidUnboundBehaviour|'UNSET_RELATION' operation: WRONG_CONTAINER_UNSET (in: t1) must be owned by an unbound operation.",
+        		"InputParameterIsDefinedUnboundWithRelation|'UNSET_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_UNSET).",
+        		"OutputParameterIsNotDefinedUnboundWithRelation|'UNSET_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_UNSET).",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'UNSET_RELATION' operation: WRONG_OWNER_TYPE_UNSET (in: t1) must be exposed graph.",
+        		"InputNameIsValidUnboundWithRelation|'UNSET_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_UNSET).",
+        		"InputCardinalityIsValidUnboundWithRelation|Cardinality of 'UNSET_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_UNSET).",
         		
-        		"OwnerOfAddAllToRelationBehaviourIsValid|Mapped transfer object of owner exposed graph of 'ADD_ALL_TO_RELATION' operation: WRONG_OWNER_MTO_ADDALL (in: t1) must match the operation's container.",
-        		"AddAllToRelationOperationInputTypeIsValid|Type of 'ADD_ALL_TO_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_ADDALL)",
-        		"RelationOfAddAllToRelationBehaviourIsDefined|Relation must be defined for 'ADD_ALL_TO_RELATION' operation: UNDEFINED_RELATION_ADDALL (in: t1)",
-        		"RelationOfAddAllToRelationBehaviourIsValid|Relation of 'ADD_ALL_TO_RELATION' operation: WRONG_RELATION_ADDALL must be one of the transfer object type referenced by the operation's owner",
-        		"OperationOfAddAllToRelationBehaviourIsValid|'ADD_ALL_TO_RELATION' operation: WRONG_CONTAINER_ADDALL (in: t1) must be owned by an unbound operation",
-        		"AddAllToRelationOperationInputParameterIsDefined|'ADD_ALL_TO_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_ADDALL)",
-        		"AddAllToRelationOperationOutputParameterIsNotDefined|'ADD_ALL_TO_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_ADDALL)",
-        		"OwnerOfAddAllToRelationBehaviourIsExposedGraph|Owner of 'ADD_ALL_TO_RELATION' operation: WRONG_OWNER_TYPE_ADDALL (in: t1) must be exposed graph.",
-        		"AddAllToRelationOperationInputNameIsValid|'ADD_ALL_TO_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_ADDALL)",
-        		"AddAllToRelationOperationInputCardinalityIsValid|Cardinality of 'ADD_ALL_TO_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_ADDALL)",
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'ADD_ALL_TO_RELATION' operation: WRONG_OWNER_MTO_ADDALL (in: t1) must match the operation's container.",
+        		"InputTypeIsValidUnboundWithRelation|Type of 'ADD_ALL_TO_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_ADDALL).",
+        		"RelationIsDefinedUnboundWithRelation|Relation must be defined for 'ADD_ALL_TO_RELATION' operation: UNDEFINED_RELATION_ADDALL (in: t1).",
+        		"RelationIsValidUnboundWithRelation|Relation of 'ADD_ALL_TO_RELATION' operation: WRONG_RELATION_ADDALL must be one of the transfer object type referenced by the operation's owner.",
+        		"OperationIsValidUnboundBehaviour|'ADD_ALL_TO_RELATION' operation: WRONG_CONTAINER_ADDALL (in: t1) must be owned by an unbound operation.",
+        		"InputParameterIsDefinedUnboundWithRelation|'ADD_ALL_TO_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_ADDALL).",
+        		"OutputParameterIsNotDefinedUnboundWithRelation|'ADD_ALL_TO_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_ADDALL).",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'ADD_ALL_TO_RELATION' operation: WRONG_OWNER_TYPE_ADDALL (in: t1) must be exposed graph.",
+        		"InputNameIsValidUnboundWithRelation|'ADD_ALL_TO_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_ADDALL).",
+        		"InputCardinalityIsValidUnboundWithRelation|Cardinality of 'ADD_ALL_TO_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_ADDALL).",
         		
-        		"OwnerOfRemoveAllFromRelationBehaviourIsValid|Mapped transfer object of owner exposed graph of 'REMOVE_ALL_FROM_RELATION' operation: WRONG_OWNER_MTO_REMOVEALL (in: t1) must match the operation's container.",
-        		"RemoveAllFromRelationOperationInputTypeIsValid|Type of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_REMOVEALL)",
-        		"RelationOfRemoveAllFromRelationBehaviourIsDefined|Relation must be defined for 'REMOVE_ALL_FROM_RELATION' operation: UNDEFINED_RELATION_REMOVEALL (in: t1)",
-        		"RelationOfRemoveAllFromRelationBehaviourIsValid|Relation of 'REMOVE_ALL_FROM_RELATION' operation: WRONG_RELATION_REMOVEALL must be one of the transfer object type referenced by the operation's owner",
-        		"OperationOfRemoveAllFromRelationBehaviourIsValid|'REMOVE_ALL_FROM_RELATION' operation: WRONG_CONTAINER_REMOVEALL (in: t1) must be owned by an unbound operation",
-        		"RemoveAllFromRelationOperationInputParameterIsDefined|'REMOVE_ALL_FROM_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_REMOVEALL)",
-        		"RemoveAllFromRelationOperationOutputParameterIsNotDefined|'REMOVE_ALL_FROM_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_REMOVEALL)",
-        		"OwnerOfRemoveAllFromRelationBehaviourIsExposedGraph|Owner of 'REMOVE_ALL_FROM_RELATION' operation: WRONG_OWNER_TYPE_REMOVEALL (in: t1) must be exposed graph.",
-        		"RemoveAllFromRelationOperationInputNameIsValid|'REMOVE_ALL_FROM_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_REMOVEALL)",
-        		"RemoveAllFromRelationOperationInputCardinalityIsValid|Cardinality of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_REMOVEALL)"),
+        		"OwnerIsValidUnboundBehaviour|Mapped transfer object of owner exposed graph of 'REMOVE_ALL_FROM_RELATION' operation: WRONG_OWNER_MTO_REMOVEALL (in: t1) must match the operation's container.",
+        		"InputTypeIsValidUnboundWithRelation|Type of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE_REMOVEALL).",
+        		"RelationIsDefinedUnboundWithRelation|Relation must be defined for 'REMOVE_ALL_FROM_RELATION' operation: UNDEFINED_RELATION_REMOVEALL (in: t1).",
+        		"RelationIsValidUnboundWithRelation|Relation of 'REMOVE_ALL_FROM_RELATION' operation: WRONG_RELATION_REMOVEALL must be one of the transfer object type referenced by the operation's owner.",
+        		"OperationIsValidUnboundBehaviour|'REMOVE_ALL_FROM_RELATION' operation: WRONG_CONTAINER_REMOVEALL (in: t1) must be owned by an unbound operation.",
+        		"InputParameterIsDefinedUnboundWithRelation|'REMOVE_ALL_FROM_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_REMOVEALL).",
+        		"OutputParameterIsNotDefinedUnboundWithRelation|'REMOVE_ALL_FROM_RELATION' operation cannot have an output parameter (operation: DEFINED_OUTPUT_REMOVEALL).",
+        		"OwnerIsExposedGraphUnboundBehaviour|Owner of 'REMOVE_ALL_FROM_RELATION' operation: WRONG_OWNER_TYPE_REMOVEALL (in: t1) must be exposed graph.",
+        		"InputNameIsValidUnboundWithRelation|'REMOVE_ALL_FROM_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME_REMOVEALL).",
+        		"InputCardinalityIsValidUnboundWithRelation|Cardinality of 'REMOVE_ALL_FROM_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY_REMOVEALL)."),
         	Collections.emptyList());
     }
 

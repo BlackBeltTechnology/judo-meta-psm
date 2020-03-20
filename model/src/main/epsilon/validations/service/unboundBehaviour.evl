@@ -1,0 +1,30 @@
+context PSM!TransferOperationBehaviour {
+
+	guard: self.eContainer.isDefined() and 
+		(self.behaviourType == PSM!TransferOperationBehaviourType#GET or
+		self.behaviourType == PSM!TransferOperationBehaviourType#CREATE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#DELETE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION)
+	
+	constraint OperationIsValidUnboundBehaviour {
+		check: self.eContainer.isKindOf(PSM!UnboundOperation)
+		message: "'" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by an unbound operation."
+	}
+
+	constraint OwnerIsExposedGraphUnboundBehaviour {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph)
+		message: "Owner of '" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph."
+	}
+	
+	constraint OwnerIsValidUnboundBehaviour {
+		guard: self.satisfies("OwnerIsExposedGraphUnboundBehaviour") 
+		check: self.owner.mappedTransferObjectType == self.eContainer.eContainer
+		message: "Mapped transfer object of owner exposed graph of '" + self.behaviourType + "' operation: " + self.eContainer.name  + 
+			" (in: " + self.eContainer.eContainer.name + ") must match the operation's container."
+	}
+}
+	
