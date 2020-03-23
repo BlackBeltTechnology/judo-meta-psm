@@ -162,26 +162,12 @@ class PsmValidationBoundBehaviourTest {
 	final String WRONG_INPUT_TYPE_BINDING = "WRONG_INPUT_TYPE_BINDING";
 	final String WRONG_INPUT_CARDINALITY_BINDING = "WRONG_INPUT_CARDINALITY_BINDING";
 	
-	final String WRONG_PARAM_NAME = "WRONG_PARAM_NAME";
-
-
-	final String CREATE_OPERATION_NAME = "create";
-	final String UPDATE_OPERATION_NAME = "update";
-	final String DELETE_OPERATION_NAME = "delete";
-	final String SET_RELATION_OPERATION_NAME = "set";
-	final String UNSET_RELATION_OPERATION_NAME = "unset";
-	final String ADD_ALL_TO_RELATION_OPERATION_NAME = "addAll";
-	final String REMOVE_ALL_FROM_RELATION_OPERATION_NAME = "removeAll";
-	final String WRONG_EXPOSEDGRAPH_NAME = "wrong_eg";
-	final String WRONG_SELECTOR_NAME = "wrong_sn";
-	final String BOUND_OP = "bound";
 	final String UNDEFINED_RELATION = "UNDEFINED_RELATION";
-	final String UNDEFINED_PARAMS = "UNDEFINED_PARAMS";
-	final String WRONG_PARAM_TYPES = "WRONG_PARAM_TYPES";
-	final String WRONG_PARAM_CARDINALITY = "WRONG_PARAM_CARDINALITY";
-	final String WRONG_TRANSFER_OBJECT_RELATION = "wrong_r";
-
+	final String UNDEFINED_RELATION_BINDING = "UNDEFINED_RELATION_BINDING";
 	final String WRONG_RELATION = "WRONG_RELATION";
+	final String WRONG_RELATION_BINDING = "WRONG_RELATION_BINDING";
+	
+	final String WRONG_PARAM_NAME = "WRONG_PARAM_NAME";
 
 	private BoundOperation getBoundOperationByName(final EntityType entityType, final String name) {
 		return entityType.getOperations().stream().filter(o -> o.getName().equals(name)).findAny().get();
@@ -697,9 +683,7 @@ class PsmValidationBoundBehaviourTest {
 				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_OUTPUT_CARDINALITY),
 						TransferOperationBehaviourType.UPDATE_RELATION, owner,
 						getBoundOperationByName(e1, WRONG_OUTPUT_CARDINALITY_BINDING), OUTPUT, type, 1, -1, INPUT, type, 1, 1)
-								.build()
-				
-				));
+								.build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
 				.withElements(ImmutableList.of(e1, e2, e3, t1, type, t3, ct, pt, c, p)).build();
@@ -718,4 +702,93 @@ class PsmValidationBoundBehaviourTest {
 				), Collections.emptyList());
 	}
 
+	@Test
+	void testValidBoundBehaviourWithRelation() throws Exception {
+
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).build();
+		EntityType p = newEntityTypeBuilder().withName(PARENT_ENTITY_TYPE).build();
+		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).withSuperEntityTypes(p).build();
+		EntityType c = newEntityTypeBuilder().withName(CHILD_ENTITY_TYPE).withSuperEntityTypes(e2).build();
+		EntityType e3 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T3).build();
+
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1).build();
+
+		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
+				.withEntityType(p).build();
+		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
+				.withSuperTransferObjectTypes(pt).withEntityType(e2).build();
+		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
+				.withSuperTransferObjectTypes(type).withEntityType(c).build();
+
+		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
+				.withEntityType(e3).build();
+
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION_1)
+				.withTarget(type).withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(owner);
+
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION_2)
+				.withTarget(t3).withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		type.getRelations().add(relation);
+
+		e1.getOperations().addAll(ImmutableList.of(
+				boundOperationDecorator(newBoundOperationBuilder().withName(UNDEFINED_RELATION_BINDING), t1, false, INPUT, type, 1, 1).build(),
+				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_RELATION_BINDING), t1, false, INPUT, type, 1, 1).build(),
+				boundOperationDecorator(newBoundOperationBuilder().withName(UNDEFINED_INPUT_BINDING), t1, true, OUTPUT, type, 1, 1).build(),
+				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_INPUT_NAME_BINDING), t1, false, OUTPUT, type,1, 1).build(),
+				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_INPUT_TYPE_BINDING), t1, false, INPUT, pt, 1, 1).build(),
+				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_INPUT_CARDINALITY_BINDING), t1, false, INPUT, ct, 0, -1).build(),
+				boundOperationDecorator(newBoundOperationBuilder().withName(DEFINED_OUTPUT_BINDING), t1, true, INPUT, type, 1, 1).build()
+				));
+
+		t1.getOperations().addAll(ImmutableList.of(
+				
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(UNDEFINED_RELATION),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner,
+						getBoundOperationByName(e1, UNDEFINED_RELATION_BINDING), false, INPUT, type, 1, 1)
+								.build(),
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_RELATION),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner, owner,
+						getBoundOperationByName(e1, WRONG_RELATION_BINDING), false, INPUT, type, 1, 1)
+								.build(),
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(UNDEFINED_INPUT),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner, relation,
+						getBoundOperationByName(e1, UNDEFINED_INPUT_BINDING), true, OUTPUT, type, 1, 1)
+								.build(),
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_INPUT_NAME),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner, relation,
+						getBoundOperationByName(e1, WRONG_INPUT_NAME_BINDING), false, OUTPUT, type, 1, 1)
+								.build(),
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_INPUT_TYPE),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner, relation,
+						getBoundOperationByName(e1, WRONG_INPUT_TYPE_BINDING), false, INPUT, pt, 1, 1)
+								.build(),
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_INPUT_CARDINALITY),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner, relation,
+						getBoundOperationByName(e1, WRONG_INPUT_CARDINALITY_BINDING), false, INPUT, ct, 0, -1)
+								.build(),
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(DEFINED_OUTPUT),
+						TransferOperationBehaviourType.SET_RELATION_OF_RELATION, owner, relation,
+						getBoundOperationByName(e1, DEFINED_OUTPUT_BINDING), true, INPUT, type, 1, 1)
+								.build()
+				));
+
+		Model model = newModelBuilder().withName(MODEL_NAME)
+				.withElements(ImmutableList.of(e1, e2, e3, t1, type, t3, ct, pt, c, p)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of(
+			"InputCardinalityIsValidBoundWithRelation|Cardinality of the input of 'SET_RELATION_OF_RELATION' operation's binding must be 1..1 (operation: WRONG_INPUT_CARDINALITY).",
+			"InputTypeIsValidBoundWithRelation|Input type of 'SET_RELATION_OF_RELATION' operation's binding must be kind of mapped transfer object type referenced by the owner (operation: WRONG_INPUT_TYPE).",
+			"RelationIsDefinedBoundWithRelation|Relation must be defined for 'SET_RELATION_OF_RELATION' operation: UNDEFINED_RELATION (in: t1).",
+			"RelationIsValidBoundWithRelation|Relation of 'SET_RELATION_OF_RELATION' operation: WRONG_RELATION must be one of the transfer object type referenced by the operation's owner.",
+			"InputNameIsValidBoundWithRelation|Input of 'SET_RELATION_OF_RELATION' operation's binding must be named 'input' (operation: WRONG_INPUT_NAME).",
+			"OutputParameterIsNotDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding cannot have an output parameter (operation: DEFINED_OUTPUT).",
+			"OutputParameterIsNotDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding cannot have an output parameter (operation: UNDEFINED_INPUT).",
+			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: DEFINED_OUTPUT).",
+			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: UNDEFINED_INPUT)."
+				), Collections.emptyList());
+	}
 }
