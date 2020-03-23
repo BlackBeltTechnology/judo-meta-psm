@@ -3,6 +3,7 @@ package hu.blackbelt.judo.meta.psm;
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newBoundOperationBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
@@ -45,6 +46,7 @@ import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.Parameter;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
@@ -168,6 +170,9 @@ class PsmValidationBoundBehaviourTest {
 	final String WRONG_RELATION_BINDING = "WRONG_RELATION_BINDING";
 	
 	final String WRONG_PARAM_NAME = "WRONG_PARAM_NAME";
+	
+	final String TRANSFER_OBJECT_RELATION = "TRANSFER_OBJECT_RELATION";
+	final String OWNER_OPERATION = "OWNER_OPERATION";
 
 	private BoundOperation getBoundOperationByName(final EntityType entityType, final String name) {
 		return entityType.getOperations().stream().filter(o -> o.getName().equals(name)).findAny().get();
@@ -790,5 +795,51 @@ class PsmValidationBoundBehaviourTest {
 			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: DEFINED_OUTPUT).",
 			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: UNDEFINED_INPUT)."
 				), Collections.emptyList());
+	}
+	
+	@Test
+	void testBoundGetRangeInput() throws Exception {
+
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).build();
+		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).build();
+		EntityType e3 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T3).build();
+
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
+				.withName(TRANSFER_OBJECT_1).withEntityType(e1)
+				.build();
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
+				.withEntityType(e2).build();
+		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
+				.withEntityType(e3).build();
+		
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t3)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t2.getRelations().add(relation);
+
+		e1.getOperations().addAll(ImmutableList.of(
+				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_INPUT_TYPE_BINDING), t1,
+						OUTPUT, t3, 0, -1, INPUT,t3, 1, 1).build()));
+
+		Parameter inp = newParameterBuilder().withName(INPUT).withCardinality(newCardinalityBuilder().build()).withType(t2).build();
+		
+		t1.getOperations().addAll(ImmutableList.of(
+				
+				newUnboundOperationBuilder().withName(OWNER_OPERATION).withInput(inp)
+					.withImplementation(newOperationBodyBuilder().build()).build(),
+				
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_INPUT_TYPE),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, inp, relation,
+						getBoundOperationByName(e1, WRONG_INPUT_TYPE_BINDING), true, OUTPUT, t3, 0, -1)
+						.withInput(newParameterBuilder().withName(INPUT).withType(t3).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()))
+								.build()));
+		
+		Model model = newModelBuilder().withName(MODEL_NAME)
+				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, t3)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of(
+			"GetRangeBoundTransferOperationInputTypeIsValid|Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the container of the relation (operation: WRONG_INPUT_TYPE)"
+			), Collections.emptyList());
 	}
 }

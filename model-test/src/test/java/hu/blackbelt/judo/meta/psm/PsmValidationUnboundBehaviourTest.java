@@ -14,6 +14,7 @@ import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.ne
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferOperationBehaviourBuilder;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnboundOperationBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 
 import java.io.File;
 import java.util.Collection;
@@ -34,13 +35,17 @@ import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
 import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
 import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
+import hu.blackbelt.judo.meta.psm.data.util.builder.OperationBodyBuilder;
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.Parameter;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.TransferOperation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviour;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.util.builder.UnboundOperationBuilder;
 
@@ -83,16 +88,22 @@ class PsmValidationUnboundBehaviourTest {
 	final String CHILD_ENTITY_TYPE = "ce";
 	final String NAME_OF_ENTITY_TYPE_FOR_T1 = "e1";
 	final String NAME_OF_ENTITY_TYPE_FOR_T2 = "e2";
-	final String NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH = "t1";
+	final String NAME_OF_ENTITY_TYPE_FOR_T3 = "e3";
+	final String TRANSFER_OBJECT_1 = "t1";
 	final String SELECTOR_NAME = "sn";
 	final String PARENT_TRANSFER_OBJECT = "p";
 	final String CHILD_TRANSFER_OBJECT = "c";
-	final String NAME_OF_TRANSFER_RELATION_TARGET = "t2";
+	final String TRANSFER_OBJECT_2 = "t2";
+	final String TRANSFER_OBJECT_3 = "t3";
 	final String TRANSFER_OBJECT_RELATION = "r";
 
 	final String INPUT = "input";
 	final String OUTPUT = "output";
+	final String OPERATION = "OPERATION";
 
+	final String GET_RANGE_VALID = "GET_RANGE_VALID";
+	final String WRONG_OWNER = "WRONG_OWNER";
+	
 	final String GET_OPERATION_NAME = "get";
 	final String CREATE_OPERATION_NAME = "create";
 	final String UPDATE_OPERATION_NAME = "update";
@@ -125,10 +136,20 @@ class PsmValidationUnboundBehaviourTest {
 	final String WRONG_INPUT_TYPE = "WRONG_INPUT_TYPE";
 	final String WRONG_INPUT_CARDINALITY = "WRONG_INPUT_CARDINALITY";
 	final String WRONG_RELATION = "WRONG_RELATION";
+	final String WRONG_RELATION_OPERATION = "WRONG_RELATION_OPERATION";
 
 	final String UNDEFINED_OUTPUT_DEFINED_INPUT = "UNDEFINED_OUTPUT_DEFINED_INPUT";
 	final String UNDEFINED_INPUT_DEFINED_OUTPUT = "UNDEFINED_INPUT_DEFINED_OUTPUT";
 
+	private Parameter getParameterOfOperation(TransferObjectType t, String operationName, boolean output) {
+		TransferOperation operation = t.getOperations().stream().filter(o -> o.getName().equals(operationName)).findAny().get();
+		if (output) {
+			return operation.getOutput();
+		} else {
+			return operation.getInput();
+		}
+	}
+	
 	private UnboundOperationBuilder unboundOperationDecorator(UnboundOperationBuilder operation,
 			TransferOperationBehaviourType type, NamedElement owner, boolean output, String paramName,
 			TransferObjectType paramType, int paramLower, int paramUpper) {
@@ -186,6 +207,20 @@ class PsmValidationUnboundBehaviourTest {
 							.build());
 		}
 	}
+	
+	private UnboundOperationBuilder unboundOperationDecorator(UnboundOperationBuilder operation,
+			TransferOperationBehaviourType type, NamedElement owner, TransferObjectRelation relation, String outputName, TransferObjectType outputType,
+			int outputLower, int outputUpper, String inputName, TransferObjectType inputType, int inputLower,
+			int inputUpper) {
+		return operation
+				.withBehaviour(newTransferOperationBehaviourBuilder().withBehaviourType(type).withOwner(owner).withRelation(relation).build())
+				.withOutput(newParameterBuilder().withName(outputName).withType(outputType)
+						.withCardinality(newCardinalityBuilder().withLower(outputLower).withUpper(outputUpper).build())
+						.build())
+				.withInput(newParameterBuilder().withName(inputName).withType(inputType)
+						.withCardinality(newCardinalityBuilder().withLower(inputLower).withUpper(inputUpper).build())
+						.build());
+	}
 
 	@Test
 	void testValidUnboundOperations() throws Exception {
@@ -198,11 +233,11 @@ class PsmValidationUnboundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
 				.build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
 				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(NAME_OF_TRANSFER_RELATION_TARGET)
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 
 		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
@@ -267,13 +302,13 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
 				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
 
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(NAME_OF_TRANSFER_RELATION_TARGET)
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 
 		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
@@ -357,13 +392,13 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
 				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
 
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(NAME_OF_TRANSFER_RELATION_TARGET)
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 
 		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
@@ -443,13 +478,13 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
 				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
 
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(NAME_OF_TRANSFER_RELATION_TARGET)
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 
 		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
@@ -539,13 +574,13 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(NAME_OF_TRANSFER_OBJECT_OF_EXPOSED_GRAPH).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
 				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
 
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(NAME_OF_TRANSFER_RELATION_TARGET)
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 
 		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
@@ -603,6 +638,162 @@ class PsmValidationUnboundBehaviourTest {
 				"OutputParameterIsNotDefinedUnboundWithRelation|'SET_RELATION' operation cannot have an output parameter (operation: UNDEFINED_INPUT_DEFINED_OUTPUT).",
 				"InputNameIsValidUnboundWithRelation|'SET_RELATION' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME).",
 				"InputCardinalityIsValidUnboundWithRelation|Cardinality of 'SET_RELATION' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY)."),
+				Collections.emptyList());
+	}
+	
+	@Test
+	void testGetRangeBehaviourUnbound() throws Exception {
+
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).build();
+		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).build();
+		EntityType e3 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T3).build();
+
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
+				.withName(TRANSFER_OBJECT_1).withEntityType(e1)
+				.build();
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
+				.withEntityType(e2).build();
+		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
+				.withEntityType(e3).build();
+		
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t3)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t2.getRelations().add(relation);
+		
+		TransferObjectRelation wrong_relation = newTransferObjectRelationBuilder().withName(WRONG_RELATION).withTarget(t2)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(wrong_relation);
+		
+		t1.getOperations().addAll(ImmutableList.of(
+				
+				newUnboundOperationBuilder().withName(OPERATION).withInput(newParameterBuilder().withName(INPUT)
+						.withType(t2).withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build())
+						.withOutput(newParameterBuilder().withName(OUTPUT)
+						.withType(t2).withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build())
+						.withImplementation(newOperationBodyBuilder().build()).build()
+				
+		));
+		
+		t1.getOperations().addAll(ImmutableList.of(	
+				
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(GET_RANGE_VALID),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
+						getParameterOfOperation(t1, OPERATION , false), relation, OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build(),
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
+						relation, relation, OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build(),
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_OWNER),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
+						getParameterOfOperation(t1, OPERATION , true), relation, OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build(),
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(UNDEFINED_RELATION),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
+						getParameterOfOperation(t1, OPERATION, false), OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build(),
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_RELATION_OPERATION),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
+						getParameterOfOperation(t1, OPERATION, false), wrong_relation, OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build(),
+				
+				newUnboundOperationBuilder().withName(UNDEFINED_PARAMS)
+				.withBehaviour(newTransferOperationBehaviourBuilder()
+						.withBehaviourType(TransferOperationBehaviourType.GET_RANGE_OF_RELATION)
+						.withRelation(relation)
+						.withOwner(getParameterOfOperation(t1, OPERATION , false)).build())
+				.build(),
+
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_NAMES),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION,
+						getParameterOfOperation(t1, OPERATION, false),relation, INPUT, t3, 0, -1, OUTPUT, t1, 1, 1).build(),
+		
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_TYPES),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION,
+						getParameterOfOperation(t1, OPERATION , false),relation, OUTPUT, t1, 0, -1, INPUT, t3, 1, 1).build(),
+		
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_CARDINALITY),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION,
+						getParameterOfOperation(t1, OPERATION, false),relation, OUTPUT, t3, 0, 1, INPUT, t1, 0, 1).build()
+				
+				));
+		
+		t2.getOperations().addAll(ImmutableList.of(	
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_CONTAINER),
+						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
+						getParameterOfOperation(t1, OPERATION, false), relation, OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build()));
+
+		Model model = newModelBuilder().withName(MODEL_NAME)
+				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, t3)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of(
+				
+				"GetRangeOperationOutputCardinalityIsValid|Cardinality of 'GET_RANGE_OF_RELATION' operation's output parameter must be 0..* (operation: WRONG_PARAM_CARDINALITY)",
+				"GetRangeUnboundOperationInputTypeIsValid|Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the container of the operation (operation: WRONG_PARAM_TYPES)",
+				"ContainerOfGetRangeIsValid|Container of 'GET_RANGE_OF_RELATION' behaviour typed parameter is invalid (operation: WRONG_CONTAINER)",
+				"GetRangeOperationOutputTypeIsValid|Type of 'GET_RANGE_OF_RELATION' operation's output parameter must be the target of it's relation (operation: WRONG_PARAM_TYPES)",
+				"GetRangeOperationInputNameIsValid|'GET_RANGE_OF_RELATION' operation's input parameter must be named 'input' (operation: WRONG_PARAM_NAMES)",
+				"GetRangeOperationOutputNameIsValid|'GET_RANGE_OF_RELATION' operation's output parameter must be named 'output' (operation: WRONG_PARAM_NAMES)",
+				"OwnerOfGetRangeOfRelationBehaviourIsValid|Owner of 'GET_RANGE_OF_RELATION' must be the input parameter of an operation in it's container (operation: WRONG_OWNER)",
+				"RelationOfGetRangeOfRelationBehaviourIsDefined|Relation for 'GET_RANGE_OF_RELATION' behaviour type must be defined (operation: UNDEFINED_RELATION)",
+				"OwnerOfGetRangeOfRelationBehaviourIsParameter|Owner of 'GET_RANGE_OF_RELATION' behaviour type must be a parameter (operation: WRONG_OWNER_TYPE)",
+				"RelationOfGetRangeOfRelationBehaviourIsValid|Relation for 'GET_RANGE_OF_RELATION' behaviour type must belong to the operation owner's type (operation: WRONG_RELATION_OPERATION)",
+				"GetRangeOperationInputParameterIsDefined|'GET_RANGE_OF_RELATION' operation: UNDEFINED_PARAMS must have an input parameter named 'input'",
+				"GetRangeOperationOutputParameterIsDefined|'GET_RANGE_OF_RELATION' operation must have an output parameter named 'output' (operation: UNDEFINED_PARAMS)",
+				"GetRangeOperationInputCardinalityIsValid|Cardinality of 'GET_RANGE_OF_RELATION' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
+				Collections.emptyList());
+	}
+	
+	@Test
+	void testGetTemplateBehaviourUnbound() throws Exception {
+
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).build();
+		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).build();
+
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
+				.withName(TRANSFER_OBJECT_1).withEntityType(e1)
+				.build();
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
+				.withEntityType(e2).build();
+		
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(relation);
+		
+		e1.getOperations().addAll(ImmutableList.of(
+				newBoundOperationBuilder().withName(OPERATION).withInstanceRepresentation(t1)
+						.withImplementation(newOperationBodyBuilder().build()).build()));
+		
+		t1.getOperations().addAll(ImmutableList.of(	
+				
+				newBoundTransferOperationBuilder().withName(WRONG_CONTAINER)
+					.withBehaviour(newTransferOperationBehaviourBuilder()
+							.withBehaviourType(TransferOperationBehaviourType.GET_TEMPLATE)
+							.withOwner(t2)
+							.build())
+					.withBinding(e1.getOperations().get(0))
+					.build(),
+					
+				newUnboundOperationBuilder().withName(WRONG_OWNER)
+					.withBehaviour(newTransferOperationBehaviourBuilder()
+							.withBehaviourType(TransferOperationBehaviourType.GET_TEMPLATE)
+							.withOwner(e1)
+							.build()).build(),
+					
+				newUnboundOperationBuilder().withName(DEFINED_RELATION)
+					.withBehaviour(newTransferOperationBehaviourBuilder()
+							.withBehaviourType(TransferOperationBehaviourType.GET_TEMPLATE)
+							.withOwner(t2)
+							.withRelation(relation)
+							.build()).build()
+					));
+
+		Model model = newModelBuilder().withName(MODEL_NAME)
+				.withElements(ImmutableList.of(e1, e2, t1, t2)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of(
+				"RelationOfGetTemplateBehaviourIsUndefined|Relation for 'GET_TEMPLATE' behaviour types must be undefined",
+				"OperationOfGetTemplateBehaviourIsValid|'GET_TEMPLATE' behaviour type must be owned by unbound operation",
+				"OwnerOfGetTemplateBehaviourIsValid|Owner of 'GET_TEMPLATE' behaviour must be a transfer object type"),
 				Collections.emptyList());
 	}
 }
