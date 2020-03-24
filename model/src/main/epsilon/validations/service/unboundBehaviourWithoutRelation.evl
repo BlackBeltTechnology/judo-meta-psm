@@ -142,4 +142,4 @@ context PSM!TransferOperationBehaviour {
     		self.eContainer.output.cardinality.upper == 1 
     	message: "Cardinality of '" + self.behaviourType + "' operation's output parameter must be 1..1 (operation: " + self.eContainer.name + ")"
     }
-}
+}		

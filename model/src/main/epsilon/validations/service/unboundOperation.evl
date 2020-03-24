@@ -10,4 +10,10 @@ context PSM!UnboundOperation {
      	check: self.implementation.isDefined() or self.behaviour.isDefined()
      	message: "Unbound operation must have implementation or behaviour (" + self.eContainer.name + "." + self.name + ")"
      }
+     
+     constraint InitOperationCannotHaveInput {
+     	guard: self.initializer
+     	check: self.input.isUndefined()
+     	message: "Initializer operation: " + self.name + " cannot have input."
+     }
 }

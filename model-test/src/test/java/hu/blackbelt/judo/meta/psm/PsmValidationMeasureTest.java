@@ -351,7 +351,7 @@ class PsmValidationMeasureTest {
 				.withName("M").build();
 
 		psmModel.addContent(m);
-		runEpsilon(Collections.emptyList(), ImmutableList.of("MeasureNameIsUnique|Measure name is not unique: Time"));
+		runEpsilon(Collections.emptyList(), ImmutableList.of("MeasureNameIsUnique|There are two or more measures of the same name: Time"));
 	}
 
 	@Test
@@ -410,8 +410,8 @@ class PsmValidationMeasureTest {
 
 		psmModel.addContent(m);
 		runEpsilon(Collections.emptyList(),
-				ImmutableList.of("UnitNameIsUnique|Unit name is not unique: base (in measure: Length)",
-						"UnitNameIsUnique|Unit name is not unique: base (in measure: Time)"));
+				ImmutableList.of("UnitNameIsUnique|There are two or more units of the same name: base (in measure: Length)",
+						"UnitNameIsUnique|There are two or more units of the same name: base (in measure: Time)"));
 	}
 
 	@Test
@@ -442,8 +442,8 @@ class PsmValidationMeasureTest {
 
 		psmModel.addContent(m);
 		runEpsilon(Collections.emptyList(),
-				ImmutableList.of("UnitSymbolIsUnique|Unit symbol is not unique: m in unit: metre (in measure: Length)",
-						"UnitSymbolIsUnique|Unit symbol is not unique: m in unit: minute (in measure: Time)"));
+				ImmutableList.of("UnitSymbolIsUnique|There are two or more units that have the same symbol: m (unit: metre, measure: Length)",
+						"UnitSymbolIsUnique|There are two or more units that have the same symbol: m (unit: minute, measure: Time)"));
 	}
 
 	@Test

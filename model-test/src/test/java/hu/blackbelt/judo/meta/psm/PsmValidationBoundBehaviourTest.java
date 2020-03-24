@@ -842,4 +842,38 @@ class PsmValidationBoundBehaviourTest {
 			"GetRangeBoundTransferOperationInputTypeIsValid|Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the container of the relation (operation: WRONG_INPUT_TYPE)"
 			), Collections.emptyList());
 	}
+	
+	@Test
+	void testCreateRelationTargetIsNotAbstract() throws Exception {
+
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).build();
+		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).withAbstract_(true).build();
+
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1).build();
+		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
+				.withEntityType(e2).build();
+
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION_1)
+				.withTarget(type).withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(owner);
+
+		e1.getOperations().addAll(ImmutableList.of(
+				boundOperationDecorator(newBoundOperationBuilder().withName(CREATE_RELATION_BINDING), t1, OUTPUT, type,
+						1, 1, INPUT, type, 1, 1).build()));
+
+		t1.getOperations().addAll(ImmutableList.of(
+				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(CREATE_RELATION),
+						TransferOperationBehaviourType.CREATE_RELATION, owner,
+						getBoundOperationByName(e1, CREATE_RELATION_BINDING), OUTPUT, type, 1, 1, INPUT, type, 1, 1)
+								.build()));
+
+		Model model = newModelBuilder().withName(MODEL_NAME)
+				.withElements(ImmutableList.of(e1, e2, t1, type)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of("CreateRelationTargetIsNotAbstract|Owner of 'CREATE' operation cannot reference a mapped transfer object of an abstract entity type."),
+				Collections.emptyList());
+	}
 }

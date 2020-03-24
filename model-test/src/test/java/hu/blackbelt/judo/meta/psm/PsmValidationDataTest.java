@@ -307,8 +307,8 @@ class PsmValidationDataTest {
 
 		psmModel.addContent(m);
 		runEpsilon(Collections.emptyList(),
-				ImmutableList.of("EntityTypeNamesAreUnique|Entity type name is not unique: entity",
-						"EntityTypeNamesAreUnique|Entity type name is not unique: Entity"));
+				ImmutableList.of("EntityTypeNamesAreUnique|There are two or more entity types of the same name: entity",
+						"EntityTypeNamesAreUnique|There are two or more entity types of the same name: Entity"));
 	}
 
 	@Test
@@ -1729,4 +1729,30 @@ class PsmValidationDataTest {
            "InheritedOperationAndDataPropertyNamesAreUnique|Entity type: entityType3 has inherited operation(s) and inherited data properties of the same name."),
            Collections.emptyList());
     }
+    
+	@Test
+	void testAbstractEntityTypeSuperEntityTypesAreAbstract() throws Exception {
+		log.info("Testing constraint: AbstractEntityTypeSuperEntityTypesAreAbstract");
+
+		EntityType E1 = newEntityTypeBuilder().withName("E1").build();
+		EntityType E2 = newEntityTypeBuilder().withName("E2").build();
+		EntityType E3 = newEntityTypeBuilder().withName("E3").withAbstract_(true).build();
+
+		E2.getSuperEntityTypes().add(E1);
+		E3.getSuperEntityTypes().add(E2);
+
+		EntityType E4 = newEntityTypeBuilder().withName("E4").build();
+		EntityType E5 = newEntityTypeBuilder().withName("E5").withAbstract_(true).build();
+		EntityType E6 = newEntityTypeBuilder().withName("E6").withAbstract_(true).build();
+
+		E5.getSuperEntityTypes().add(E4);
+		E6.getSuperEntityTypes().add(E5);
+		
+		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3, E4, E5, E6)).build();
+
+		psmModel.addContent(m);
+		runEpsilon(ImmutableList.of("AbstractEntityTypeSuperEntityTypesAreAbstract|Abstract entity type: E3 cannot have non abstract super entity type(s).",
+				"AbstractEntityTypeSuperEntityTypesAreAbstract|Abstract entity type: E5 cannot have non abstract super entity type(s)."
+				), Collections.emptyList());
+	}
 }

@@ -79,8 +79,8 @@ class PsmValidationAccesspointTest {
 
 		psmModel.addContent(m);
 		runEpsilon(Collections.emptyList(),
-				ImmutableList.of("AccessPointNamesAreUnique|Access point name is not unique: accessPoint",
-						"AccessPointNamesAreUnique|Access point name is not unique: AccessPoint"));
+				ImmutableList.of("AccessPointNamesAreUnique|There are two or more accesspoints of the same name: accessPoint",
+						"AccessPointNamesAreUnique|There are two or more accesspoints of the same name: AccessPoint"));
 	}
 
 	@Test

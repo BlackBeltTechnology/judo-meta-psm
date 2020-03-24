@@ -796,4 +796,46 @@ class PsmValidationUnboundBehaviourTest {
 				"OwnerOfGetTemplateBehaviourIsValid|Owner of 'GET_TEMPLATE' behaviour must be a transfer object type"),
 				Collections.emptyList());
 	}
+	
+	@Test
+	void testCreateTargetIsNotAbstract() throws Exception {
+
+		EntityType p = newEntityTypeBuilder().withName(PARENT_ENTITY_TYPE).withAbstract_(true).build();
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).withAbstract_(true).withSuperEntityTypes(p).build();
+		EntityType c = newEntityTypeBuilder().withName(CHILD_ENTITY_TYPE).withSuperEntityTypes(e1).build();
+		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).build();
+
+		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
+				.withEntityType(p).build();
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
+				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.build();
+		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
+				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
+				.withEntityType(e2).build();
+
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(relation);
+
+		StaticNavigation sn = newStaticNavigationBuilder().withName(SELECTOR_NAME).withTarget(e1)
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
+		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME).withExposedGraphs(owner).build();
+
+		t1.getOperations().addAll(ImmutableList.of(
+
+				unboundOperationDecorator(newUnboundOperationBuilder().withName(CREATE_OPERATION_NAME),
+						TransferOperationBehaviourType.CREATE, owner, OUTPUT, pt, 1, 1, INPUT, ct, 1, 1).build()));
+
+		Model model = newModelBuilder().withName(MODEL_NAME)
+				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of("CreateTargetIsNotAbstract|Owner of 'CREATE' operation cannot reference the mapped transfer object of an abstract entity type."), Collections.emptyList());
+	}
 }

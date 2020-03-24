@@ -4,6 +4,6 @@ context PSM!AccessPoint {
     critique AccessPointNamesAreUnique {
     	guard: self.satisfies("NamedElementIsUniqueInItsContainer")
         check: not PSM!AccessPoint.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
-        message: "Access point name is not unique: " + self.name
+        message: "There are two or more accesspoints of the same name: " + self.name
     }
 }

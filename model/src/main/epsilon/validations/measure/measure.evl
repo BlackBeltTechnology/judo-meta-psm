@@ -9,7 +9,7 @@ context PSM!Measure {
     // measure name should be unique
     critique MeasureNameIsUnique {
         check: not PSM!Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
-        message: "Measure name is not unique: " + self.name
+        message: "There are two or more measures of the same name: " + self.name
     }
     
     // symbol of measures must be unique
