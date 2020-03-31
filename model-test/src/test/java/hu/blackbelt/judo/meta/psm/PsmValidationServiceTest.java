@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
+import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.BoundOperation;
@@ -20,6 +22,7 @@ import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
 import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.NumericType;
@@ -35,6 +38,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
@@ -1265,8 +1270,8 @@ class PsmValidationServiceTest {
         psmModel.addContent(m);
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of(
-                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: TransferObject",
-                        "TransferObjectTypeNamesAreUnique|Transfer object type name is not unique: transferObject"));
+                        "TransferObjectTypeNamesAreUnique|There are two or more transfer object types of the same name: TransferObject",
+                        "TransferObjectTypeNamesAreUnique|There are two or more transfer object types of the same name: transferObject"));
     }
 
     @Test
@@ -2139,5 +2144,181 @@ class PsmValidationServiceTest {
             "ParametersAreValid|Parameters of bound transfer operation must match binding's parameters (operation: transferOp2)",
             "ParametersAreValid|Parameters of bound transfer operation must match binding's parameters (operation: transferOp3)"),
             Collections.emptyList());
+    }
+    
+    @Test
+    void testInitOperationCannotHaveInput() throws Exception {
+        log.info("Testing constraint: InitOperationCannotHaveInput");
+
+        UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
+
+        UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
+        		.withInput(newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).withType(unmapped).build())
+        		.withImplementation(newOperationBodyBuilder().build())
+        		.withInitializer(true)
+        		.build();
+        
+        EntityType entityType = newEntityTypeBuilder().withName("entity").build();
+        
+        MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
+                .withEntityType(entityType)
+                .withOperations(ImmutableList.of(unbound))
+                .build();
+
+        Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(unmapped, mapped, entityType)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+                "InitOperationCannotHaveInput|Initializer operation: unbound cannot have input."),
+                Collections.emptyList());
+    }
+    
+    @Test
+    void testEmbeddedOnBothSidesAreNotAllowed() throws Exception {
+        log.info("Testing constraint: EmbeddedOnBothSidesAreNotAllowed");
+        
+		EntityType e1 = newEntityTypeBuilder().withName("E1").build();
+		EntityType e2 = newEntityTypeBuilder().withName("E2").build();
+
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1")
+				.withEntityType(e1).build();
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("T2")
+				.withEntityType(e2).build();
+		
+		AssociationEnd end1 = newAssociationEndBuilder().withName("end1").withTarget(e2)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		AssociationEnd end2 = newAssociationEndBuilder().withName("end2").withTarget(e1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		e1.getRelations().add(end1);
+		e2.getRelations().add(end2);
+		end1.setPartner(end2);
+		end2.setPartner(end1);
+		
+		TransferObjectRelation r1 = newTransferObjectRelationBuilder().withName("r1")
+				.withTarget(t2)
+				.withEmbedded(true)
+				.withBinding(end1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(r1);
+		
+		TransferObjectRelation r2 = newTransferObjectRelationBuilder().withName("r2")
+				.withTarget(t1)
+				.withEmbedded(true)
+				.withBinding(end2)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t2.getRelations().add(r2);
+        
+        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(e1,e2,t1,t2)).build();
+
+        psmModel.addContent(m);
+
+        runEpsilon(ImmutableList.of("EmbeddedOnBothSidesAreNotAllowed|Circular aggregation found on relation: M::E2.r2",
+        		"EmbeddedOnBothSidesAreNotAllowed|Circular aggregation found on relation: M::E1.r1"),
+                Collections.emptyList());
+    }
+    
+    @Test
+    void testAllRequiredFeaturesHaveBindingIfCreatable() throws Exception {
+        log.info("Testing constraint: AllRequiredFeaturesHaveBindingIfCreatable");
+        
+        NumericType integerType = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
+        StringType stringType = newStringTypeBuilder().withName("string").withMaxLength(255).build();
+
+        Attribute attribute0 = newAttributeBuilder().withName("attribute0").withRequired(true).withDataType(integerType).build();
+        Attribute attribute1 = newAttributeBuilder().withName("attribute1").withRequired(true).withDataType(stringType).build();
+        Attribute attribute2 = newAttributeBuilder().withName("attribute2").withRequired(true).withDataType(integerType).build();
+        Attribute attribute3 = newAttributeBuilder().withName("attribute3").withRequired(true).withDataType(stringType).build();
+        
+		EntityType p = newEntityTypeBuilder().withName("p").build();
+		EntityType e1 = newEntityTypeBuilder().withName("e1").withSuperEntityTypes(p)
+				.withAttributes(ImmutableList.of(attribute0,attribute1))
+				.build();
+		EntityType c = newEntityTypeBuilder().withName("c").withSuperEntityTypes(e1).build();
+		EntityType e2 = newEntityTypeBuilder().withName("e2")
+				.withAttributes(ImmutableList.of(attribute2,attribute3))
+				.build();
+		EntityType e3 = newEntityTypeBuilder().withName("e3").build();
+		
+		AssociationEnd association0 = newAssociationEndBuilder().withName("association0")
+						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+									.withTarget(e3).build();
+		AssociationEnd association1 = newAssociationEndBuilder().withName("association1")
+				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+				.withTarget(e3).build();
+		
+		e1.getRelations().add(association0);
+		e2.getRelations().add(association1);
+		
+		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName("pt")
+				.withEntityType(p).build();
+		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
+				.withName("t1").withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.build();
+		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName("ct")
+				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("t2")
+				.withEntityType(e2).build();
+
+		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("relation").withTarget(t2)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		t1.getRelations().add(relation);
+
+		StaticNavigation sn = newStaticNavigationBuilder().withName("sn").withTarget(e1)
+				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+		ExposedGraph eg = newExposedGraphBuilder().withName("eg").withMappedTransferObjectType(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
+		AccessPoint ap = newAccessPointBuilder().withName("ap").withExposedGraphs(eg).build();
+		
+		BoundOperation op = newBoundOperationBuilder().withName("binding")
+				.withInstanceRepresentation(t1)
+				.withInput(newParameterBuilder().withName("input")
+						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+						.withType(t2).build())
+				.withOutput(newParameterBuilder().withName("output")
+						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+						.withType(t2).build())
+				.build();
+
+		e1.getOperations().add(op);
+		
+		t1.getOperations().addAll(ImmutableList.of(
+
+				newUnboundOperationBuilder().withName("create")
+					.withBehaviour(
+							newTransferOperationBehaviourBuilder()
+								.withBehaviourType(TransferOperationBehaviourType.CREATE).withOwner(eg).build())
+					.withOutput(newParameterBuilder().withName("output").withType(pt)
+							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+							.build())
+					.withInput(newParameterBuilder().withName("input").withType(ct)
+							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+							.build())
+					.build(),
+				
+				newBoundTransferOperationBuilder().withName("create_relation")
+					.withBehaviour(
+							newTransferOperationBehaviourBuilder()
+								.withBehaviourType(TransferOperationBehaviourType.CREATE_RELATION).withOwner(relation).build())
+					.withOutput(newParameterBuilder().withName("output").withType(t2)
+							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+							.build())
+					.withInput(newParameterBuilder().withName("input").withType(t2)
+							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+							.build())
+					.withBinding(op)
+					.build()
+		));
+
+		Model model = newModelBuilder().withName("model")
+				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, stringType, integerType, ap, sn, ct, pt, c, p)).build();
+
+		psmModel.addContent(model);
+
+		runEpsilon(ImmutableList.of(
+				"AllRequiredFeaturesHaveBindingIfCreatable|t2 is used by create operation and excludes required features: association1, attribute3, attribute2",
+				"AllRequiredFeaturesHaveBindingIfCreatable|t1 is used by create operation and excludes required features: attribute1, attribute0, association0"),
+				Collections.emptyList());
     }
 }

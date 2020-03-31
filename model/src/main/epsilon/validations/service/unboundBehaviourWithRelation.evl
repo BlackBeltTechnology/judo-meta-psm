@@ -1,0 +1,50 @@
+context PSM!TransferOperationBehaviour {
+
+	guard: self.eContainer.isDefined() and 
+		(self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION)
+		and self.satisfiesAll("OperationIsValidUnboundBehaviour","OwnerIsExposedGraphUnboundBehaviour","OwnerIsValidUnboundBehaviour")
+	
+	constraint RelationIsDefinedUnboundWithRelation {
+		check: self.relation.isDefined() 
+		message: "Relation must be defined for '" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")."
+	}
+	
+	constraint RelationIsValidUnboundWithRelation {
+		guard: self.satisfies("RelationIsDefinedUnboundWithRelation")
+		check: psmUtils.getAllTransferObjectRelations(self.owner.mappedTransferObjectType).includes(self.relation)
+		message: "Relation of '" + self.behaviourType + "' operation: " + self.eContainer.name  + " must be one of the transfer object type referenced by the operation's owner."
+	}
+	
+	constraint InputParameterIsDefinedUnboundWithRelation {
+    	check: self.eContainer.input.isDefined()
+    	message: "'" + self.behaviourType + "' operation must have an input parameter named 'input' (operation: " + self.eContainer.name + ")."
+    }
+    
+    constraint InputNameIsValidUnboundWithRelation {
+    	guard: self.satisfies("InputParameterIsDefinedUnboundWithRelation")
+    	check: self.eContainer.input.name == "input"
+    	message: "'" + self.behaviourType + "' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")."
+    }
+    
+    constraint InputTypeIsValidUnboundWithRelation {
+    	guard: self.satisfies("InputParameterIsDefinedUnboundWithRelation")
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
+    	message: "Type of '" + self.behaviourType + "' operation's input parameter must be kind of referenced mapped transfer object type (operation: " + self.eContainer.name + ")."
+    }
+    
+    constraint InputCardinalityIsValidUnboundWithRelation {
+    	guard: self.satisfies("InputParameterIsDefinedUnboundWithRelation")
+    	check: self.eContainer.input.cardinality.lower == 1 and
+    		self.eContainer.input.cardinality.upper == 1 
+    	message: "Cardinality of '" + self.behaviourType + "' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")."
+    }
+    
+    constraint OutputParameterIsNotDefinedUnboundWithRelation {
+    	check: self.eContainer.output.isUndefined()
+    	message: "'" + self.behaviourType + "' operation cannot have an output parameter (operation: " + self.eContainer.name + ")."
+    }
+}
+	

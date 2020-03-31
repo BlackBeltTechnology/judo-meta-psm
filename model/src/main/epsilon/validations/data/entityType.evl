@@ -3,7 +3,7 @@ context PSM!EntityType {
     critique EntityTypeNamesAreUnique {
     	guard: self.satisfies("NamedElementIsUniqueInItsContainer")
         check: not PSM!EntityType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
-        message: "Entity type name is not unique: " + self.name
+        message: "There are two or more entity types of the same name: " + self.name
     }
 
 	constraint InheritanceIsNotRecursive {
@@ -151,5 +151,11 @@ context PSM!EntityType {
         check: not psmUtils.getInheritedDataPropertyNames(self)
                 .exists(name | psmUtils.getInheritedNavigationPropertyNames(self).exists(r | name.toLowerCase() == r.toLowerCase()))
         message: "Entity type: " + self.name + " has inherited data properties and inherited navigation properties of the same name."
+    }
+    
+    constraint AbstractEntityTypeSuperEntityTypesAreAbstract {
+    	guard: self.satisfies("InheritanceIsNotRecursive") and self.getSuperEntityTypes().forAll(s | s.satisfies("AbstractEntityTypeSuperEntityTypesAreAbstract"))
+    	check: self.abstract implies self.getSuperEntityTypes().forAll(s | s.abstract)
+    	message: "Abstract entity type: " + self.name + " cannot have non abstract super entity type(s)."
     }
 }

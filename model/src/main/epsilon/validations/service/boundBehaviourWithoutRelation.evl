@@ -1,0 +1,147 @@
+context PSM!TransferOperationBehaviour {
+	
+	guard: self.eContainer.isDefined() and 
+		(self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION)
+		and self.satisfiesAll("OperationIsValidBoundBehaviour","OwnerIsRelationBoundBehaviour","OwnerIsValidBoundBehaviour")
+	
+	constraint RelationIsUndefinedBoundWithoutRelation {
+		check: self.relation.isUndefined()
+		message: "Relation must be undefined for '" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ")"
+	}
+}
+
+context PSM!TransferOperationBehaviour {
+	
+	guard: self.eContainer.isDefined()
+		and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
+		and self.satisfiesAll("OperationIsValidBoundBehaviour","OwnerIsRelationBoundBehaviour","OwnerIsValidBoundBehaviour","RelationIsUndefinedBoundWithoutRelation")
+		and self.eContainer.satisfies("BindingIsValid")
+
+	constraint GetRelationOperationInputParameterIsNotDefined {
+    	check: self.eContainer.binding.input.isUndefined()
+    	message: "'GET' operation's binding cannot have an input parameter (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint GetRelationOperationOutputParameterIsDefined {
+    	check: self.eContainer.binding.output.isDefined()
+    	message: "'GET' operation's binding must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint GetRelationOperationOutputNameIsValid {
+    	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
+    	check: self.eContainer.binding.output.name == "output"
+    	message: "Output of 'GET' operation's binding must be named 'output' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint GetRelationOperationOutputTypeIsValid {
+    	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
+    	check: self.eContainer.binding.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.output.type).includes(self.owner.target)
+    	message: "Output type of 'GET_RELATION' operation's (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") binding must be kind of referenced mapped transfer object type"
+    }
+    
+    constraint GetOperationOutputCardinalityIsValid {
+    	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
+    	check: self.eContainer.binding.output.cardinality.lower == self.owner.cardinality.lower and
+    		self.eContainer.binding.output.cardinality.upper == self.owner.cardinality.upper 
+    	message: "Output cardinality of 'GET_RELATION' operation's (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") binding must be the same as its owner's"
+    }
+}
+
+context PSM!TransferOperationBehaviour {
+	
+	guard: self.eContainer.isDefined()
+		and self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION
+		and self.satisfiesAll("OperationIsValidBoundBehaviour","OwnerIsRelationBoundBehaviour","OwnerIsValidBoundBehaviour","RelationIsUndefinedBoundWithoutRelation")	
+		and self.eContainer.satisfies("BindingIsValid")
+	
+	constraint DeleteRelationOperationInputParameterIsDefined {
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'DELETE_RELATION' operation's binding must have an input parameter named 'input' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint DeleteRelationOperationInputNameIsValid {
+    	guard: self.satisfies("DeleteRelationOperationInputParameterIsDefined")
+    	check: self.eContainer.binding.input.name == "input"
+    	message: "Input of 'DELETE' operation's binding must be named 'input' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint DeleteRelationOperationInputTypeIsValid {
+    	guard: self.satisfies("DeleteRelationOperationInputParameterIsDefined")
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.target)
+    	message: "Input type of 'DELETE' operation's binding must be kind of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint DeleteRelationOperationInputCardinalityIsValid {
+    	guard: self.satisfies("DeleteRelationOperationInputParameterIsDefined")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Input cardinality of 'DELETE' operation's binding must be 1..1 (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint DeleteOperationOutputParameterIsNotDefined {
+    	check: self.eContainer.output.isUndefined()
+    	message: "'DELETE_RELATION' operation's binding cannot have an output parameter (operation: " + self.eContainer.name + ")"
+    }
+}
+
+context PSM!TransferOperationBehaviour {
+
+	guard: self.eContainer.isDefined() and 
+		(self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION or
+		self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION)
+		and self.satisfiesAll("OperationIsValidBoundBehaviour","OwnerIsRelationBoundBehaviour","OwnerIsValidBoundBehaviour","RelationIsUndefinedBoundWithoutRelation")	
+		and self.eContainer.satisfies("BindingIsValid")
+
+	 constraint CreateUpdateRelationOperationInputParameterIsDefined {
+    	check: self.eContainer.binding.input.isDefined()
+    	message: "'" + self.behaviourType + "' operation's binding must have an input parameter named 'input' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationInputNameIsValid {
+    	guard: self.satisfies("CreateUpdateRelationOperationInputParameterIsDefined")
+    	check: self.eContainer.binding.input.name == "input"
+    	message: "Input of '" + self.behaviourType + "' operation's binding must be named 'input' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationInputTypeIsValid {
+    	guard: self.satisfies("CreateUpdateRelationOperationInputParameterIsDefined")
+    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
+    	message: "Input type of '" + self.behaviourType + "' operation's binding must be kind of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationInputCardinalityIsValid {
+    	guard: self.satisfies("CreateUpdateRelationOperationInputParameterIsDefined")
+    	check: self.eContainer.binding.input.cardinality.lower == 1 and
+    		self.eContainer.binding.input.cardinality.upper == 1 
+    	message: "Input cardinality of '" + self.behaviourType + "' operation's binding must be 1..1 (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationOutputParameterIsDefined {
+    	check: self.eContainer.binding.output.isDefined()
+    	message: "'" + self.behaviourType + "' operation's binding must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationOutputNameIsValid {
+    	guard: self.satisfies("CreateUpdateRelationOperationOutputParameterIsDefined")
+    	check: self.eContainer.binding.output.name == "output"
+    	message: "Output of '" + self.behaviourType + "' operation's binding must be named 'output' (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationOutputTypeIsValid {
+    	guard: self.satisfies("CreateUpdateRelationOperationOutputParameterIsDefined")
+    	check: self.owner.target.getAllSuperTransferObjectTypes()
+    			.including(self.owner.target)
+    			.includes(self.eContainer.binding.output.type)
+    	message: "Output type of '" + self.behaviourType + "' operation's binding must be the mapped transfer object type referenced by owner or its supertype (operation: " + self.eContainer.name + ")"
+    }
+    
+    constraint CreateUpdateRelationOperationOutputCardinalityIsValid {
+    	guard: self.satisfies("CreateUpdateRelationOperationOutputParameterIsDefined")
+    	check: self.eContainer.binding.output.cardinality.lower == 1 and
+    		self.eContainer.binding.output.cardinality.upper == 1 
+    	message: "Output cardinality of '" + self.behaviourType + "' operation's binding must be 1..1 (operation: " + self.eContainer.name + ")"
+    }
+}

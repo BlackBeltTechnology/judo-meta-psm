@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -600,6 +601,21 @@ public class PsmUtils {
                 .collect(Collectors.toSet()));
         return relations;
     }
+    
+    /**
+     * Get unique list of all (inherited and not inherited) transfer attributes of a given transfer object type.
+     *
+     * @param transferObjectType transfer object type
+     * @return unique list of inherited and not inherited transfer attributes
+     */
+    public static EList<TransferAttribute> getAllTransferAttributes(final TransferObjectType transferObjectType) {
+        EList<TransferAttribute> attributes = new UniqueEList<>();
+        attributes.addAll(transferObjectType.getAttributes());
+        attributes.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
+                .flatMap(to -> to.getAttributes().stream())
+                .collect(Collectors.toSet()));
+        return attributes;
+    }
 
     /**
      * Get unique list of all inherited transfer operation names of a given transfer object type.
@@ -1055,6 +1071,39 @@ public class PsmUtils {
         newContainers.forEach(i -> getAllContainers(result, i));
 
         return result;
+    }
+    
+    public static Set<String> getUnboundRequiredFeaturesOfMappingTarget(final MappedTransferObjectType transferObject) {
+    	Set<String> names = getAllRelations(transferObject.getEntityType()).stream()
+    			.filter(r -> r.getCardinality().getLower() > 0)
+    			.map(r -> r.getName())
+    			.collect(Collectors.toSet());
+    	
+    	names.addAll(getAllNavigationProperties(transferObject.getEntityType()).stream()
+    			.filter(r -> r.getCardinality().getLower() > 0)
+    			.map(r -> r.getName())
+    			.collect(Collectors.toSet()));
+    	
+    	names.addAll(getAllAttributes(transferObject.getEntityType()).stream()
+    			.filter(a -> a.isRequired())
+    			.map(a -> a.getName())
+    			.collect(Collectors.toSet()));
+    	
+    	names.addAll(getAllDataProperties(transferObject.getEntityType()).stream()
+    			.filter(a -> a.isRequired())
+    			.map(a -> a.getName())
+    			.collect(Collectors.toSet()));
+    	
+    	Set<TransferObjectRelation> boundRelations = getAllTransferObjectRelations(transferObject).stream()
+    			.filter(r -> r.getBinding() != null)
+    			.collect(Collectors.toSet());
+    	Set<TransferAttribute> boundAttributes = getAllTransferAttributes(transferObject).stream()
+    			.filter(a -> a.getBinding() != null)
+    			.collect(Collectors.toSet());
+    	
+    	names.removeIf(n -> boundRelations.stream().anyMatch(r -> r.getBinding().getName().equalsIgnoreCase(n)) || 
+    						boundAttributes.stream().anyMatch(a -> a.getBinding().getName().equalsIgnoreCase(n)));
+    	return names;
     }
 
     /**

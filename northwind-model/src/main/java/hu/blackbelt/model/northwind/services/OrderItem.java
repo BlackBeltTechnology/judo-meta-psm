@@ -14,6 +14,8 @@ import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.useDataProperty;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
@@ -25,6 +27,7 @@ public class OrderItem {
     public TransferAttribute quantity = newTransferAttributeBuilder().build();
     public TransferAttribute discount = newTransferAttributeBuilder().build();
     public TransferAttribute productName = newTransferAttributeBuilder().build();
+    public TransferAttribute categoryName = newTransferAttributeBuilder().build();
     public TransferAttribute price = newTransferAttributeBuilder().build();
     public TransferAttribute heavy = newTransferAttributeBuilder().build();
     public TransferAttribute weight = newTransferAttributeBuilder().build();
@@ -64,6 +67,12 @@ public class OrderItem {
                         .withRequired(true)
                         .withDataType($string.$)
                         .withBinding($orderDetail.productName)
+                )
+                .withAttributes(useTransferAttribute(categoryName)
+                        .withName("categoryName")
+                        .withRequired(true)
+                        .withDataType($string.$)
+                        .withBinding($orderDetail.categoryName)
                 )
                 .withRelations(useTransferObjectRelation(product)
                         .withName("product")
