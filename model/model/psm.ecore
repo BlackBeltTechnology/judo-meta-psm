@@ -454,6 +454,7 @@
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eOperations name="getInheritedTransferObjectRelationNames" ordered="false"
           upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eOperations name="isAccessPoint" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//service/TransferAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//service/TransferObjectRelation" containment="true"/>
@@ -463,6 +464,8 @@
           upperBound="-1" eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/TransferOperation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="actorType" eType="#//accesspoint/ActorType"
+          eOpposite="#//accesspoint/ActorType/transferObjectType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -485,6 +488,7 @@
           <details key="body" value="return (eContainer() instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType);"/>
         </eAnnotations>
       </eOperations>
+      <eOperations name="isExposedGraph" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
@@ -599,23 +603,11 @@
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
       nsPrefix="accesspoint">
-    <eClassifiers xsi:type="ecore:EClass" name="AccessPoint" eSuperTypes="#//namespace/NamespaceElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedGraphs" upperBound="-1"
-          eType="#//accesspoint/ExposedGraph" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="exposedServices" upperBound="-1"
-          eType="#//accesspoint/ExposedService" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedGraph" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="mappedTransferObjectType"
-          lowerBound="1" eType="#//service/MappedTransferObjectType"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="selector" lowerBound="1"
-          eType="#//derived/StaticNavigation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
-          eType="#//type/Cardinality" containment="true"/>
-    </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ExposedService" eSuperTypes="#//namespace/NamedElement">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="operationGroup" lowerBound="1"
-          eType="#//service/TransferObjectType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ActorType" eSuperTypes="#//namespace/NamespaceElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="transferObjectType" lowerBound="1"
+          eType="#//service/TransferObjectType" eOpposite="#//service/TransferObjectType/actorType"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="authenticationMethod"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">

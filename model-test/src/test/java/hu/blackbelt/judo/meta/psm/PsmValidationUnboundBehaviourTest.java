@@ -1,18 +1,12 @@
 package hu.blackbelt.judo.meta.psm;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newActorTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newBoundOperationBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newStaticNavigationBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newBoundTransferOperationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferObjectRelationBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newTransferOperationBehaviourBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnboundOperationBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 
@@ -20,6 +14,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
+import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
+import hu.blackbelt.judo.meta.psm.service.*;
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,21 +28,11 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
-import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
-import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
-import hu.blackbelt.judo.meta.psm.data.util.builder.OperationBodyBuilder;
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.NamedElement;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.Parameter;
-import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
-import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.TransferOperation;
-import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviour;
-import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.util.builder.UnboundOperationBuilder;
 
 class PsmValidationUnboundBehaviourTest {
@@ -247,9 +233,11 @@ class PsmValidationUnboundBehaviourTest {
 		StaticNavigation sn = newStaticNavigationBuilder().withName(SELECTOR_NAME).withTarget(e1)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
-		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME).withExposedGraphs(owner).build();
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(EXPOSEDGRAPH_NAME).withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName(ACCESSPOINT_NAME).withRelations(owner).build();
+
+		ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 
 		t1.getOperations().addAll(ImmutableList.of(
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(GET_OPERATION_NAME),
@@ -280,7 +268,7 @@ class PsmValidationUnboundBehaviourTest {
 								.build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p)).build();
 
 		psmModel.addContent(model);
 
@@ -320,20 +308,22 @@ class PsmValidationUnboundBehaviourTest {
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(EXPOSEDGRAPH_NAME).withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
 
 		StaticNavigation wrong_sn = newStaticNavigationBuilder().withName(WRONG_SELECTOR_NAME).withTarget(p)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph wrong_eg = newExposedGraphBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
-				.withMappedTransferObjectType(pt)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(wrong_sn)
+		TransferObjectRelation wrong_eg = newTransferObjectRelationBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
+				.withTarget(pt)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(wrong_sn)
 				.build();
 
-		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME)
-				.withExposedGraphs(ImmutableList.of(owner, wrong_eg)).build();
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName(ACCESSPOINT_NAME)
+				.withRelations(ImmutableList.of(owner, wrong_eg)).build();
+
+		ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 
 		e1.getOperations()
 				.add(newBoundOperationBuilder().withName(BOUND_OP)
@@ -366,7 +356,7 @@ class PsmValidationUnboundBehaviourTest {
 						owner.getCardinality().getUpper()).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p, wrong_sn)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p, wrong_sn)).build();
 
 		psmModel.addContent(model);
 
@@ -410,20 +400,22 @@ class PsmValidationUnboundBehaviourTest {
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(EXPOSEDGRAPH_NAME).withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
 
 		StaticNavigation wrong_sn = newStaticNavigationBuilder().withName(WRONG_SELECTOR_NAME).withTarget(p)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph wrong_eg = newExposedGraphBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
-				.withMappedTransferObjectType(pt)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(wrong_sn)
+		TransferObjectRelation wrong_eg = newTransferObjectRelationBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
+				.withTarget(pt)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(wrong_sn)
 				.build();
 
-		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME)
-				.withExposedGraphs(ImmutableList.of(owner, wrong_eg)).build();
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName(ACCESSPOINT_NAME)
+				.withRelations(ImmutableList.of(owner, wrong_eg)).build();
+
+		ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 
 		t1.getOperations().addAll(ImmutableList.of(
 
@@ -446,7 +438,7 @@ class PsmValidationUnboundBehaviourTest {
 						TransferOperationBehaviourType.CREATE, owner, OUTPUT, pt, 0, 1, INPUT, ct, 0, 1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p, wrong_sn)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p, wrong_sn)).build();
 
 		psmModel.addContent(model);
 
@@ -496,20 +488,22 @@ class PsmValidationUnboundBehaviourTest {
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(EXPOSEDGRAPH_NAME).withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
 
 		StaticNavigation wrong_sn = newStaticNavigationBuilder().withName(WRONG_SELECTOR_NAME).withTarget(p)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph wrong_eg = newExposedGraphBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
-				.withMappedTransferObjectType(pt)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(wrong_sn)
+		TransferObjectRelation wrong_eg = newTransferObjectRelationBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
+				.withTarget(pt)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(wrong_sn)
 				.build();
 
-		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME)
-				.withExposedGraphs(ImmutableList.of(owner, wrong_eg)).build();
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName(ACCESSPOINT_NAME)
+				.withRelations(ImmutableList.of(owner, wrong_eg)).build();
+
+		ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 
 		t1.getOperations().addAll(ImmutableList.of(
 
@@ -541,7 +535,7 @@ class PsmValidationUnboundBehaviourTest {
 						TransferOperationBehaviourType.DELETE, owner, false, INPUT, ct, 0, -1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p, wrong_sn)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p, wrong_sn)).build();
 
 		psmModel.addContent(model);
 
@@ -596,20 +590,22 @@ class PsmValidationUnboundBehaviourTest {
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(EXPOSEDGRAPH_NAME).withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
 
 		StaticNavigation wrong_sn = newStaticNavigationBuilder().withName(WRONG_SELECTOR_NAME).withTarget(p)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
 
-		ExposedGraph wrong_owner = newExposedGraphBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
-				.withMappedTransferObjectType(pt)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(wrong_sn)
+		TransferObjectRelation wrong_owner = newTransferObjectRelationBuilder().withName(WRONG_EXPOSEDGRAPH_NAME)
+				.withTarget(pt)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(wrong_sn)
 				.build();
 
-		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME)
-				.withExposedGraphs(ImmutableList.of(owner, wrong_owner)).build();
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName(ACCESSPOINT_NAME)
+				.withRelations(ImmutableList.of(owner, wrong_owner)).build();
+
+		ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 
 		t1.getOperations().addAll(ImmutableList.of(
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(UNDEFINED_RELATION),
@@ -626,7 +622,7 @@ class PsmValidationUnboundBehaviourTest {
 						TransferOperationBehaviourType.SET_RELATION, owner, relation, false, INPUT, t1, 0, 1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p, wrong_sn)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p, wrong_sn)).build();
 
 		psmModel.addContent(model);
 
@@ -822,9 +818,13 @@ class PsmValidationUnboundBehaviourTest {
 		StaticNavigation sn = newStaticNavigationBuilder().withName(SELECTOR_NAME).withTarget(e1)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		ExposedGraph owner = newExposedGraphBuilder().withName(EXPOSEDGRAPH_NAME).withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
-		AccessPoint ap = newAccessPointBuilder().withName(ACCESSPOINT_NAME).withExposedGraphs(owner).build();
+		TransferObjectRelation owner = newTransferObjectRelationBuilder().withName(EXPOSEDGRAPH_NAME).withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
+
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName(ACCESSPOINT_NAME)
+				.withRelations(ImmutableList.of(owner)).build();
+
+		ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 
 		t1.getOperations().addAll(ImmutableList.of(
 
@@ -832,7 +832,7 @@ class PsmValidationUnboundBehaviourTest {
 						TransferOperationBehaviourType.CREATE, owner, OUTPUT, pt, 1, 1, INPUT, ct, 1, 1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, ap, sn, ct, pt, c, p)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p)).build();
 
 		psmModel.addContent(model);
 

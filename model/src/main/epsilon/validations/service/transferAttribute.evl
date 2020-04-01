@@ -1,10 +1,11 @@
 context PSM!TransferAttribute {
 
-    constraint UnmappedTransferObjectTypeHasNoAttributeBinding {
+    // transfer attribute of unmapped transfer object types must be static
+    /*constraint UnmappedTransferObjectTypeHasNoAttributeBinding {
         guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
         check: not self.binding.isDefined()
         message: "Transfer object attribute " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding."
-    }
+    }*/
     
     constraint DataTypeMatchesBindingDataType {
         guard:  self.binding.isDefined()

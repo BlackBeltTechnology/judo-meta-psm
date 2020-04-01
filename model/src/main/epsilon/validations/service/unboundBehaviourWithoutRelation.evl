@@ -37,7 +37,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint GetOperationOutputTypeIsValid {
     	guard: self.satisfies("GetOperationOutputParameterIsDefined")
-    	check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner.mappedTransferObjectType)
+    	check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner.target)
     	message: "Type of 'GET' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
     
@@ -68,7 +68,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint DeleteOperationInputTypeIsValid {
     	guard: self.satisfies("DeleteOperationInputParameterIsDefined")
-    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.target)
     	message: "Type of 'DELETE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
     
@@ -106,7 +106,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateUpdateOperationInputTypeIsValid {
     	guard: self.satisfies("CreateUpdateOperationInputParameterIsDefined")
-    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.mappedTransferObjectType)
+    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.target)
     	message: "Type of '" + self.behaviourType + "' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
     
@@ -130,8 +130,8 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateUpdateOperationOutputTypeIsValid {
     	guard: self.satisfies("CreateUpdateOperationOutputParameterIsDefined")
-    	check: self.owner.mappedTransferObjectType.getAllSuperTransferObjectTypes()
-    			.including(self.owner.mappedTransferObjectType)
+    	check: self.owner.target.getAllSuperTransferObjectTypes()
+    			.including(self.owner.target)
     			.includes(self.eContainer.output.type)
     	message: "Type of '" + self.behaviourType + "' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: " + self.eContainer.name + ")"
     }

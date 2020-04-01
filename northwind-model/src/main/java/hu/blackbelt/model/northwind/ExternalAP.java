@@ -1,40 +1,37 @@
 package hu.blackbelt.model.northwind;
 
-import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
-import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.model.northwind.services.AllCategories;
-import hu.blackbelt.model.northwind.services.AllProducts;
-import hu.blackbelt.model.northwind.services.Category;
-import hu.blackbelt.model.northwind.services.Product;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
+import hu.blackbelt.model.northwind.services.*;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class ExternalAP {
 
-    public AccessPoint $ = newAccessPointBuilder().build();
+    public UnmappedTransferObjectType $ = newUnmappedTransferObjectTypeBuilder().build();
 
-    public ExposedGraph categories = newExposedGraphBuilder().build();
-    public ExposedGraph products = newExposedGraphBuilder().build();
+    public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation products = newTransferObjectRelationBuilder().build();
 
     public void init(Model $model, Product $product, Category $category, AllProducts $allProducts,
                      AllCategories $allCategories) {
-        useAccessPoint($)
+        useUnmappedTransferObjectType($)
                 .withName("externalAP")
-                .withExposedGraphs(useExposedGraph(categories)
+                .withRelations(useTransferObjectRelation(categories)
                         .withName("categories")
-                        .withMappedTransferObjectType($category.$)
-                        .withSelector($allCategories.$)
+                        .withTarget($category.$)
+                        .withBinding($allCategories.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(useExposedGraph(products)
+                .withRelations(useTransferObjectRelation(products)
                         .withName("products")
-                        .withMappedTransferObjectType($product.$)
-                        .withSelector($allProducts.$)
+                        .withTarget($product.$)
+                        .withBinding($allProducts.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()

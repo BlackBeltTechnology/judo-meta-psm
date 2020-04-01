@@ -16,15 +16,14 @@ context PSM!TransferOperationBehaviour {
 	}
 
 	constraint OwnerIsExposedGraphUnboundBehaviour {
-		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ExposedGraph)
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation) and self.owner.isExposedGraph()
 		message: "Owner of '" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be exposed graph."
 	}
 	
 	constraint OwnerIsValidUnboundBehaviour {
 		guard: self.satisfies("OwnerIsExposedGraphUnboundBehaviour") 
-		check: self.owner.mappedTransferObjectType == self.eContainer.eContainer
-		message: "Mapped transfer object of owner exposed graph of '" + self.behaviourType + "' operation: " + self.eContainer.name  + 
+		check: self.owner.target == self.eContainer.eContainer
+		message: "Mapped transfer object of owner exposed graph of '" + self.behaviourType + "' operation: " + self.eContainer.name  +
 			" (in: " + self.eContainer.eContainer.name + ") must match the operation's container."
 	}
 }
-	

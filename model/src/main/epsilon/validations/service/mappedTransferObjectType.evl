@@ -35,7 +35,7 @@ context PSM!MappedTransferObjectType{
     				.exists(c | c.behaviour.satisfies("OwnerIsValidBoundBehaviour") and c.behaviour.owner.target == self) or
     			PSM!UnboundOperation.all
     				.select(o | o.behaviour.isDefined() and o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE)
-    				.exists(c | c.behaviour.satisfies("OwnerIsValidUnboundBehaviour") and c.behaviour.owner.mappedTransferObjectType == self) )
+    				.exists(c | c.behaviour.satisfies("OwnerIsValidUnboundBehaviour") and c.behaviour.owner.target == self) )
     		
     		and psmUtils.getAllTransferObjectRelations(self).select(r | r.binding.isDefined())
     			.forAll(r | r.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid"))

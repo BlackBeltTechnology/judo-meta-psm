@@ -1,10 +1,11 @@
 context PSM!TransferObjectRelation {
 
-    constraint UnmappedTransferObjectTypeHasNoRelationBinding {
+    // transfer object relation of unmapped transfer object types must be static
+    /*constraint UnmappedTransferObjectTypeHasNoRelationBinding {
         guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
         check: not self.binding.isDefined()
         message: "Transfer object relation " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding." 
-    }
+    }*/
     
     constraint TargetMatchesBindingTarget{
         guard:  self.target.isKindOf(MappedTransferObjectType) and self.binding.isDefined()

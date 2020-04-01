@@ -4,8 +4,7 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
-import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
-import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
+import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.BoundOperation;
@@ -38,8 +37,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newAccessPointBuilder;
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newExposedGraphBuilder;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newActorTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
@@ -648,26 +646,6 @@ class PsmValidationServiceTest {
     }
 
     @Test
-    void testUnmappedTransferObjectTypeHasNoAttributeBinding() throws Exception {
-        log.info("Testing constraint: UnmappedTransferObjectTypeHasNoAttributeBinding");
-
-        StringType string = newStringTypeBuilder().withName("Str").withMaxLength(255).build();
-        StaticData d = newStaticDataBuilder().withName("D").withDataType(string).withGetterExpression(
-                newDataExpressionTypeBuilder().withExpression("exp").build()).build();
-
-        TransferAttribute a = newTransferAttributeBuilder().withName("A").withDataType(string).withBinding(d).build();
-        UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withAttributes(a).build();
-
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(t,string,d)).build();
-
-        psmModel.addContent(m);
-
-        runEpsilon(ImmutableList.of(
-                "UnmappedTransferObjectTypeHasNoAttributeBinding|Transfer object attribute A of unmapped transfer object T must not have binding."),
-                Collections.emptyList());
-    }
-
-    @Test
     void testDataTypeMatchesBindingDataType() throws Exception {
         log.info("Testing constraint: DataTypeMatchesBindingDataType");
 
@@ -883,31 +861,6 @@ class PsmValidationServiceTest {
                         + "must either match the entity type of the mapped tranfer object or be StaticData.",
                 "TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute5 of mapped transfer object TransferObject "
                         + "must either match the entity type of the mapped tranfer object or be StaticData."),
-                Collections.emptyList());
-    }
-
-    @Test
-    void testUnmappedTransferObjectTypeHasNoRelationBinding() throws Exception {
-        log.info("Testing constraint: UnmappedTransferObjectTypeHasNoRelationBinding");
-
-        EntityType target = newEntityTypeBuilder().withName("target").build();
-        MappedTransferObjectType mappedTarget = newMappedTransferObjectTypeBuilder().withName("mappedTarget").withEntityType(target).build();
-        
-        StaticNavigation n = newStaticNavigationBuilder().withName("N")
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("exp").build())
-        		.withCardinality(newCardinalityBuilder().build())
-        		.withTarget(target).build();
-        TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withBinding(n).withCardinality(newCardinalityBuilder().build())
-        		.withTarget(mappedTarget).build();
-
-        UnmappedTransferObjectType t = newUnmappedTransferObjectTypeBuilder().withName("T").withRelations(r).build();
-
-        Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(t, n, target, mappedTarget)).build();
-
-        psmModel.addContent(m);
-
-        runEpsilon(ImmutableList.of(
-                "UnmappedTransferObjectTypeHasNoRelationBinding|Transfer object relation R of unmapped transfer object T must not have binding."),
                 Collections.emptyList());
     }
 
@@ -2267,9 +2220,11 @@ class PsmValidationServiceTest {
 		StaticNavigation sn = newStaticNavigationBuilder().withName("sn").withTarget(e1)
 				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		ExposedGraph eg = newExposedGraphBuilder().withName("eg").withMappedTransferObjectType(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withSelector(sn).build();
-		AccessPoint ap = newAccessPointBuilder().withName("ap").withExposedGraphs(eg).build();
+		TransferObjectRelation eg = newTransferObjectRelationBuilder().withName("eg").withTarget(t1)
+				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
+		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName("ap").withRelations(eg).build();
+
+        ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
 		
 		BoundOperation op = newBoundOperationBuilder().withName("binding")
 				.withInstanceRepresentation(t1)
@@ -2312,7 +2267,7 @@ class PsmValidationServiceTest {
 		));
 
 		Model model = newModelBuilder().withName("model")
-				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, stringType, integerType, ap, sn, ct, pt, c, p)).build();
+				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, stringType, integerType, actor, ap, sn, ct, pt, c, p)).build();
 
 		psmModel.addContent(model);
 

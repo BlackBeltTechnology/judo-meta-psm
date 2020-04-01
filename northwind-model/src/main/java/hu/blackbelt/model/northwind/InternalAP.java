@@ -1,83 +1,89 @@
 package hu.blackbelt.model.northwind;
 
-import hu.blackbelt.judo.meta.psm.accesspoint.AccessPoint;
-import hu.blackbelt.judo.meta.psm.accesspoint.ExposedGraph;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.model.northwind.services.*;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
 public class InternalAP {
 
-    public AccessPoint $ = newAccessPointBuilder().build();
+    public UnmappedTransferObjectType $ = newUnmappedTransferObjectTypeBuilder().build();
 
-    public ExposedGraph categories = newExposedGraphBuilder().build();
-    public ExposedGraph products = newExposedGraphBuilder().build();
-    public ExposedGraph shippers = newExposedGraphBuilder().build();
-    public ExposedGraph allInternationalOrders = newExposedGraphBuilder().build();
-    public ExposedGraph ordersAssignedToEmployee = newExposedGraphBuilder().build();
-    public ExposedGraph lastTwoWeekOrders = newExposedGraphBuilder().build();
+    public TransferObjectRelation categories = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation products = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation shippers = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation allInternationalOrders = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation ordersAssignedToEmployee = newTransferObjectRelationBuilder().build();
+    public TransferObjectRelation lastTwoWeekOrders = newTransferObjectRelationBuilder().build();
+
+    public TransferObjectRelation exposed = newTransferObjectRelationBuilder().build();
 
     public void init(Model $model, ProductInfo $productInfo, CategoryInfo $categoryInfo, ShipperInfo $shipperInfo,
                      OrderInfo $orderInfo, InternationalOrderInfo $internationalOrderInfo, AllProducts $allProducts,
                      AllCategories $allCategories, AllShippers $allShippers,
                      OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks,
                      AllInternationalOrders $allInternationalOrders) {
-        useAccessPoint($)
+        useUnmappedTransferObjectType($)
                 .withName("internalAP")
-                .withExposedGraphs(useExposedGraph(products)
+                .withRelations(useTransferObjectRelation(products)
                         .withName("products")
-                        .withMappedTransferObjectType($productInfo.$)
-                        .withSelector($allProducts.$)
+                        .withTarget($productInfo.$)
+                        .withBinding($allProducts.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(useExposedGraph(shippers)
+                .withRelations(useTransferObjectRelation(shippers)
                         .withName("shippers")
-                        .withMappedTransferObjectType($shipperInfo.$)
-                        .withSelector($allShippers.$)
+                        .withTarget($shipperInfo.$)
+                        .withBinding($allShippers.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(useExposedGraph(categories)
+                .withRelations(useTransferObjectRelation(categories)
                         .withName("categories")
-                        .withMappedTransferObjectType($categoryInfo.$)
-                        .withSelector($allCategories.$)
+                        .withTarget($categoryInfo.$)
+                        .withBinding($allCategories.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(useExposedGraph(ordersAssignedToEmployee)
+                .withRelations(useTransferObjectRelation(ordersAssignedToEmployee)
                         .withName("ordersAssignedToEmployee")
-                        .withSelector($orderAssignedToEmployee.$)
-                        .withMappedTransferObjectType($orderInfo.$)
+                        .withTarget($orderInfo.$)
+                        .withBinding($orderAssignedToEmployee.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(useExposedGraph(allInternationalOrders)
+                .withRelations(useTransferObjectRelation(allInternationalOrders)
                         .withName("allInternationalOrders")
-                        .withSelector($allInternationalOrders.$)
-                        .withMappedTransferObjectType($internationalOrderInfo.$)
+                        .withTarget($internationalOrderInfo.$)
+                        .withBinding($allInternationalOrders.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedGraphs(useExposedGraph(lastTwoWeekOrders)
+                .withRelations(useTransferObjectRelation(lastTwoWeekOrders)
                         .withName("LastTwoWeekOrders")
-                        .withSelector($ordersOfLastTwoWeeks.$)
-                        .withMappedTransferObjectType($orderInfo.$)
+                        .withTarget($orderInfo.$)
+                        .withBinding($ordersOfLastTwoWeeks.$)
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1))
                         .build()
                 )
-                .withExposedServices(newExposedServiceBuilder()
+                .withRelations(useTransferObjectRelation(exposed)
                         .withName("exposed")
-                        .withOperationGroup($internationalOrderInfo.$)
+                        .withTarget($internationalOrderInfo.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withLower(1)
+                                .withUpper(1))
+                        .build()
                 )
                 .build();
         useModel($model).withElements($).build();

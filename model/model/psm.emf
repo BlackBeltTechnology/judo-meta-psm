@@ -422,11 +422,13 @@ package service {
     !ordered op TransferObjectType[*] getAllSuperTransferObjectTypes();
     !ordered op String[*] getInheritedTransferAttributeNames();
     !ordered op String[*] getInheritedTransferObjectRelationNames();
+    !ordered op boolean[1] isAccessPoint();
     ref TransferAttribute representation;
     val TransferObjectRelation[*] relations;
     val TransferAttribute[*] attributes;
     ref TransferObjectType[*] superTransferObjectTypes;
     val TransferOperation[*] operations;
+    ref accesspoint.ActorType#transferObjectType actorType;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -447,6 +449,7 @@ package service {
 
     @GenModel(body="return (eContainer() instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType);")
     op boolean[1] isNavigable();
+    !ordered op boolean[1] isExposedGraph();
     val type.Cardinality[1] cardinality;
     ref data.ReferenceTypedElement binding;
     ref ~derived.StaticNavigation defaultValue;
@@ -541,19 +544,8 @@ package service {
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/accesspoint", prefix="accesspoint")
 package accesspoint {
-  class AccessPoint extends namespace.NamespaceElement {
-    val ExposedGraph[*] exposedGraphs;
-    val ExposedService[*] exposedServices;
-  }
-
-  class ExposedGraph extends namespace.NamedElement {
-    ref service.MappedTransferObjectType[1] mappedTransferObjectType;
-    ref ~derived.StaticNavigation[1] selector;
-    val type.Cardinality[1] cardinality;
-  }
-
-  class ExposedService extends namespace.NamedElement {
-    ref service.TransferObjectType[1] operationGroup;
+  class ActorType extends namespace.NamespaceElement {
+    ref service.TransferObjectType[1]#actorType transferObjectType;
   }
 
 }

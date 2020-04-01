@@ -292,12 +292,16 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/superTransferObjectTypes"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/operations"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/actorType"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getAllSuperTransferObjectTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferAttributeNames"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedTransferAttributeNames(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferObjectRelationNames"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedTransferObjectRelationNames(this);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/isAccessPoint"
+            body="return getActorType() != null;"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//service/TransferObjectRelation">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectRelation/cardinality"/>
@@ -321,6 +325,8 @@
             body="return (getBinding() instanceof hu.blackbelt.judo.meta.psm.data.Relation) ||&#xA;                (getBinding() instanceof hu.blackbelt.judo.meta.psm.derived.ReferenceAccessor) &amp;&amp; ((hu.blackbelt.judo.meta.psm.derived.ReferenceAccessor)getBinding()).getSetterExpression() != null;"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectRelation/isNavigable"
             body="return (eContainer() instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType);"/>
+        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectRelation/isExposedGraph"
+            body="return ((hu.blackbelt.judo.meta.psm.service.TransferObjectType) eContainer()).isAccessPoint() &amp;&amp; getBinding() != null;"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/TransferAttribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferAttribute/required"/>
@@ -381,22 +387,10 @@
         resource="XMI" disposableProviderFactory="true" dataTypeConverters="true"
         extensibleProviderFactory="true" childCreationExtenders="true" fileExtensions="judo-meta-psm-accesspoint"
         ecorePackage="psm.ecore#//accesspoint">
-      <genClasses ecoreClass="psm.ecore#//accesspoint/AccessPoint">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//accesspoint/AccessPoint/exposedGraphs"/>
-        <genFeatures children="true" createChild="true" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/AccessPoint/exposedServices"/>
-      </genClasses>
-      <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedGraph">
+      <genClasses ecoreClass="psm.ecore#//accesspoint/ActorType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/mappedTransferObjectType"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/selector"/>
-        <genFeatures children="true" createChild="true" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedGraph/cardinality"/>
-      </genClasses>
-      <genClasses ecoreClass="psm.ecore#//accesspoint/ExposedService">
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ExposedService/operationGroup"/>
+            ecoreFeature="ecore:EReference psm.ecore#//accesspoint/ActorType/transferObjectType"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//accesspoint/ActorType/authenticationMethod"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="View" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"

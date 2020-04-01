@@ -177,7 +177,9 @@ public class Demo {
     private VelocityStoredInKmPerHour velocityStoredInKmPerHour = new VelocityStoredInKmPerHour();
     private VolumeStoredInLitre volumeStoredInLitre = new VolumeStoredInLitre();
     private InternalAP internalAP = new InternalAP();
+    private InternalUser internalUser = new InternalUser();
     private ExternalAP externalAP = new ExternalAP();
+    private ExternalUser externalUser = new ExternalUser();
     private AllCategories allCategories = new AllCategories();
     private AllInternationalOrders allInternationalOrders = new AllInternationalOrders();
     private AllProducts allProducts = new AllProducts();
@@ -321,6 +323,9 @@ public class Demo {
         internalAP.init($, productInfo, categoryInfo, shipperInfo, orderInfo, internationalOrderInfo, allProducts,
                 allCategories, allShippers, orderAssignedToEmployee, ordersOfLastTwoWeeks, allInternationalOrders);
         externalAP.init($, product_, category_, allProducts, allCategories);
+
+        internalUser.init($, internalAP);
+        externalUser.init($, externalAP);
 
         PsmModel psmModel = createPsmModel();
         psmModel.addContent($);
