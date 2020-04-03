@@ -298,7 +298,7 @@ public class Demo {
         comment.init(services.$, string, text, timeStamp);
 
         // Mapped transfer objects
-        category_.init(services.$, string, category, product_, externalAP);
+        category_.init(services.$, string, category, product_);
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         shipperInfo.init(services.$, string, shipper, company, gps);
         product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories, externalAP);
