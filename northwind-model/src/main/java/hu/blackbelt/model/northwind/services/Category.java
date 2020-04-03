@@ -6,12 +6,10 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
 import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
 import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
-import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.ExternalAP;
 import hu.blackbelt.model.northwind.types.String;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
@@ -22,7 +20,6 @@ public class Category {
     public TransferAttribute categoryName = newTransferAttributeBuilder().build();
     public TransferObjectRelation products = newTransferObjectRelationBuilder().build();
 
-    public UnboundOperation getAllCategories = newUnboundOperationBuilder().build();
     public BoundTransferOperation getProductsOfCategory = newBoundTransferOperationBuilder().build();
 
     public void init(Package $package, String $string, hu.blackbelt.model.northwind.entities.Category $category,
@@ -44,22 +41,6 @@ public class Category {
                         .withCardinality(newCardinalityBuilder()
                                 .withUpper(-1)
                         )
-                )
-                .withOperations(useUnboundOperation(getAllCategories)
-                        .withName("getAllCategories")
-                        .withBehaviour(newTransferOperationBehaviourBuilder()
-                                .withBehaviourType(TransferOperationBehaviourType.GET)
-                                .withOwner($externalAP.categories)
-                                .build())
-                        .withImplementation(newOperationBodyBuilder()
-                                .withStateful(false)
-                        )
-                        .withOutput(newParameterBuilder().withName("output")
-                                .withType($)
-                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
-                                )
-                        )
-                        .build()
                 )
                 .withOperations(useBoundTransferOperation(getProductsOfCategory)
                         .withName("getProductsOfCategory")
