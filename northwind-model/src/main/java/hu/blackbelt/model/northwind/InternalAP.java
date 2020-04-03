@@ -95,7 +95,7 @@ public class InternalAP {
                         .build()
                 )
                 .withRelations(useTransferObjectRelation(allInternationalOrders)
-                        .withName("allInternationalOrders")
+                        .withName("internationalOrders")
                         .withTarget($internationalOrderInfo.$)
                         .withBinding($allInternationalOrders.$)
                         .withCardinality(newCardinalityBuilder()
