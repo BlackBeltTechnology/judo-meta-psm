@@ -364,6 +364,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/cardinality"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/Parameter/type"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/Parameter/immutable"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/BoundTransferOperation">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
