@@ -45,8 +45,8 @@ context PSM!TransferOperationBehaviour {
     constraint GetRangeUnboundOperationInputTypeIsValid {
     	guard: self.eContainer.isKindOf(PSM!UnboundOperation) and
     		self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
-    	check: self.eContainer.input.type == self.eContainer.eContainer
-    	message: "Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the container of the operation (operation: " + self.eContainer.name + ")"
+    	check: self.eContainer.input.type == self.owner.type
+    	message: "Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the related input parameter type (operation: " + self.eContainer.name + ")"
     }
 
     constraint GetRangeBoundTransferOperationInputTypeIsValid {

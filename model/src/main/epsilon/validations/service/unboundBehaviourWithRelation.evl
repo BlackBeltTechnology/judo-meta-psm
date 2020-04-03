@@ -5,7 +5,7 @@ context PSM!TransferOperationBehaviour {
 		self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION or
 		self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION or
 		self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION)
-		and self.satisfiesAll("OperationIsValidUnboundBehaviour","OwnerIsExposedGraphUnboundBehaviour","OwnerIsValidUnboundBehaviour")
+		and self.satisfiesAll("OperationIsValidUnboundBehaviour","OwnerIsRelationUnboundBehaviour")
 	
 	constraint RelationIsDefinedUnboundWithRelation {
 		check: self.relation.isDefined() 

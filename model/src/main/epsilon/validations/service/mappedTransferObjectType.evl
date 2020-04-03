@@ -28,14 +28,14 @@ context PSM!MappedTransferObjectType{
                         self.operations.exists(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == opName.toLowerCase()))
         message: "Transfer object type: " + self.name + " must override inherited bound transfer operations of the same name."
     }
-    
+
     constraint AllRequiredFeaturesHaveBindingIfCreatable {
     	guard: (PSM!BoundTransferOperation.all
     				.select(o | o.behaviour.isDefined() and o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION)
     				.exists(c | c.behaviour.satisfies("OwnerIsValidBoundBehaviour") and c.behaviour.owner.target == self) or
     			PSM!UnboundOperation.all
     				.select(o | o.behaviour.isDefined() and o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE)
-    				.exists(c | c.behaviour.satisfies("OwnerIsValidUnboundBehaviour") and c.behaviour.owner.target == self) )
+    				.exists(c | c.behaviour.satisfies("OwnerIsRelationUnboundBehaviour") and c.behaviour.owner.target == self) )
     		
     		and psmUtils.getAllTransferObjectRelations(self).select(r | r.binding.isDefined())
     			.forAll(r | r.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid"))
