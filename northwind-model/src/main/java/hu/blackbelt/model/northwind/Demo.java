@@ -301,7 +301,7 @@ public class Demo {
         category_.init(services.$, string, category, product_);
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         shipperInfo.init(services.$, string, shipper, company, gps);
-        product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories, externalAP);
+        product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories);
         productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories, orderItem);
