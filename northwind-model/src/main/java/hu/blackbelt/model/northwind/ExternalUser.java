@@ -15,6 +15,7 @@ public class ExternalUser {
         useActorType($)
                 .withName("ExternalUser")
                 .withTransferObjectType($externalAP.$)
+                .withRealm("socialRealm")
                 .build();
 
         useModel($model).withElements($).build();

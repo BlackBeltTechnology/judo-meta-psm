@@ -15,6 +15,7 @@ public class InternalUser {
         useActorType($)
                 .withName("InternalUser")
                 .withTransferObjectType($internalAP.$)
+                .withRealm("ldapRealm")
                 .build();
 
         useModel($model).withElements($).build();
