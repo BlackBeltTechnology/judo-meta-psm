@@ -607,8 +607,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="ActorType" eSuperTypes="#//namespace/NamespaceElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="transferObjectType" lowerBound="1"
           eType="#//service/TransferObjectType" eOpposite="#//service/TransferObjectType/actorType"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="authenticationMethod"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="realm" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">

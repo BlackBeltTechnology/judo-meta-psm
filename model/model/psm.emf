@@ -499,6 +499,7 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
+    attr boolean immutable;
   }
 
   class BoundTransferOperation extends TransferOperation {
@@ -546,6 +547,7 @@ package service {
 package accesspoint {
   class ActorType extends namespace.NamespaceElement {
     ref service.TransferObjectType[1]#actorType transferObjectType;
+    attr String realm;
   }
 
 }
