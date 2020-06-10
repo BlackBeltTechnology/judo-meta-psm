@@ -13,12 +13,12 @@
 	<artifactId>hu.blackbelt.judo.meta.psm.model.test</artifactId>
 	<name>Judo :: Psm :: Model :: Test</name>
 	<description>Judo Psm Model Test</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>hu.blackbelt.judo.meta</groupId>
 			<artifactId>hu.blackbelt.judo.meta.psm.model</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -46,13 +46,7 @@
 			<groupId>hu.blackbelt.judo.meta</groupId>
 			<artifactId>hu.blackbelt.judo.meta.psm.model.northwind</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>hu.blackbelt.judo.meta</groupId>
-            <artifactId>hu.blackbelt.judo.meta.psm.model</artifactId>
-            <scope>test</scope>
-        </dependency>
 
-    </dependencies>
+	</dependencies>
 </project>
