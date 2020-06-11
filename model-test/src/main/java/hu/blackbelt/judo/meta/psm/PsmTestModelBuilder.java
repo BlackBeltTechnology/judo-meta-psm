@@ -74,9 +74,7 @@ public class PsmTestModelBuilder {
     private hu.blackbelt.model.northwind.types.Countries countries;
 
     private Map<String, Primitive> dataTypes = new HashMap<>();
-    private Set<ScriptTestEntityBuilder> entityBuilders = new LinkedHashSet<>();
-    private Set<ScriptTestMappedTransferObjectBuilder> mappedTransferObjectBuilders = new LinkedHashSet<>();
-    private Set<ScriptTestUnmappedTransferObjectBuilder> unmappedTransferObjectBuilders = new LinkedHashSet<>();
+    private Set<ScriptTestBuilders> scriptTestBuilders = new LinkedHashSet<>();
     private Set<ScriptTestActorTypeBuilder> actorTypeBuilders = new LinkedHashSet<>();
 
     private Map<String, EntityType> entityTypes = new HashMap<>();
@@ -85,7 +83,7 @@ public class PsmTestModelBuilder {
     private Set<ScriptTestBoundOperationBuilder> boundOperationBuilders = new HashSet<>();
     private Set<ScriptTestUnboundOperationBuilder> unboundOperationBuilders = new HashSet<>();
 
-    private Map<BoundOperation, BoundTransferOperation> boundOperationMapping  = new HashMap<>();
+    private Map<BoundOperation, BoundTransferOperation> boundOperationMapping = new HashMap<>();
 
     public PsmTestModelBuilder() {
         $ = NamespaceBuilders.newModelBuilder().build();
@@ -143,14 +141,28 @@ public class PsmTestModelBuilder {
 
     public ScriptTestMappedTransferObjectBuilder addMappedTransferObject(String toName, String entityName) {
         ScriptTestMappedTransferObjectBuilder builder = new ScriptTestMappedTransferObjectBuilder(toName, entityName);
-        mappedTransferObjectBuilders.add(builder);
+        scriptTestBuilders.add(builder);
         return builder;
+    }
+
+    public Optional<ScriptTestMappedTransferObjectBuilder> getMappedTransferObject(String name) {
+        return scriptTestBuilders.stream()
+                .filter(e -> e instanceof ScriptTestMappedTransferObjectBuilder && name.equals(((ScriptTestMappedTransferObjectBuilder) e).name))
+                .findFirst()
+                .map(e -> (ScriptTestMappedTransferObjectBuilder) (e));
     }
 
     public ScriptTestUnmappedTransferObjectBuilder addUnmappedTransferObject(String toName) {
         ScriptTestUnmappedTransferObjectBuilder builder = new ScriptTestUnmappedTransferObjectBuilder(toName);
-        unmappedTransferObjectBuilders.add(builder);
+        scriptTestBuilders.add(builder);
         return builder;
+    }
+
+    public Optional<ScriptTestUnmappedTransferObjectBuilder> getUnmappedTransferObject(String name) {
+        return scriptTestBuilders.stream()
+                .filter(e -> e instanceof ScriptTestUnmappedTransferObjectBuilder && name.equals(((ScriptTestUnmappedTransferObjectBuilder) e).name))
+                .findFirst()
+                .map(e -> (ScriptTestUnmappedTransferObjectBuilder) e);
     }
 
     public ScriptTestActorTypeBuilder addActorType(String name, String toName) {
@@ -161,8 +173,15 @@ public class PsmTestModelBuilder {
 
     public ScriptTestEntityBuilder addEntity(String name) {
         ScriptTestEntityBuilder entityBuilder = new ScriptTestEntityBuilder(name);
-        entityBuilders.add(entityBuilder);
+        scriptTestBuilders.add(entityBuilder);
         return entityBuilder;
+    }
+
+    public Optional<ScriptTestEntityBuilder> getEntity(String name) {
+        return scriptTestBuilders.stream()
+                .filter(e -> e instanceof ScriptTestEntityBuilder && name.equals(((ScriptTestEntityBuilder) e).name))
+                .findFirst()
+                .map(e -> (ScriptTestEntityBuilder) e);
     }
 
     public ScriptTestBoundOperationBuilder addBoundOperation(String type, String name) {
@@ -175,14 +194,29 @@ public class PsmTestModelBuilder {
         PackageBuilder entityPackageBuilder = NamespaceBuilders.usePackage(entities.$);
         PackageBuilder servicePackageBuilder = NamespaceBuilders.usePackage(services.$);
         PackageBuilder defaultToEntityPackageBuilder = NamespaceBuilders.newPackageBuilder().withName("entities");
-        for (ScriptTestEntityBuilder entityBuilder : entityBuilders) {
-            EntityType entityType = entityBuilder.build();
-            entityTypes.put(entityBuilder.name, entityType);
-            entityPackageBuilder.withElements(entityType);
-            MappedTransferObjectType defaultTo = entityBuilder.defaultToBuilder.build();
-            toTypes.put(entityType.getName(), defaultTo);
-            defaultToEntityPackageBuilder.withElements(defaultTo);
+
+        for (ScriptTestBuilders scriptTestBuilder : scriptTestBuilders) {
+            if (scriptTestBuilder instanceof ScriptTestEntityBuilder) {
+                ScriptTestEntityBuilder entityBuilder = (ScriptTestEntityBuilder) scriptTestBuilder;
+                EntityType entityType = entityBuilder.build();
+                entityTypes.put(entityBuilder.name, entityType);
+                entityPackageBuilder.withElements(entityType);
+                MappedTransferObjectType defaultTo = entityBuilder.defaultToBuilder.build();
+                toTypes.put(entityType.getName(), defaultTo);
+                defaultToEntityPackageBuilder.withElements(defaultTo);
+            }
+            if (scriptTestBuilder instanceof ScriptTestMappedTransferObjectBuilder) {
+                MappedTransferObjectType mappedTransferObjectType = ((ScriptTestMappedTransferObjectBuilder) scriptTestBuilder).build();
+                servicePackageBuilder.withElements(mappedTransferObjectType);
+                toTypes.put(mappedTransferObjectType.getName(), mappedTransferObjectType);
+            }
+            if (scriptTestBuilder instanceof ScriptTestUnmappedTransferObjectBuilder) {
+                UnmappedTransferObjectType unmappedTransferObjectType = ((ScriptTestUnmappedTransferObjectBuilder) scriptTestBuilder).build();
+                servicePackageBuilder.withElements(unmappedTransferObjectType);
+                toTypes.put(unmappedTransferObjectType.getName(), unmappedTransferObjectType);
+            }
         }
+
         for (String entityType : entityTypes.keySet()) {
             if (twoWayTargetDefs.containsKey(entityType)) {
                 TwoWayTargetDef twoWayTargetDef = twoWayTargetDefs.get(entityType);
@@ -192,8 +226,8 @@ public class PsmTestModelBuilder {
                             relation.setTarget(targetEntity);
                             AssociationEnd partner = (AssociationEnd) targetEntity.getRelations().stream().filter(rel -> rel.getName().equals(twoWayTargetDef.targetReference))
                                     .findFirst().get();
-                            ((AssociationEnd)relation).setPartner(partner);
-                            partner.setPartner(((AssociationEnd)relation));
+                            ((AssociationEnd) relation).setPartner(partner);
+                            partner.setPartner(((AssociationEnd) relation));
                         }
                 );
                 TransferObjectType defaultTo = toTypes.get(entityType);
@@ -203,18 +237,9 @@ public class PsmTestModelBuilder {
                 });
             }
         }
+
         PackageBuilder defaultToPackageBuilder = NamespaceBuilders.usePackage(defaultToPkg);
         defaultToPackageBuilder.withPackages(defaultToEntityPackageBuilder.build());
-        for (ScriptTestMappedTransferObjectBuilder mappedTransferObjectBuilder : mappedTransferObjectBuilders) {
-            MappedTransferObjectType mappedTransferObjectType = mappedTransferObjectBuilder.build();
-            servicePackageBuilder.withElements(mappedTransferObjectType);
-            toTypes.put(mappedTransferObjectType.getName(), mappedTransferObjectType);
-        }
-        for (ScriptTestUnmappedTransferObjectBuilder unmappedTransferObjectBuilder : unmappedTransferObjectBuilders) {
-            UnmappedTransferObjectType unmappedTransferObjectType = unmappedTransferObjectBuilder.build();
-            servicePackageBuilder.withElements(unmappedTransferObjectType);
-            toTypes.put(unmappedTransferObjectType.getName(), unmappedTransferObjectType);
-        }
 
         for (ScriptTestUnboundOperationBuilder unboundOperationBuilder : unboundOperationBuilders) {
             UnboundOperation unboundOperation = unboundOperationBuilder.build();
@@ -263,7 +288,7 @@ public class PsmTestModelBuilder {
 
     @Deprecated
     public ScriptTestOperationBuilder addUnboundOperation(String operationName, String operationBody, String returnType) {
-        return addUnboundOperation(operationName).withBody(operationBody).withOutput(returnType, Cardinality.cardinality(1,1));
+        return addUnboundOperation(operationName).withBody(operationBody).withOutput(returnType, Cardinality.cardinality(1, 1));
     }
 
     public void setTwoWayRelation(String entity, String reference, String target, String targetReference) {
@@ -330,7 +355,10 @@ public class PsmTestModelBuilder {
         }
     }
 
-    public class ScriptTestUnmappedTransferObjectBuilder {
+    public interface ScriptTestBuilders {
+    }
+
+    public class ScriptTestUnmappedTransferObjectBuilder implements ScriptTestBuilders {
         private String name;
         private Map<String, String> attributes = new HashMap<>();
         private Map<String, RelationDef> relations = new HashMap<>();
@@ -385,7 +413,7 @@ public class PsmTestModelBuilder {
         }
     }
 
-    public class ScriptTestMappedTransferObjectBuilder {
+    public class ScriptTestMappedTransferObjectBuilder implements ScriptTestBuilders {
         private String name;
         private String entityName;
         private Map<String, String> attributes = new HashMap<>();
@@ -469,7 +497,7 @@ public class PsmTestModelBuilder {
 
     }
 
-    public class ScriptTestEntityBuilder {
+    public class ScriptTestEntityBuilder implements ScriptTestBuilders {
 
         private final ScriptTestMappedTransferObjectBuilder defaultToBuilder;
         private String name;
@@ -545,7 +573,7 @@ public class PsmTestModelBuilder {
 
     }
 
-    public class ScriptTestActorTypeBuilder {
+    public class ScriptTestActorTypeBuilder implements ScriptTestBuilders {
 
         private final String name;
         private final String toName;
