@@ -198,22 +198,31 @@ public class PsmTestModelBuilder {
         for (ScriptTestBuilders scriptTestBuilder : scriptTestBuilders) {
             if (scriptTestBuilder instanceof ScriptTestEntityBuilder) {
                 ScriptTestEntityBuilder entityBuilder = (ScriptTestEntityBuilder) scriptTestBuilder;
-                EntityType entityType = entityBuilder.build();
-                entityTypes.put(entityBuilder.name, entityType);
+                EntityType entityType = entityBuilder.emptyBuild();
                 entityPackageBuilder.withElements(entityType);
-                MappedTransferObjectType defaultTo = entityBuilder.defaultToBuilder.build();
-                toTypes.put(entityType.getName(), defaultTo);
+                MappedTransferObjectType defaultTo = entityBuilder.defaultToBuilder.emptyBuild();
                 defaultToEntityPackageBuilder.withElements(defaultTo);
             }
             if (scriptTestBuilder instanceof ScriptTestMappedTransferObjectBuilder) {
-                MappedTransferObjectType mappedTransferObjectType = ((ScriptTestMappedTransferObjectBuilder) scriptTestBuilder).build();
+                MappedTransferObjectType mappedTransferObjectType = ((ScriptTestMappedTransferObjectBuilder) scriptTestBuilder).emptyBuild();
                 servicePackageBuilder.withElements(mappedTransferObjectType);
-                toTypes.put(mappedTransferObjectType.getName(), mappedTransferObjectType);
             }
             if (scriptTestBuilder instanceof ScriptTestUnmappedTransferObjectBuilder) {
-                UnmappedTransferObjectType unmappedTransferObjectType = ((ScriptTestUnmappedTransferObjectBuilder) scriptTestBuilder).build();
+                UnmappedTransferObjectType unmappedTransferObjectType = ((ScriptTestUnmappedTransferObjectBuilder) scriptTestBuilder).emptyBuild();
                 servicePackageBuilder.withElements(unmappedTransferObjectType);
-                toTypes.put(unmappedTransferObjectType.getName(), unmappedTransferObjectType);
+            }
+        }
+
+        for (ScriptTestBuilders scriptTestBuilder : scriptTestBuilders) {
+            if (scriptTestBuilder instanceof ScriptTestEntityBuilder) {
+                ((ScriptTestEntityBuilder) scriptTestBuilder).build();
+                ((ScriptTestEntityBuilder) scriptTestBuilder).defaultToBuilder.build();
+            }
+            if (scriptTestBuilder instanceof ScriptTestMappedTransferObjectBuilder) {
+                ((ScriptTestMappedTransferObjectBuilder) scriptTestBuilder).build();
+            }
+            if (scriptTestBuilder instanceof ScriptTestUnmappedTransferObjectBuilder) {
+                ((ScriptTestUnmappedTransferObjectBuilder) scriptTestBuilder).build();
             }
         }
 
@@ -383,8 +392,15 @@ public class PsmTestModelBuilder {
             return this;
         }
 
+        private UnmappedTransferObjectType emptyBuild() {
+            final UnmappedTransferObjectTypeBuilder builder = newUnmappedTransferObjectTypeBuilder().withName(name);
+            final UnmappedTransferObjectType build = builder.build();
+            toTypes.put(name, build);
+            return build;
+        }
+
         private UnmappedTransferObjectType build() {
-            UnmappedTransferObjectTypeBuilder builder = newUnmappedTransferObjectTypeBuilder().withName(name);
+            UnmappedTransferObjectTypeBuilder builder = useUnmappedTransferObjectType((UnmappedTransferObjectType) toTypes.get(name));
             for (Map.Entry<String, String> attributeEntry : attributes.entrySet()) {
                 TransferAttribute transferAttribute = ServiceBuilders.useTransferAttribute(ServiceBuilders.newTransferAttributeBuilder().build())
                         .withName(attributeEntry.getKey())
@@ -446,16 +462,25 @@ public class PsmTestModelBuilder {
             relations.put(name, new RelationDef(name, type, cardinality, true));
         }
 
-
         public ScriptTestMappedTransferObjectBuilder withContainment(String target, String name, Cardinality cardinality) {
             containments.put(name, new RelationDef(name, target, cardinality));
             return this;
         }
 
-        private MappedTransferObjectType build() {
-            MappedTransferObjectType $ = ServiceBuilders.newMappedTransferObjectTypeBuilder().build();
+        private MappedTransferObjectType emptyBuild() {
             EntityType entityType = entityTypes.get(entityName);
-            MappedTransferObjectTypeBuilder builder = ServiceBuilders.useMappedTransferObjectType($).withName(name).withEntityType(entityType);
+            MappedTransferObjectTypeBuilder builder = ServiceBuilders.newMappedTransferObjectTypeBuilder()
+                    .withName(name)
+                    .withEntityType(entityType);
+            final MappedTransferObjectType build = builder.build();
+            toTypes.put(name, build);
+            return build;
+        }
+
+        private MappedTransferObjectType build() {
+            EntityType entityType = entityTypes.get(entityName);
+            MappedTransferObjectTypeBuilder builder = useMappedTransferObjectType((MappedTransferObjectType) toTypes.get(name));
+
             for (Map.Entry<String, String> attributeEntry : attributes.entrySet()) {
                 TransferAttribute transferAttribute = ServiceBuilders.useTransferAttribute(ServiceBuilders.newTransferAttributeBuilder().build())
                         .withName(attributeEntry.getKey())
@@ -541,8 +566,15 @@ public class PsmTestModelBuilder {
             return this;
         }
 
-        private EntityType build() {
+        private EntityType emptyBuild() {
             EntityTypeBuilder builder = DataBuilders.newEntityTypeBuilder().withName(name);
+            final EntityType build = builder.build();
+            entityTypes.put(name, build);
+            return build;
+        }
+
+        private EntityType build() {
+            EntityTypeBuilder builder = EntityTypeBuilder.use(entityTypes.get(name));
             for (Map.Entry<String, String> attributeEntry : attributes.entrySet()) {
                 Attribute attribute = DataBuilders.newAttributeBuilder().withName(attributeEntry.getKey()).withDataType(dataTypes.get(attributeEntry.getValue())).build();
                 builder.withAttributes(attribute);
