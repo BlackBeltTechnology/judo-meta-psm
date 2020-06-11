@@ -570,6 +570,7 @@ public class PsmTestModelBuilder {
             EntityTypeBuilder builder = DataBuilders.newEntityTypeBuilder().withName(name);
             final EntityType build = builder.build();
             entityTypes.put(name, build);
+            defaultToBuilder.emptyBuild();
             return build;
         }
 
