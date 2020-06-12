@@ -184,6 +184,13 @@ public class PsmTestModelBuilder {
                 .map(e -> (ScriptTestEntityBuilder) e);
     }
 
+    public Optional<ScriptTestEntityBuilder> getEntityFromTO(String name) {
+        final Optional<ScriptTestMappedTransferObjectBuilder> mappedTransferObject = getMappedTransferObject(name);
+        if(!mappedTransferObject.isPresent())
+            return Optional.empty();
+        return getEntity(mappedTransferObject.get().entityName);
+    }
+
     public ScriptTestBoundOperationBuilder addBoundOperation(String type, String name) {
         ScriptTestBoundOperationBuilder builder = new ScriptTestBoundOperationBuilder(type, name);
         boundOperationBuilders.add(builder);
