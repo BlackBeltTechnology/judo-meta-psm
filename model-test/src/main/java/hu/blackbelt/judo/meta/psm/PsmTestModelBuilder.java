@@ -28,6 +28,8 @@ import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.*;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
 import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 
 import java.lang.String;
 import java.util.*;
@@ -149,7 +151,22 @@ public class PsmTestModelBuilder {
         return scriptTestBuilders.stream()
                 .filter(e -> e instanceof ScriptTestMappedTransferObjectBuilder && name.equals(((ScriptTestMappedTransferObjectBuilder) e).name))
                 .findFirst()
-                .map(e -> (ScriptTestMappedTransferObjectBuilder) (e));
+                .map(e -> (ScriptTestMappedTransferObjectBuilder) e);
+    }
+
+    public Optional<EList<ScriptTestMappedTransferObjectBuilder>> getMappedTransferObjectsFromEntity(String name) {
+        final Optional<ScriptTestEntityBuilder> scriptTestEntityBuilder = getEntity(name);
+        if (!scriptTestEntityBuilder.isPresent())
+            return Optional.empty();
+        EList<ScriptTestMappedTransferObjectBuilder> scriptTestMappedTransferObjectBuilders = new BasicEList<>();
+        scriptTestBuilders.stream()
+                .filter(e -> e instanceof ScriptTestMappedTransferObjectBuilder &&
+                        scriptTestEntityBuilder.get().name.equals(((ScriptTestMappedTransferObjectBuilder) e).entityName))
+                .map(e -> (ScriptTestMappedTransferObjectBuilder) e)
+                .forEach(scriptTestMappedTransferObjectBuilders::add);
+        return !scriptTestMappedTransferObjectBuilders.isEmpty()
+               ? Optional.of(scriptTestMappedTransferObjectBuilders)
+               : Optional.empty();
     }
 
     public ScriptTestUnmappedTransferObjectBuilder addUnmappedTransferObject(String toName) {
@@ -186,7 +203,7 @@ public class PsmTestModelBuilder {
 
     public Optional<ScriptTestEntityBuilder> getEntityFromTO(String name) {
         final Optional<ScriptTestMappedTransferObjectBuilder> mappedTransferObject = getMappedTransferObject(name);
-        if(!mappedTransferObject.isPresent())
+        if (!mappedTransferObject.isPresent())
             return Optional.empty();
         return getEntity(mappedTransferObject.get().entityName);
     }
