@@ -314,6 +314,12 @@ public class PsmTestModelBuilder {
         return builder;
     }
 
+    public Optional<ScriptTestUnboundOperationBuilder> getUnboundOperation(final String operationName) {
+        return unboundOperationBuilders.stream()
+                .filter(e -> operationName.equals(e.name))
+                .findFirst();
+    }
+
     @Deprecated
     public ScriptTestOperationBuilder addUnboundOperation(String operationName, String operationBody, String returnType, Cardinality cardinality) {
         return addUnboundOperation(operationName).withBody(operationBody).withOutput(returnType, cardinality);
