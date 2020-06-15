@@ -21,6 +21,7 @@ public class CategoryInfo {
     public TransferObjectRelation products = newTransferObjectRelationBuilder().build();
 
     public BoundTransferOperation getProductsOfCategory = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation moveProductsToCategory = newBoundTransferOperationBuilder().build();
 
     public void init(Package $package, String $string, Category $category, ProductInfo $productInfo,
                      AllProducts $allProducts) {
@@ -52,6 +53,16 @@ public class CategoryInfo {
                         .withOutput(newParameterBuilder().withName("output")
                                 .withType($productInfo.$)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundTransferOperation(moveProductsToCategory)
+                        .withName("moveProductsToCategory")
+                        .withBinding($category._moveProducts)
+                        .withInput(newParameterBuilder().withName("input")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(0).withUpper(-1).build()
                                 )
                         )
                         .build()

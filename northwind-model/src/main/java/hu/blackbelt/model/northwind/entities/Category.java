@@ -28,6 +28,7 @@ public class Category {
 
     public BoundOperation _getProducts = newBoundOperationBuilder().build();
     public BoundOperation _getProductsInternal = newBoundOperationBuilder().build();
+    public BoundOperation _moveProducts = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, Text $text, Binary $binary, Product $product, Employee $employee,
                      hu.blackbelt.model.northwind.services.Category $category, hu.blackbelt.model.northwind.services.Product $product_,
@@ -77,6 +78,20 @@ public class Category {
                         .withOutput(newParameterBuilder().withName("output")
                                 .withType($productInfo.$)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
+                                )
+                        )
+                        .build()
+                )
+                .withOperations(useBoundOperation(_moveProducts)
+                        .withName("_moveProducts")
+                        .withInstanceRepresentation($categoryInfo.$)
+                        .withImplementation(newOperationBodyBuilder()
+                                .withCustomImplementation(true)
+                                .withStateful(true)
+                        )
+                        .withInput(newParameterBuilder().withName("input")
+                                .withType($productInfo.$)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withLower(0).withUpper(-1).build()
                                 )
                         )
                         .build()
