@@ -378,6 +378,24 @@ public class PsmUtils {
                 .collect(Collectors.toSet()));
         return operations;
     }
+    
+    public static EList<BoundOperation> getAllAbstractBoundOperations(final EntityType entityType) {
+        EList<BoundOperation> operations = new UniqueEList<>();
+        operations.addAll(entityType.getOperations().stream().filter(op -> op.isAbstract()).collect(Collectors.toList()));
+        operations.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getOperations().stream().filter(op -> op.isAbstract()))
+                .collect(Collectors.toList()));
+        return operations;
+    }
+    
+    public static EList<BoundOperation> getAllNonAbstractBoundOperations(final EntityType entityType) {
+        EList<BoundOperation> operations = new UniqueEList<>();
+        operations.addAll(entityType.getOperations().stream().filter(op -> !op.isAbstract()).collect(Collectors.toList()));
+        operations.addAll(entityType.getAllSuperEntityTypes().stream()
+                .flatMap(e -> e.getOperations().stream().filter(op -> !op.isAbstract()))
+                .collect(Collectors.toList()));
+        return operations;
+    }
 
     /**
      * Get unique list of inherited bound operations of a given entity type.
