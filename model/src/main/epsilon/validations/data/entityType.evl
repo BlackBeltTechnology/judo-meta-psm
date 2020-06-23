@@ -20,7 +20,8 @@ context PSM!EntityType {
 	}
 	
 	constraint EntityTypeMustBeAbstractIfAnOperationIsAbstract {
-		check: psmUtils.getAllBoundOperations(self).exists(o | o.abstract) implies self.abstract
+		check: psmUtils.getAllAbstractBoundOperations(self).size() > 0 implies (self.abstract or
+		psmUtils.getAllAbstractBoundOperations(self).forAll(a | psmUtils.getAllNonAbstractBoundOperations(self).exists(o | o.name.equalsIgnoreCase(a.name) and o.implementation.isDefined())))
 		message: "Entity type: " + self.name + " must be abstract if it has an abstract operation"
 	}
     
