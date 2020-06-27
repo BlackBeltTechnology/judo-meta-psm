@@ -21,7 +21,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>generate-full-demo</id>
@@ -34,6 +34,9 @@
                                 <arguments>
                                     <argument>${basedir}/target/classes/model/northwind-psm.model</argument>
                                 </arguments>
+                                <includeProjectDependencies>true</includeProjectDependencies>
+                                <includePluginDependencies>true</includePluginDependencies>
+                                <cleanupDaemonThreads>false</cleanupDaemonThreads>
                         </configuration>
                     </execution>
                 </executions>
