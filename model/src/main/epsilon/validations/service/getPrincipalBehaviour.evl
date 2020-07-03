@@ -1,0 +1,62 @@
+context PSM!TransferOperationBehaviour {
+	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_PRINCIPAL
+	
+	constraint OperationOfGetPrincipalBehaviourIsValid {
+		check: self.eContainer.isKindOf(PSM!UnboundOperation)
+		message: "'GET_PRINCIPAL' behaviour type must be owned by unbound operation"
+	}
+	
+	constraint OwnerOfGetPrincipalBehaviourIsValid {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectType)
+		message: "Owner of 'GET_PRINCIPAL' behaviour must be a transfer object type"
+	}
+	
+	constraint RelationOfGetPrincipalBehaviourIsUndefined {
+		check: self.relation.isUndefined()
+		message: "Relation for 'GET_PRINCIPAL' behaviour types must be undefined"
+	}
+
+	constraint GetPrincipalOperationInputNameIsValid {
+	    guard: self.eContainer.input.isDefined()
+        check: self.eContainer.input.name == "input"
+        message: "'GET_PRINCIPAL' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationInputTypeIsValid {
+        guard: self.eContainer.input.isDefined()
+        check: self.eContainer.input.type.isKindOf(PSM!StringType)
+        message: "Type of 'GET_PRINCIPAL' operation's input parameter type must be string (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationInputCardinalityIsValid {
+        guard: self.eContainer.input.isDefined()
+        check: self.eContainer.input.cardinality.lower == 1 and
+            self.eContainer.input.cardinality.upper == 1
+        message: "Cardinality of 'GET_PRINCIPAL' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputParameterIsDefined {
+        check: self.eContainer.output.isDefined()
+        message: "'GET_PRINCIPAL' operation must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputNameIsValid {
+        guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.name == "output"
+        message: "'GET_PRINCIPAL' operation's output parameter must be named 'output' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputTypeIsValid {
+        guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner)
+        message: "Type of 'GET_PRINCIPAL' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputCardinalityIsValid {
+        guard: self.satisfiesAll("GetPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.cardinality.lower == 0 and
+            self.eContainer.output.cardinality.upper == 1
+        message: "Cardinality of 'GET_PRINCIPAL' operation's output parameter must be 0..1 (operation: " + self.eContainer.name + ")"
+    }
+}
