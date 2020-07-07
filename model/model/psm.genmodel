@@ -216,8 +216,6 @@
         ecorePackage="psm.ecore#//constraint">
       <genClasses ecoreClass="psm.ecore#//constraint/InvariantConstraint">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//constraint/InvariantConstraint/expression"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//constraint/InvariantConstraint/constrained"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Script" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"

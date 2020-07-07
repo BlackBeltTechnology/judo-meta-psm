@@ -384,8 +384,6 @@
     <eClassifiers xsi:type="ecore:EClass" name="InvariantConstraint" eSuperTypes="#//namespace/NamedElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
           eType="#//derived/LogicalExpressionType" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="constrained" lowerBound="1"
-          eType="#//data/EntityType"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="script" nsURI="http://blackbelt.hu/judo/meta/psm/script" nsPrefix="script">

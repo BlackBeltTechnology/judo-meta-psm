@@ -1772,20 +1772,22 @@ class PsmValidationDataTest {
 		E2.getSuperEntityTypes().add(E1);
 		E3.getSuperEntityTypes().add(E2);
 		
-		InvariantConstraint c1 = newInvariantConstraintBuilder().withName("c1").withConstrained(E3).withExpression(newLogicalExpressionTypeBuilder().withExpression("true").build()).build();
+		InvariantConstraint c1 = newInvariantConstraintBuilder().withName("c1").withExpression(newLogicalExpressionTypeBuilder().withExpression("true").build()).build();
 		E3.getConstraints().add(c1);
+		InvariantConstraint c2 = newInvariantConstraintBuilder().withName("c2").withExpression(newLogicalExpressionTypeBuilder().withExpression("true").build()).build();
+		E3.getConstraints().add(c2);
 		
 		Attribute attr = newAttributeBuilder().withName("c1").withDataType(string).build();
 		E1.getAttributes().add(attr);
 		
-		InvariantConstraint c2 = newInvariantConstraintBuilder().withName("c2").withConstrained(E1).withExpression(newLogicalExpressionTypeBuilder().withExpression("true").build()).build();
-		E3.getConstraints().add(c2);
+		AssociationEnd relation = newAssociationEndBuilder().withName("c2").withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()).withTarget(E2).build();
+		E2.getRelations().add(relation);
 		
 		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3, string)).build();
 
 		psmModel.addContent(m);
 		runEpsilon(ImmutableList.of("InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType|Invariant constraint: c1 has the same name as inherited content(s) of entity type: E3",
-				"ConstrainedEntityTypeMatchesContainer|Invariant constraint: c2 reference its container: M::E3"), Collections.emptyList());
+				"InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType|Invariant constraint: c2 has the same name as inherited content(s) of entity type: E3"), Collections.emptyList());
 	}
 	
 }
