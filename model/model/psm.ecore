@@ -277,6 +277,8 @@
           eType="#//data/EntitySequence" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//data/BoundOperation" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
+          eType="#//constraint/InvariantConstraint" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Relation" abstract="true" eSuperTypes="#//data/ReferenceTypedElement #//data/EntityMember">
       <eOperations name="toString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">

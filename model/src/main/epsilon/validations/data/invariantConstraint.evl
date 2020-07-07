@@ -1,0 +1,17 @@
+context PSM!InvariantConstraint {
+
+    constraint InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer().getAllSuperEntityTypes()
+                    .collect(c | c.eContents()).flatten()
+                    .select(c | c.isKindOf(PSM!NamedElement))
+                    .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
+        message: "Invariant constraint: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
+    }
+    
+    constraint ConstrainedEntityTypeMatchesContainer {
+    	guard: self.satisfies("NamedElementHasContainer")
+    	check: self.constrained.equals(self.eContainer)
+    	message: "Invariant constraint: " + self.name + " reference its container: " + self.eContainer
+    }
+}

@@ -19,6 +19,8 @@ import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.ne
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.constraint.util.builder.ConstraintBuilders.newInvariantConstraintBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newLogicalExpressionTypeBuilder;
 
 import java.io.File;
 import java.util.Collection;
@@ -37,6 +39,7 @@ import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.constraint.InvariantConstraint;
 import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
 import hu.blackbelt.judo.meta.psm.data.BoundOperation;
@@ -1755,4 +1758,34 @@ class PsmValidationDataTest {
 				"AbstractEntityTypeSuperEntityTypesAreAbstract|Abstract entity type: E5 cannot have non abstract super entity type(s)."
 				), Collections.emptyList());
 	}
+	
+	@Test
+	void testInvariantConstraintValidation() throws Exception {
+		log.info("Testing constraints: InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType, ConstrainedEntityTypeMatchesContainer");
+		
+		StringType string = newStringTypeBuilder().withName("str").withMaxLength(10).build();
+		
+		EntityType E1 = newEntityTypeBuilder().withName("E1").build();
+		EntityType E2 = newEntityTypeBuilder().withName("E2").build();
+		EntityType E3 = newEntityTypeBuilder().withName("E3").build();
+		
+		E2.getSuperEntityTypes().add(E1);
+		E3.getSuperEntityTypes().add(E2);
+		
+		InvariantConstraint c1 = newInvariantConstraintBuilder().withName("c1").withConstrained(E3).withExpression(newLogicalExpressionTypeBuilder().withExpression("true").build()).build();
+		E3.getConstraints().add(c1);
+		
+		Attribute attr = newAttributeBuilder().withName("c1").withDataType(string).build();
+		E1.getAttributes().add(attr);
+		
+		InvariantConstraint c2 = newInvariantConstraintBuilder().withName("c2").withConstrained(E1).withExpression(newLogicalExpressionTypeBuilder().withExpression("true").build()).build();
+		E3.getConstraints().add(c2);
+		
+		Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(E1, E2, E3, string)).build();
+
+		psmModel.addContent(m);
+		runEpsilon(ImmutableList.of("InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType|Invariant constraint: c1 has the same name as inherited content(s) of entity type: E3",
+				"ConstrainedEntityTypeMatchesContainer|Invariant constraint: c2 reference its container: M::E3"), Collections.emptyList());
+	}
+	
 }
