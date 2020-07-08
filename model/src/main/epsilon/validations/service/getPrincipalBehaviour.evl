@@ -23,12 +23,6 @@ context PSM!TransferOperationBehaviour {
         message: "'GET_PRINCIPAL' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
     }
 
-    constraint GetPrincipalOperationInputTypeIsValid {
-        guard: self.eContainer.input.isDefined()
-        check: self.eContainer.input.type.isKindOf(PSM!StringType)
-        message: "Type of 'GET_PRINCIPAL' operation's input parameter type must be string (operation: " + self.eContainer.name + ")"
-    }
-
     constraint GetPrincipalOperationInputCardinalityIsValid {
         guard: self.eContainer.input.isDefined()
         check: self.eContainer.input.cardinality.lower == 1 and
