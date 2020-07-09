@@ -601,11 +601,12 @@
       <eLiterals name="GET_RANGE_OF_RELATION" value="16"/>
       <eLiterals name="GET_TEMPLATE" value="17"/>
       <eLiterals name="GET_PRINCIPAL" value="18"/>
+      <eLiterals name="MAP_PRINCIPAL" value="19"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
       nsPrefix="accesspoint">
-    <eClassifiers xsi:type="ecore:EClass" name="ActorType" eSuperTypes="#//namespace/NamespaceElement">
+    <eClassifiers xsi:type="ecore:EClass" name="ActorType" eSuperTypes="#//service/UnmappedTransferObjectType">
       <eStructuralFeatures xsi:type="ecore:EReference" name="transferObjectType" lowerBound="1"
           eType="#//service/TransferObjectType" eOpposite="#//service/TransferObjectType/actorType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="realm" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

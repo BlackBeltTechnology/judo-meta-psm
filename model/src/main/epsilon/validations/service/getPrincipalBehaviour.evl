@@ -18,16 +18,8 @@ context PSM!TransferOperationBehaviour {
 	}
 
 	constraint GetPrincipalOperationInputNameIsValid {
-	    guard: self.eContainer.input.isDefined()
-        check: self.eContainer.input.name == "input"
-        message: "'GET_PRINCIPAL' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
-    }
-
-    constraint GetPrincipalOperationInputCardinalityIsValid {
-        guard: self.eContainer.input.isDefined()
-        check: self.eContainer.input.cardinality.lower == 1 and
-            self.eContainer.input.cardinality.upper == 1
-        message: "Cardinality of 'GET_PRINCIPAL' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")"
+        check: not self.eContainer.input.isDefined()
+        message: "'GET_PRINCIPAL' operation's input parameter must not exists (operation: " + self.eContainer.name + ")"
     }
 
     constraint GetPrincipalOperationOutputParameterIsDefined {

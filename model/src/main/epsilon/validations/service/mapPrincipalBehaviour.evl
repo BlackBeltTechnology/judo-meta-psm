@@ -1,0 +1,68 @@
+context PSM!TransferOperationBehaviour {
+	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#MAP_PRINCIPAL
+	
+	constraint OperationOfMapPrincipalBehaviourIsValid {
+		check: self.eContainer.isKindOf(PSM!UnboundOperation)
+		message: "'MAP_PRINCIPAL' behaviour type must be owned by unbound operation"
+	}
+
+	constraint OwnerOfMapPrincipalBehaviourIsValid {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ActorType)
+		message: "Owner of 'MAP_PRINCIPAL' behaviour must be an actor type"
+	}
+	
+	constraint RelationOfMapPrincipalBehaviourIsUndefined {
+		check: self.relation.isUndefined()
+		message: "Relation for 'MAP_PRINCIPAL' behaviour types must be undefined"
+	}
+
+	constraint MapPrincipalOperationInputParameterIsDefined {
+	    guard: self.owner.realm.isDefined() and self.satisfies("OwnerOfMapPrincipalBehaviourIsValid")
+        check: self.eContainer.input.isDefined()
+        message: "'MAP_PRINCIPAL' operation must have an input parameter named 'input' if realm is set (operation: " + self.eContainer.name + ")"
+    }
+
+	constraint MapPrincipalOperationInputNameIsValid {
+	    guard: self.owner.realm.isDefined() and self.satisfies("MapPrincipalOperationInputParameterIsDefined")
+        check: self.eContainer.input.name == "input"
+        message: "'MAP_PRINCIPAL' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint MapPrincipalOperationInputCardinalityIsValid {
+        guard: self.owner.realm.isDefined() and self.satisfies("MapPrincipalOperationInputParameterIsDefined")
+        check: self.eContainer.input.cardinality.lower == 0 and
+            self.eContainer.input.cardinality.upper == 1
+        message: "Cardinality of 'MAP_PRINCIPAL' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint MapPrincipalOperationInputTypeIsValid {
+        guard: self.owner.realm.isDefined() and self.satisfies("MapPrincipalOperationInputParameterIsDefined")
+        check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner)
+        message: "Type of 'MAP_PRINCIPAL' operation's input parameter must be kind of its actor type (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint MapPrincipalOperationOutputParameterIsDefined {
+        check: self.eContainer.output.isDefined()
+        message: "'MAP_PRINCIPAL' operation must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint MapPrincipalOperationOutputNameIsValid {
+        guard: self.satisfies("MapPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.name == "output"
+        message: "'MAP_PRINCIPAL' operation's output parameter must be named 'output' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint MapPrincipalOperationOutputTypeIsValid {
+        guard: self.satisfies("MapPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner.transferObjectType)
+        message: "Type of 'MAP_PRINCIPAL' operation's output parameter must be kind of actor type's transfer object type (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint MapPrincipalOperationOutputCardinalityIsValid {
+        guard: self.satisfiesAll("MapPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.cardinality.lower == 0 and
+            self.eContainer.output.cardinality.upper == 1
+        message: "Cardinality of 'MAP_PRINCIPAL' operation's output parameter must be 0..1 (operation: " + self.eContainer.name + ")"
+    }
+}
