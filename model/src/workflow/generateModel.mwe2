@@ -28,6 +28,12 @@ Workflow {
 		srcPath = "${platformUri}/src/main/java"   
 	}
 
+	component = EcoreGenerator {
+        generateCustomClasses = false
+        genModel = "${platformUri}/${modelDir}/psm-claims.genmodel"
+        srcPath = "${platformUri}/src/main/java"
+    }
+
 	// Helper for model
 	component = hu.blackbelt.eclipse.emf.genmodel.generator.helper.HelperGeneratorWorkflow {
 		modelDir = "${rootPath}/${modelDir}"

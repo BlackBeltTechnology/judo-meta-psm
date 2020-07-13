@@ -268,4 +268,19 @@
             type="judo-meta-psm-measure"
             class="hu.blackbelt.judo.meta.psm.measure.util.MeasureResourceFactoryImpl"/>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm-claims -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/claims"
+            class="hu.blackbelt.judo.meta.psmClaims.PsmClaimsPackage"
+            genModel="model/psm-claims.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm-claims -->
+      <parser
+            type="psm-claims"
+            class="hu.blackbelt.judo.meta.psmClaims.util.PsmClaimsResourceFactoryImpl"/>
+   </extension>
 </plugin>
