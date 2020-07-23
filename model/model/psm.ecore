@@ -464,8 +464,8 @@
           upperBound="-1" eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/TransferOperation" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="actorType" eType="#//accesspoint/ActorType"
-          eOpposite="#//accesspoint/ActorType/transferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="actorType" eType="#//accesspoint/AbstractActorType"
+          eOpposite="#//accesspoint/AbstractActorType/transferObjectType"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -519,6 +519,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/Primitive"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="claimType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="MappedTransferObjectType" eSuperTypes="#//service/TransferObjectType">
       <eOperations name="isAbstract" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -606,11 +607,14 @@
   </eSubpackages>
   <eSubpackages name="accesspoint" nsURI="http://blackbelt.hu/judo/meta/psm/accesspoint"
       nsPrefix="accesspoint">
-    <eClassifiers xsi:type="ecore:EClass" name="ActorType" eSuperTypes="#//service/UnmappedTransferObjectType">
-      <eStructuralFeatures xsi:type="ecore:EReference" name="transferObjectType" lowerBound="1"
-          eType="#//service/TransferObjectType" eOpposite="#//service/TransferObjectType/actorType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AbstractActorType" abstract="true"
+        eSuperTypes="#//service/TransferObjectType">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="transferObjectType" eType="#//service/TransferObjectType"
+          eOpposite="#//service/TransferObjectType/actorType"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="realm" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MappedActorType" eSuperTypes="#//accesspoint/AbstractActorType #//service/MappedTransferObjectType"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ActorType" eSuperTypes="#//accesspoint/AbstractActorType #//service/UnmappedTransferObjectType"/>
   </eSubpackages>
   <eSubpackages name="view" nsURI="http://blackbelt.hu/judo/meta/psm/view" nsPrefix="view">
     <eClassifiers xsi:type="ecore:EClass" name="Container" eSuperTypes="#//namespace/NamedElement">

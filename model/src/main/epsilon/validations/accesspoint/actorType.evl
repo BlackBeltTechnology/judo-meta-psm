@@ -1,0 +1,19 @@
+context PSM!MappedTransferObjectType {
+
+    guard: self.actorType.isDefined()
+
+	constraint ActorTypeIsMapped {
+		check: self.actorType.isKindOf(PSM!MappedActorType)
+		message: "Actor type must be mapped: " + self.name
+	}
+}
+
+context PSM!UnmappedTransferObjectType {
+
+    guard: self.actorType.isDefined()
+
+	constraint ActorTypeIsUnmapped {
+		check: self.actorType.isKindOf(PSM!ActorType)
+		message: "Actor type must be unmapped: " + self.name
+	}
+}

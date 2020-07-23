@@ -8,8 +8,8 @@ context PSM!TransferOperationBehaviour {
 	}
 
 	constraint OwnerOfMapPrincipalBehaviourIsValid {
-		check: self.owner.isDefined() and self.owner.isKindOf(PSM!ActorType)
-		message: "Owner of 'MAP_PRINCIPAL' behaviour must be an actor type"
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!AbstractActorType)
+		message: "Owner of 'MAP_PRINCIPAL' behaviour must be an abstract actor type"
 	}
 	
 	constraint RelationOfMapPrincipalBehaviourIsUndefined {
