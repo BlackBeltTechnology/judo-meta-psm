@@ -83,7 +83,7 @@
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="psm.ecore#//view"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_uVzdBxEfEemYKLassfSQTg" name="operation CD" repPath="#_uVzdABEfEemYKLassfSQTg" changeId="eda9fb89-ee97-4e93-bad2-d1919a349e14">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_uVzdBxEfEemYKLassfSQTg" name="operation CD" repPath="#_uVzdABEfEemYKLassfSQTg" changeId="3eeb382d-4895-4194-b720-27ce5f4d3723">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="psm.ecore#//service"/>
       </ownedRepresentationDescriptors>
@@ -13945,10 +13945,6 @@
         <children xmi:type="notation:Node" xmi:id="_fMQBEEVuEemHs64O5EYsyQ" type="2003" element="_fLsncEVuEemHs64O5EYsyQ">
           <children xmi:type="notation:Node" xmi:id="_fMQoIEVuEemHs64O5EYsyQ" type="5007"/>
           <children xmi:type="notation:Node" xmi:id="_fMQoIUVuEemHs64O5EYsyQ" type="7004">
-            <children xmi:type="notation:Node" xmi:id="_fEGycLuLEeqvt9sRPYd4SQ" type="3010" element="_fDkm8LuLEeqvt9sRPYd4SQ">
-              <styles xmi:type="notation:FontStyle" xmi:id="_fEGycbuLEeqvt9sRPYd4SQ" fontName="Noto Sans" fontHeight="8"/>
-              <layoutConstraint xmi:type="notation:Location" xmi:id="_fEGycruLEeqvt9sRPYd4SQ"/>
-            </children>
             <styles xmi:type="notation:SortingStyle" xmi:id="_fMQoIkVuEemHs64O5EYsyQ"/>
             <styles xmi:type="notation:FilteringStyle" xmi:id="_fMQoI0VuEemHs64O5EYsyQ"/>
           </children>
@@ -14487,7 +14483,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EReferenceNode']"/>
       </ownedElements>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_fDj_4buLEeqvt9sRPYd4SQ" name=" actorType : ActorType" tooltipText="">
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_fDj_4buLEeqvt9sRPYd4SQ" name=" actorType : AbstractActorType" tooltipText="">
         <target xmi:type="ecore:EReference" href="psm.ecore#//service/TransferObjectType/actorType"/>
         <semanticElements xmi:type="ecore:EReference" href="psm.ecore#//service/TransferObjectType/actorType"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_fDj_4ruLEeqvt9sRPYd4SQ" labelAlignment="LEFT" color="114,159,207">
@@ -14567,14 +14563,6 @@
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_fDkm8LuLEeqvt9sRPYd4SQ" name="immutable : EBoolean = false" tooltipText="">
-        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/Parameter/immutable"/>
-        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/Parameter/immutable"/>
-        <ownedStyle xmi:type="diagram:BundledImage" uid="_fDlOALuLEeqvt9sRPYd4SQ" labelAlignment="LEFT">
-          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']/@style"/>
-        </ownedStyle>
-        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
-      </ownedElements>
     </ownedDiagramElements>
     <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_hQNc4EVuEemHs64O5EYsyQ" name="Cardinality" tooltipText="" incomingEdges="_iS3MvEVuEemHs64O5EYsyQ _fhjDsAUxEeqzPZkwPmCQug" width="12" height="10">
       <target xmi:type="ecore:EClass" href="psm.ecore#//type/Cardinality"/>
