@@ -673,19 +673,19 @@ class PsmValidationUnboundBehaviourTest {
 				
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(GET_RANGE_VALID),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
-						getParameterOfOperation(t1, OPERATION , false), relation, OUTPUT, t3, 0, -1, INPUT, t2, 1, 1).build(),
+						getParameterOfOperation(t1, OPERATION , false), relation, OUTPUT, t3, 0, -1, INPUT, t2, 0, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_OWNER_TYPE),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
-						relation, relation, OUTPUT, t3, 0, -1, INPUT, t2, 1, 1).build(),
+						relation, relation, OUTPUT, t3, 0, -1, INPUT, t2, 0, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_OWNER),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
-						getParameterOfOperation(t1, OPERATION , true), relation, OUTPUT, t3, 0, -1, INPUT, t2, 1, 1).build(),
+						getParameterOfOperation(t1, OPERATION , true), relation, OUTPUT, t3, 0, -1, INPUT, t2, 0, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(UNDEFINED_RELATION),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
-						getParameterOfOperation(t1, OPERATION, false), OUTPUT, t3, 0, -1, INPUT, t2, 1, 1).build(),
+						getParameterOfOperation(t1, OPERATION, false), OUTPUT, t3, 0, -1, INPUT, t2, 0, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_RELATION_OPERATION),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
-						getParameterOfOperation(t1, OPERATION, false), wrong_relation, OUTPUT, t3, 0, -1, INPUT, t2, 1, 1).build(),
+						getParameterOfOperation(t1, OPERATION, false), wrong_relation, OUTPUT, t3, 0, -1, INPUT, t2, 0, 1).build(),
 				
 				newUnboundOperationBuilder().withName(UNDEFINED_PARAMS)
 				.withBehaviour(newTransferOperationBehaviourBuilder()
@@ -696,22 +696,22 @@ class PsmValidationUnboundBehaviourTest {
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_NAMES),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION,
-						getParameterOfOperation(t1, OPERATION, false),relation, INPUT, t3, 0, -1, OUTPUT, t2, 1, 1).build(),
+						getParameterOfOperation(t1, OPERATION, false),relation, INPUT, t3, 0, -1, OUTPUT, t2, 0, 1).build(),
 		
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_TYPES),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION,
-						getParameterOfOperation(t1, OPERATION , false),relation, OUTPUT, t1, 0, -1, INPUT, t3, 1, 1).build(),
+						getParameterOfOperation(t1, OPERATION , false),relation, OUTPUT, t1, 0, -1, INPUT, t3, 0, 1).build(),
 		
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_CARDINALITY),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION,
-						getParameterOfOperation(t1, OPERATION, false),relation, OUTPUT, t3, 0, 1, INPUT, t2, 0, 1).build()
+						getParameterOfOperation(t1, OPERATION, false),relation, OUTPUT, t3, 0, 1, INPUT, t2, 1, 1).build()
 				
 				));
 		
 		t2.getOperations().addAll(ImmutableList.of(	
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_CONTAINER),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, 
-						getParameterOfOperation(t1, OPERATION, false), relation, OUTPUT, t3, 0, -1, INPUT, t1, 1, 1).build()));
+						getParameterOfOperation(t1, OPERATION, false), relation, OUTPUT, t3, 0, -1, INPUT, t1, 0, 1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
 				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, t3)).build();
@@ -732,7 +732,7 @@ class PsmValidationUnboundBehaviourTest {
 				"RelationOfGetRangeOfRelationBehaviourIsValid|Relation for 'GET_RANGE_OF_RELATION' behaviour type must belong to the operation owner's type (operation: WRONG_RELATION_OPERATION)",
 				"GetRangeOperationInputParameterIsDefined|'GET_RANGE_OF_RELATION' operation: UNDEFINED_PARAMS must have an input parameter named 'input'",
 				"GetRangeOperationOutputParameterIsDefined|'GET_RANGE_OF_RELATION' operation must have an output parameter named 'output' (operation: UNDEFINED_PARAMS)",
-				"GetRangeOperationInputCardinalityIsValid|Cardinality of 'GET_RANGE_OF_RELATION' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
+				"GetRangeOperationInputCardinalityIsValid|Cardinality of 'GET_RANGE_OF_RELATION' operation's input parameter must be 0..1 (operation: WRONG_PARAM_CARDINALITY)"),
 				Collections.emptyList());
 	}
 	

@@ -58,9 +58,9 @@ context PSM!TransferOperationBehaviour {
     
     constraint GetRangeOperationInputCardinalityIsValid {
     	guard: self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
-    	check: self.eContainer.input.cardinality.lower == 1 and
+    	check: self.eContainer.input.cardinality.lower == 0 and
     		self.eContainer.input.cardinality.upper == 1 
-    	message: "Cardinality of 'GET_RANGE_OF_RELATION' operation's input parameter must be 1..1 (operation: " + self.eContainer.name + ")"
+    	message: "Cardinality of 'GET_RANGE_OF_RELATION' operation's input parameter must be 0..1 (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeOperationOutputParameterIsDefined {
