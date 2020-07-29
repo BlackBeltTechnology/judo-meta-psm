@@ -807,7 +807,7 @@ class PsmValidationBoundBehaviourTest {
 
 		e1.getOperations().addAll(ImmutableList.of(
 				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_INPUT_TYPE_BINDING), t1,
-						OUTPUT, t3, 0, -1, INPUT,t3, 1, 1).build()));
+						OUTPUT, t3, 0, -1, INPUT,t3, 0, 1).build()));
 
 		Parameter inp = newParameterBuilder().withName(INPUT).withCardinality(newCardinalityBuilder().build()).withType(t2).build();
 		
@@ -819,7 +819,7 @@ class PsmValidationBoundBehaviourTest {
 				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_INPUT_TYPE),
 						TransferOperationBehaviourType.GET_RANGE_OF_RELATION, inp, relation,
 						getBoundOperationByName(e1, WRONG_INPUT_TYPE_BINDING), true, OUTPUT, t3, 0, -1)
-						.withInput(newParameterBuilder().withName(INPUT).withType(t3).withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()))
+						.withInput(newParameterBuilder().withName(INPUT).withType(t3).withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build()))
 								.build()));
 		
 		Model model = newModelBuilder().withName(MODEL_NAME)
