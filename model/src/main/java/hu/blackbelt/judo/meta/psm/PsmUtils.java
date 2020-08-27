@@ -1097,17 +1097,7 @@ public class PsmUtils {
     			.map(r -> r.getName())
     			.collect(Collectors.toSet());
     	
-    	names.addAll(getAllNavigationProperties(transferObject.getEntityType()).stream()
-    			.filter(r -> r.getCardinality().getLower() > 0)
-    			.map(r -> r.getName())
-    			.collect(Collectors.toSet()));
-    	
     	names.addAll(getAllAttributes(transferObject.getEntityType()).stream()
-    			.filter(a -> a.isRequired())
-    			.map(a -> a.getName())
-    			.collect(Collectors.toSet()));
-    	
-    	names.addAll(getAllDataProperties(transferObject.getEntityType()).stream()
     			.filter(a -> a.isRequired())
     			.map(a -> a.getName())
     			.collect(Collectors.toSet()));
