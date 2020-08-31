@@ -19,17 +19,18 @@ context PSM!TransferOperationBehaviour {
 		and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION
 		and self.satisfiesAll("OperationIsValidBoundBehaviour","OwnerIsRelationBoundBehaviour","OwnerIsValidBoundBehaviour","RelationIsUndefinedBoundWithoutRelation")
 		and self.eContainer.satisfies("BindingIsValid")
-
-	constraint GetRelationOperationInputParameterIsNotDefined {
-    	check: self.eContainer.binding.input.isUndefined()
-    	message: "'GET' operation's binding cannot have an input parameter (operation: " + self.eContainer.name + ")"
-    }
     
     constraint GetRelationOperationOutputParameterIsDefined {
     	check: self.eContainer.binding.output.isDefined()
     	message: "'GET' operation's binding must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
     }
-    
+
+    constraint GetRelationOperationInputNameIsValid {
+        guard: self.eContainer.binding.input.isDefined()
+        check: self.eContainer.binding.input.name == "input"
+        message: "Input of 'GET' operation's binding must be named 'input' (operation: " + self.eContainer.name + ")"
+    }
+
     constraint GetRelationOperationOutputNameIsValid {
     	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
     	check: self.eContainer.binding.output.name == "output"
@@ -42,6 +43,13 @@ context PSM!TransferOperationBehaviour {
     	message: "Output type of 'GET_RELATION' operation's (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") binding must be kind of referenced mapped transfer object type"
     }
     
+    constraint GetOperationInputCardinalityIsValid {
+        guard: self.eContainer.binding.input.isDefined()
+        check: self.eContainer.binding.input.cardinality.lower == 0 and
+            self.eContainer.binding.input.cardinality.upper == 1
+        message: "Input cardinality of 'GET_RELATION' operation's (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") binding must be 0..1"
+    }
+
     constraint GetOperationOutputCardinalityIsValid {
     	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
     	check: self.eContainer.binding.output.cardinality.lower == self.owner.cardinality.lower and

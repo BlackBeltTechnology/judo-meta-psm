@@ -19,16 +19,17 @@ context PSM!TransferOperationBehaviour {
 		and self.behaviourType == PSM!TransferOperationBehaviourType#GET
 		and self.satisfiesAll("OperationIsValidUnboundBehaviour","OwnerIsRelationUnboundBehaviour","RelationIsUndefinedUnboundWithoutRelation")
 
-	constraint GetOperationInputParameterIsNotDefined {
-    	check: self.eContainer.input.isUndefined()
-    	message: "'GET' operation cannot have an input parameter (operation: " + self.eContainer.name + ")"
-    }
-    
     constraint GetOperationOutputParameterIsDefined {
     	check: self.eContainer.output.isDefined()
     	message: "'GET' operation must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
     }
     
+    constraint GetOperationInputNameIsValid {
+        guard: self.eContainer.input.isDefined()
+        check: self.eContainer.input.name == "input"
+        message: "'GET' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
+    }
+
     constraint GetOperationOutputNameIsValid {
     	guard: self.satisfies("GetOperationOutputParameterIsDefined")
     	check: self.eContainer.output.name == "output"
@@ -41,6 +42,13 @@ context PSM!TransferOperationBehaviour {
     	message: "Type of 'GET' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
     
+    constraint GetOperationInputCardinalityIsValid {
+        guard: self.eContainer.input.isDefined()
+        check: self.eContainer.input.cardinality.lower == 0 and
+            self.eContainer.input.cardinality.upper == 1
+        message: "Cardinality of 'GET' operation's input parameter must be 0..1"
+    }
+
     constraint GetOperationOutputCardinalityIsValid {
     	guard: self.satisfiesAll("GetOperationOutputParameterIsDefined")
     	check: self.eContainer.output.cardinality.lower == self.owner.cardinality.lower and

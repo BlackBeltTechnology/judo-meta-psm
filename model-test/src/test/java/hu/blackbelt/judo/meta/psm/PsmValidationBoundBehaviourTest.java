@@ -501,10 +501,10 @@ class PsmValidationBoundBehaviourTest {
 		runEpsilon(ImmutableList.of(
 				"GetRelationOperationOutputTypeIsValid|Output type of 'GET_RELATION' operation's (t1.WRONG_OUTPUT_TYPE) binding must be kind of referenced mapped transfer object type",
 				"GetOperationOutputCardinalityIsValid|Output cardinality of 'GET_RELATION' operation's (t1.WRONG_OUTPUT_CARDINALITY) binding must be the same as its owner's",
-				"GetRelationOperationInputParameterIsNotDefined|'GET' operation's binding cannot have an input parameter (operation: UNDEFINED_OUTPUT)",
+				"GetOperationInputCardinalityIsValid|Input cardinality of 'GET_RELATION' operation's (t1.UNDEFINED_OUTPUT) binding must be 0..1",
 				"RelationIsUndefinedBoundWithoutRelation|Relation must be undefined for 'GET_RELATION' operation: DEFINED_RELATION (in: t1)",
 				"GetRelationOperationOutputParameterIsDefined|'GET' operation's binding must have an output parameter named 'output' (operation: UNDEFINED_OUTPUT)",
-				"GetRelationOperationInputParameterIsNotDefined|'GET' operation's binding cannot have an input parameter (operation: DEFINED_INPUT)",
+				"GetOperationInputCardinalityIsValid|Input cardinality of 'GET_RELATION' operation's (t1.DEFINED_INPUT) binding must be 0..1",
 				"GetRelationOperationOutputNameIsValid|Output of 'GET' operation's binding must be named 'output' (operation: WRONG_OUTPUT_NAME)"),
 				Collections.emptyList());
 	}

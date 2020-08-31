@@ -547,7 +547,8 @@ class PsmValidationUnboundBehaviourTest {
 				"GetOperationOutputParameterIsDefined|'GET' operation must have an output parameter named 'output' (operation: UNDEFINED_OUTPUT_DEFINED_INPUT)",
 				"GetOperationOutputTypeIsValid|Type of 'GET' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_OUTPUT_TYPE)",
 				"GetOperationOutputCardinalityIsValid|Cardinality of 'GET' operation's output parameter must be the same as its owner's (operation: WRONG_OUTPUT_CARDINALITY)",
-				"GetOperationInputParameterIsNotDefined|'GET' operation cannot have an input parameter (operation: UNDEFINED_OUTPUT_DEFINED_INPUT)",
+				"GetOperationInputCardinalityIsValid|Cardinality of 'GET' operation's input parameter must be 0..1",
+				"GetOperationInputNameIsValid|'GET' operation's input parameter must be named 'input' (operation: UNDEFINED_OUTPUT_DEFINED_INPUT)",
 				"GetOperationOutputNameIsValid|'GET' operation's output parameter must be named 'output' (operation: WRONG_OUTPUT_NAME)"),
 				Collections.emptyList());
 	}
