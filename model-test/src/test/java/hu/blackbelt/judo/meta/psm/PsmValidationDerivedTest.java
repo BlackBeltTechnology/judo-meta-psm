@@ -269,4 +269,38 @@ class PsmValidationDerivedTest {
                 ImmutableList.of("SetterExpressionsAreNotSupportedYet|Setter expressions are not supported yet (Person.myMother)"),
                 Collections.emptyList());
     }
+    
+    @Test
+    void testNotRequiredIfDerived() throws Exception {
+
+        StringType string = newStringTypeBuilder().withName("string").withMaxLength(255).build();
+
+        EntityType target = newEntityTypeBuilder().withName("target").build();
+        
+        AssociationEnd relation = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().build())
+        		.withTarget(target).build();
+        
+        Attribute attribute = newAttributeBuilder().withName("attribute").withDataType(string).build();
+
+        NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().withLower(1).build())
+        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.relation").build())
+        		.withTarget(target).build();
+
+        DataProperty property = newDataPropertyBuilder().withName("property").withDataType(string).withRequired(true)
+        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.attribute").build()).build();
+
+        EntityType entityType = newEntityTypeBuilder().withName("entityType")
+        		.withRelations(relation)
+        		.withAttributes(attribute)
+                .withNavigationProperties(navigation)
+                .withDataProperties(property)
+                .build();
+
+        Model m = newModelBuilder().withName("M").withElements(entityType, string, target).build();
+
+        psmModel.addContent(m);
+        runEpsilon(ImmutableList.of("DataPropertyIsNotRequired|Data property property of entity type entityType cannot be required.",
+        		"LowerCardinalityOfNavigationPropertyIsZero|Navigation property navigation of entity type entityType cannot be required."),
+                Collections.emptyList());
+    }
 }

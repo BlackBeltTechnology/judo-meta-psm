@@ -7,5 +7,10 @@ context PSM!NavigationProperty {
                     .select(c | c.isKindOf(PSM!NamedElement))
                     .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
         message: "Navigation property: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
-    } 
+    }
+    
+    constraint LowerCardinalityOfNavigationPropertyIsZero {
+    	check: self.cardinality.lower == 0
+    	message: "Navigation property " + self.name + " of entity type " + self.eContainer.name + " cannot be required."
+    }
 }
