@@ -7,5 +7,10 @@ context PSM!DataProperty {
                     .select(c | c.isKindOf(PSM!NamedElement))
                     .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
         message: "Data property: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
-    } 
+    }
+    
+    constraint DataPropertyIsNotRequired {
+    	check: not self.required
+    	message: "Data property " + self.name + " of entity type " + self.eContainer.name + " cannot be required."
+    }
 }

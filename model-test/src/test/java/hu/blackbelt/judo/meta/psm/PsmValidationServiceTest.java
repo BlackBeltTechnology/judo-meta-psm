@@ -64,6 +64,7 @@ class PsmValidationServiceTest {
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
+        	logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
         	Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,
@@ -721,7 +722,7 @@ class PsmValidationServiceTest {
         ).withRequired(false).build();
         DataProperty property1 = newDataPropertyBuilder().withName("property1").withDataType(integerType).withGetterExpression(
                 newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
-        ).withRequired(true).build();
+        ).withRequired(false).build();
 
         StaticData staticData0 = newStaticDataBuilder().withName("staticData0").withDataType(integerType)
                 .withGetterExpression(newDataExpressionTypeBuilder().withExpression("1").build()).withRequired(false).build();
@@ -740,7 +741,7 @@ class PsmValidationServiceTest {
         TransferAttribute transferAttribute2 = newTransferAttributeBuilder().withName("TransferAttribute2").withDataType(integerType)
                 .withBinding(property0).withRequired(true).build();
         TransferAttribute transferAttribute3 = newTransferAttributeBuilder().withName("TransferAttribute3").withDataType(integerType)
-                .withBinding(property1).withRequired(true).build();
+                .withBinding(property1).withRequired(false).build();
         TransferAttribute transferAttribute4 = newTransferAttributeBuilder().withName("TransferAttribute4").withDataType(integerType)
                 .withBinding(staticData0).withRequired(true).build();
         TransferAttribute transferAttribute5 = newTransferAttributeBuilder().withName("TransferAttribute5").withDataType(integerType)
@@ -1022,7 +1023,7 @@ class PsmValidationServiceTest {
         EntityType target3 = newEntityTypeBuilder().withName("target3").build();
         MappedTransferObjectType mappedTarget3 = newMappedTransferObjectTypeBuilder().withName("mappedTarget3").withEntityType(target3).build();
         NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation")
-                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build())
                 .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.containment").build())
                 .withTarget(target3)
                 .build();
