@@ -45,6 +45,7 @@ class PsmValidationTest {
 
     private void runEpsilon (Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
+        	logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
         	Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,

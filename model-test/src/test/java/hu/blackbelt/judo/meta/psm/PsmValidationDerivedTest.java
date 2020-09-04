@@ -53,6 +53,7 @@ class PsmValidationDerivedTest {
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
+        	logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
         	Assertions.assertTrue(psmModel.isValid());
         	PsmEpsilonValidator.validatePsm(log,
                     psmModel,
@@ -300,7 +301,7 @@ class PsmValidationDerivedTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("DataPropertyIsNotRequired|Data property property of entity type entityType cannot be required.",
-        		"LowerCardinalityOfNavigationPropertyIsZero|Navigation property navigation of entity type entityType cannot be required."),
+        		"NavigationProptertyIsSingleOrCollection|Navigation property navigation of entity type entityType cannot be required."),
                 Collections.emptyList());
     }
 }

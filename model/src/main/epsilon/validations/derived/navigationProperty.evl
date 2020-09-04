@@ -9,8 +9,8 @@ context PSM!NavigationProperty {
         message: "Navigation property: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
     }
     
-    constraint LowerCardinalityOfNavigationPropertyIsZero {
-    	check: self.cardinality.lower == 0
+    constraint NavigationProptertyIsSingleOrCollection {
+    	check: self.cardinality.lower == 0 and (self.cardinality.upper == 1 or self.cardinality.upper == -1)
     	message: "Navigation property " + self.name + " of entity type " + self.eContainer.name + " cannot be required."
     }
 }

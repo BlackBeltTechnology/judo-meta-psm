@@ -64,6 +64,7 @@ class PsmValidationServiceTest {
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try {
+        	logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
         	Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(log,
                     psmModel,
@@ -1022,7 +1023,7 @@ class PsmValidationServiceTest {
         EntityType target3 = newEntityTypeBuilder().withName("target3").build();
         MappedTransferObjectType mappedTarget3 = newMappedTransferObjectTypeBuilder().withName("mappedTarget3").withEntityType(target3).build();
         NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation")
-                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(3).build())
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build())
                 .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.containment").build())
                 .withTarget(target3)
                 .build();

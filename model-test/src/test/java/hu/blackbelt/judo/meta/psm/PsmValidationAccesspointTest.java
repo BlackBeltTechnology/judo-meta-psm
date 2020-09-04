@@ -29,7 +29,8 @@ class PsmValidationAccesspointTest {
 
 	private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
 		try {
-			Assertions.assertTrue(psmModel.isValid());
+			logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
+        	Assertions.assertTrue(psmModel.isValid());
 			PsmEpsilonValidator.validatePsm(log, psmModel,
 					new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."), expectedErrors,
 					expectedWarnings);
