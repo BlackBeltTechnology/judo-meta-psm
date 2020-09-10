@@ -53,7 +53,7 @@
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="psm.ecore#//derived"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_DB1ToABrEemftpVIsZ3qKQ" name="transfer object CD" repPath="#_DBy3YABrEemftpVIsZ3qKQ" changeId="994a93c0-f6b5-4cf0-97b1-bfdf08fc560f">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_DB1ToABrEemftpVIsZ3qKQ" name="transfer object CD" repPath="#_DBy3YABrEemftpVIsZ3qKQ" changeId="a13e0f73-d451-44ff-9860-3fbedc19bfdd">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="psm.ecore#//service"/>
       </ownedRepresentationDescriptors>
@@ -7187,6 +7187,10 @@
               <styles xmi:type="notation:FontStyle" xmi:id="_zxtpkRBbEeqTKrH_3-GBhw" fontName="Noto Sans" fontHeight="8" bold="true"/>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_zxtpkhBbEeqTKrH_3-GBhw"/>
             </children>
+            <children xmi:type="notation:Node" xmi:id="_cETdEPM8EeqKXpMBiwH0fg" type="3010" element="_cDgy4vM8EeqKXpMBiwH0fg">
+              <styles xmi:type="notation:FontStyle" xmi:id="_cETdEfM8EeqKXpMBiwH0fg" fontName="Ubuntu" fontHeight="8" bold="true"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_cETdEvM8EeqKXpMBiwH0fg"/>
+            </children>
             <children xmi:type="notation:Node" xmi:id="_gtXOgM4mEemfQMiuM0t9mg" type="3010" element="_gtP5wc4mEemfQMiuM0t9mg">
               <styles xmi:type="notation:FontStyle" xmi:id="_gtXOgc4mEemfQMiuM0t9mg" fontName="Noto Sans" fontHeight="8"/>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_gtXOgs4mEemfQMiuM0t9mg"/>
@@ -7933,7 +7937,7 @@
       <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
       <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
       <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
-      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_MEdaAQYPEeqzPZkwPmCQug" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
+      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_d-0B8_M8EeqKXpMBiwH0fg" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
@@ -7989,6 +7993,14 @@
         <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/embeddedDelete"/>
         <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/embeddedDelete"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_zxj4lBBbEeqTKrH_3-GBhw" labelAlignment="LEFT" description="_HmET0QBrEemftpVIsZ3qKQ">
+          <labelFormat>bold</labelFormat>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
+      </ownedElements>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_cDgy4vM8EeqKXpMBiwH0fg" name="access : EBoolean = false" tooltipText="">
+        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/access"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferObjectRelation/access"/>
+        <ownedStyle xmi:type="diagram:BundledImage" uid="_cDhZ8PM8EeqKXpMBiwH0fg" labelAlignment="LEFT" description="_HmET0QBrEemftpVIsZ3qKQ">
           <labelFormat>bold</labelFormat>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
