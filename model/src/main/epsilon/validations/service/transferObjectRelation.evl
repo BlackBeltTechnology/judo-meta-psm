@@ -52,4 +52,10 @@ context PSM!TransferObjectRelation {
     												and r.binding == self.binding.partner)
     	message: "Circular aggregation found on relation: " + psmUtils.transferObjectRelationToString(self)
     }
+    
+    constraint BindingIsNotDefinedIfAccess {
+    	guard: self.access
+    	check: self.binding.isUndefined()
+    	message: "Access transfer object relation: " + self.name + " cannot have a binding."
+    }
 }
