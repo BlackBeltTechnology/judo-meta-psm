@@ -35,8 +35,7 @@ import java.lang.String;
 import java.util.*;
 
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newActorTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
@@ -402,6 +401,7 @@ public class PsmTestModelBuilder {
         private Map<String, String> attributes = new HashMap<>();
         private Map<String, RelationDef> relations = new HashMap<>();
         private Map<String, RelationDef> containments = new HashMap<>();
+        private Map<String, PropertyDef> staticData = new HashMap<>();
 
         private ScriptTestUnmappedTransferObjectBuilder(String name) {
             this.name = name;
@@ -422,6 +422,12 @@ public class PsmTestModelBuilder {
             return this;
         }
 
+        public ScriptTestUnmappedTransferObjectBuilder withStaticData(String type, String name, String expression) {
+            staticData.put(name, new PropertyDef(name, type, expression));
+            return this;
+        }
+
+
         private UnmappedTransferObjectType emptyBuild() {
             final UnmappedTransferObjectTypeBuilder builder = newUnmappedTransferObjectTypeBuilder().withName(name);
             final UnmappedTransferObjectType build = builder.build();
@@ -438,6 +444,16 @@ public class PsmTestModelBuilder {
                         .withRequired(false).build();
                 builder.withAttributes(transferAttribute);
             }
+            for (PropertyDef staticDataDef : staticData.values()) {
+                TransferAttribute transferAttribute = ServiceBuilders.useTransferAttribute(ServiceBuilders.newTransferAttributeBuilder().build())
+                        .withName(staticDataDef.name)
+                        .withDataType(dataTypes.get(staticDataDef.type))
+                        .withDefaultValue(newStaticDataBuilder().withGetterExpression(newDataExpressionTypeBuilder().withExpression(staticDataDef.expression)))
+                        .withRequired(false)
+                        .build();
+                builder.withAttributes(transferAttribute);
+            }
+
             for (Map.Entry<String, RelationDef> relationEntry : relations.entrySet()) {
                 TransferObjectType target = toTypes.get(relationEntry.getValue().type);
                 TransferObjectRelation relation = ServiceBuilders.newTransferObjectRelationBuilder()
@@ -455,6 +471,7 @@ public class PsmTestModelBuilder {
                         .withTarget(toTypes.get(relationEntry.getValue().type)).build();
                 builder.withRelations(relation);
             }
+
             return builder.build();
         }
     }
