@@ -7,12 +7,15 @@ import hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders;
 import hu.blackbelt.judo.meta.psm.data.util.builder.EntityTypeBuilder;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.ExpressionDialect;
+import hu.blackbelt.judo.meta.psm.derived.StaticData;
+import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.measure.DurationType;
 import hu.blackbelt.judo.meta.psm.measure.DurationUnit;
 import hu.blackbelt.judo.meta.psm.measure.Measure;
 import hu.blackbelt.judo.meta.psm.measure.MeasuredType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.namespace.util.builder.ModelBuilder;
 import hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders;
 import hu.blackbelt.judo.meta.psm.namespace.util.builder.PackageBuilder;
 import hu.blackbelt.judo.meta.psm.service.*;
@@ -85,6 +88,9 @@ public class PsmTestModelBuilder {
     private Set<ScriptTestUnboundOperationBuilder> unboundOperationBuilders = new HashSet<>();
 
     private Map<BoundOperation, BoundTransferOperation> boundOperationMapping = new HashMap<>();
+    private Set<StaticData> staticDataSet = new HashSet<>();
+    private Set<StaticNavigation> staticNavigationSet = new HashSet<>();
+
 
     public PsmTestModelBuilder() {
         $ = NamespaceBuilders.newModelBuilder().build();
@@ -289,6 +295,7 @@ public class PsmTestModelBuilder {
         for (ScriptTestActorTypeBuilder actorTypeBuilder : actorTypeBuilders) {
             servicePackageBuilder.withElements(actorTypeBuilder.build());
         }
+        ModelBuilder.use($).withElements(staticDataSet).withElements(staticNavigationSet).build();
 
         entityPackageBuilder.build();
         servicePackageBuilder.build();
@@ -380,16 +387,22 @@ public class PsmTestModelBuilder {
         String type;
         Cardinality cardinality;
         boolean aggregation;
+        String expression;
 
         public RelationDef(String name, String type, Cardinality cardinality) {
             this(name, type, cardinality, false);
         }
 
         public RelationDef(String name, String type, Cardinality cardinality, boolean aggregation) {
+            this(name, type, cardinality, aggregation, null);
+        }
+
+        public RelationDef(String name, String type, Cardinality cardinality, boolean aggregation, String expression) {
             this.name = name;
             this.type = type;
             this.cardinality = cardinality;
             this.aggregation = aggregation;
+            this.expression = expression;
         }
     }
 
@@ -402,6 +415,8 @@ public class PsmTestModelBuilder {
         private Map<String, RelationDef> relations = new HashMap<>();
         private Map<String, RelationDef> containments = new HashMap<>();
         private Map<String, PropertyDef> staticData = new HashMap<>();
+        private Map<String, RelationDef> staticNavigations = new HashMap<>();
+
 
         private ScriptTestUnmappedTransferObjectBuilder(String name) {
             this.name = name;
@@ -427,6 +442,11 @@ public class PsmTestModelBuilder {
             return this;
         }
 
+        public ScriptTestUnmappedTransferObjectBuilder withStaticNavigation(String type, String name, String expression, Cardinality cardinality) {
+            staticNavigations.put(name, new RelationDef(name, type, cardinality, true, expression));
+            return this;
+        }
+
 
         private UnmappedTransferObjectType emptyBuild() {
             final UnmappedTransferObjectTypeBuilder builder = newUnmappedTransferObjectTypeBuilder().withName(name);
@@ -445,10 +465,16 @@ public class PsmTestModelBuilder {
                 builder.withAttributes(transferAttribute);
             }
             for (PropertyDef staticDataDef : staticData.values()) {
+                StaticData staticDataBuild = newStaticDataBuilder()
+                        .withName(staticDataDef.name)
+                        .withDataType(dataTypes.get(staticDataDef.type))
+                        .withGetterExpression(newDataExpressionTypeBuilder()
+                                .withExpression(staticDataDef.expression)).build();
+                staticDataSet.add(staticDataBuild);
                 TransferAttribute transferAttribute = ServiceBuilders.useTransferAttribute(ServiceBuilders.newTransferAttributeBuilder().build())
                         .withName(staticDataDef.name)
                         .withDataType(dataTypes.get(staticDataDef.type))
-                        .withDefaultValue(newStaticDataBuilder().withGetterExpression(newDataExpressionTypeBuilder().withExpression(staticDataDef.expression)))
+                        .withBinding(staticDataBuild)
                         .withRequired(false)
                         .build();
                 builder.withAttributes(transferAttribute);
@@ -472,8 +498,26 @@ public class PsmTestModelBuilder {
                 builder.withRelations(relation);
             }
 
+            for (RelationDef staticNavigationDef : staticNavigations.values()) {
+                StaticNavigation sn = newStaticNavigationBuilder()
+                        .withName(staticNavigationDef.name)
+                        .withTarget(entityTypes.get(staticNavigationDef.type))
+                        .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression(staticNavigationDef.expression))
+                        .withCardinality(staticNavigationDef.cardinality.create()).build();
+                staticNavigationSet.add(sn);
+                TransferObjectRelation relation = ServiceBuilders.newTransferObjectRelationBuilder()
+                        .withName(staticNavigationDef.name)
+                        .withEmbedded(true)
+                        .withCardinality(staticNavigationDef.cardinality.create())
+                        .withBinding(sn)
+                        .withTarget(toTypes.get(staticNavigationDef.type)).build();
+                builder.withRelations(relation);
+            }
+
             return builder.build();
         }
+
+
     }
 
     public class ScriptTestMappedTransferObjectBuilder implements ScriptTestBuilders {
