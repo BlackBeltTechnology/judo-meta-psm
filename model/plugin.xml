@@ -40,15 +40,6 @@
                   namespaceURI="http://blackbelt.hu/judo/meta/psm/accesspoint">
             </additionalNamespaceURI>    
             <additionalNamespaceURI
-                  namespaceURI="http://blackbelt.hu/judo/meta/psm/view">
-            </additionalNamespaceURI>    
-            <additionalNamespaceURI
-                  namespaceURI="http://blackbelt.hu/judo/meta/psm/authentication">
-            </additionalNamespaceURI>    
-            <additionalNamespaceURI
-                  namespaceURI="http://blackbelt.hu/judo/meta/psm/authorization">
-            </additionalNamespaceURI>    
-            <additionalNamespaceURI
                   namespaceURI="http://blackbelt.hu/judo/meta/psm/measure">
             </additionalNamespaceURI>    
       </constraintsBinding>
@@ -207,51 +198,6 @@
       <parser
             type="judo-meta-psm-accesspoint"
             class="hu.blackbelt.judo.meta.psm.accesspoint.util.AccesspointResourceFactoryImpl"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated psm -->
-      <package
-            uri="http://blackbelt.hu/judo/meta/psm/view"
-            class="hu.blackbelt.judo.meta.psm.view.ViewPackage"
-            genModel="model/psm.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.extension_parser">
-      <!-- @generated psm -->
-      <parser
-            type="judo-meta-psm-view"
-            class="hu.blackbelt.judo.meta.psm.view.util.ViewResourceFactoryImpl"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated psm -->
-      <package
-            uri="http://blackbelt.hu/judo/meta/psm/authentication"
-            class="hu.blackbelt.judo.meta.psm.authentication.AuthenticationPackage"
-            genModel="model/psm.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.extension_parser">
-      <!-- @generated psm -->
-      <parser
-            type="authentication"
-            class="hu.blackbelt.judo.meta.psm.authentication.util.AuthenticationResourceFactoryImpl"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated psm -->
-      <package
-            uri="http://blackbelt.hu/judo/meta/psm/authorization"
-            class="hu.blackbelt.judo.meta.psm.authorization.AuthorizationPackage"
-            genModel="model/psm.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.extension_parser">
-      <!-- @generated psm -->
-      <parser
-            type="judo-meta-psm-authorization"
-            class="hu.blackbelt.judo.meta.psm.authorization.util.AuthorizationResourceFactoryImpl"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">

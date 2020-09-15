@@ -252,6 +252,7 @@ package data {
     val ~derived.NavigationProperty[*] navigationProperties;
     val EntitySequence[*] sequences;
     val BoundOperation[*] operations;
+    val constraint.InvariantConstraint[*] constraints;
   }
 
   abstract class Relation extends ReferenceTypedElement, EntityMember {
@@ -343,7 +344,6 @@ package data {
 package constraint {
   class InvariantConstraint extends namespace.NamedElement {
     val ~derived.LogicalExpressionType[1] expression;
-    ref data.EntityType[1] constrained;
   }
 
 }
@@ -428,7 +428,7 @@ package service {
     val TransferAttribute[*] attributes;
     ref TransferObjectType[*] superTransferObjectTypes;
     val TransferOperation[*] operations;
-    ref accesspoint.ActorType#transferObjectType actorType;
+    ref accesspoint.AbstractActorType#transferObjectType actorType;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -459,6 +459,7 @@ package service {
     attr boolean[1] embeddedCreate;
     attr boolean[1] embeddedUpdate;
     attr boolean[1] embeddedDelete = false;
+    attr boolean[1] access = false;
   }
 
   class TransferAttribute extends namespace.NamedElement {
@@ -469,6 +470,7 @@ package service {
     ref ~derived.StaticData defaultValue;
     ref type.Primitive[1] dataType;
     ref data.PrimitiveTypedElement binding;
+    attr String claimType;
   }
 
   class MappedTransferObjectType extends TransferObjectType {
@@ -499,7 +501,6 @@ package service {
   class Parameter extends namespace.NamedElement {
     val type.Cardinality[1] cardinality;
     ref TransferObjectType[1] type;
-    attr boolean immutable;
   }
 
   class BoundTransferOperation extends TransferOperation {
@@ -539,181 +540,23 @@ package service {
     REMOVE_ALL_FROM_RELATION_OF_RELATION = 15;
     GET_RANGE_OF_RELATION = 16;
     GET_TEMPLATE = 17;
+    GET_PRINCIPAL = 18;
+    MAP_PRINCIPAL = 19;
   }
 
 }
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/accesspoint", prefix="accesspoint")
 package accesspoint {
-  class ActorType extends namespace.NamespaceElement {
-    ref service.TransferObjectType[1]#actorType transferObjectType;
+  abstract class AbstractActorType extends service.TransferObjectType {
+    ref service.TransferObjectType#actorType transferObjectType;
     attr String realm;
   }
 
-}
-
-@namespace(uri="http://blackbelt.hu/judo/meta/psm/view", prefix="view")
-package view {
-  class Container extends namespace.NamedElement {
-    val Component[*] components;
-    attr LayoutType[1] layout;
-    attr String title;
-    attr AlignmentType[1] alignment;
+  class MappedActorType extends AbstractActorType, service.MappedTransferObjectType {
   }
 
-  abstract class Component extends namespace.NamedElement {
-    attr String label;
-    transient derived ref ObjectView[1] parentView;
-  }
-
-  class Widget extends Component {
-    ref service.TransferAttribute[1] transferAttribute;
-    val Event[*] emittedEvents;
-  }
-
-  class ObjectView extends Container, namespace.NamespaceElement {
-    ref service.TransferObjectType[1] transferObject;
-    attr ViewType[1] viewType;
-    val Control[*] controls;
-  }
-
-  class Groupbox extends Container, Component {
-  }
-
-  class Placeholder extends Component {
-    attr boolean[1] popup;
-  }
-
-  abstract class Navigation extends Component {
-    ref ObjectView[1] navigationView;
-    ref ObjectView rangeView;
-    ref service.TransferObjectRelation[1] transferRelation;
-  }
-
-  class Link extends Navigation {
-    ref Placeholder target;
-    attr String text;
-  }
-
-  class Embedded extends Navigation {
-  }
-
-  class Action extends Component {
-    ref Placeholder target;
-    ref service.OperationDeclaration[1] operation;
-    ref ObjectView resultView;
-    ref ObjectView[*] faultViews;
-  }
-
-  abstract class Control {
-    ref service.TransferAttribute[1] controller;
-    ref Component[*] components;
-  }
-
-  class VisibleControl extends Control {
-  }
-
-  class EnabledControl extends Control {
-  }
-
-  enum EventType {
-    SYSTEM_CHANGED = 0;
-    USER_CHANGED = 1;
-    ENABLED = 2;
-    DISABLED = 3;
-    SHOWN = 4;
-    HIDE = 5;
-    LOADED = 6;
-  }
-
-  enum ViewType {
-    LIST = 0;
-    GRID = 1;
-    TILE = 2;
-  }
-
-  enum LayoutType {
-    HORIZONTAL = 0;
-    VERTICAL = 1;
-    TAB = 2;
-  }
-
-  abstract class ViewControl extends Component {
-  }
-
-  class Event {
-    attr EventType[1] eventType;
-    ref Action[1] triggered;
-  }
-
-  abstract class MenuComponent extends Component {
-    val Menu[*] subMenus;
-    val MenuItem[*] menuItems;
-  }
-
-  class MenuBar extends MenuComponent {
-  }
-
-  class Menu extends MenuComponent {
-  }
-
-  abstract class MenuItem {
-    ref ObjectView[1] view;
-    ref Placeholder[1] target;
-  }
-
-  class EntryMenuItem extends MenuItem {
-    ref ~derived.StaticNavigation[1] selector;
-  }
-
-  class ActionMenuItem extends MenuItem {
-    ref service.OperationDeclaration[1] exposedService;
-  }
-
-  class UserInterface extends namespace.NamespaceElement {
-    ref ObjectView[1] mainView;
-    val ~derived.StaticNavigation selector;
-  }
-
-  class Renderer {
-  }
-
-  class Back extends ViewControl {
-  }
-
-  class UnboundActionLink extends Component {
-    ref ObjectView[1] actionView;
-  }
-
-  enum AlignmentType {
-    TOP = 0;
-    BOTTOM = 1;
-    LEFT = 2;
-    RIGHT = 3;
-    CENTER = 4;
-  }
-
-}
-
-@namespace(uri="http://blackbelt.hu/judo/meta/psm/authentication", prefix="authentication")
-package authentication {
-  class PasswordAuthenticatedUser extends AuthenticatedUser {
-    ref data.Attribute[1] password;
-    ref data.Attribute[1] login;
-  }
-
-  abstract class AuthenticatedUser {
-    ref data.EntityType[1] user;
-  }
-
-}
-
-@namespace(uri="http://blackbelt.hu/judo/meta/psm/authorization", prefix="authorization")
-package authorization {
-  class AuthorizationResource extends namespace.NamespaceElement {
-    ref data.ReferenceTypedElement[*] referenceTypedElements;
-    ref service.OperationDeclaration[*] operations;
-    ref AuthorizationResource[*] includedAuthorizationResources;
+  class ActorType extends AbstractActorType, service.UnmappedTransferObjectType {
   }
 
 }
