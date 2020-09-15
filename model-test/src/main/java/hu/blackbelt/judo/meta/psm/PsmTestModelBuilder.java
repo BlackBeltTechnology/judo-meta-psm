@@ -754,6 +754,7 @@ public class PsmTestModelBuilder {
         protected OperationBody createOperationBody() {
             return DataBuilders.newOperationBodyBuilder()
                     .withBody(body)
+                    .withStateful(true)
                     .build();
         }
 
