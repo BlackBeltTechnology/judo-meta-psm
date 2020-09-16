@@ -1,0 +1,76 @@
+# List of operation behaviours
+
+* LIST
+** *owner*: relation
+** *description*: get list of instances (return type can be single/many based on cardinality of relation)
+*** access relation: get list of target transfer object type (filtered by attribute of target mapped transfer object type)
+*** derived relation: get result of expression represented as target transfer object type (filtered by attibute of target mapped transfer object type is also added)
+*** stored relation: get result of stored relation (filtered by attibute of target mapped transfer object type is also added)
+*** mapped relation: get result based on resolved mapping
+*** transient relation: not supported
+
+* CREATE_INSTANCE
+** *owner*: relation
+** *description*: create a new instance (restricted by filter attribute of mapped transfer object type), new instance is attached if relation type is stored;
+*** access relation: permission is based on CREATE flag of access relation
+*** stored relation: permission is based on CREATE flag of producer (relation/operation)
+*** mapped relation: get result based on resolved mapping
+*** derived relation: not supported
+*** transient relation: not supported
+
+* VALIDATE_CREATE
+** *owner*: relation
+** *description*: validate input data of a CREATE_INSTANCE operation, rollback on completion
+*** access relation: permission is based on CREATE flag of access relation
+*** stored relation: permission is based on CREATE flag of producer (relation/operation)
+*** mapped relation: get result based on resolved mapping
+*** derived relation: not supported
+*** transient relation: not supported
+
+* REFRESH
+** *owner*: mapped transfer object type
+** *description*: refresh (reload) a mapped transfer object type instance
+
+* UPDATE_INSTANCE
+** *owner*: mapped transfer object type
+** *description*: update attributes of a mapped transfer object type; permission is based on UPDATE flag of producer (relation/operation)
+
+* VALIDATE_UPDATE
+** *owner*: mapped transfer object type
+** descripton: validate input data of UPDATE_INSTANCE operation, rollback on completion
+
+* DELETE_INSTANCE
+** *owner*: mapped transfer object type
+** *description*: delete mapped transfer object type instance; permission is based on DELETE flag of producer (relation/operation)
+
+* SET_REFERENCE
+** *owner*: relation
+** *description*: set reference of subject to a given value (both single and many relations are supported), permission is based on UPDATE flag of subject
+
+* UNSET_REFERENCE
+** *owner*: relation
+** *description*: unset (single, non composition) reference of subject, permission is based on UPDATE flag of subject
+
+* ADD_REFERENCE
+** *owner*: relation
+** *description*: add existing instance(s) to (many, non composition) reference of subject, permission is based on UPDATE flag of subject
+
+* REMOVE_REFERENCE
+** *owner*: relation
+** *description*: remove existing instance(s) to (many, non composition) reference of subject, permission is based on UPDATE flag of subject
+
+* GET_RANGE
+** *owner*: relation
+** *description*: get range of (non composition) reference of subject, permission is based on CREATE/UPDATE flag of subject
+
+* GET_PRINCIPAL
+** *owner*: actor type
+** *description*: get principal (transfer object type representation) of actor (logged in user)
+* MAP_PRINCIPAL
+** *owner*: actor type
+** *description*: map logged in user info (OAuth 2.0 token data) to principal (transfer object type representation) of actor (logged in user)
+
+* GET_TEMPLATE
+** *owner*: transfer object type
+** *description*: return transfer object type instance filled with default values (not persisted in case of mapped transfer object type)
+** not supported yet
