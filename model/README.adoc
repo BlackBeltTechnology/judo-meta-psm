@@ -45,22 +45,27 @@
 
 * SET_REFERENCE
 ** *owner*: relation
+** *subject*: instance of bound operation, container of relation
 ** *description*: set reference of subject to a given value (both single and many relations are supported), permission is based on UPDATE flag of subject
 
 * UNSET_REFERENCE
 ** *owner*: relation
+** *subject*: instance of bound operation, container of relation
 ** *description*: unset (single, non composition) reference of subject, permission is based on UPDATE flag of subject
 
 * ADD_REFERENCE
 ** *owner*: relation
+** *subject*: instance of bound operation, container of relation
 ** *description*: add existing instance(s) to (many, non composition) reference of subject, permission is based on UPDATE flag of subject
 
 * REMOVE_REFERENCE
 ** *owner*: relation
+** *subject*: instance of bound operation, container of relation
 ** *description*: remove existing instance(s) to (many, non composition) reference of subject, permission is based on UPDATE flag of subject
 
 * GET_RANGE
 ** *owner*: relation
+** *subject*: instance of bound operation, container of relation
 ** *description*: get range of (non composition) reference of subject, permission is based on CREATE/UPDATE flag of subject
 
 * GET_PRINCIPAL
