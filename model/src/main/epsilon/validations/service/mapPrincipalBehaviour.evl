@@ -38,8 +38,8 @@ context PSM!TransferOperationBehaviour {
 
     constraint MapPrincipalOperationInputTypeIsValid {
         guard: self.owner.realm.isDefined() and self.satisfies("MapPrincipalOperationInputParameterIsDefined")
-        check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner)
-        message: "Type of 'MAP_PRINCIPAL' operation's input parameter must be kind of its actor type (operation: " + self.eContainer.name + ")"
+        check: self.eContainer.input.type.equals(self.owner)
+        message: "Type of 'MAP_PRINCIPAL' operation's input parameter must be type of its actor type (operation: " + self.eContainer.name + ")"
     }
 
     constraint MapPrincipalOperationOutputParameterIsDefined {
@@ -55,8 +55,8 @@ context PSM!TransferOperationBehaviour {
 
     constraint MapPrincipalOperationOutputTypeIsValid {
         guard: self.satisfies("MapPrincipalOperationOutputParameterIsDefined")
-        check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner.transferObjectType)
-        message: "Type of 'MAP_PRINCIPAL' operation's output parameter must be kind of actor type's transfer object type (operation: " + self.eContainer.name + ")"
+        check: self.eContainer.output.type.equals(self.owner.transferObjectType)
+        message: "Type of 'MAP_PRINCIPAL' operation's output parameter must be type of actor type's transfer object type (operation: " + self.eContainer.name + ")"
     }
 
     constraint MapPrincipalOperationOutputCardinalityIsValid {

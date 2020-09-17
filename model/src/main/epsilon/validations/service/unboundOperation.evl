@@ -1,10 +1,4 @@
 context PSM!UnboundOperation {
-    
-     constraint OverridingWithValidParameters {
-     	guard: self.satisfiesAll("NamedElementHasContainer") and psmUtils.getInheritedUnboundOperationsByName(self.eContainer, self.name).forAll(o | o.satisfies("OverridingWithValidParameters"))
-     	check: psmUtils.getInheritedUnboundOperationsByName(self.eContainer, self.name).forAll(o | psmUtils.parametersAreCompatible(self,o))
-        message: "Overriding of unbound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
-     }
      
      constraint BehaviourOrImplementationIsRequired {
      	check: self.implementation.isDefined() or self.behaviour.isDefined()

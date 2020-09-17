@@ -35,8 +35,8 @@ context PSM!TransferOperationBehaviour {
 
     constraint GetPrincipalOperationOutputTypeIsValid {
         guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
-        check: self.eContainer.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.output.type).includes(self.owner)
-        message: "Type of 'GET_PRINCIPAL' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
+        check: self.eContainer.output.type.equals(self.owner)
+        message: "Type of 'GET_PRINCIPAL' operation's output parameter must be type of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
     }
 
     constraint GetPrincipalOperationOutputCardinalityIsValid {

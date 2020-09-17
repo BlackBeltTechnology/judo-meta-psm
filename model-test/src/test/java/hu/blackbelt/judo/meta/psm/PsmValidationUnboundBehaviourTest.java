@@ -212,20 +212,18 @@ class PsmValidationUnboundBehaviourTest {
 	@Test
 	void testValidUnboundOperations() throws Exception {
 
-		EntityType p = newEntityTypeBuilder().withName(PARENT_ENTITY_TYPE).build();
-		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).withSuperEntityTypes(p).build();
-		EntityType c = newEntityTypeBuilder().withName(CHILD_ENTITY_TYPE).withSuperEntityTypes(e1).build();
+		EntityType e1 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T1).build();
 		EntityType e2 = newEntityTypeBuilder().withName(NAME_OF_ENTITY_TYPE_FOR_T2).build();
 
-		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
-				.withEntityType(p).build();
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1)
 				.build();
-		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
-				.withEntityType(e2).build();
+
+		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder()
+				.withName(TRANSFER_OBJECT_2)
+				.withEntityType(e2)
+				.build();
 
 		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName(TRANSFER_OBJECT_RELATION).withTarget(t2)
 				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
@@ -246,30 +244,30 @@ class PsmValidationUnboundBehaviourTest {
 						owner.getCardinality().getUpper()).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(CREATE_OPERATION_NAME),
-						TransferOperationBehaviourType.CREATE, owner, OUTPUT, pt, 1, 1, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.CREATE, owner, OUTPUT, t1, 1, 1, INPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(UPDATE_OPERATION_NAME),
 						TransferOperationBehaviourType.UPDATE, owner, OUTPUT, t1, 1, 1, INPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(DELETE_OPERATION_NAME),
-						TransferOperationBehaviourType.DELETE, owner, false, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.DELETE, owner, false, INPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(SET_RELATION_OPERATION_NAME),
-						TransferOperationBehaviourType.SET_RELATION, owner, relation, false, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.SET_RELATION, owner, relation, false, INPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(UNSET_RELATION_OPERATION_NAME),
-						TransferOperationBehaviourType.UNSET_RELATION, owner, relation, false, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.UNSET_RELATION, owner, relation, false, INPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(ADD_ALL_TO_RELATION_OPERATION_NAME),
-						TransferOperationBehaviourType.ADD_ALL_TO_RELATION, owner, relation, false, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.ADD_ALL_TO_RELATION, owner, relation, false, INPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(
 						newUnboundOperationBuilder().withName(REMOVE_ALL_FROM_RELATION_OPERATION_NAME),
-						TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION, owner, relation, false, INPUT, ct, 1, 1)
+						TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION, owner, relation, false, INPUT, t1, 1, 1)
 								.build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
-				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p)).build();
+				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn)).build();
 
 		psmModel.addContent(model);
 
@@ -291,11 +289,12 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
@@ -353,7 +352,7 @@ class PsmValidationUnboundBehaviourTest {
 						owner.getCardinality().getUpper()).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_OWNER_MTO),
-						TransferOperationBehaviourType.GET, wrong_eg, true, OUTPUT, t1, owner.getCardinality().getLower(),
+						TransferOperationBehaviourType.GET, wrong_eg, true, OUTPUT, pt, owner.getCardinality().getLower(),
 						owner.getCardinality().getUpper()).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
@@ -382,11 +381,12 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
@@ -429,13 +429,13 @@ class PsmValidationUnboundBehaviourTest {
 						.build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_NAMES),
-						TransferOperationBehaviourType.CREATE, owner, INPUT, pt, 1, 1, OUTPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.CREATE, owner, INPUT, t1, 1, 1, OUTPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_TYPES),
 						TransferOperationBehaviourType.CREATE, owner, OUTPUT, ct, 1, 1, INPUT, pt, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_PARAM_CARDINALITY),
-						TransferOperationBehaviourType.CREATE, owner, OUTPUT, pt, 0, 1, INPUT, ct, 0, 1).build()));
+						TransferOperationBehaviourType.CREATE, owner, OUTPUT, t1, 0, 1, INPUT, t1, 0, 1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
 				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p, wrong_sn)).build();
@@ -449,8 +449,8 @@ class PsmValidationUnboundBehaviourTest {
 				"CreateUpdateOperationOutputNameIsValid|'CREATE' operation's output parameter must be named 'output' (operation: WRONG_PARAM_NAMES)",
 				"CreateUpdateOperationInputParameterIsDefined|'CREATE' operation must have an input parameter named 'input' (operation: UNDEFINED_PARAMS)",
 				"CreateUpdateOperationInputNameIsValid|'CREATE' operation's input parameter must be named 'input' (operation: WRONG_PARAM_NAMES)",
-				"CreateUpdateOperationInputTypeIsValid|Type of 'CREATE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
-				"CreateUpdateOperationOutputTypeIsValid|Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type or its supertype (operation: WRONG_PARAM_TYPES)",
+				"CreateUpdateOperationInputTypeIsValid|Type of 'CREATE' operation's input parameter must be type of exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
+				"CreateUpdateOperationOutputTypeIsValid|Type of 'CREATE' operation's output parameter must be exposed graph's mapped transfer object type (operation: WRONG_PARAM_TYPES)",
 				"CreateUpdateOperationInputCardinalityIsValid|Cardinality of 'CREATE' operation's input parameter must be 1..1 (operation: WRONG_PARAM_CARDINALITY)"),
 				Collections.emptyList());
 	}
@@ -470,11 +470,12 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
@@ -526,13 +527,13 @@ class PsmValidationUnboundBehaviourTest {
 						TransferOperationBehaviourType.DELETE, owner, true, OUTPUT, ct, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_INPUT_NAME),
-						TransferOperationBehaviourType.DELETE, owner, false, OUTPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.DELETE, owner, false, OUTPUT, t1, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE),
 						TransferOperationBehaviourType.DELETE, owner, false, INPUT, pt, 1, 1).build(),
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY),
-						TransferOperationBehaviourType.DELETE, owner, false, INPUT, ct, 0, -1).build()));
+						TransferOperationBehaviourType.DELETE, owner, false, INPUT, t1, 0, -1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
 				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p, wrong_sn)).build();
@@ -541,12 +542,12 @@ class PsmValidationUnboundBehaviourTest {
 
 		runEpsilon(ImmutableList.of(
 				"DeleteOperationInputParameterIsDefined|'DELETE' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_DEFINED_OUTPUT)",
-				"DeleteOperationInputTypeIsValid|Type of 'DELETE' operation's input parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_INPUT_TYPE)",
+				"DeleteOperationInputTypeIsValid|Type of 'DELETE' operation's input parameter must be type of exposed graph's mapped transfer object type (operation: WRONG_INPUT_TYPE)",
 				"DeleteOperationInputCardinalityIsValid|Cardinality of 'DELETE' operation's input parameter must be 1..1 (operation: WRONG_INPUT_CARDINALITY)",
 				"DeleteOperationOutputParameterIsNotDefined|'DELETE' operation cannot have an output parameter (operation: UNDEFINED_INPUT_DEFINED_OUTPUT)",
 				"DeleteOperationInputNameIsValid|'DELETE' operation's input parameter must be named 'input' (operation: WRONG_INPUT_NAME)",
 				"GetOperationOutputParameterIsDefined|'GET' operation must have an output parameter named 'output' (operation: UNDEFINED_OUTPUT_DEFINED_INPUT)",
-				"GetOperationOutputTypeIsValid|Type of 'GET' operation's output parameter must be kind of exposed graph's mapped transfer object type (operation: WRONG_OUTPUT_TYPE)",
+				"GetOperationOutputTypeIsValid|Type of 'GET' operation's output parameter must be type of exposed graph's mapped transfer object type (operation: WRONG_OUTPUT_TYPE)",
 				"GetOperationOutputCardinalityIsValid|Cardinality of 'GET' operation's output parameter must be the same as its owner's (operation: WRONG_OUTPUT_CARDINALITY)",
 				"GetOperationInputCardinalityIsValid|Cardinality of 'GET' operation's input parameter must be 0..1",
 				"GetOperationInputNameIsValid|'GET' operation's input parameter must be named 'input' (operation: UNDEFINED_OUTPUT_DEFINED_INPUT)",
@@ -569,11 +570,12 @@ class PsmValidationUnboundBehaviourTest {
 				.withEntityType(p).build();
 
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1)
 				.build();
 
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
@@ -610,13 +612,13 @@ class PsmValidationUnboundBehaviourTest {
 
 		t1.getOperations().addAll(ImmutableList.of(
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(UNDEFINED_RELATION),
-						TransferOperationBehaviourType.SET_RELATION, owner, false, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.SET_RELATION, owner, false, INPUT, t1, 1, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_RELATION),
-						TransferOperationBehaviourType.SET_RELATION, owner, wrong_relation, false, INPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.SET_RELATION, owner, wrong_relation, false, INPUT, t1, 1, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(UNDEFINED_INPUT_DEFINED_OUTPUT),
 						TransferOperationBehaviourType.SET_RELATION, owner, relation, true, OUTPUT, ct, 1, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_INPUT_NAME),
-						TransferOperationBehaviourType.SET_RELATION, owner, relation, false, OUTPUT, ct, 1, 1).build(),
+						TransferOperationBehaviourType.SET_RELATION, owner, relation, false, OUTPUT, t1, 1, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_INPUT_TYPE),
 						TransferOperationBehaviourType.SET_RELATION, owner, relation, false, INPUT, pt, 1, 1).build(),
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(WRONG_INPUT_CARDINALITY),
@@ -628,7 +630,7 @@ class PsmValidationUnboundBehaviourTest {
 		psmModel.addContent(model);
 
 		runEpsilon(ImmutableList.of(
-				"InputTypeIsValidUnboundWithRelation|Type of 'SET_RELATION' operation's input parameter must be kind of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE).",
+				"InputTypeIsValidUnboundWithRelation|Type of 'SET_RELATION' operation's input parameter must be type of referenced mapped transfer object type (operation: WRONG_INPUT_TYPE).",
 				"RelationIsDefinedUnboundWithRelation|Relation must be defined for 'SET_RELATION' operation: UNDEFINED_RELATION (in: t1).",
 				"RelationIsValidUnboundWithRelation|Relation of 'SET_RELATION' operation: WRONG_RELATION must be one of the transfer object type referenced by the operation's owner.",
 				"InputParameterIsDefinedUnboundWithRelation|'SET_RELATION' operation must have an input parameter named 'input' (operation: UNDEFINED_INPUT_DEFINED_OUTPUT).",
@@ -805,10 +807,11 @@ class PsmValidationUnboundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName(TRANSFER_OBJECT_1).withSuperTransferObjectTypes(pt).withEntityType(e1)
+				.withName(TRANSFER_OBJECT_1)
+				.withEntityType(e1)
 				.build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+				.withEntityType(c).build();
 		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 
@@ -830,13 +833,14 @@ class PsmValidationUnboundBehaviourTest {
 		t1.getOperations().addAll(ImmutableList.of(
 
 				unboundOperationDecorator(newUnboundOperationBuilder().withName(CREATE_OPERATION_NAME),
-						TransferOperationBehaviourType.CREATE, owner, OUTPUT, pt, 1, 1, INPUT, ct, 1, 1).build()));
+						TransferOperationBehaviourType.CREATE, owner, OUTPUT, t1, 1, 1, INPUT, t1, 1, 1).build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
 				.withElements(ImmutableList.of(e1, e2, t1, t2, actor, ap, sn, ct, pt, c, p)).build();
 
 		psmModel.addContent(model);
 
-		runEpsilon(ImmutableList.of("CreateTargetIsNotAbstract|Owner of 'CREATE' operation cannot reference the mapped transfer object of an abstract entity type."), Collections.emptyList());
+		runEpsilon(ImmutableList.of("CreateTargetIsNotAbstract|Owner of 'CREATE' operation cannot reference the mapped transfer object of an abstract entity type.")
+				, Collections.emptyList());
 	}
 }

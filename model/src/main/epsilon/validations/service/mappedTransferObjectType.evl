@@ -1,33 +1,4 @@
 context PSM!MappedTransferObjectType{
-    
-    constraint EntityTypeMatchesEntityTypeOfBaseMappedTransferObject {
-        check: self.getAllSuperTransferObjectTypes().select(t | t.isKindOf(PSM!MappedTransferObjectType))
-                            .forAll(sto | self.entityType.getAllSuperEntityTypes().including(self.entityType).contains(sto.entityType))
-        message: "Entity type of mapped transfer object type: " + self.name + " must derive from the entity types of the base mapped transfer object type of mapped transfer object type: " + self.name
-    }
-    
-    constraint InheritedBoundTransferOperationAndUnboundOperationNamesAreUnique {
-        check: not psmUtils.getInheritedBoundTransferOperationNames(self).exists(name | psmUtils.getInheritedUnboundOperationNames(self).exists(a | name.toLowerCase() == a.toLowerCase()))
-        message: "Entity type: " + self.name + " has inherited bound transfer operation(s) and inherited unbound transfer operation(s) of the same name." 
-    }
-
-	constraint InheritedBoundTransferOperationsAreValid {
-		check: psmUtils.getInheritedBoundTransferOperations(self)
-				.forAll(o | psmUtils.getInheritedBoundTransferOperationsByName(self,o.name).size() > 1 implies 
-							psmUtils.getInheritedBoundTransferOperationsByName(self,o.name).excluding(o)
-								.forAll(other | psmUtils.parametersAreCompatible(o,other)))
-		message: "Transfer object type: " + self.name + " is inheriting bound transfer operations with the same name but different signature."
-	}
-    
-   constraint NeedToOverrideMultipleBoundTransferOperations {
-        guard: self.getAllSuperTransferObjectTypes().select(s | s.isKindOf(PSM!MappedTransferObjectType))
-            .forAll(s | s.satisfiesAll("InheritanceIsNotRecursive","NeedToOverrideMultipleBoundTransferOperations"))
-        check: psmUtils.getAllBoundTransferOperations(self)
-        		.collect(o | o.name.toLowerCase())
-        		.forAll(opName | psmUtils.getInheritedBoundTransferOperationsByName(self,opName).size() > 1 implies 
-                        self.operations.exists(o | o.isKindOf(PSM!BoundTransferOperation) and o.name.toLowerCase() == opName.toLowerCase()))
-        message: "Transfer object type: " + self.name + " must override inherited bound transfer operations of the same name."
-    }
 
     constraint AllRequiredFeaturesHaveBindingIfCreatable {
     	guard: (PSM!BoundTransferOperation.all
@@ -37,10 +8,10 @@ context PSM!MappedTransferObjectType{
     				.select(o | o.behaviour.isDefined() and o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE)
     				.exists(c | c.behaviour.satisfies("OwnerIsRelationUnboundBehaviour") and c.behaviour.owner.target == self) )
     		
-    		and psmUtils.getAllTransferObjectRelations(self).select(r | r.binding.isDefined())
+    		and self.getRelations().select(r | r.binding.isDefined())
     			.forAll(r | r.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid"))
     		
-    		and psmUtils.getAllTransferAttributes(self).select(a | a.binding.isDefined())
+    		and self.getAttributes().select(a | a.binding.isDefined())
     			.forAll(a | a.satisfiesAll("DataTypeMatchesBindingDataType","RequiredFlagMatchesBindingRequiredFlag","TransferAttributeBindingIsValid"))
 
     	check: psmUtils.getUnboundRequiredFeaturesOfMappingTarget(self).isEmpty()

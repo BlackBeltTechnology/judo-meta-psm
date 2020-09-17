@@ -35,15 +35,6 @@ context PSM!TransferObjectRelation {
                 " must either match the entity type of the mapped tranfer object or be StaticNavigation."
     }
     
-    constraint InheritedAndOwnTransferObjectRelationNameIsUniqueInTransferObjectType {
-        guard: self.satisfies("NamedElementHasContainer")
-        check: not self.eContainer().getAllSuperTransferObjectTypes()
-                    .collect(c | c.eContents()).flatten()
-                    .select(c | c.isKindOf(PSM!NamedElement))
-                    .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
-        message: "Transfer object relation: " + self.name + " has the same name as inherited content(s) of transfer object type: " + self.eContainer().name
-    } 
-    
     constraint EmbeddedOnBothSidesAreNotAllowed {
     	guard: self.binding.isDefined() and self.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid")
     		and self.embedded and self.binding.isKindOf(PSM!AssociationEnd) and self.binding.partner.isDefined()

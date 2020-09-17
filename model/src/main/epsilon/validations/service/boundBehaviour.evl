@@ -24,9 +24,8 @@ context PSM!TransferOperationBehaviour {
 	
 	constraint OwnerIsValidBoundBehaviour {
 		guard: self.satisfies("OwnerIsRelationBoundBehaviour") 
-		check: psmUtils.getAllTransferObjectRelations(self.eContainer.eContainer).includes(self.owner)
-		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a transfer object relation inherited or owned by the transfer object type containing the operation"
-
+		check: self.eContainer.eContainer.getRelations().includes(self.owner)
+		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation of the transfer object type containing the operation"
 	}
 }
 	

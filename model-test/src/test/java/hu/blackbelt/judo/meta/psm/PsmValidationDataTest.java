@@ -1046,11 +1046,9 @@ class PsmValidationDataTest {
 				.withEntityType(entityType1)
 				.build();
 		MappedTransferObjectType mapped2 = newMappedTransferObjectTypeBuilder().withName("mapped2")
-				.withSuperTransferObjectTypes(mapped1)
 				.withEntityType(entityType2)
 				.build();
 		MappedTransferObjectType mapped3 = newMappedTransferObjectTypeBuilder().withName("mapped3")
-				.withSuperTransferObjectTypes(mapped2)
 				.withEntityType(entityType3)
 				.build();
 		MappedTransferObjectType mapped4 = newMappedTransferObjectTypeBuilder().withName("mapped4")
@@ -1058,7 +1056,6 @@ class PsmValidationDataTest {
 				.build();
 		MappedTransferObjectType mapped5 = newMappedTransferObjectTypeBuilder().withName("mapped5")
 				.withEntityType(entityType5)
-				.withSuperTransferObjectTypes(ImmutableList.of(mapped3,mapped4))
 				.build();
 		
 		op1.setInstanceRepresentation(mapped1);
@@ -1134,14 +1131,12 @@ class PsmValidationDataTest {
         EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
         		.withOperations(overriden1).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType1);
 
         EntityType entityType2 = newEntityTypeBuilder().withName("entityType2")
         		.withOperations(ImmutableList.of(operation4,overriden2)).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         operation4.setInstanceRepresentation(transferObjectType2);
         overriden2.setInstanceRepresentation(transferObjectType2);
@@ -1149,7 +1144,6 @@ class PsmValidationDataTest {
         EntityType entityType3 = newEntityTypeBuilder().withName("entityType3")
         		.withOperations(ImmutableList.of(overriden1,overriden4)).withSuperEntityTypes(entityType2).build();
         MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-                .withSuperTransferObjectTypes(transferObjectType2)
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType3);
         overriden4.setInstanceRepresentation(transferObjectType3);
@@ -1157,7 +1151,6 @@ class PsmValidationDataTest {
         EntityType entityType4 = newEntityTypeBuilder().withName("entityType4")
         		.withOperations(ImmutableList.of(overriden1,overriden3)).withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
         MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType4);
         overriden3.setInstanceRepresentation(transferObjectType4);
@@ -1257,14 +1250,12 @@ class PsmValidationDataTest {
         
         EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withOperations(overriden1).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType1);
 
         EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withOperations(ImmutableList.of(operation4,overriden2))
         		.withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         operation4.setInstanceRepresentation(transferObjectType2);
         overriden2.setInstanceRepresentation(transferObjectType2);
@@ -1272,7 +1263,6 @@ class PsmValidationDataTest {
         EntityType entityType3 = newEntityTypeBuilder().withName("entityType3")
         		.withOperations(ImmutableList.of(overriden1,overriden4)).withSuperEntityTypes(entityType2).build();
         MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-                .withSuperTransferObjectTypes(transferObjectType2)
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType3);
         overriden4.setInstanceRepresentation(transferObjectType3);
@@ -1281,7 +1271,6 @@ class PsmValidationDataTest {
         		.withOperations(ImmutableList.of(overriden1,overriden3))
         		.withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
         MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType4);
         overriden3.setInstanceRepresentation(transferObjectType4);
@@ -1398,14 +1387,12 @@ class PsmValidationDataTest {
         
         EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withOperations(overriden1).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType1);
 
         EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withOperations(ImmutableList.of(operation4,overriden2))
         		.withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         operation4.setInstanceRepresentation(transferObjectType2);
         overriden2.setInstanceRepresentation(transferObjectType2);
@@ -1413,7 +1400,6 @@ class PsmValidationDataTest {
         EntityType entityType3 = newEntityTypeBuilder().withName("entityType3")
         		.withOperations(ImmutableList.of(overriden1,overriden4)).withSuperEntityTypes(entityType2).build();
         MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-                .withSuperTransferObjectTypes(transferObjectType2)
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType3);
         overriden4.setInstanceRepresentation(transferObjectType3);
@@ -1422,7 +1408,6 @@ class PsmValidationDataTest {
         		.withOperations(ImmutableList.of(overriden1,overriden3))
         		.withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
         MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
                 .build();
         overriden1.setInstanceRepresentation(transferObjectType4);
         overriden3.setInstanceRepresentation(transferObjectType4);
@@ -1497,21 +1482,18 @@ class PsmValidationDataTest {
         EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(true)
         		.withOperations(withImplementation2).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         withImplementation2.setInstanceRepresentation(transferObjectType1);
         
         EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").withAbstract_(true)
         		.withOperations(correctOperation2).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         correctOperation2.setInstanceRepresentation(transferObjectType2);
         
         EntityType entityType3 = newEntityTypeBuilder().withName("entityType3").withAbstract_(true)
         		.withOperations(withImplementation3).withSuperEntityTypes(entityType2).build();
         MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-                .withSuperTransferObjectTypes(transferObjectType2)
                 .build();
         withImplementation3.setInstanceRepresentation(transferObjectType3);
         
@@ -1519,7 +1501,6 @@ class PsmValidationDataTest {
         		.withOperations(ImmutableList.of(opWithoutImpl,correctOperation3))
         		.withSuperEntityTypes(ImmutableList.of(entityType1,entityType3)).build();
         MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType1,transferObjectType3))
                 .build();
         opWithoutImpl.setInstanceRepresentation(transferObjectType4);
         correctOperation3.setInstanceRepresentation(transferObjectType4);
@@ -1567,7 +1548,6 @@ class PsmValidationDataTest {
         		.withOperations(correctOperation2)
         		.withSuperEntityTypes(correctEntityType0).build();
         MappedTransferObjectType correctTransferObjectType1 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType1").withEntityType(correctEntityType1)
-                .withSuperTransferObjectTypes(correctTransferObjectType0)
                 .build();
         correctOperation2.setInstanceRepresentation(correctTransferObjectType1);
         
@@ -1575,7 +1555,6 @@ class PsmValidationDataTest {
         		.withAbstract_(true)
         		.withSuperEntityTypes(correctEntityType1).build();
         MappedTransferObjectType correctTransferObjectType2 = newMappedTransferObjectTypeBuilder().withName("correctTransferObjectType2").withEntityType(correctEntityType2)
-                .withSuperTransferObjectTypes(correctTransferObjectType1)
                 .build();
 
         BoundOperation withImplementation1 = newBoundOperationBuilder().withName("operation")
@@ -1603,14 +1582,12 @@ class PsmValidationDataTest {
         EntityType entityType1 = newEntityTypeBuilder().withName("entityType1")
         		.withOperations(withImplementation2).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType1 = newMappedTransferObjectTypeBuilder().withName("transferObjectType1").withEntityType(entityType1)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         withImplementation2.setInstanceRepresentation(transferObjectType1);
         
         EntityType entityType2 = newEntityTypeBuilder().withName("entityType2")
         		.withOperations(correctOperation2).withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType2 = newMappedTransferObjectTypeBuilder().withName("transferObjectType2").withEntityType(entityType2)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         correctOperation2.setInstanceRepresentation(transferObjectType2);
         
@@ -1618,25 +1595,21 @@ class PsmValidationDataTest {
         		.withOperations(withImplementation3)
         		.withSuperEntityTypes(entityType0).build();
         MappedTransferObjectType transferObjectType3 = newMappedTransferObjectTypeBuilder().withName("transferObjectType3").withEntityType(entityType3)
-                .withSuperTransferObjectTypes(transferObjectType0)
                 .build();
         withImplementation3.setInstanceRepresentation(transferObjectType3);
         
         EntityType entityType4 = newEntityTypeBuilder().withName("entityType4").withOperations(withImplementation3)
         		.withSuperEntityTypes(entityType1).build();
         MappedTransferObjectType transferObjectType4 = newMappedTransferObjectTypeBuilder().withName("transferObjectType4").withEntityType(entityType4)
-                .withSuperTransferObjectTypes(transferObjectType1)
                 .build();
         withImplementation3.setInstanceRepresentation(transferObjectType4);
 
         EntityType entityType5 = newEntityTypeBuilder().withName("entityType5").withSuperEntityTypes(entityType2).build();
         MappedTransferObjectType transferObjectType5 = newMappedTransferObjectTypeBuilder().withName("transferObjectType5").withEntityType(entityType5)
-                .withSuperTransferObjectTypes(transferObjectType2)
                 .build();
 
         EntityType entityType6 = newEntityTypeBuilder().withName("entityType6").withSuperEntityTypes(ImmutableList.of(entityType3,entityType4,entityType5)).build();
         MappedTransferObjectType transferObjectType6 = newMappedTransferObjectTypeBuilder().withName("transferObjectType6").withEntityType(entityType6)
-                .withSuperTransferObjectTypes(ImmutableList.of(transferObjectType3,transferObjectType4,transferObjectType5))
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(

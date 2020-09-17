@@ -26,7 +26,7 @@ context PSM!TransferOperationBehaviour {
 	
 	constraint RelationOfGetRangeOfRelationBehaviourIsValid {
 	    guard: self.satisfies("RelationOfGetRangeOfRelationBehaviourIsDefined") and self.owner.type.isKindOf(PSM!TransferObjectType)
-	    check: psmUtils.getAllTransferObjectRelations(self.owner.type).includes(self.relation)
+	    check: self.owner.type.getRelations().includes(self.relation)
 		message: "Relation for 'GET_RANGE_OF_RELATION' behaviour type must belong to the operation owner's type (operation: " + self.eContainer.name + ")"
 	}
 	
