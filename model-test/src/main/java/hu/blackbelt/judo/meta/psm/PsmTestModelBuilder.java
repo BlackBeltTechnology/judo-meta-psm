@@ -36,6 +36,7 @@ import org.eclipse.emf.common.util.EList;
 
 import java.lang.String;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newActorTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
@@ -170,8 +171,8 @@ public class PsmTestModelBuilder {
                 .map(e -> (ScriptTestMappedTransferObjectBuilder) e)
                 .forEach(scriptTestMappedTransferObjectBuilders::add);
         return !scriptTestMappedTransferObjectBuilders.isEmpty()
-               ? Optional.of(scriptTestMappedTransferObjectBuilders)
-               : Optional.empty();
+                ? Optional.of(scriptTestMappedTransferObjectBuilders)
+                : Optional.empty();
     }
 
     public ScriptTestUnmappedTransferObjectBuilder addUnmappedTransferObject(String toName) {
@@ -523,11 +524,10 @@ public class PsmTestModelBuilder {
     public class ScriptTestMappedTransferObjectBuilder implements ScriptTestBuilders {
         private String name;
         private String entityName;
-        private Map<String, String> attributes = new HashMap<>();
+        private Map<String, PropertyDef> attributes = new HashMap<>();
         private Map<String, RelationDef> relations = new HashMap<>();
         private Map<String, RelationDef> containments = new HashMap<>();
-        private Map<String, String> properties = new HashMap<>();
-
+        private Map<String, PropertyDef> properties = new HashMap<>();
 
         private ScriptTestMappedTransferObjectBuilder(String name, String entityName) {
             this.name = name;
@@ -535,12 +535,21 @@ public class PsmTestModelBuilder {
         }
 
         public ScriptTestMappedTransferObjectBuilder withAttribute(String type, String name) {
-            attributes.put(name, type);
+            return withAttribute(type, name, name);
+        }
+
+        public ScriptTestMappedTransferObjectBuilder withAttribute(String type, String name, String binding) {
+            attributes.put(name, new PropertyDef(name, type, binding));
             return this;
         }
 
+
         public ScriptTestMappedTransferObjectBuilder withProperty(String type, String name) {
-            properties.put(name, type);
+            return withProperty(type, name, name);
+        }
+
+        public ScriptTestMappedTransferObjectBuilder withProperty(String type, String name, String binding) {
+            properties.put(name, new PropertyDef(name, type, binding));
             return this;
         }
 
@@ -572,20 +581,20 @@ public class PsmTestModelBuilder {
             EntityType entityType = entityTypes.get(entityName);
             MappedTransferObjectTypeBuilder builder = useMappedTransferObjectType((MappedTransferObjectType) toTypes.get(name));
 
-            for (Map.Entry<String, String> attributeEntry : attributes.entrySet()) {
+            for (Map.Entry<String, PropertyDef> attributeEntry : attributes.entrySet()) {
                 TransferAttribute transferAttribute = ServiceBuilders.useTransferAttribute(ServiceBuilders.newTransferAttributeBuilder().build())
                         .withName(attributeEntry.getKey())
-                        .withDataType(dataTypes.get(attributeEntry.getValue()))
+                        .withDataType(dataTypes.get(attributeEntry.getValue().type))
                         .withRequired(false)
-                        .withBinding(entityType.getAttribute(attributeEntry.getKey())).build();
+                        .withBinding(entityType.getAttribute(attributeEntry.getValue().expression)).build();
                 builder.withAttributes(transferAttribute);
             }
-            for (Map.Entry<String, String> propertyEntry : properties.entrySet()) {
+            for (Map.Entry<String, PropertyDef> propertyEntry : properties.entrySet()) {
                 TransferAttribute transferAttribute = ServiceBuilders.useTransferAttribute(ServiceBuilders.newTransferAttributeBuilder().build())
                         .withName(propertyEntry.getKey())
-                        .withDataType(dataTypes.get(propertyEntry.getValue()))
+                        .withDataType(dataTypes.get(propertyEntry.getValue().type))
                         .withRequired(false)
-                        .withBinding(entityType.getDataProperties().stream().filter(p -> p.getName().equals(propertyEntry.getKey())).findAny().get()).build();
+                        .withBinding(entityType.getDataProperties().stream().filter(p -> p.getName().equals(propertyEntry.getValue().expression)).findAny().get()).build();
                 builder.withAttributes(transferAttribute);
             }
             for (Map.Entry<String, RelationDef> relationEntry : relations.entrySet()) {
@@ -621,6 +630,7 @@ public class PsmTestModelBuilder {
         private Map<String, RelationDef> relations = new HashMap<>();
         private Map<String, RelationDef> containments = new HashMap<>();
         private Map<String, PropertyDef> properties = new HashMap<>();
+        private Set<String> supertypes = new HashSet<>();
 
         private ScriptTestEntityBuilder(String name) {
             this.name = name;
@@ -654,6 +664,11 @@ public class PsmTestModelBuilder {
         public ScriptTestEntityBuilder withAggregation(String type, String name, Cardinality cardinality) {
             relations.put(name, new RelationDef(name, type, cardinality, true));
             defaultToBuilder.withAggregation(type, name, cardinality);
+            return this;
+        }
+
+        public ScriptTestEntityBuilder withSuperType(String type) {
+            supertypes.add(type);
             return this;
         }
 
@@ -692,6 +707,7 @@ public class PsmTestModelBuilder {
                         .build();
                 builder.withDataProperties(property);
             }
+            builder.withSuperEntityTypes(supertypes.stream().map(entityTypes::get).collect(Collectors.toList()));
             return builder.build();
         }
 
