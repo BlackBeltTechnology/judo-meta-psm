@@ -32,7 +32,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint InputTypeIsValidBoundWithRelation {
     	guard: self.satisfies("InputParameterIsDefinedBoundWithRelation") and self.eContainer.satisfies("BindingIsValid")
-    	check: self.eContainer.binding.input.type.equals(self.owner.target)
+    	check: self.eContainer.binding.input.type == self.owner.target
     	message: "Input type of '" + self.behaviourType + "' operation's binding must be type of mapped transfer object type referenced by the owner (operation: " + self.eContainer.name + ")."
     }
     

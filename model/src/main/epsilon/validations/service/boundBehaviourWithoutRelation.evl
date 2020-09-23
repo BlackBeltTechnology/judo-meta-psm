@@ -39,7 +39,7 @@ context PSM!TransferOperationBehaviour {
     
 	constraint GetRelationOperationOutputTypeIsValid {
     	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
-    	check: self.eContainer.binding.output.type.equals(self.owner.target)
+    	check: self.eContainer.binding.output.type == self.owner.target
     	message: "Output type of 'GET_RELATION' operation (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be type of the owner's target"
     }
     
@@ -78,7 +78,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint DeleteRelationOperationInputTypeIsValid {
     	guard: self.satisfies("DeleteRelationOperationInputParameterIsDefined")
-    	check: self.eContainer.binding.input.type.equals(self.owner.target)
+    	check: self.eContainer.binding.input.type == self.owner.target
     	message: "Input type of 'DELETE' operation's binding must be type of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
     }
     
@@ -116,7 +116,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateUpdateRelationOperationInputTypeIsValid {
     	guard: self.satisfies("CreateUpdateRelationOperationInputParameterIsDefined")
-    	check: self.eContainer.binding.input.type.equals(self.owner.target)
+    	check: self.eContainer.binding.input.type == self.owner.target
     	message: "Input type of '" + self.behaviourType + "' operation's binding must be type of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
     }
     
@@ -140,7 +140,7 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateUpdateRelationOperationOutputTypeIsValid {
     	guard: self.satisfies("CreateUpdateRelationOperationOutputParameterIsDefined")
-    	check: self.owner.target.equals(self.eContainer.binding.output.type)
+    	check: self.owner.target == self.eContainer.binding.output.type
     	message: "Output type of '" + self.behaviourType + "' operation's binding must be the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
     }
     
