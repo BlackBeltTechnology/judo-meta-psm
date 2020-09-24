@@ -12,7 +12,7 @@ context PSM!TransferOperationBehaviour {
 	
 	constraint OperationIsValidBoundBehaviour {
 		check: self.eContainer.isKindOf(PSM!BoundTransferOperation)
-		message: "'" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by an bound transfer operation."
+		message: "'" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by a bound transfer operation."
 	}
 
 	constraint OwnerIsRelationBoundBehaviour {
@@ -28,4 +28,28 @@ context PSM!TransferOperationBehaviour {
 		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation of the transfer object type containing the operation"
 	}
 }
+
+context PSM!TransferOperationBehaviour {
+
+	guard: self.eContainer.isDefined() and 
+		(self.behaviourType == PSM!TransferOperationBehaviourType#LIST or
+		self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_INSTANCE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#VALIDATE_CREATE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#SET_REFERENCE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_REFERENCE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#ADD_REFERENCE or
+		self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_REFERENCE)
+
+	constraint OwnerOfBoundBehaviourIsRelation {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
+		message: "Owner of '" + self.behaviourType + "' behaviour  (" 
+		+ self.eContainer.eContainer.name + "." + self.eContainer.name
+		+ ") must be a transfer object relation"
+	}
 	
+	constraint OwnerOfBoundBehaviourIsValid {
+		guard: self.satisfies("OwnerOfBoundBehaviourIsRelation") 
+		check: self.eContainer.eContainer.getRelations().includes(self.owner)
+		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation of the transfer object type containing the operation"
+	}
+}

@@ -411,7 +411,7 @@ class PsmValidationBoundBehaviourTest {
 
 		runEpsilon(ImmutableList.of(
 				"OwnerIsValidBoundBehaviour|Owner of 'UPDATE_RELATION' behaviour  (t1.WRONG_OWNER_RELATION) must be a relation of the transfer object type containing the operation",
-				"OperationIsValidBoundBehaviour|'GET_RELATION' operation: WRONG_CONTAINER (in: t1) must be owned by an bound transfer operation.",
+				"OperationIsValidBoundBehaviour|'GET_RELATION' operation: WRONG_CONTAINER (in: t1) must be owned by a bound transfer operation.",
 				"OwnerIsRelationBoundBehaviour|Owner of 'CREATE_RELATION' behaviour  (t1.WRONG_OWNER_TYPE) must be a transfer object relation"),
 				Collections.emptyList());
 	}
