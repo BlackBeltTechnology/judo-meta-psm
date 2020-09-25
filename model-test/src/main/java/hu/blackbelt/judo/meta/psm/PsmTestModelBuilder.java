@@ -599,12 +599,12 @@ public class PsmTestModelBuilder {
             }
             for (Map.Entry<String, RelationDef> relationEntry : relations.entrySet()) {
                 TransferObjectType target = toTypes.get(relationEntry.getValue().type);
-                TransferObjectRelationBuilder relation = ServiceBuilders.newTransferObjectRelationBuilder()
+                TransferObjectRelation relation = ServiceBuilders.newTransferObjectRelationBuilder()
                         .withName(relationEntry.getKey())
                         .withCardinality(relationEntry.getValue().cardinality.create())
                         .withEmbedded(relationEntry.getValue().aggregation)
                         .withBinding(entityType.getReference(relationEntry.getKey()))
-                        .withTarget(target);
+                        .withTarget(target).build();
                 builder.withRelations(relation);
             }
             for (Map.Entry<String, RelationDef> relationEntry : containments.entrySet()) {
