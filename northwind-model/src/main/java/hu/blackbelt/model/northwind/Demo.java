@@ -306,7 +306,7 @@ public class Demo {
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories, orderItem);
         orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
-        internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo);
+        internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo, timeStamp, priority, boolean_, gps, integer, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
 
         // Static Navigation
         allCategories.init(services.$, category);

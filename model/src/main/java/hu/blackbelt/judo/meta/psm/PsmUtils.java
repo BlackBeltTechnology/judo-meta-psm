@@ -556,6 +556,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return list of super transfer object types
      */
+    @Deprecated
     public static EList<TransferObjectType> getAllSuperTransferObjectTypes(final TransferObjectType transferObjectType) {
         final EList<TransferObjectType> foundSuperTransferObjectTypes = new UniqueEList<>();
         addSuperTransferObjectTypes(transferObjectType, foundSuperTransferObjectTypes);
@@ -568,6 +569,7 @@ public class PsmUtils {
      * @param transferObjectType            transfer object type
      * @param foundSuperTransferObjectTypes list that super transfer object types added to
      */
+    @Deprecated
     private static void addSuperTransferObjectTypes(final TransferObjectType transferObjectType, final EList<TransferObjectType> foundSuperTransferObjectTypes) {
         final Set<TransferObjectType> newSuperTransferObjectTypes = transferObjectType.getSuperTransferObjectTypes().stream()
                 .filter(s -> !foundSuperTransferObjectTypes.contains(s)).collect(Collectors.toSet());
@@ -581,6 +583,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the names of inherited transfer attributes
      */
+    @Deprecated
     public static EList<String> getInheritedTransferAttributeNames(final TransferObjectType transferObjectType) {
         EList<String> attributeNames = new UniqueEList<>();
         attributeNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
@@ -596,6 +599,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the names of inherited transfer object relations
      */
+    @Deprecated
     public static EList<String> getInheritedTransferObjectRelationNames(final TransferObjectType transferObjectType) {
         EList<String> relationNames = new UniqueEList<>();
         relationNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
@@ -611,6 +615,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of inherited and not inherited transfer object relations
      */
+    @Deprecated
     public static EList<TransferObjectRelation> getAllTransferObjectRelations(final TransferObjectType transferObjectType) {
         EList<TransferObjectRelation> relations = new UniqueEList<>();
         relations.addAll(transferObjectType.getRelations());
@@ -626,6 +631,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of inherited and not inherited transfer attributes
      */
+    @Deprecated
     public static EList<TransferAttribute> getAllTransferAttributes(final TransferObjectType transferObjectType) {
         EList<TransferAttribute> attributes = new UniqueEList<>();
         attributes.addAll(transferObjectType.getAttributes());
@@ -641,6 +647,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the names of inherited transfer operations
      */
+    @Deprecated
     public static EList<String> getInheritedTransferOperationNames(final TransferObjectType transferObjectType) {
         EList<String> operationNames = new UniqueEList<>();
 
@@ -659,6 +666,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the names of inherited bound transfer operations
      */
+    @Deprecated
     public static EList<String> getInheritedBoundTransferOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
         EList<String> operationNames = new UniqueEList<>();
 
@@ -678,6 +686,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the names of inherited unbound operations
      */
+    @Deprecated
     public static EList<String> getInheritedUnboundOperationNames(final TransferObjectType transferObjectType) {
         EList<String> operationNames = new UniqueEList<>();
 
@@ -697,6 +706,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the inherited bound transfer operations
      */
+    @Deprecated
     public static EList<BoundTransferOperation> getInheritedBoundTransferOperations(final MappedTransferObjectType mappedTransferObjectType) {
         EList<BoundTransferOperation> operations = new UniqueEList<>();
 
@@ -716,6 +726,7 @@ public class PsmUtils {
      * @param transferObjectType transfer object type
      * @return unique list of the inherited unbound operations
      */
+    @Deprecated
     public static EList<UnboundOperation> getInheritedUnboundOperations(final TransferObjectType transferObjectType) {
         EList<UnboundOperation> operations = new UniqueEList<>();
 
@@ -882,6 +893,7 @@ public class PsmUtils {
      * @param name       bound transfer operation name
      * @return list of inherited bound transfer operations of the given name
      */
+    @Deprecated
     public static EList<BoundTransferOperation> getInheritedBoundTransferOperationsByName(final MappedTransferObjectType transferObjectType, final String name) {
         EList<BoundTransferOperation> operations = new UniqueEList<>();
 
@@ -906,6 +918,7 @@ public class PsmUtils {
      * @param name       unbound transfer operation name
      * @return list of inherited unbound operations of a given name
      */
+    @Deprecated
     public static EList<UnboundOperation> getInheritedUnboundOperationsByName(final TransferObjectType transferObjectType, final String name) {
         EList<UnboundOperation> operations = new UniqueEList<>();
 

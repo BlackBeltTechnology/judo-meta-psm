@@ -37,10 +37,10 @@ context PSM!TransferOperationBehaviour {
     	message: "Output of 'GET' operation's binding must be named 'output' (operation: " + self.eContainer.name + ")"
     }
     
-    constraint GetRelationOperationOutputTypeIsValid {
+	constraint GetRelationOperationOutputTypeIsValid {
     	guard: self.satisfies("GetRelationOperationOutputParameterIsDefined")
-    	check: self.eContainer.binding.output.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.output.type).includes(self.owner.target)
-    	message: "Output type of 'GET_RELATION' operation's (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") binding must be kind of referenced mapped transfer object type"
+    	check: self.eContainer.binding.output.type == self.owner.target
+    	message: "Output type of 'GET_RELATION' operation (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be type of the owner's target"
     }
     
     constraint GetOperationInputCardinalityIsValid {
@@ -78,8 +78,8 @@ context PSM!TransferOperationBehaviour {
     
     constraint DeleteRelationOperationInputTypeIsValid {
     	guard: self.satisfies("DeleteRelationOperationInputParameterIsDefined")
-    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.target)
-    	message: "Input type of 'DELETE' operation's binding must be kind of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
+    	check: self.eContainer.binding.input.type == self.owner.target
+    	message: "Input type of 'DELETE' operation's binding must be type of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
     }
     
     constraint DeleteRelationOperationInputCardinalityIsValid {
@@ -116,8 +116,8 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateUpdateRelationOperationInputTypeIsValid {
     	guard: self.satisfies("CreateUpdateRelationOperationInputParameterIsDefined")
-    	check: self.eContainer.binding.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.binding.input.type).includes(self.owner.target)
-    	message: "Input type of '" + self.behaviourType + "' operation's binding must be kind of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
+    	check: self.eContainer.binding.input.type == self.owner.target
+    	message: "Input type of '" + self.behaviourType + "' operation's binding must be type of the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateUpdateRelationOperationInputCardinalityIsValid {
@@ -140,10 +140,8 @@ context PSM!TransferOperationBehaviour {
     
     constraint CreateUpdateRelationOperationOutputTypeIsValid {
     	guard: self.satisfies("CreateUpdateRelationOperationOutputParameterIsDefined")
-    	check: self.owner.target.getAllSuperTransferObjectTypes()
-    			.including(self.owner.target)
-    			.includes(self.eContainer.binding.output.type)
-    	message: "Output type of '" + self.behaviourType + "' operation's binding must be the mapped transfer object type referenced by owner or its supertype (operation: " + self.eContainer.name + ")"
+    	check: self.owner.target == self.eContainer.binding.output.type
+    	message: "Output type of '" + self.behaviourType + "' operation's binding must be the mapped transfer object type referenced by owner (operation: " + self.eContainer.name + ")"
     }
     
     constraint CreateUpdateRelationOperationOutputCardinalityIsValid {

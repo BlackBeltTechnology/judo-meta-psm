@@ -1,7 +1,0 @@
-context PSM!UnmappedTransferObjectType{
-  
-    constraint UnmappedTransferObjectTypeHasNoMappedSuperTransferObjectType {
-	    check: self.getSuperTransferObjectTypes().forAll(s | not s.isKindOf(PSM!MappedTransferObjectType))
-        message: "Unmapped transfer object type: " + self.name + " cannot derive from mapped transfer object type."
-	}
-}

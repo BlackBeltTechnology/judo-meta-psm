@@ -14,7 +14,7 @@ context PSM!TransferOperationBehaviour {
 	
 	constraint RelationIsValidUnboundWithRelation {
 		guard: self.satisfies("RelationIsDefinedUnboundWithRelation")
-		check: psmUtils.getAllTransferObjectRelations(self.owner.target).includes(self.relation)
+		check: self.owner.target.getRelations().includes(self.relation)
 		message: "Relation of '" + self.behaviourType + "' operation: " + self.eContainer.name  + " must be one of the transfer object type referenced by the operation's owner."
 	}
 	
@@ -31,8 +31,8 @@ context PSM!TransferOperationBehaviour {
     
     constraint InputTypeIsValidUnboundWithRelation {
     	guard: self.satisfies("InputParameterIsDefinedUnboundWithRelation")
-    	check: self.eContainer.input.type.getAllSuperTransferObjectTypes().including(self.eContainer.input.type).includes(self.owner.target)
-    	message: "Type of '" + self.behaviourType + "' operation's input parameter must be kind of referenced mapped transfer object type (operation: " + self.eContainer.name + ")."
+    	check: self.eContainer.input.type == self.owner.target
+    	message: "Type of '" + self.behaviourType + "' operation's input parameter must be type of referenced mapped transfer object type (operation: " + self.eContainer.name + ")."
     }
     
     constraint InputCardinalityIsValidUnboundWithRelation {

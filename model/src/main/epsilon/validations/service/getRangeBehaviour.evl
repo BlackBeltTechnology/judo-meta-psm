@@ -1,88 +1,88 @@
 context PSM!TransferOperationBehaviour {
 	
-	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION
-	
 	constraint OwnerOfGetRangeOfRelationBehaviourIsParameter {
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION
 		check: self.owner.isDefined() and self.owner.isKindOf(PSM!Parameter)
 		message: "Owner of 'GET_RANGE_OF_RELATION' behaviour type must be a parameter (operation: " + self.eContainer.name + ")"
 	}
 	
 	constraint OwnerOfGetRangeOfRelationBehaviourIsValid {
-		guard: self.satisfies("OwnerOfGetRangeOfRelationBehaviourIsParameter")
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfies("OwnerOfGetRangeOfRelationBehaviourIsParameter")
 		check: self.owner.eContainer.input.isDefined() and self.owner = self.owner.eContainer.input
 		message: "Owner of 'GET_RANGE_OF_RELATION' must be the input parameter of an operation in it's container (operation: " + self.eContainer.name + ")"
 	}
 	
 	constraint ContainerOfGetRangeIsValid {
-		guard: self.satisfies("OwnerOfGetRangeOfRelationBehaviourIsValid") and self.owner.satisfies("NamedElementHasContainer")
+		guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfies("OwnerOfGetRangeOfRelationBehaviourIsValid") and self.owner.satisfies("NamedElementHasContainer")
 		check:  self.owner.eContainer.eContainer == self.eContainer.eContainer
 		message: "Container of 'GET_RANGE_OF_RELATION' behaviour typed parameter is invalid (operation: " + self.eContainer.name + ")"
 	}
 	
 	constraint RelationOfGetRangeOfRelationBehaviourIsDefined {
+	    guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION
 	    check: self.relation.isDefined()
 		message: "Relation for 'GET_RANGE_OF_RELATION' behaviour type must be defined (operation: " + self.eContainer.name + ")"
 	}
 	
 	constraint RelationOfGetRangeOfRelationBehaviourIsValid {
-	    guard: self.satisfies("RelationOfGetRangeOfRelationBehaviourIsDefined") and self.owner.type.isKindOf(PSM!TransferObjectType)
-	    check: psmUtils.getAllTransferObjectRelations(self.owner.type).includes(self.relation)
+	    guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfies("RelationOfGetRangeOfRelationBehaviourIsDefined") and self.owner.type.isKindOf(PSM!TransferObjectType)
+	    check: self.owner.type.getRelations().includes(self.relation)
 		message: "Relation for 'GET_RANGE_OF_RELATION' behaviour type must belong to the operation owner's type (operation: " + self.eContainer.name + ")"
 	}
 	
 	constraint GetRangeOperationInputParameterIsDefined {
-    	guard: self.satisfiesAll("OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.input.isDefined()
     	message: "'GET_RANGE_OF_RELATION' operation: " + self.eContainer.name + " must have an input parameter named 'input'"
     }
     
     constraint GetRangeOperationInputNameIsValid {
-    	guard: self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.input.name == "input"
     	message: "'GET_RANGE_OF_RELATION' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeUnboundOperationInputTypeIsValid {
-    	guard: self.eContainer.isKindOf(PSM!UnboundOperation) and
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.eContainer.isKindOf(PSM!UnboundOperation) and
     		self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.input.type == self.owner.type
     	message: "Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the related input parameter type (operation: " + self.eContainer.name + ")"
     }
 
     constraint GetRangeBoundTransferOperationInputTypeIsValid {
-    	guard: self.eContainer.isKindOf(PSM!BoundTransferOperation) and
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.eContainer.isKindOf(PSM!BoundTransferOperation) and
     		self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.input.type == self.relation.eContainer
     	message: "Type of 'GET_RANGE_OF_RELATION' operation's input parameter must match the container of the relation (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeOperationInputCardinalityIsValid {
-    	guard: self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("GetRangeOperationInputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.input.cardinality.lower == 0 and
     		self.eContainer.input.cardinality.upper == 1 
     	message: "Cardinality of 'GET_RANGE_OF_RELATION' operation's input parameter must be 0..1 (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeOperationOutputParameterIsDefined {
-    	guard: self.satisfiesAll("OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.output.isDefined()
     	message: "'GET_RANGE_OF_RELATION' operation must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeOperationOutputNameIsValid {
-    	guard: self.satisfiesAll("GetRangeOperationOutputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("GetRangeOperationOutputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.output.name == "output"
     	message: "'GET_RANGE_OF_RELATION' operation's output parameter must be named 'output' (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeOperationOutputTypeIsValid {
-    	guard: self.satisfiesAll("GetRangeOperationOutputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("GetRangeOperationOutputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.output.type == self.relation.target
     	message: "Type of 'GET_RANGE_OF_RELATION' operation's output parameter must be the target of it's relation (operation: " + self.eContainer.name + ")"
     }
     
     constraint GetRangeOperationOutputCardinalityIsValid {
-    	guard: self.satisfiesAll("GetRangeOperationOutputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
+    	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE_OF_RELATION and self.satisfiesAll("GetRangeOperationOutputParameterIsDefined","OwnerOfGetRangeOfRelationBehaviourIsValid", "ContainerOfGetRangeIsValid","RelationOfGetRangeOfRelationBehaviourIsValid")
     	check: self.eContainer.output.cardinality.lower == 0 and
     		self.eContainer.output.cardinality.upper == -1 
     	message: "Cardinality of 'GET_RANGE_OF_RELATION' operation's output parameter must be 0..* (operation: " + self.eContainer.name + ")"

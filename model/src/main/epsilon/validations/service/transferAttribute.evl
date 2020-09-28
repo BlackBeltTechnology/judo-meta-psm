@@ -26,12 +26,4 @@ context PSM!TransferAttribute {
         message: "Binding of transfer attribute " + self.name + " of mapped transfer object " + self.eContainer().name +
                 " must either match the entity type of the mapped tranfer object or be StaticData."
     }
-    
-    constraint InheritedAndOwnTransferAttributeNameIsUniqueInTransferObjectType {
-        guard: self.satisfies("NamedElementHasContainer")
-        check: not self.eContainer().getAllSuperTransferObjectTypes()
-                    .collect(c | c.eContents()).flatten()
-                    .select(c | c.isKindOf(PSM!NamedElement)).exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
-        message: "Transfer attribute: " + self.name + " has the same name as inherited content(s) of transfer object type: " + self.eContainer().name
-    }
 }

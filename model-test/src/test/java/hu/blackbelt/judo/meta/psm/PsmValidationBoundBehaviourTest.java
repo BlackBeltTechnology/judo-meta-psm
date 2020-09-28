@@ -274,9 +274,9 @@ class PsmValidationBoundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_1)
-				.withSuperTransferObjectTypes(pt).withEntityType(e1).build();
+				.withEntityType(e1).build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(t1).withEntityType(c).build();
+				.withEntityType(c).build();
 		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
 				.withEntityType(e2).build();
 		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
@@ -410,8 +410,8 @@ class PsmValidationBoundBehaviourTest {
 		psmModel.addContent(model);
 
 		runEpsilon(ImmutableList.of(
-				"OwnerIsValidBoundBehaviour|Owner of 'UPDATE_RELATION' behaviour  (t1.WRONG_OWNER_RELATION) must be a transfer object relation inherited or owned by the transfer object type containing the operation",
-				"OperationIsValidBoundBehaviour|'GET_RELATION' operation: WRONG_CONTAINER (in: t1) must be owned by an bound transfer operation.",
+				"OwnerIsValidBoundBehaviour|Owner of 'UPDATE_RELATION' behaviour  (t1.WRONG_OWNER_RELATION) must be a relation of the transfer object type containing the operation",
+				"OperationIsValidBoundBehaviour|'GET_RELATION' operation: WRONG_CONTAINER (in: t1) must be owned by a bound transfer operation.",
 				"OwnerIsRelationBoundBehaviour|Owner of 'CREATE_RELATION' behaviour  (t1.WRONG_OWNER_TYPE) must be a transfer object relation"),
 				Collections.emptyList());
 	}
@@ -431,9 +431,9 @@ class PsmValidationBoundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
-				.withSuperTransferObjectTypes(pt).withEntityType(e2).build();
+				.withEntityType(e2).build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(type).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
 				.withEntityType(e3).build();
@@ -500,7 +500,7 @@ class PsmValidationBoundBehaviourTest {
 		psmModel.addContent(model);
 
 		runEpsilon(ImmutableList.of(
-				"GetRelationOperationOutputTypeIsValid|Output type of 'GET_RELATION' operation's (t1.WRONG_OUTPUT_TYPE) binding must be kind of referenced mapped transfer object type",
+				"GetRelationOperationOutputTypeIsValid|Output type of 'GET_RELATION' operation (t1.WRONG_OUTPUT_TYPE) must be type of the owner's target",
 				"GetOperationOutputCardinalityIsValid|Output cardinality of 'GET_RELATION' operation's (t1.WRONG_OUTPUT_CARDINALITY) binding must be the same as its owner's",
 				"GetOperationInputCardinalityIsValid|Input cardinality of 'GET_RELATION' operation's (t1.UNDEFINED_OUTPUT) binding must be 0..1",
 				"RelationIsUndefinedBoundWithoutRelation|Relation must be undefined for 'GET_RELATION' operation: DEFINED_RELATION (in: t1)",
@@ -525,9 +525,9 @@ class PsmValidationBoundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
-				.withSuperTransferObjectTypes(pt).withEntityType(e2).build();
+				.withEntityType(e2).build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(type).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
 				.withEntityType(e3).build();
@@ -555,7 +555,7 @@ class PsmValidationBoundBehaviourTest {
 						pt, 1, 1).build(),
 
 				boundOperationDecorator(newBoundOperationBuilder().withName(WRONG_INPUT_CARDINALITY_BINDING), t1, false,
-						INPUT, ct, 0, -1).build()));
+						INPUT, type, 0, -1).build()));
 
 		t1.getOperations().addAll(ImmutableList.of(
 
@@ -580,7 +580,7 @@ class PsmValidationBoundBehaviourTest {
 
 				boundTransferOperationDecorator(newBoundTransferOperationBuilder().withName(WRONG_INPUT_CARDINALITY),
 						TransferOperationBehaviourType.DELETE_RELATION, owner,
-						getBoundOperationByName(e1, WRONG_INPUT_CARDINALITY_BINDING), false, INPUT, ct, 0, -1)
+						getBoundOperationByName(e1, WRONG_INPUT_CARDINALITY_BINDING), false, INPUT, type, 0, -1)
 								.build()));
 
 		Model model = newModelBuilder().withName(MODEL_NAME)
@@ -593,8 +593,8 @@ class PsmValidationBoundBehaviourTest {
 				"DeleteRelationOperationInputNameIsValid|Input of 'DELETE' operation's binding must be named 'input' (operation: WRONG_INPUT_NAME)",
 				"DeleteRelationOperationInputParameterIsDefined|'DELETE_RELATION' operation's binding must have an input parameter named 'input' (operation: UNDEFINED_INPUT)",
 				"DeleteOperationOutputParameterIsNotDefined|'DELETE_RELATION' operation's binding cannot have an output parameter (operation: UNDEFINED_INPUT)",
-				"DeleteRelationOperationInputTypeIsValid|Input type of 'DELETE' operation's binding must be kind of the mapped transfer object type referenced by owner (operation: WRONG_INPUT_TYPE)",
-				"DeleteOperationOutputParameterIsNotDefined|'DELETE_RELATION' operation's binding cannot have an output parameter (operation: DEFINED_OUTPUT)"),
+				"DeleteOperationOutputParameterIsNotDefined|'DELETE_RELATION' operation's binding cannot have an output parameter (operation: DEFINED_OUTPUT)",
+				"DeleteRelationOperationInputTypeIsValid|Input type of 'DELETE' operation's binding must be type of the mapped transfer object type referenced by owner (operation: WRONG_INPUT_TYPE)"),
 				Collections.emptyList());
 	}
 
@@ -613,9 +613,9 @@ class PsmValidationBoundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
-				.withSuperTransferObjectTypes(pt).withEntityType(e2).build();
+				.withEntityType(e2).build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(type).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
 				.withEntityType(e3).build();
@@ -688,12 +688,14 @@ class PsmValidationBoundBehaviourTest {
 		runEpsilon(ImmutableList.of(
 				"CreateUpdateRelationOperationOutputNameIsValid|Output of 'UPDATE_RELATION' operation's binding must be named 'output' (operation: WRONG_OUTPUT_NAME)",
 				"CreateUpdateRelationOperationInputCardinalityIsValid|Input cardinality of 'UPDATE_RELATION' operation's binding must be 1..1 (operation: WRONG_INPUT_CARDINALITY)",
-				"CreateUpdateRelationOperationOutputTypeIsValid|Output type of 'CREATE_RELATION' operation's binding must be the mapped transfer object type referenced by owner or its supertype (operation: WRONG_OUTPUT_TYPE)",
+				"CreateUpdateRelationOperationOutputTypeIsValid|Output type of 'CREATE_RELATION' operation's binding must be the mapped transfer object type referenced by owner (operation: WRONG_INPUT_TYPE)",
 				"CreateUpdateRelationOperationInputNameIsValid|Input of 'UPDATE_RELATION' operation's binding must be named 'input' (operation: WRONG_INPUT_NAME)",
-				"CreateUpdateRelationOperationInputTypeIsValid|Input type of 'CREATE_RELATION' operation's binding must be kind of the mapped transfer object type referenced by owner (operation: WRONG_INPUT_TYPE)",
+				"CreateUpdateRelationOperationInputTypeIsValid|Input type of 'CREATE_RELATION' operation's binding must be type of the mapped transfer object type referenced by owner (operation: WRONG_OUTPUT_TYPE)",
 				"CreateUpdateRelationOperationInputParameterIsDefined|'CREATE_RELATION' operation's binding must have an input parameter named 'input' (operation: UNDEFINED_INPUT)",
 				"CreateUpdateRelationOperationOutputCardinalityIsValid|Output cardinality of 'UPDATE_RELATION' operation's binding must be 1..1 (operation: WRONG_OUTPUT_CARDINALITY)",
-				"CreateUpdateRelationOperationOutputParameterIsDefined|'CREATE_RELATION' operation's binding must have an output parameter named 'output' (operation: UNDEFINED_OUTPUT)"
+				"CreateUpdateRelationOperationOutputParameterIsDefined|'CREATE_RELATION' operation's binding must have an output parameter named 'output' (operation: UNDEFINED_OUTPUT)",
+				"CreateUpdateRelationOperationOutputTypeIsValid|Output type of 'CREATE_RELATION' operation's binding must be the mapped transfer object type referenced by owner (operation: WRONG_OUTPUT_TYPE)",
+				"CreateUpdateRelationOperationInputTypeIsValid|Input type of 'CREATE_RELATION' operation's binding must be type of the mapped transfer object type referenced by owner (operation: WRONG_INPUT_TYPE)"
 				), Collections.emptyList());
 	}
 
@@ -712,9 +714,9 @@ class PsmValidationBoundBehaviourTest {
 		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName(PARENT_TRANSFER_OBJECT)
 				.withEntityType(p).build();
 		MappedTransferObjectType type = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_2)
-				.withSuperTransferObjectTypes(pt).withEntityType(e2).build();
+				.withEntityType(e2).build();
 		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName(CHILD_TRANSFER_OBJECT)
-				.withSuperTransferObjectTypes(type).withEntityType(c).build();
+				.withEntityType(c).build();
 
 		MappedTransferObjectType t3 = newMappedTransferObjectTypeBuilder().withName(TRANSFER_OBJECT_3)
 				.withEntityType(e3).build();
@@ -776,15 +778,16 @@ class PsmValidationBoundBehaviourTest {
 
 		runEpsilon(ImmutableList.of(
 			"InputCardinalityIsValidBoundWithRelation|Cardinality of the input of 'SET_RELATION_OF_RELATION' operation's binding must be 1..1 (operation: WRONG_INPUT_CARDINALITY).",
-			"InputTypeIsValidBoundWithRelation|Input type of 'SET_RELATION_OF_RELATION' operation's binding must be kind of mapped transfer object type referenced by the owner (operation: WRONG_INPUT_TYPE).",
+			"InputTypeIsValidBoundWithRelation|Input type of 'SET_RELATION_OF_RELATION' operation's binding must be type of mapped transfer object type referenced by the owner (operation: WRONG_INPUT_CARDINALITY).",
 			"RelationIsDefinedBoundWithRelation|Relation must be defined for 'SET_RELATION_OF_RELATION' operation: UNDEFINED_RELATION (in: t1).",
 			"RelationIsValidBoundWithRelation|Relation of 'SET_RELATION_OF_RELATION' operation: WRONG_RELATION must be one of the transfer object type referenced by the operation's owner.",
 			"InputNameIsValidBoundWithRelation|Input of 'SET_RELATION_OF_RELATION' operation's binding must be named 'input' (operation: WRONG_INPUT_NAME).",
 			"OutputParameterIsNotDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding cannot have an output parameter (operation: DEFINED_OUTPUT).",
 			"OutputParameterIsNotDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding cannot have an output parameter (operation: UNDEFINED_INPUT).",
 			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: DEFINED_OUTPUT).",
-			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: UNDEFINED_INPUT)."
-				), Collections.emptyList());
+			"InputParameterIsDefinedBoundWithRelation|'SET_RELATION_OF_RELATION' operation's binding must have an input parameter named 'input' (operation: UNDEFINED_INPUT).",
+			"InputTypeIsValidBoundWithRelation|Input type of 'SET_RELATION_OF_RELATION' operation's binding must be type of mapped transfer object type referenced by the owner (operation: WRONG_INPUT_TYPE)."),
+			Collections.emptyList());
 	}
 	
 	@Test
