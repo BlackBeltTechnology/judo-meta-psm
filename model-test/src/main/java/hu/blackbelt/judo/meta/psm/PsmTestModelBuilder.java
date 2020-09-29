@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.meta.psm;
 
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
+import hu.blackbelt.judo.meta.psm.accesspoint.util.builder.ActorTypeBuilder;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.data.util.builder.BoundOperationBuilder;
 import hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders;
@@ -724,7 +725,24 @@ public class PsmTestModelBuilder {
         }
 
         public ActorType build() {
-            return newActorTypeBuilder().withName(name).withTransferObjectType(toTypes.get(toName)).build();
+            ActorTypeBuilder builder = newActorTypeBuilder()
+                    .withName(name)
+                    .withTransferObjectType(toTypes.get(toName));
+            builder.withOperations(
+                    newUnboundOperationBuilder()
+                            .withBehaviour(
+                                    newTransferOperationBehaviourBuilder()
+                                            .withBehaviourType(TransferOperationBehaviourType.GET_PRINCIPAL)
+                                            .withOwner(toTypes.get(toName)).build())
+                            .withName("_principal")
+                            .withOutput(
+                                    newParameterBuilder()
+                                            .withType(toTypes.get(toName))
+                                            .withName("output")
+                                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1)))
+                            .build()
+            );
+            return builder.build();
         }
 
     }
