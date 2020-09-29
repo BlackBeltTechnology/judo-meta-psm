@@ -1111,8 +1111,7 @@ class PsmValidationServiceTest {
 		psmModel.addContent(model);
 
 		runEpsilon(ImmutableList.of(
-				"AllRequiredFeaturesHaveBindingIfCreatable|t2 is used by create operation and excludes required features: association1, attribute3, attribute2",
-				"AllRequiredFeaturesHaveBindingIfCreatable|t1 is used by create operation and excludes required features: attribute1, attribute0, association0"),
+				"AllRequiredFeaturesHaveBindingIfCreatable|t2 is used by create operation and excludes required features: association1, attribute3, attribute2"),
 				Collections.emptyList());
     }
 }

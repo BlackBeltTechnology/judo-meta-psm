@@ -320,12 +320,12 @@ public class Demo {
         totalNumberOfOrders.init(services.$, integer);
 
         // Access Points
-        internalAP.init($, productInfo, categoryInfo, shipperInfo, orderInfo, internationalOrderInfo, allProducts,
+        internalAP.init($, string, productInfo, categoryInfo, shipperInfo, orderInfo, internationalOrderInfo, allProducts,
                 allCategories, allShippers, orderAssignedToEmployee, ordersOfLastTwoWeeks, allInternationalOrders);
-        externalAP.init($, product_, category_, allProducts, allCategories);
+        externalAP.init($, string);
 
-        internalUser.init($, internalAP);
-        externalUser.init($, externalAP);
+        internalUser.init($, internalAP, internationalOrderInfo, shipperInfo);
+        externalUser.init($, externalAP, productInfo, categoryInfo);
 
         PsmModel psmModel = createPsmModel();
         psmModel.addContent($);

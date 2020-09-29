@@ -2,11 +2,15 @@ context PSM!MappedTransferObjectType{
 
     constraint AllRequiredFeaturesHaveBindingIfCreatable {
     	guard: (PSM!BoundTransferOperation.all
-    				.select(o | o.behaviour.isDefined() and o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION)
-    				.exists(c | c.behaviour.satisfies("OwnerIsValidBoundBehaviour") and c.behaviour.owner.target == self) or
+    				.select(o | o.behaviour.isDefined() and 
+    							(o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION or 
+    							o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#VALIDATE_CREATE))
+    				.exists(c | c.behaviour.satisfies("OwnerOfBoundBehaviourIsValid") and c.behaviour.owner.target == self) or
     			PSM!UnboundOperation.all
-    				.select(o | o.behaviour.isDefined() and o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE)
-    				.exists(c | c.behaviour.satisfies("OwnerIsRelationUnboundBehaviour") and c.behaviour.owner.target == self) )
+    				.select(o | o.behaviour.isDefined() and 
+    							(o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION or 
+    							o.behaviour.behaviourType == PSM!TransferOperationBehaviourType#VALIDATE_CREATE))
+    				.exists(c | c.behaviour.satisfies("OwnerOfBoundBehaviourIsValid") and c.behaviour.owner.target == self) )
     		
     		and self.getRelations().select(r | r.binding.isDefined())
     			.forAll(r | r.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid"))
