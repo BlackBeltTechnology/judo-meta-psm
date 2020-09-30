@@ -14,11 +14,7 @@ public class InternalAP {
     
     public TransferAttribute email = newTransferAttributeBuilder().build();
 
-    public void init(Model $model, String $string, ProductInfo $productInfo, CategoryInfo $categoryInfo, ShipperInfo $shipperInfo,
-                     OrderInfo $orderInfo, InternationalOrderInfo $internationalOrderInfo, AllProducts $allProducts,
-                     AllCategories $allCategories, AllShippers $allShippers,
-                     OrderAssignedToEmployee $orderAssignedToEmployee, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks,
-                     AllInternationalOrders $allInternationalOrders) {
+    public void init(Model $model, String $string) {
         useUnmappedTransferObjectType($)
                 .withName("internalAP")
                 .withAttributes(useTransferAttribute(email)

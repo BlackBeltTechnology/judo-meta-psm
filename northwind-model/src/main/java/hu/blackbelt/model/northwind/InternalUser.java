@@ -7,6 +7,8 @@ import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
 import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfo;
+import hu.blackbelt.model.northwind.services.OrderInfo;
+import hu.blackbelt.model.northwind.services.OrdersOfLastTwoWeeks;
 import hu.blackbelt.model.northwind.services.ShipperInfo;
 
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newActorTypeBuilder;
@@ -30,8 +32,10 @@ public class InternalUser {
     public UnboundOperation createInstanceAllInternationalOrders = newUnboundOperationBuilder().build();
     public UnboundOperation validateCreateInstanceAllShipper = newUnboundOperationBuilder().build();
     public UnboundOperation validateCreateInstanceAllInternationalOrders = newUnboundOperationBuilder().build();
+    
+    public TransferObjectRelation lastTwoWeekOrders = newTransferObjectRelationBuilder().build();
 
-    public void init(Model $model, InternalAP $internalAP, InternationalOrderInfo $internationalOrderInfo, ShipperInfo $shipperInfo) {
+    public void init(Model $model, InternalAP $internalAP, InternationalOrderInfo $internationalOrderInfo, ShipperInfo $shipperInfo, OrderInfo $orderInfo, OrdersOfLastTwoWeeks $ordersOfLastTwoWeeks) {
         useActorType($)
                 .withName("InternalUser")
                 .withTransferObjectType($internalAP.$)
@@ -198,6 +202,14 @@ public class InternalUser {
                                 		.withUpper(1)
                                 )
                         )
+                        .build()
+                )
+                .withRelations(useTransferObjectRelation(lastTwoWeekOrders)
+                        .withName("LastTwoWeekOrders")
+                        .withTarget($orderInfo.$)
+                        .withBinding($ordersOfLastTwoWeeks.$)
+                        .withCardinality(newCardinalityBuilder()
+                                .withUpper(-1))
                         .build()
                 )
                 .build();
