@@ -35,8 +35,7 @@ public class Product {
     public AssociationEnd manufacturers = newAssociationEndBuilder().build();
     public AssociationEnd store = newAssociationEndBuilder().build();
 
-    public BoundOperation _getCategory = newBoundOperationBuilder().build();
-    public BoundOperation _getCategoryInternal = newBoundOperationBuilder().build();
+    public BoundOperation listCategoryForNorthwind_services_ProductInfo = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Category $category, Supplier $supplier,
@@ -109,23 +108,8 @@ public class Product {
                         .withCardinality(newCardinalityBuilder())
                         .build()
                 )
-                .withOperations(useBoundOperation(_getCategory)
-                        .withName("_getCategory")
-                        .withInstanceRepresentation($product.$)
-                        .withImplementation(newOperationBodyBuilder()
-                                .withStateful(false)
-                        )
-                        .withOutput(newParameterBuilder().withName("output")
-                                .withType($category_.$)
-                                .withCardinality(TypeBuilders.newCardinalityBuilder()
-                                		.withLower(1)
-                                		.withUpper(1)
-                                )
-                        )
-                        .build()
-                )
-                .withOperations(useBoundOperation(_getCategoryInternal)
-                        .withName("_getCategoryInternal")
+                .withOperations(useBoundOperation(listCategoryForNorthwind_services_ProductInfo)
+                        .withName("_listCategoryForNorthwind_services_ProductInfo")
                         .withInstanceRepresentation($productInfo.$)
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)

@@ -30,9 +30,9 @@ public class ProductInfo {
     public TransferAttribute discounted = newTransferAttributeBuilder().build();
     public TransferObjectRelation category = newTransferObjectRelationBuilder().build();
 
-    public UnboundOperation getTemplateOfProduct = newUnboundOperationBuilder().build();
+    public UnboundOperation getRangeReferenceCategory = newUnboundOperationBuilder().build();
 
-    public BoundTransferOperation getCategoryOfProduct = newBoundTransferOperationBuilder().build();
+    public BoundTransferOperation listCategory = newBoundTransferOperationBuilder().build();
 
     public void init(Package $package, String $string, Integer $integer, Double $double, Boolean $boolean,
                      MassStoredInKilograms $massStoredInKilograms, Product $product, CategoryInfo $categoryInfo,
@@ -77,29 +77,34 @@ public class ProductInfo {
                                 .withLower(1)
                                 .withUpper(1)
                         ))
-                .withOperations(useUnboundOperation(getTemplateOfProduct)
-                        .withName("getTemplateOfProduct")
+                .withOperations(useUnboundOperation(getRangeReferenceCategory)
+                        .withName("_getRangeReferenceCategory")
                         .withBehaviour(newTransferOperationBehaviourBuilder()
-                                .withBehaviourType(TransferOperationBehaviourType.GET_TEMPLATE)
-                                .withOwner($)
+                                .withBehaviourType(TransferOperationBehaviourType.GET_RANGE)
+                                .withOwner(category)
                                 .build())
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
                         )
-                        .withOutput(newParameterBuilder().withName("output")
+                        .withInput(newParameterBuilder().withName("input")
                                 .withType($)
+                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
+                                )
+                        )
+                        .withOutput(newParameterBuilder().withName("output")
+                                .withType($categoryInfo.$)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(1)
                                 )
                         )
                         .build()
                 )
-                .withOperations(useBoundTransferOperation(getCategoryOfProduct)
-                        .withName("getCategoryOfProduct")
+                .withOperations(useBoundTransferOperation(listCategory)
+                        .withName("_listCategory")
                         .withBehaviour(newTransferOperationBehaviourBuilder()
-                                .withBehaviourType(TransferOperationBehaviourType.GET_RELATION)
+                                .withBehaviourType(TransferOperationBehaviourType.LIST)
                                 .withOwner(category)
                                 .build())
-                        .withBinding($product._getCategoryInternal)
+                        .withBinding($product.listCategoryForNorthwind_services_ProductInfo)
                         .withOutput(newParameterBuilder().withName("output")
                                 .withType($categoryInfo.$)
                                 .withCardinality(TypeBuilders.newCardinalityBuilder()

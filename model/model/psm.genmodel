@@ -264,23 +264,6 @@
         disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"
         childCreationExtenders="true" fileExtensions="judo-meta-psm-service" ecorePackage="psm.ecore#//service">
       <genEnums typeSafeEnumCompatible="false" ecoreEnum="psm.ecore#//service/TransferOperationBehaviourType">
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/CREATE"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UPDATE"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/DELETE"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/SET_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UNSET_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/ADD_ALL_TO_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/REMOVE_ALL_FROM_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/CREATE_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UPDATE_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/DELETE_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/SET_RELATION_OF_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/UNSET_RELATION_OF_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/ADD_ALL_TO_RELATION_OF_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/REMOVE_ALL_FROM_RELATION_OF_RELATION"/>
-        <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_RANGE_OF_RELATION"/>
         <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_TEMPLATE"/>
         <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/GET_PRINCIPAL"/>
         <genEnumLiterals ecoreEnumLiteral="psm.ecore#//service/TransferOperationBehaviourType/MAP_PRINCIPAL"/>
@@ -302,17 +285,9 @@
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/representation"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/relations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/attributes"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/superTransferObjectTypes"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/operations"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/actorType"/>
-        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getAllSuperTransferObjectTypes"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
-        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferAttributeNames"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedTransferAttributeNames(this);"/>
-        <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/getInheritedTransferObjectRelationNames"
-            body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedTransferObjectRelationNames(this);"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/isAccessPoint"
             body="return getActorType() != null;"/>
       </genClasses>
