@@ -1,37 +1,6 @@
 context PSM!TransferOperationBehaviour {
 
 	guard: self.eContainer.isDefined() and 
-		(self.behaviourType == PSM!TransferOperationBehaviourType#GET_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#UPDATE_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#DELETE_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#SET_RELATION_OF_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#UNSET_RELATION_OF_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#ADD_ALL_TO_RELATION_OF_RELATION or
-		self.behaviourType == PSM!TransferOperationBehaviourType#REMOVE_ALL_FROM_RELATION_OF_RELATION)
-	
-	constraint OperationIsValidBoundBehaviour {
-		check: self.eContainer.isKindOf(PSM!BoundTransferOperation)
-		message: "'" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be owned by a bound transfer operation."
-	}
-
-	constraint OwnerIsRelationBoundBehaviour {
-		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
-		message: "Owner of '" + self.behaviourType + "' behaviour  (" 
-		+ self.eContainer.eContainer.name + "." + self.eContainer.name
-		+ ") must be a transfer object relation"
-	}
-	
-	constraint OwnerIsValidBoundBehaviour {
-		guard: self.satisfies("OwnerIsRelationBoundBehaviour") 
-		check: self.eContainer.eContainer.getRelations().includes(self.owner)
-		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation of the transfer object type containing the operation"
-	}
-}
-
-context PSM!TransferOperationBehaviour {
-
-	guard: self.eContainer.isDefined() and 
 		(self.behaviourType == PSM!TransferOperationBehaviourType#LIST or
 		self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_INSTANCE or
 		self.behaviourType == PSM!TransferOperationBehaviourType#VALIDATE_CREATE or
@@ -51,5 +20,22 @@ context PSM!TransferOperationBehaviour {
 		guard: self.satisfies("OwnerOfBoundBehaviourIsRelation") 
 		check: self.eContainer.eContainer.getRelations().includes(self.owner)
 		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation of the transfer object type containing the operation"
+	}
+}
+
+context PSM!TransferOperationBehaviour {
+
+	guard: self.eContainer.isDefined() and 
+			
+			(self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_INSTANCE or
+			self.behaviourType == PSM!TransferOperationBehaviourType#VALIDATE_CREATE) and
+			
+			self.satisfiesAll("OwnerOfBoundBehaviourIsRelation","OwnerOfBoundBehaviourIsValid") and
+			
+			self.owner.target.isKindOf(PSM!MappedTransferObjectType)
+			
+	constraint CreateTargetIsNotAbstract {
+		check: not self.owner.target.entityType.isAbstract()
+		message: "Owner of 'CREATE' operation cannot reference the mapped transfer object of an abstract entity type."
 	}
 }
