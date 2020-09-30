@@ -1,6 +1,7 @@
 package hu.blackbelt.judo.meta.psm;
 
-import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
+import hu.blackbelt.judo.meta.psm.accesspoint.MappedActorType;
+import hu.blackbelt.judo.meta.psm.accesspoint.util.builder.MappedActorTypeBuilder;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.data.util.builder.BoundOperationBuilder;
 import hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders;
@@ -38,7 +39,7 @@ import java.lang.String;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newActorTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newMappedActorTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
@@ -84,6 +85,8 @@ public class PsmTestModelBuilder {
 
     private Map<String, EntityType> entityTypes = new HashMap<>();
     private Map<String, TransferObjectType> toTypes = new HashMap<>();
+    private Map<String, MappedActorType> actorTypes = new HashMap<>();
+
     private Map<String, TwoWayTargetDef> twoWayTargetDefs = new HashMap<>();
     private Set<ScriptTestBoundOperationBuilder> boundOperationBuilders = new HashSet<>();
     private Set<ScriptTestUnboundOperationBuilder> unboundOperationBuilders = new HashSet<>();
@@ -188,8 +191,8 @@ public class PsmTestModelBuilder {
                 .map(e -> (ScriptTestUnmappedTransferObjectBuilder) e);
     }
 
-    public ScriptTestActorTypeBuilder addActorType(String name, String toName) {
-        ScriptTestActorTypeBuilder builder = new ScriptTestActorTypeBuilder(name, toName);
+    public ScriptTestActorTypeBuilder addActorType(String name, String toName, String entityName) {
+        ScriptTestActorTypeBuilder builder = new ScriptTestActorTypeBuilder(name, toName, entityName);
         actorTypeBuilders.add(builder);
         return builder;
     }
@@ -368,6 +371,19 @@ public class PsmTestModelBuilder {
             this.expression = expression;
         }
     }
+
+    private static class AttributeDef {
+        String name;
+        String type;
+        boolean identifier;
+
+        public AttributeDef(String name, String type, boolean identifier) {
+            this.name = name;
+            this.type = type;
+            this.identifier = identifier;
+        }
+    }
+
 
     private static class TwoWayTargetDef {
         String entity;
@@ -626,7 +642,7 @@ public class PsmTestModelBuilder {
 
         private final ScriptTestMappedTransferObjectBuilder defaultToBuilder;
         private String name;
-        private Map<String, String> attributes = new HashMap<>();
+        private Map<String, AttributeDef> attributes = new HashMap<>();
         private Map<String, RelationDef> relations = new HashMap<>();
         private Map<String, RelationDef> containments = new HashMap<>();
         private Map<String, PropertyDef> properties = new HashMap<>();
@@ -638,7 +654,13 @@ public class PsmTestModelBuilder {
         }
 
         public ScriptTestEntityBuilder withAttribute(String type, String name) {
-            attributes.put(name, type);
+            attributes.put(name, new AttributeDef(name, type, false));
+            defaultToBuilder.withAttribute(type, name);
+            return this;
+        }
+
+        public ScriptTestEntityBuilder withIdentifier(String type, String name) {
+            attributes.put(name, new AttributeDef(name, type, true));
             defaultToBuilder.withAttribute(type, name);
             return this;
         }
@@ -682,8 +704,12 @@ public class PsmTestModelBuilder {
 
         private EntityType build() {
             EntityTypeBuilder builder = EntityTypeBuilder.use(entityTypes.get(name));
-            for (Map.Entry<String, String> attributeEntry : attributes.entrySet()) {
-                Attribute attribute = DataBuilders.newAttributeBuilder().withName(attributeEntry.getKey()).withDataType(dataTypes.get(attributeEntry.getValue())).build();
+            for (Map.Entry<String, AttributeDef> attributeEntry : attributes.entrySet()) {
+                Attribute attribute = DataBuilders.newAttributeBuilder()
+                        .withName(attributeEntry.getKey())
+                        .withDataType(dataTypes.get(attributeEntry.getValue().type))
+                        .withIdentifier(attributeEntry.getValue().identifier)
+                        .build();
                 builder.withAttributes(attribute);
             }
             for (Map.Entry<String, RelationDef> relationEntry : relations.entrySet()) {
@@ -717,14 +743,55 @@ public class PsmTestModelBuilder {
 
         private final String name;
         private final String toName;
+        private final String entityName;
 
-        public ScriptTestActorTypeBuilder(String name, String toName) {
+        public ScriptTestActorTypeBuilder(String name, String toName, String entityName) {
             this.name = name;
             this.toName = toName;
+            this.entityName = entityName;
+            actorTypes.put(name, newMappedActorTypeBuilder().withName(name).build());
         }
 
-        public ActorType build() {
-            return newActorTypeBuilder().withName(name).withTransferObjectType(toTypes.get(toName)).build();
+        public MappedActorType build() {
+            MappedActorTypeBuilder builder = MappedActorTypeBuilder.use(actorTypes.get(name))
+                    .withName(name)
+                    .withTransferObjectType(toTypes.get(toName))
+                    .withEntityType(entityTypes.get(entityName));
+            builder.withOperations(
+                    newUnboundOperationBuilder()
+                            .withBehaviour(
+                                    newTransferOperationBehaviourBuilder()
+                                            .withBehaviourType(TransferOperationBehaviourType.GET_PRINCIPAL)
+                                            .withOwner(actorTypes.get(name)).build())
+                            .withName("_principal")
+                            .withOutput(
+                                    newParameterBuilder()
+                                            .withType(toTypes.get(toName))
+                                            .withName("getPrincipalOut")
+                                            .withCardinality(newCardinalityBuilder().build()).build())
+                            .build());
+            builder.withOperations(
+                    newUnboundOperationBuilder()
+                            .withBehaviour(
+                                    newTransferOperationBehaviourBuilder()
+                                            .withBehaviourType(TransferOperationBehaviourType.MAP_PRINCIPAL)
+                                            .withOwner(actorTypes.get(name)).build())
+                            .withName("_map_principal")
+                            .withInput(newParameterBuilder()
+                                    .withType(actorTypes.get(name))
+                                    .withName("accessToken")
+                                    .withCardinality(newCardinalityBuilder().build()))
+                            .withOutput(
+                                    newParameterBuilder()
+                                            .withType(toTypes.get(toName))
+                                            .withName("mapPrincipalOut")
+                                            .withCardinality(newCardinalityBuilder().build()).build())
+                            .build());
+            builder.withRealm("realm");
+            builder.withAttributes(
+                    newTransferAttributeBuilder().withDataType(dataTypes.get("String")).withName("email")
+                            .withBinding(entityTypes.get(entityName).getAttribute("email")).build());
+            return builder.build();
         }
 
     }
