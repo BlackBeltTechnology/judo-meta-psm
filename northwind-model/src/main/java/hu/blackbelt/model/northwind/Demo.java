@@ -276,7 +276,7 @@ public class Demo {
                 address, territory, category);
         induvidual.init(entities.$, phone, person, customer);
         internationalAddress.init(entities.$, countries, address);
-        internationalOrder.init(entities.$, string, double_, order);
+        internationalOrder.init(entities.$, string, double_, order, internationalOrderInfo);
         mailingList.init(entities.$, person);
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);

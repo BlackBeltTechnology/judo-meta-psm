@@ -15,7 +15,6 @@ public class ShipmentChange {
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
 
-
     public void init(Package $package, String $string, TimeStamp $timeStamp) {
         useUnmappedTransferObjectType($)
                 .withName("ShipmentChange")

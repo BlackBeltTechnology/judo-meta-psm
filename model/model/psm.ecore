@@ -444,24 +444,12 @@
   <eSubpackages name="service" nsURI="http://blackbelt.hu/judo/meta/psm/service" nsPrefix="service">
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectType" abstract="true"
         eSuperTypes="#//type/DataType">
-      <eOperations name="getAllSuperTransferObjectTypes" ordered="false" upperBound="-1"
-          eType="#//service/TransferObjectType">
-        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperTransferObjectTypes(this);"/>
-        </eAnnotations>
-      </eOperations>
-      <eOperations name="getInheritedTransferAttributeNames" ordered="false" upperBound="-1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eOperations name="getInheritedTransferObjectRelationNames" ordered="false"
-          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eOperations name="isAccessPoint" ordered="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="representation" eType="#//service/TransferAttribute"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="relations" upperBound="-1"
           eType="#//service/TransferObjectRelation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
           eType="#//service/TransferAttribute" containment="true"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="superTransferObjectTypes"
-          upperBound="-1" eType="#//service/TransferObjectType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="operations" upperBound="-1"
           eType="#//service/TransferOperation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="actorType" eType="#//accesspoint/AbstractActorType"
@@ -585,23 +573,6 @@
           eType="#//namespace/NamedElement"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EEnum" name="TransferOperationBehaviourType">
-      <eLiterals name="GET"/>
-      <eLiterals name="CREATE" value="1"/>
-      <eLiterals name="UPDATE" value="2"/>
-      <eLiterals name="DELETE" value="3"/>
-      <eLiterals name="SET_RELATION" value="4"/>
-      <eLiterals name="UNSET_RELATION" value="5"/>
-      <eLiterals name="ADD_ALL_TO_RELATION" value="6"/>
-      <eLiterals name="REMOVE_ALL_FROM_RELATION" value="7"/>
-      <eLiterals name="GET_RELATION" value="8"/>
-      <eLiterals name="CREATE_RELATION" value="9"/>
-      <eLiterals name="UPDATE_RELATION" value="10"/>
-      <eLiterals name="DELETE_RELATION" value="11"/>
-      <eLiterals name="SET_RELATION_OF_RELATION" value="12"/>
-      <eLiterals name="UNSET_RELATION_OF_RELATION" value="13"/>
-      <eLiterals name="ADD_ALL_TO_RELATION_OF_RELATION" value="14"/>
-      <eLiterals name="REMOVE_ALL_FROM_RELATION_OF_RELATION" value="15"/>
-      <eLiterals name="GET_RANGE_OF_RELATION" value="16"/>
       <eLiterals name="GET_TEMPLATE" value="17"/>
       <eLiterals name="GET_PRINCIPAL" value="18"/>
       <eLiterals name="MAP_PRINCIPAL" value="19"/>

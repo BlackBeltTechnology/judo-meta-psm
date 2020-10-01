@@ -37,7 +37,7 @@ public class OrderDetail {
     public NavigationProperty category = newNavigationPropertyBuilder().build();
     public AssociationEnd product = newAssociationEndBuilder().build();
 
-    public BoundOperation _getProduct = newBoundOperationBuilder().build();
+    public BoundOperation listProduct = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, Double $double, Integer $integer, Boolean $boolean,
                      MassStoredInGrams $massStoredInGrams, Product $product, Category $category,
@@ -108,8 +108,8 @@ public class OrderDetail {
                                 .withExpression("self.product.category")
                         )
                 )
-                .withOperations(useBoundOperation(_getProduct)
-                        .withName("_getProduct")
+                .withOperations(useBoundOperation(listProduct)
+                        .withName("_listProductForNorthwind_services_OrderItem")
                         .withInstanceRepresentation($orderItem.$)
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)

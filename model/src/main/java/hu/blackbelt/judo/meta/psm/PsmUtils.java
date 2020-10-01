@@ -56,19 +56,6 @@ public class PsmUtils {
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
 
-    private static final List<TransferOperationBehaviourType> BEHAVIOUR_TYPES_TO_EXTEND = Arrays.asList(
-            TransferOperationBehaviourType.CREATE,
-            TransferOperationBehaviourType.UPDATE,
-            TransferOperationBehaviourType.SET_RELATION,
-            TransferOperationBehaviourType.ADD_ALL_TO_RELATION,
-            TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION,
-            TransferOperationBehaviourType.CREATE_RELATION,
-            TransferOperationBehaviourType.UPDATE_RELATION,
-            TransferOperationBehaviourType.SET_RELATION_OF_RELATION,
-            TransferOperationBehaviourType.ADD_ALL_TO_RELATION_OF_RELATION,
-            TransferOperationBehaviourType.REMOVE_ALL_FROM_RELATION_OF_RELATION
-    );
-
     /**
      * Convert namespace to string.
      *
@@ -551,196 +538,6 @@ public class PsmUtils {
     }
 
     /**
-     * Get list of all super transfer object types of a given transfer object type. The given transfer object type is included in case of circular references.
-     *
-     * @param transferObjectType transfer object type
-     * @return list of super transfer object types
-     */
-    @Deprecated
-    public static EList<TransferObjectType> getAllSuperTransferObjectTypes(final TransferObjectType transferObjectType) {
-        final EList<TransferObjectType> foundSuperTransferObjectTypes = new UniqueEList<>();
-        addSuperTransferObjectTypes(transferObjectType, foundSuperTransferObjectTypes);
-        return foundSuperTransferObjectTypes;
-    }
-
-    /**
-     * Add super transfer object types of a given transfer object type recursively to a list.
-     *
-     * @param transferObjectType            transfer object type
-     * @param foundSuperTransferObjectTypes list that super transfer object types added to
-     */
-    @Deprecated
-    private static void addSuperTransferObjectTypes(final TransferObjectType transferObjectType, final EList<TransferObjectType> foundSuperTransferObjectTypes) {
-        final Set<TransferObjectType> newSuperTransferObjectTypes = transferObjectType.getSuperTransferObjectTypes().stream()
-                .filter(s -> !foundSuperTransferObjectTypes.contains(s)).collect(Collectors.toSet());
-        foundSuperTransferObjectTypes.addAll(newSuperTransferObjectTypes);
-        newSuperTransferObjectTypes.forEach(s -> addSuperTransferObjectTypes(s, foundSuperTransferObjectTypes));
-    }
-
-    /**
-     * Get unique list of all inherited transfer attribute names of a given mapped transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the names of inherited transfer attributes
-     */
-    @Deprecated
-    public static EList<String> getInheritedTransferAttributeNames(final TransferObjectType transferObjectType) {
-        EList<String> attributeNames = new UniqueEList<>();
-        attributeNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(to -> to.getAttributes().stream())
-                .map(a -> a.getName())
-                .collect(Collectors.toSet()));
-        return attributeNames;
-    }
-
-    /**
-     * Get unique list of all inherited transfer object relation names of a given mapped transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the names of inherited transfer object relations
-     */
-    @Deprecated
-    public static EList<String> getInheritedTransferObjectRelationNames(final TransferObjectType transferObjectType) {
-        EList<String> relationNames = new UniqueEList<>();
-        relationNames.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(to -> to.getRelations().stream())
-                .map(r -> r.getName())
-                .collect(Collectors.toSet()));
-        return relationNames;
-    }
-
-    /**
-     * Get unique list of all (inherited and not inherited) transfer object relations of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of inherited and not inherited transfer object relations
-     */
-    @Deprecated
-    public static EList<TransferObjectRelation> getAllTransferObjectRelations(final TransferObjectType transferObjectType) {
-        EList<TransferObjectRelation> relations = new UniqueEList<>();
-        relations.addAll(transferObjectType.getRelations());
-        relations.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(to -> to.getRelations().stream())
-                .collect(Collectors.toSet()));
-        return relations;
-    }
-    
-    /**
-     * Get unique list of all (inherited and not inherited) transfer attributes of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of inherited and not inherited transfer attributes
-     */
-    @Deprecated
-    public static EList<TransferAttribute> getAllTransferAttributes(final TransferObjectType transferObjectType) {
-        EList<TransferAttribute> attributes = new UniqueEList<>();
-        attributes.addAll(transferObjectType.getAttributes());
-        attributes.addAll(transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(to -> to.getAttributes().stream())
-                .collect(Collectors.toSet()));
-        return attributes;
-    }
-
-    /**
-     * Get unique list of all inherited transfer operation names of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the names of inherited transfer operations
-     */
-    @Deprecated
-    public static EList<String> getInheritedTransferOperationNames(final TransferObjectType transferObjectType) {
-        EList<String> operationNames = new UniqueEList<>();
-
-        Set<String> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(e -> e.getOperations().stream())
-                .map(o -> o.getName())
-                .collect(Collectors.toSet());
-
-        operationNames.addAll(operationNamesSet);
-        return operationNames;
-    }
-
-    /**
-     * Get unique list of all inherited bound transfer operation names of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the names of inherited bound transfer operations
-     */
-    @Deprecated
-    public static EList<String> getInheritedBoundTransferOperationNames(final MappedTransferObjectType mappedTransferObjectType) {
-        EList<String> operationNames = new UniqueEList<>();
-
-        Set<String> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(e -> e.getOperations().stream())
-                .filter(o -> o instanceof BoundTransferOperation)
-                .map(o -> o.getName())
-                .collect(Collectors.toSet());
-
-        operationNames.addAll(operationNamesSet);
-        return operationNames;
-    }
-
-    /**
-     * Get unique list of all inherited unbound operation names of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the names of inherited unbound operations
-     */
-    @Deprecated
-    public static EList<String> getInheritedUnboundOperationNames(final TransferObjectType transferObjectType) {
-        EList<String> operationNames = new UniqueEList<>();
-
-        Set<String> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(e -> e.getOperations().stream())
-                .filter(o -> o instanceof UnboundOperation)
-                .map(o -> o.getName())
-                .collect(Collectors.toSet());
-
-        operationNames.addAll(operationNamesSet);
-        return operationNames;
-    }
-
-    /**
-     * Get unique list of all inherited bound transfer operations of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the inherited bound transfer operations
-     */
-    @Deprecated
-    public static EList<BoundTransferOperation> getInheritedBoundTransferOperations(final MappedTransferObjectType mappedTransferObjectType) {
-        EList<BoundTransferOperation> operations = new UniqueEList<>();
-
-        Set<BoundTransferOperation> operationNamesSet = mappedTransferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(e -> e.getOperations().stream())
-                .filter(o -> o instanceof BoundTransferOperation)
-                .map(o -> (BoundTransferOperation) o)
-                .collect(Collectors.toSet());
-
-        operations.addAll(operationNamesSet);
-        return operations;
-    }
-
-    /**
-     * Get unique list of all inherited unbound operations of a given transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @return unique list of the inherited unbound operations
-     */
-    @Deprecated
-    public static EList<UnboundOperation> getInheritedUnboundOperations(final TransferObjectType transferObjectType) {
-        EList<UnboundOperation> operations = new UniqueEList<>();
-
-        Set<UnboundOperation> operationNamesSet = transferObjectType.getAllSuperTransferObjectTypes().stream()
-                .flatMap(e -> e.getOperations().stream())
-                .filter(o -> o instanceof UnboundOperation)
-                .map(o -> (UnboundOperation) o)
-                .collect(Collectors.toSet());
-
-        operations.addAll(operationNamesSet);
-        return operations;
-    }
-
-    /**
      * Get unique list of all inherited operation names of a given entity type.
      *
      * @param entityType entity type
@@ -789,7 +586,6 @@ public class PsmUtils {
     			.filter(o -> o instanceof BoundTransferOperation)
     			.map(b -> (BoundTransferOperation)b)
     			.collect(Collectors.toSet()));
-    	operations.addAll(getInheritedBoundTransferOperations(transferObjectType));
     	return operations; 
     }
     
@@ -806,7 +602,6 @@ public class PsmUtils {
     			.filter(o -> o instanceof UnboundOperation)
     			.map(u -> (UnboundOperation)u)
     			.collect(Collectors.toSet()));
-    	operations.addAll(getInheritedUnboundOperations(transferObjectType));
     	return operations; 
     }
 
@@ -881,56 +676,6 @@ public class PsmUtils {
                         	operations.add(boundOperation.get());
                     } else {
                     	operations.addAll(getInheritedBoundOperationsByName(s, name));
-                    }
-                });
-        return operations;
-    }
-    
-    /**
-     * Get list of inherited bound transfer operations by name of a mapped transfer object type.
-     *
-     * @param transferObjectType mapped transfer object type
-     * @param name       bound transfer operation name
-     * @return list of inherited bound transfer operations of the given name
-     */
-    @Deprecated
-    public static EList<BoundTransferOperation> getInheritedBoundTransferOperationsByName(final MappedTransferObjectType transferObjectType, final String name) {
-        EList<BoundTransferOperation> operations = new UniqueEList<>();
-
-        transferObjectType.getSuperTransferObjectTypes().stream()
-                .forEach(s -> {
-                    final Optional<BoundTransferOperation> boundOperation = s.getOperations().stream()
-                    		.filter(o -> o instanceof BoundTransferOperation).map(b -> (BoundTransferOperation)b)
-                            .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
-                    if (boundOperation.isPresent()) {
-                        	operations.add(boundOperation.get());
-                    } else {
-                    	if (s instanceof MappedTransferObjectType) operations.addAll(getInheritedBoundTransferOperationsByName((MappedTransferObjectType)s, name));
-                    }
-                });
-        return operations;
-    }
-    
-    /**
-     * Get list of inherited unbound operations of a transfer object type.
-     *
-     * @param transferObjectType transfer object type
-     * @param name       unbound transfer operation name
-     * @return list of inherited unbound operations of a given name
-     */
-    @Deprecated
-    public static EList<UnboundOperation> getInheritedUnboundOperationsByName(final TransferObjectType transferObjectType, final String name) {
-        EList<UnboundOperation> operations = new UniqueEList<>();
-
-        transferObjectType.getSuperTransferObjectTypes().stream()
-                .forEach(s -> {
-                    final Optional<UnboundOperation> unboundOperation = s.getOperations().stream()
-                    		.filter(o -> o instanceof UnboundOperation).map(b -> (UnboundOperation)b)
-                            .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
-                    if (unboundOperation.isPresent()) {
-                        	operations.add(unboundOperation.get());
-                    } else {
-                    	operations.addAll(getInheritedUnboundOperationsByName(s, name));
                     }
                 });
         return operations;
@@ -1055,33 +800,6 @@ public class PsmUtils {
     }
 
     /**
-     * Get all mapped transfer object types that are type of input parameter in operations
-     *
-     * @param resourceSet
-     * @return list of unique mapped transfer object types
-     */
-    public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
-        return new UniqueEList<>(all(resourceSet, TransferOperation.class)
-                .filter(transferOperation -> isTransferOperationParameterTypeExtended(transferOperation))
-                .map(transferOperation -> transferOperation.getInput().getType())
-                .collect(Collectors.toList()));
-    }
-
-    /**
-     * Check if given transfer operation's parameter type should be extended.
-     *
-     * @param transferOperation
-     * @return
-     */
-    public boolean isTransferOperationParameterTypeExtended(TransferOperation transferOperation) {
-        if (transferOperation.getInput() != null && transferOperation.getBehaviour() != null && transferOperation.getInput().getType() instanceof MappedTransferObjectType) {
-            return BEHAVIOUR_TYPES_TO_EXTEND.contains(transferOperation.getBehaviour().getBehaviourType());
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Get all possible containers of a given (embedded) mapped transfer object type.
      *
      * @param mappedTransferObjectType
@@ -1115,10 +833,10 @@ public class PsmUtils {
     			.map(a -> a.getName())
     			.collect(Collectors.toSet()));
     	
-    	Set<TransferObjectRelation> boundRelations = getAllTransferObjectRelations(transferObject).stream()
+    	Set<TransferObjectRelation> boundRelations = transferObject.getRelations().stream()
     			.filter(r -> r.getBinding() != null)
     			.collect(Collectors.toSet());
-    	Set<TransferAttribute> boundAttributes = getAllTransferAttributes(transferObject).stream()
+    	Set<TransferAttribute> boundAttributes = transferObject.getAttributes().stream()
     			.filter(a -> a.getBinding() != null)
     			.collect(Collectors.toSet());
     	

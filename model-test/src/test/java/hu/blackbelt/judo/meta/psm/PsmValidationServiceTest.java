@@ -1067,7 +1067,7 @@ class PsmValidationServiceTest {
 				newUnboundOperationBuilder().withName("create")
 					.withBehaviour(
 							newTransferOperationBehaviourBuilder()
-								.withBehaviourType(TransferOperationBehaviourType.CREATE).withOwner(eg).build())
+								.withBehaviourType(TransferOperationBehaviourType.CREATE_INSTANCE).withOwner(relation).build())
 					.withOutput(newParameterBuilder().withName("output").withType(t1)
 							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
 							.build())
@@ -1079,7 +1079,7 @@ class PsmValidationServiceTest {
 				newBoundTransferOperationBuilder().withName("create_relation")
 					.withBehaviour(
 							newTransferOperationBehaviourBuilder()
-								.withBehaviourType(TransferOperationBehaviourType.CREATE_RELATION).withOwner(relation).build())
+								.withBehaviourType(TransferOperationBehaviourType.VALIDATE_CREATE).withOwner(relation).build())
 					.withOutput(newParameterBuilder().withName("output").withType(t2)
 							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
 							.build())
@@ -1094,7 +1094,7 @@ class PsmValidationServiceTest {
 				newBoundTransferOperationBuilder().withName("create_relation")
 					.withBehaviour(
 							newTransferOperationBehaviourBuilder()
-								.withBehaviourType(TransferOperationBehaviourType.CREATE_RELATION).withOwner(relation2).build())
+								.withBehaviourType(TransferOperationBehaviourType.CREATE_INSTANCE).withOwner(relation2).build())
 					.withOutput(newParameterBuilder().withName("output").withType(t2)
 							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
 							.build())

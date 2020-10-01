@@ -26,9 +26,8 @@ public class Category {
     public AssociationEnd products = newAssociationEndBuilder().build();
     public AssociationEnd owner = newAssociationEndBuilder().build();
 
-    public BoundOperation _getProducts = newBoundOperationBuilder().build();
-    public BoundOperation _getProductsInternal = newBoundOperationBuilder().build();
-    public BoundOperation _moveProducts = newBoundOperationBuilder().build();
+    public BoundOperation listProducts = newBoundOperationBuilder().build();
+    public BoundOperation moveProducts = newBoundOperationBuilder().build();
 
     public void init(Package $package, String $string, Text $text, Binary $binary, Product $product, Employee $employee,
                      hu.blackbelt.model.northwind.services.Category $category, hu.blackbelt.model.northwind.services.Product $product_,
@@ -56,21 +55,8 @@ public class Category {
                         .withCardinality(newCardinalityBuilder())
                         .build()
                 )
-                .withOperations(useBoundOperation(_getProducts)
-                        .withName("_getProducts")
-                        .withInstanceRepresentation($category.$)
-                        .withImplementation(newOperationBodyBuilder()
-                                .withStateful(false)
-                        )
-                        .withOutput(newParameterBuilder().withName("output")
-                                .withType($product_.$)
-                                .withCardinality(TypeBuilders.newCardinalityBuilder().withUpper(-1)
-                                )
-                        )
-                        .build()
-                )
-                .withOperations(useBoundOperation(_getProductsInternal)
-                        .withName("_getProductsInternal")
+                .withOperations(useBoundOperation(listProducts)
+                        .withName("_listProductsForNorthwind_services_CategoryInfo")
                         .withInstanceRepresentation($categoryInfo.$)
                         .withImplementation(newOperationBodyBuilder()
                                 .withStateful(false)
@@ -82,7 +68,7 @@ public class Category {
                         )
                         .build()
                 )
-                .withOperations(useBoundOperation(_moveProducts)
+                .withOperations(useBoundOperation(moveProducts)
                         .withName("_moveProducts")
                         .withInstanceRepresentation($categoryInfo.$)
                         .withImplementation(newOperationBodyBuilder()
