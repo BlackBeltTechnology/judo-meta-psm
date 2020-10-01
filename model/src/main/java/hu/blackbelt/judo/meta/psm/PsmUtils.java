@@ -56,11 +56,6 @@ public class PsmUtils {
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
 
-    private static final List<TransferOperationBehaviourType> BEHAVIOUR_TYPES_TO_EXTEND = Arrays.asList(
-            TransferOperationBehaviourType.CREATE_INSTANCE,
-            TransferOperationBehaviourType.UPDATE_INSTANCE
-    );
-
     /**
      * Convert namespace to string.
      *
@@ -802,33 +797,6 @@ public class PsmUtils {
 
         return getAllContainingMappedTransferObjectsRecursively(resourceSet, newContainers, newAllContainers);
 
-    }
-
-    /**
-     * Get all mapped transfer object types that are type of input parameter in operations
-     *
-     * @param resourceSet
-     * @return list of unique mapped transfer object types
-     */
-    public EList<TransferObjectType> getTransferObjectTypesToExtendWithEmbeddedRelations(ResourceSet resourceSet) {
-        return new UniqueEList<>(all(resourceSet, TransferOperation.class)
-                .filter(transferOperation -> isTransferOperationParameterTypeExtended(transferOperation))
-                .map(transferOperation -> transferOperation.getInput().getType())
-                .collect(Collectors.toList()));
-    }
-
-    /**
-     * Check if given transfer operation's parameter type should be extended.
-     *
-     * @param transferOperation
-     * @return
-     */
-    public boolean isTransferOperationParameterTypeExtended(TransferOperation transferOperation) {
-        if (transferOperation.getInput() != null && transferOperation.getBehaviour() != null && transferOperation.getInput().getType() instanceof MappedTransferObjectType) {
-            return BEHAVIOUR_TYPES_TO_EXTEND.contains(transferOperation.getBehaviour().getBehaviourType());
-        } else {
-            return false;
-        }
     }
 
     /**
