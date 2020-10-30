@@ -381,8 +381,11 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//accesspoint/AbstractActorType/transferObjectType"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//accesspoint/AbstractActorType/realm"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//accesspoint/AbstractActorType/kind"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//accesspoint/MappedActorType"/>
+      <genClasses ecoreClass="psm.ecore#//accesspoint/MappedActorType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//accesspoint/MappedActorType/managed"/>
+      </genClasses>
       <genClasses ecoreClass="psm.ecore#//accesspoint/ActorType"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Measure" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
