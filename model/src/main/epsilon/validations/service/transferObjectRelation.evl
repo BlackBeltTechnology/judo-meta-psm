@@ -15,7 +15,7 @@ context PSM!TransferObjectRelation {
     }
     
     constraint CardinalityMatchesBindingCardinality {
-        guard:  self.binding.isDefined()
+        guard:  self.binding.isDefined() and not self.eContainer.optional
         check:  (self.cardinality.lower == self.binding.cardinality.lower) and
                 (self.cardinality.upper == self.binding.cardinality.upper)
         message: "Transfer object relation " + self.name + " and its binding must have the same cardinality."

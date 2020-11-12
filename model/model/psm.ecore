@@ -454,6 +454,9 @@
           eType="#//service/TransferOperation" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="actorType" eType="#//accesspoint/AbstractActorType"
           eOpposite="#//accesspoint/AbstractActorType/transferObjectType"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferObjectRelation" eSuperTypes="#//namespace/NamedElement">
       <eOperations name="isCollection" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">

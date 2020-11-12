@@ -14,7 +14,7 @@ context PSM!TransferAttribute {
     }
     
     constraint RequiredFlagMatchesBindingRequiredFlag {
-        guard:  self.binding.isDefined()
+        guard:  self.binding.isDefined() and not self.eContainer.optional
         check:  self.required == self.binding.required
         message: "Required flag of transfer attribute " + self.name + " must equal required flag of its binding."
     }
