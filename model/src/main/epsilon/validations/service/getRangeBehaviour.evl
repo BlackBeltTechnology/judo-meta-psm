@@ -24,11 +24,11 @@ context PSM!TransferOperationBehaviour {
     	message: "'GET_RANGE' operation's input parameter must be named 'input' (operation: " + self.eContainer.name + ")"
     }
     
-    constraint GetRangeBehaviourInputTypeIsValid {
+    /*constraint GetRangeBehaviourInputTypeIsValid {
     	guard: self.satisfies("GetRangeBehaviourInputParameterIsDefined")
     	check: self.eContainer.input.type == self.owner.eContainer
     	message: "Type of 'GET_RANGE operation's input parameter must match the container of the operation (operation: " + self.eContainer.name + " in " + self.owner.eContainer.name + ")"
-    }
+    }*/
     
     constraint GetRangeBehaviourInputCardinalityIsValid {
     	guard: self.satisfies("GetRangeBehaviourInputParameterIsDefined")
