@@ -769,23 +769,6 @@ public class PsmTestModelBuilder {
                                             .withName("getPrincipalOut")
                                             .withCardinality(newCardinalityBuilder().build()).build())
                             .build());
-            builder.withOperations(
-                    newUnboundOperationBuilder()
-                            .withBehaviour(
-                                    newTransferOperationBehaviourBuilder()
-                                            .withBehaviourType(TransferOperationBehaviourType.MAP_PRINCIPAL)
-                                            .withOwner(actorTypes.get(name)).build())
-                            .withName("_map_principal")
-                            .withInput(newParameterBuilder()
-                                    .withType(actorTypes.get(name))
-                                    .withName("accessToken")
-                                    .withCardinality(newCardinalityBuilder().build()))
-                            .withOutput(
-                                    newParameterBuilder()
-                                            .withType(toTypes.get(toName))
-                                            .withName("mapPrincipalOut")
-                                            .withCardinality(newCardinalityBuilder().build()).build())
-                            .build());
             builder.withRealm("realm");
             builder.withAttributes(
                     newTransferAttributeBuilder().withDataType(dataTypes.get("String")).withName("email")
