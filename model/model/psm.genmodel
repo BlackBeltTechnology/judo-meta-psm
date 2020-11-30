@@ -288,6 +288,8 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/actorType"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferObjectType/optional"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferObjectType/override"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferObjectType/isAccessPoint"
             body="return getActorType() != null;"/>
       </genClasses>
