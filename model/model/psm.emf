@@ -424,6 +424,7 @@ package service {
     val TransferOperation[*] operations;
     ref accesspoint.AbstractActorType#transferObjectType actorType;
     attr boolean[1] optional = false;
+    ref TransferObjectType override;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -531,6 +532,7 @@ package service {
     ADD_REFERENCE = 29;
     REMOVE_REFERENCE = 30;
     GET_RANGE = 31;
+    GET_METADATA = 14;
   }
 
 }
