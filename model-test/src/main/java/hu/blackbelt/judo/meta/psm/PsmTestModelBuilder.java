@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
 import static hu.blackbelt.judo.meta.psm.accesspoint.util.builder.AccesspointBuilders.newMappedActorTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.measure.util.builder.MeasureBuilders.*;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.usePackage;
 import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 
@@ -122,6 +123,10 @@ public class PsmTestModelBuilder {
         massStoredInKilograms.init(measured.$, mass);
         MassStoredInGrams massStoredInGrams = new MassStoredInGrams();
         massStoredInGrams.init(measured.$, mass);
+        MeasuredType massIntegerKg = newMeasuredTypeBuilder()
+        		.withName("MassIntegerKg").withPrecision(9).withScale(0).withStoreUnit(mass.kilogram).build();
+        usePackage(measured.$).withElements(massIntegerKg).build();
+
         Countries countries = new Countries();
         countries.init(types.$);
         Gps gps = new Gps();
@@ -136,17 +141,22 @@ public class PsmTestModelBuilder {
         dataTypes.put("Timestamp", timeStampType.$);
         dataTypes.put("MassStoredInKilograms", massStoredInKilograms.$);
         dataTypes.put("MassStoredInGrams", massStoredInGrams.$);
+        dataTypes.put("MassIntegerKg", massIntegerKg);
         dataTypes.put("Country", countries.$);
         dataTypes.put("Gps", gps.$);
         dataTypes.put("Long", longType.$);
 
-        DurationUnit durationUnit = newDurationUnitBuilder().withName("day").withUnitType(DurationType.DAY).build();
-        Measure dayMeasure = newMeasureBuilder().withName("Day").withSymbol("day").withUnits(durationUnit).build();
-        NamespaceBuilders.usePackage(measures.$).withElements(dayMeasure).build();
-        MeasuredType durationType = newMeasuredTypeBuilder().withName("Duration").withPrecision(9).withStoreUnit(durationUnit).build();
-        NamespaceBuilders.usePackage(measured.$).withElements(durationType).build();
-        dataTypes.put("Duration", durationType);
-
+        DurationUnit dayUnit = newDurationUnitBuilder().withName("day").withUnitType(DurationType.DAY).withRateDividend(86400).withRateDivisor(1).build();
+        DurationUnit minuteUnit = newDurationUnitBuilder().withName("minute").withUnitType(DurationType.MINUTE).withRateDividend(60).withRateDivisor(1).build();
+        DurationUnit secondUnit = newDurationUnitBuilder().withName("second").withUnitType(DurationType.SECOND).build();
+        DurationUnit millisecondUnit = newDurationUnitBuilder().withName("millisecond").withUnitType(DurationType.MILLISECOND).withRateDividend(1).withRateDivisor(1000).build();
+        Measure durationMeasure = newMeasureBuilder().withName("Time").withUnits(dayUnit, minuteUnit, secondUnit, millisecondUnit).build();
+        NamespaceBuilders.usePackage(measures.$).withElements(durationMeasure).build();
+        MeasuredType durationInDays = newMeasuredTypeBuilder().withName("DurationInDays").withPrecision(9).withStoreUnit(dayUnit).build();
+        MeasuredType durationInMinutes = newMeasuredTypeBuilder().withName("DurationInMinutes").withPrecision(9).withStoreUnit(minuteUnit).build();
+        NamespaceBuilders.usePackage(measured.$).withElements(durationInDays, durationInMinutes).build();
+        dataTypes.put("DurationInDays", durationInDays);
+        dataTypes.put("DurationInMinutes", durationInMinutes);
     }
 
     public ScriptTestMappedTransferObjectBuilder addMappedTransferObject(String toName, String entityName) {
