@@ -484,7 +484,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="cardinality" lowerBound="1"
           eType="#//type/Cardinality" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/ReferenceTypedElement"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/StaticNavigation"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/ReferenceAccessor"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//derived/ReferenceAccessor"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
           eType="#//service/TransferObjectType"/>
@@ -510,7 +510,7 @@
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/StaticData"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="defaultValue" eType="#//derived/PrimitiveAccessor"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" lowerBound="1"
           eType="#//type/Primitive"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//data/PrimitiveTypedElement"/>
