@@ -116,6 +116,8 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/sequences"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/operations"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/constraints"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//data/EntityType/defaultRepresentation"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAllSuperEntityTypes"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperEntityTypes(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/EntityType/getAttribute" body="        final java.util.Collection&lt;EntityType> base = new java.util.ArrayList&lt;>(getAllSuperEntityTypes());&#xA;        base.add(this);&#xA;&#xA;        final java.util.Optional&lt;java.util.Optional&lt;Attribute>> attribute = base.stream()&#xA;                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name&#xA;                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types&#xA;                .findFirst(); // redefining attributes is not supported&#xA;        final java.util.Optional&lt;java.util.Optional&lt;DataProperty>> dataProperty = base.stream()&#xA;                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name&#xA;                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types&#xA;                .findFirst(); // redefining data properties is not supported&#xA;&#xA;        if (attribute.isPresent()) {&#xA;            return attribute.get().get();&#xA;        } else if (dataProperty.isPresent()) {&#xA;            return dataProperty.get().get();&#xA;        } else {&#xA;            return null;&#xA;        }">
@@ -161,6 +163,7 @@
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//data/Attribute">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/Attribute/identifier"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/Attribute/unmappedDefaultOnly"/>
         <genOperations ecoreOperation="psm.ecore#//data/Attribute/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.attributeToString(this);"/>
         <genOperations ecoreOperation="psm.ecore#//data/Attribute/isPrimitive" body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;"/>
         <genOperations ecoreOperation="psm.ecore#//data/Attribute/getEntityType" body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfAttribute(this).get();"/>
@@ -169,6 +172,7 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference psm.ecore#//data/AssociationEnd/partner"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/AssociationEnd/reverseCascadeDelete"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//data/AssociationEnd/unmappedDefaultOnly"/>
         <genOperations ecoreOperation="psm.ecore#//data/AssociationEnd/getOpposite"
             body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;"/>
       </genClasses>
