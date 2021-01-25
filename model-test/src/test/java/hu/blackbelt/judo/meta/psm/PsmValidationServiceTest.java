@@ -100,11 +100,6 @@ class PsmValidationServiceTest {
                 newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
         ).build();
 
-        StaticData staticData0 = newStaticDataBuilder().withName("staticData0").withDataType(integerType)
-                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("10").build()).build();
-        StaticData staticData1 = newStaticDataBuilder().withName("staticData1").withDataType(stringType)
-                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("exp").build()).build();
-
         EntityType entity = newEntityTypeBuilder().withName("entity")
                 .withAttributes(ImmutableList.of(attribute0, attribute1))
                 .withDataProperties(ImmutableList.of(property0, property1))
@@ -114,17 +109,13 @@ class PsmValidationServiceTest {
         TransferAttribute transferAttribute1 = newTransferAttributeBuilder().withName("TransferAttribute1").withDataType(integerType).withBinding(attribute1).build();
         TransferAttribute transferAttribute2 = newTransferAttributeBuilder().withName("TransferAttribute2").withDataType(integerType).withBinding(property0).build();
         TransferAttribute transferAttribute3 = newTransferAttributeBuilder().withName("TransferAttribute3").withDataType(integerType).withBinding(property1).build();
-        TransferAttribute transferAttribute4 = newTransferAttributeBuilder().withName("TransferAttribute4").withDataType(integerType).withBinding(staticData0).build();
-        TransferAttribute transferAttribute5 = newTransferAttributeBuilder().withName("TransferAttribute5").withDataType(integerType).withBinding(staticData1).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
                 .withName("TransferObject").withAttributes(ImmutableList.of(
                         transferAttribute0,
                         transferAttribute1,
                         transferAttribute2,
-                        transferAttribute3,
-                        transferAttribute4,
-                        transferAttribute5))
+                        transferAttribute3))
                 .withEntityType(entity)
                 .build();
 
@@ -132,16 +123,13 @@ class PsmValidationServiceTest {
                 integerType,
                 stringType,
                 entity,
-                transferObject,
-                staticData0,
-                staticData1)).build();
+                transferObject)).build();
 
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
                 "DataTypeMatchesBindingDataType|DataType of transfer attribute TransferAttribute1 must match the dataType of its binding.",
-                "DataTypeMatchesBindingDataType|DataType of transfer attribute TransferAttribute3 must match the dataType of its binding.",
-                "DataTypeMatchesBindingDataType|DataType of transfer attribute TransferAttribute5 must match the dataType of its binding."),
+                "DataTypeMatchesBindingDataType|DataType of transfer attribute TransferAttribute3 must match the dataType of its binding."),
                 Collections.emptyList());
     }
 
@@ -161,14 +149,13 @@ class PsmValidationServiceTest {
                 newDataExpressionTypeBuilder().withExpression("self.attribute1").build()
         ).withRequired(false).build();
 
-        StaticData staticData0 = newStaticDataBuilder().withName("staticData0").withDataType(integerType)
-                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("1").build()).withRequired(false).build();
-        StaticData staticData1 = newStaticDataBuilder().withName("staticData1").withDataType(integerType)
-                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("1").build()).withRequired(true).build();
+        DataProperty property2 = newDataPropertyBuilder().withName("property2").withDataType(integerType).withGetterExpression(
+                newDataExpressionTypeBuilder().withExpression("self.attribute0").build()
+        ).withRequired(false).build();
 
         EntityType entity = newEntityTypeBuilder().withName("entity")
                 .withAttributes(ImmutableList.of(attribute0, attribute1))
-                .withDataProperties(ImmutableList.of(property0, property1))
+                .withDataProperties(ImmutableList.of(property0, property1, property2))
                 .build();
 
         TransferAttribute transferAttribute0 = newTransferAttributeBuilder().withName("TransferAttribute0").withDataType(integerType)
@@ -180,18 +167,14 @@ class PsmValidationServiceTest {
         TransferAttribute transferAttribute3 = newTransferAttributeBuilder().withName("TransferAttribute3").withDataType(integerType)
                 .withBinding(property1).withRequired(false).build();
         TransferAttribute transferAttribute4 = newTransferAttributeBuilder().withName("TransferAttribute4").withDataType(integerType)
-                .withBinding(staticData0).withRequired(true).build();
-        TransferAttribute transferAttribute5 = newTransferAttributeBuilder().withName("TransferAttribute5").withDataType(integerType)
-                .withBinding(staticData1).withRequired(true).build();
-
+                .withBinding(property2).withRequired(true).build();
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
                 .withName("TransferObject").withAttributes(ImmutableList.of(
                         transferAttribute0,
                         transferAttribute1,
                         transferAttribute2,
                         transferAttribute3,
-                        transferAttribute4,
-                        transferAttribute5
+                        transferAttribute4
                 ))
                 .withEntityType(entity)
                 .build();
@@ -199,8 +182,7 @@ class PsmValidationServiceTest {
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
                 entity,
                 transferObject,
-                staticData0,
-                staticData1, integerType
+                integerType
         ))
                 .build();
 
@@ -295,10 +277,9 @@ class PsmValidationServiceTest {
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-                "TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute2 of mapped transfer object TransferObject "
-                        + "must either match the entity type of the mapped tranfer object or be StaticData.",
-                "TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute5 of mapped transfer object TransferObject "
-                        + "must either match the entity type of the mapped tranfer object or be StaticData."),
+                "TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute6 of mapped transfer object TransferObject must match the entity type of the mapped transfer object.",
+                "TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute2 of mapped transfer object TransferObject must match the entity type of the mapped transfer object.",
+                "TransferAttributeBindingIsValid|Binding of transfer attribute TransferAttribute5 of mapped transfer object TransferObject must match the entity type of the mapped transfer object."),
                 Collections.emptyList());
     }
 
@@ -323,13 +304,13 @@ class PsmValidationServiceTest {
         )
                 .build();
 
-        StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
+        NavigationProperty navProp1 = newNavigationPropertyBuilder().withName("navProp1")
                 .withCardinality(newCardinalityBuilder().build())
                 .withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("targetChild").build()
                 )
                 .build();
-        StaticNavigation staticNav2 = newStaticNavigationBuilder().withName("staticNav2")
+        NavigationProperty navProp2 = newNavigationPropertyBuilder().withName("navProp2")
                 .withCardinality(newCardinalityBuilder().build())
                 .withGetterExpression(
                         newReferenceExpressionTypeBuilder().withExpression("friend").build()
@@ -338,12 +319,12 @@ class PsmValidationServiceTest {
 
         EntityType parent = newEntityTypeBuilder().withName("parent")
                 .withRelations(e0)
-                .withNavigationProperties(n0)
+                .withNavigationProperties(n0, navProp1)
                 .build();
         EntityType child = newEntityTypeBuilder().withName("child")
                 .withSuperEntityTypes(parent)
                 .withRelations(ImmutableList.of(e1, e2))
-                .withNavigationProperties(ImmutableList.of(n1, n2))
+                .withNavigationProperties(ImmutableList.of(n1, n2, navProp2))
                 .build();
 
         EntityType targetParent = newEntityTypeBuilder().withName("targetParent").build();
@@ -358,8 +339,8 @@ class PsmValidationServiceTest {
         n0.setTarget(targetParent);
         n1.setTarget(targetChild);
         n2.setTarget(friend);
-        staticNav1.setTarget(targetChild);
-        staticNav2.setTarget(friend);
+        navProp1.setTarget(targetChild);
+        navProp2.setTarget(friend);
 
         MappedTransferObjectType targetTransferObject = newMappedTransferObjectTypeBuilder().withName("TargetTransferObject")
                 .withEntityType(targetChild).build();
@@ -377,9 +358,9 @@ class PsmValidationServiceTest {
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
                 .withBinding(n2).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder().withName("TransferRelation6")
-                .withBinding(staticNav1).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
+                .withBinding(navProp1).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
         TransferObjectRelation transferRelation7 = newTransferObjectRelationBuilder().withName("TransferRelation7")
-                .withBinding(staticNav2).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
+                .withBinding(navProp2).withTarget(targetTransferObject).withCardinality(newCardinalityBuilder().build()).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
                 .withName("TransferObject").withRelations(ImmutableList.of(
@@ -402,9 +383,7 @@ class PsmValidationServiceTest {
                 targetChild,
                 friend,
                 transferObject,
-                targetTransferObject,
-                staticNav1,
-                staticNav2
+                targetTransferObject
         ))
                 .build();
 
@@ -471,31 +450,31 @@ class PsmValidationServiceTest {
 
         EntityType target4 = newEntityTypeBuilder().withName("target4").build();
         MappedTransferObjectType mappedTarget4 = newMappedTransferObjectTypeBuilder().withName("mappedTarget4").withEntityType(target4).build();
-        StaticNavigation staticNav0 = newStaticNavigationBuilder().withName("staticNav0")
-                .withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+        NavigationProperty nav0 = newNavigationPropertyBuilder().withName("nav0")
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(3).build())
                 .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
                 .withTarget(target4)
                 .build();
         TransferObjectRelation transferRelation4 = newTransferObjectRelationBuilder().withName("TransferRelation4")
-                .withBinding(staticNav0).withCardinality(newCardinalityBuilder().withLower(2).withUpper(3).build())
+                .withBinding(nav0).withCardinality(newCardinalityBuilder().withLower(0).withUpper(3).build())
                 .withTarget(mappedTarget4)
                 .build();
 
         EntityType target5 = newEntityTypeBuilder().withName("target5").build();
         MappedTransferObjectType mappedTarget5 = newMappedTransferObjectTypeBuilder().withName("mappedTarget5").withEntityType(target5).build();
-        StaticNavigation staticNav1 = newStaticNavigationBuilder().withName("staticNav1")
-                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+        NavigationProperty nav1 = newNavigationPropertyBuilder().withName("nav1")
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
                 .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
                 .withTarget(target5)
                 .build();
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder().withName("TransferRelation5")
-                .withBinding(staticNav1).withCardinality(newCardinalityBuilder().withLower(3).withUpper(4).build())
+                .withBinding(nav1).withCardinality(newCardinalityBuilder().withLower(3).withUpper(4).build())
                 .withTarget(mappedTarget5)
                 .build();
 
         EntityType entity = newEntityTypeBuilder().withName("entity")
                 .withRelations(ImmutableList.of(end0, end1, containment))
-                .withNavigationProperties(navigation)
+                .withNavigationProperties(navigation, nav0, nav1)
                 .build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
@@ -505,7 +484,7 @@ class PsmValidationServiceTest {
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                entity, transferObject, staticNav0, staticNav1,target0,mappedTarget0,target1,mappedTarget1,target2,mappedTarget2,target3,mappedTarget3,target4,mappedTarget4,target5,mappedTarget5
+                entity, transferObject,target0,mappedTarget0,target1,mappedTarget1,target2,mappedTarget2,target3,mappedTarget3,target4,mappedTarget4,target5,mappedTarget5
         ))
                 .build();
 
@@ -568,11 +547,6 @@ class PsmValidationServiceTest {
 
         EntityType target = newEntityTypeBuilder().withName("target3").build();
         MappedTransferObjectType targetMapping = newMappedTransferObjectTypeBuilder().withName("targetMapping").withEntityType(target).build();
-        StaticNavigation staticNav = newStaticNavigationBuilder().withName("staticNav")
-                .withCardinality(newCardinalityBuilder().build())
-                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("child").build())
-        		.withTarget(target)
-                .build();
 
         EntityType parent = newEntityTypeBuilder().withName("parent")
                 .withRelations(e0)
@@ -617,28 +591,23 @@ class PsmValidationServiceTest {
         TransferObjectRelation transferRelation5 = newTransferObjectRelationBuilder()
                 .withName("TransferRelation5").withCardinality(newCardinalityBuilder().build())
                 .withTarget(target2Mapping).withBinding(n2).build();
-        TransferObjectRelation transferRelation6 = newTransferObjectRelationBuilder()
-                .withName("TransferRelation6").withCardinality(newCardinalityBuilder().build())
-                .withTarget(targetMapping).withBinding(staticNav).build();
 
         MappedTransferObjectType transferObject = newMappedTransferObjectTypeBuilder()
                 .withName("TransferObject").withRelations(ImmutableList.of(
-                        transferRelation0,transferRelation1,transferRelation2,transferRelation3,transferRelation4,transferRelation5,transferRelation6))
+                        transferRelation0,transferRelation1,transferRelation2,transferRelation3,transferRelation4,transferRelation5))
                 .withEntityType(child)
                 .build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
-                parent,child,friend,transferObject,staticNav,
+                parent,child,friend,transferObject,
                 target,target0,target1,target2,target0Mapping,target1Mapping,target2Mapping,targetMapping,friendMapping,childMapping,parentMapping))
                 .build();
 
         psmModel.addContent(model);
 
         runEpsilon(ImmutableList.of(
-                "TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation2 of mapped transfer object TransferObject "
-                        + "must either match the entity type of the mapped tranfer object or be StaticNavigation.",
-                "TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation5 of mapped transfer object TransferObject "
-                        + "must either match the entity type of the mapped tranfer object or be StaticNavigation."),
+                "TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation5 of mapped transfer object TransferObject must match the entity type of the mapped transfer object.",
+                "TransferObjectRelationBindingIsValid|Binding of transfer object relation TransferRelation2 of mapped transfer object TransferObject must match the entity type of the mapped transfer object."),
                 Collections.emptyList());
     }
 

@@ -29,10 +29,9 @@ context PSM!TransferObjectRelation {
     
     constraint TransferObjectRelationBindingIsValid {
         guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
-        check:  self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer()) or
-                self.binding.isKindOf(PSM!StaticNavigation) 
+        check:  self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer())
         message: "Binding of transfer object relation " + self.name + " of mapped transfer object " + self.eContainer().name +
-                " must either match the entity type of the mapped tranfer object or be StaticNavigation."
+                " must match the entity type of the mapped transfer object."
     }
     
     constraint EmbeddedOnBothSidesAreNotAllowed {
