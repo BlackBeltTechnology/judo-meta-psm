@@ -10,7 +10,7 @@ context PSM!NavigationProperty {
     }
     
     constraint NavigationProptertyIsSingleOrCollection {
-    	check: self.cardinality.lower == 0
+    	check: self.cardinality.lower == 0 and (self.cardinality.upper == 1 or self.cardinality.upper == -1)
     	message: "Navigation property " + self.name + " of entity type " + self.eContainer.name + " cannot be required."
     }
 }

@@ -451,7 +451,7 @@ class PsmValidationServiceTest {
         EntityType target4 = newEntityTypeBuilder().withName("target4").build();
         MappedTransferObjectType mappedTarget4 = newMappedTransferObjectTypeBuilder().withName("mappedTarget4").withEntityType(target4).build();
         NavigationProperty nav0 = newNavigationPropertyBuilder().withName("nav0")
-                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(3).build())
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(1).build())
                 .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("entity").build())
                 .withTarget(target4)
                 .build();
@@ -493,7 +493,8 @@ class PsmValidationServiceTest {
         runEpsilon(ImmutableList.of(
                 "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation1 and its binding must have the same cardinality.",
                 "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation3 and its binding must have the same cardinality.",
-                "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation5 and its binding must have the same cardinality."),
+                "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation5 and its binding must have the same cardinality.",
+                "CardinalityMatchesBindingCardinality|Transfer object relation TransferRelation4 and its binding must have the same cardinality."),
                 Collections.emptyList());
     }
 

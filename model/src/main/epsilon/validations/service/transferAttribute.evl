@@ -20,7 +20,7 @@ context PSM!TransferAttribute {
     }
     
     constraint TransferAttributeBindingIsValid {
-        guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(MappedTransferObjectType) and self.binding.isDefined()
+        guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(PSM!MappedTransferObjectType) and self.binding.isDefined()
         check: self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer())
         message: "Binding of transfer attribute " + self.name + " of mapped transfer object " + self.eContainer().name +
                 " must match the entity type of the mapped transfer object."
