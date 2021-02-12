@@ -23,4 +23,16 @@ context PSM!BoundOperation {
      	check: psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).forAll(o | psmUtils.parametersAreCompatible(self,o))
         message: "Overriding of bound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
      }
+     
+    constraint ImplementationOfAbstractOperationIsStateful {
+		guard: psmUtils.getInheritedAbstractBoundOperationsByName(self.eContainer, self.name).notEmpty()
+		check: self.implementation.isDefined() and self.implementation.stateful
+		message: "Implementation of abstract operation: " + self.eContainer.name + "." + self.name + " must be stateful."
+	}
+	
+	constraint StatefulFlagIsValid {
+		check: psmUtils.getInheritedNonAbstractBoundOperationsByName(self.eContainer, self.name)
+			.forAll(o | o.implementation.isDefined() implies (self.implementation.isDefined() and o.implementation.stateful == self.implementation.stateful))
+		message: "Stateful flag of operation " + self.eContainer.name + "." + self.name + " must match the stateful flag of overloaded operations."
+	}
 }
