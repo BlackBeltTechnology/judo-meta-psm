@@ -1514,8 +1514,9 @@ class PsmValidationDataTest {
 
         runEpsilon(ImmutableList.of(
             "AbstractOperationIsValid|Bound operation cannot be abstract if it's overriding a non-abstract bound operation",
-            "NeedToOverrideMultipleOperationImplementations|Entity type: entityType4 has inherited operations without implementation, "
-                    + "but their bases have more than one implementation."),
+            "NeedToOverrideMultipleOperationImplementations|Entity type: entityType4 has inherited operations without implementation, but their bases have more than one implementation.",
+			"ImplementationOfAbstractOperationIsStateful|Implementation of abstract operation: entityType2.correct must be stateful.",
+			"ImplementationOfAbstractOperationIsStateful|Implementation of abstract operation: entityType4.correct must be stateful."),
             Collections.emptyList());
     }
 
