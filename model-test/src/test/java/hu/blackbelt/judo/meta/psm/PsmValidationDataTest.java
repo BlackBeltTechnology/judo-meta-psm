@@ -1516,7 +1516,6 @@ class PsmValidationDataTest {
             "AbstractOperationIsValid|Bound operation cannot be abstract if it's overriding a non-abstract bound operation",
             "NeedToOverrideMultipleOperationImplementations|Entity type: entityType4 has inherited operations without implementation, but their bases have more than one implementation.",
 			"ImplementationOfAbstractOperationIsStateful|Implementation of abstract operation: entityType2.correct must be stateful.",
-			"StatefulFlagIsValid|Stateful flag of operation entityType4.operation must match the stateful flag of overloaded operations.",
 			"ImplementationOfAbstractOperationIsStateful|Implementation of abstract operation: entityType4.correct must be stateful."),
             Collections.emptyList());
     }

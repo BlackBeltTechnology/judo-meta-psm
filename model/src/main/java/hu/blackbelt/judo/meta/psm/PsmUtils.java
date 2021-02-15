@@ -366,27 +366,11 @@ public class PsmUtils {
         return operations;
     }
     
-    public static EList<BoundOperation> getInheritedAbstractBoundOperationsByName(final EntityType entityType, final String opName) {
-        EList<BoundOperation> operations = new UniqueEList<>();
-        operations.addAll(entityType.getAllSuperEntityTypes().stream()
-                .flatMap(e -> e.getOperations().stream().filter(op -> op.isAbstract() && op.getName().equals(opName)))
-                .collect(Collectors.toList()));
-        return operations;
-    }
-    
     public static EList<BoundOperation> getAllAbstractBoundOperations(final EntityType entityType) {
         EList<BoundOperation> operations = new UniqueEList<>();
         operations.addAll(entityType.getOperations().stream().filter(op -> op.isAbstract()).collect(Collectors.toList()));
         operations.addAll(entityType.getAllSuperEntityTypes().stream()
                 .flatMap(e -> e.getOperations().stream().filter(op -> op.isAbstract()))
-                .collect(Collectors.toList()));
-        return operations;
-    }
-    
-    public static EList<BoundOperation> getInheritedNonAbstractBoundOperationsByName(final EntityType entityType, final String opName) {
-        EList<BoundOperation> operations = new UniqueEList<>();
-        operations.addAll(entityType.getAllSuperEntityTypes().stream()
-                .flatMap(e -> e.getOperations().stream().filter(op -> !op.isAbstract() && op.getName().equals(opName)))
                 .collect(Collectors.toList()));
         return operations;
     }

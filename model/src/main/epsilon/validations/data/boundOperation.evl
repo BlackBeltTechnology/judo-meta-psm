@@ -25,14 +25,15 @@ context PSM!BoundOperation {
      }
      
     constraint ImplementationOfAbstractOperationIsStateful {
-		guard: psmUtils.getInheritedAbstractBoundOperationsByName(self.eContainer, self.name).notEmpty()
-		check: self.implementation.isDefined() and self.implementation.stateful
+		guard: self.implementation.isDefined() and psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).exists(o | o.abstract)
+		check: self.implementation.stateful
 		message: "Implementation of abstract operation: " + self.eContainer.name + "." + self.name + " must be stateful."
 	}
 	
 	constraint StatefulFlagIsValid {
-		check: psmUtils.getInheritedNonAbstractBoundOperationsByName(self.eContainer, self.name)
-			.forAll(o | o.implementation.isDefined() implies (self.implementation.isDefined() and o.implementation.stateful == self.implementation.stateful))
+		guard: self.implementation.isDefined()
+		check: psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name)
+			.select(o | o.implementation.isDefined()).forAll(o | o.implementation.stateful == self.implementation.stateful)
 		message: "Stateful flag of operation " + self.eContainer.name + "." + self.name + " must match the stateful flag of overloaded operations."
 	}
 }
