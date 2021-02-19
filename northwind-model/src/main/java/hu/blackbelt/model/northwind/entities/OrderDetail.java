@@ -8,7 +8,6 @@ import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
-import hu.blackbelt.model.northwind.services.OrderInfo;
 import hu.blackbelt.model.northwind.services.OrderItem;
 import hu.blackbelt.model.northwind.services.ProductInfo;
 import hu.blackbelt.model.northwind.types.Boolean;

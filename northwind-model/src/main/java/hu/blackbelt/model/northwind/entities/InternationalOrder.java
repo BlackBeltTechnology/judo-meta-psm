@@ -6,7 +6,6 @@ import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.services.InternationalOrderInfo;
-import hu.blackbelt.model.northwind.services.OrderInfo;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.String;
 

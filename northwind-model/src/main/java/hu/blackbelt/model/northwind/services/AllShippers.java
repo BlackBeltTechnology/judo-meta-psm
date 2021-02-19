@@ -2,7 +2,6 @@ package hu.blackbelt.model.northwind.services;
 
 import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.model.northwind.entities.Product;
 import hu.blackbelt.model.northwind.entities.Shipper;
 
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;

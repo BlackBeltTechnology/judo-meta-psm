@@ -2,7 +2,6 @@ package hu.blackbelt.model.northwind;
 
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.service.*;
-import hu.blackbelt.model.northwind.services.*;
 import hu.blackbelt.model.northwind.types.String;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
