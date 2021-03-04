@@ -278,7 +278,7 @@ public class Demo {
         volumeStoredInLitre.init(measured.$, volume);
 
         // entities
-        address.init(entities.$, string, city);
+        address.init(entities.$, string, city, text);
         category.init(entities.$, string, text, binary, product, employee, category_, product_, categoryInfo, productInfo);
         city.init(entities.$, string);
         company.init(entities.$, string, phone, customer, product, gps);

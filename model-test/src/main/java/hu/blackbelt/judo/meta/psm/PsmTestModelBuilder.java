@@ -105,6 +105,8 @@ public class PsmTestModelBuilder {
         intType.init(types.$);
         hu.blackbelt.model.northwind.types.String string = new hu.blackbelt.model.northwind.types.String();
         string.init(types.$);
+        hu.blackbelt.model.northwind.types.Text text = new hu.blackbelt.model.northwind.types.Text();
+        text.init(types.$);
         Double doubleType = new hu.blackbelt.model.northwind.types.Double();
         doubleType.init(types.$);
         Boolean booleanType = new hu.blackbelt.model.northwind.types.Boolean();
@@ -134,6 +136,7 @@ public class PsmTestModelBuilder {
         hu.blackbelt.model.northwind.types.Long longType = new hu.blackbelt.model.northwind.types.Long();
         longType.init(types.$);
         dataTypes.put("String", string.$);
+        dataTypes.put("Text", text.$);
         dataTypes.put("Integer", intType.$);
         dataTypes.put("Double", doubleType.$);
         dataTypes.put("Boolean", booleanType.$);

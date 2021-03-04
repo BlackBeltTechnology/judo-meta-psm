@@ -12,7 +12,7 @@ public class Text {
     public StringType $ = newStringTypeBuilder().build();
 
     public void init(Package $package) {
-        useStringType($).withName("Text").withMaxLength(250).build();
+        useStringType($).withName("Text").withMaxLength(2000).build();
 
         usePackage($package).withElements($).build();
     }
