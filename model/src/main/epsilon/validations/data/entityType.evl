@@ -27,7 +27,7 @@ context PSM!EntityType {
     
     constraint NeedToOverrideMultipleOperationImplementations {
         guard: self.getAllSuperEntityTypes()
-            .forAll(s | s.satisfiesAll("InheritanceIsNotRecursive","NeedToOverrideMultipleOperationImplementations"))
+            .forAll(s | s.satisfies("InheritanceIsNotRecursive") and s.satisfies("NeedToOverrideMultipleOperationImplementations"))
         check: psmUtils.getAllOperationNames(self).forAll(opName | self.getInheritedOperationImplementationsByName(opName).size() > 1 implies 
                         self.operations.exists(o | o.name.toLowerCase() == opName.toLowerCase() and not o.abstract))
         message: "Entity type: " + self.name + " has inherited operations without implementation, "

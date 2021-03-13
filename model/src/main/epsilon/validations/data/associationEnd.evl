@@ -36,8 +36,10 @@ context PSM!AssociationEnd {
 
 	critique AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound {
 	    guard: self.partner.isDefined()
-	       and self.satisfiesAll("ValidPartnerRelations", "ValidPartnerType")
-	       and self.partner.satisfiesAll("ValidPartnerRelations", "ValidPartnerType")
+	       and self.satisfies("ValidPartnerRelations") 
+	       		and self.satisfies("ValidPartnerType")
+	       		and self.partner.satisfiesAll("ValidPartnerRelations") 
+	       		and self.partner.satisfies("ValidPartnerType")
 	    check: ((self.cardinality.lower == 0) or (self.partner.cardinality.lower == 0))
 	    message: "At least one reference of a bidirectional association should have lower bound with zero: " + self + " or " + self.partner
 	}

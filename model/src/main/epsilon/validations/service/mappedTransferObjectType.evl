@@ -13,10 +13,14 @@ context PSM!MappedTransferObjectType{
     				.exists(c | c.behaviour.satisfies("OwnerOfBoundBehaviourIsValid") and c.behaviour.owner.target == self) )
     		
     		and self.getRelations().select(r | r.binding.isDefined())
-    			.forAll(r | r.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid"))
+    			.forAll(r | r.satisfies("TargetMatchesBindingTarget") 
+    							and r.satisfies("CardinalityMatchesBindingCardinality") 
+    							and r.satisfies("TransferObjectRelationBindingIsValid"))
     		
     		and self.getAttributes().select(a | a.binding.isDefined())
-    			.forAll(a | a.satisfiesAll("DataTypeMatchesBindingDataType","RequiredFlagMatchesBindingRequiredFlag","TransferAttributeBindingIsValid"))
+    			.forAll(a | a.satisfies("DataTypeMatchesBindingDataType") 
+    							and a.satisfies("RequiredFlagMatchesBindingRequiredFlag") 
+    							and a.satisfies("TransferAttributeBindingIsValid"))
 
     	check: psmUtils.getUnboundRequiredFeaturesOfMappingTarget(self).isEmpty()
     	

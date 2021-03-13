@@ -40,7 +40,7 @@ context PSM!TransferOperationBehaviour {
     }
 
     constraint GetPrincipalOperationOutputCardinalityIsValid {
-        guard: self.satisfiesAll("GetPrincipalOperationOutputParameterIsDefined")
+        guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
         check: self.eContainer.output.cardinality.lower == 0 and
             self.eContainer.output.cardinality.upper == 1
         message: "Cardinality of 'GET_PRINCIPAL' operation's output parameter must be 0..1 (operation: " + self.eContainer.name + ")"

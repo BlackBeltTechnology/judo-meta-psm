@@ -35,7 +35,10 @@ context PSM!TransferObjectRelation {
     }
     
     constraint EmbeddedOnBothSidesAreNotAllowed {
-    	guard: self.binding.isDefined() and self.satisfiesAll("TargetMatchesBindingTarget","CardinalityMatchesBindingCardinality","TransferObjectRelationBindingIsValid")
+    	guard: self.binding.isDefined() 
+    				and self.satisfies("TargetMatchesBindingTarget") 
+    				and self.satisfies("CardinalityMatchesBindingCardinality") 
+    				and self.satisfies("TransferObjectRelationBindingIsValid")
     		and self.embedded and self.binding.isKindOf(PSM!AssociationEnd) and self.binding.partner.isDefined()
     	check: not self.target.relations.exists(r | r.embedded
     												and r.binding.isDefined()
