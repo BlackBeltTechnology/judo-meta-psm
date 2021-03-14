@@ -18,8 +18,9 @@ context PSM!BoundOperation {
     }
  
  	constraint OverridingWithValidParameters {
-     	guard: self.satisfiesAll("NamedElementHasContainer","AbstractOperationIsValid")
-     	     			and psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).forAll(o | o.satisfies("OverridingWithValidParameters"))
+     	guard: self.satisfies("NamedElementHasContainer") 
+     			and self.satisfies("AbstractOperationIsValid")
+ 	     		and psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).forAll(o | o.satisfies("OverridingWithValidParameters"))
      	check: psmUtils.getInheritedBoundOperationsByName(self.eContainer, self.name).forAll(o | psmUtils.parametersAreCompatible(self,o))
         message: "Overriding of bound operation cannot change parameters (bound operation " + self.name + " in " + self.eContainer.name + ")"
      }

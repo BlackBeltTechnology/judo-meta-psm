@@ -30,7 +30,7 @@ context PSM!TransferOperationBehaviour {
 			(self.behaviourType == PSM!TransferOperationBehaviourType#CREATE_INSTANCE or
 			self.behaviourType == PSM!TransferOperationBehaviourType#VALIDATE_CREATE) and
 			
-			self.satisfiesAll("OwnerOfBoundBehaviourIsRelation","OwnerOfBoundBehaviourIsValid") and
+			self.satisfies("OwnerOfBoundBehaviourIsRelation")and self.satisfies("OwnerOfBoundBehaviourIsValid") and
 			
 			self.owner.target.isKindOf(PSM!MappedTransferObjectType)
 			
