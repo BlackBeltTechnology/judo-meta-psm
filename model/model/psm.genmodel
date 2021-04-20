@@ -16,6 +16,7 @@
         ecorePackage="psm.ecore#//namespace">
       <genClasses image="false" ecoreClass="psm.ecore#//namespace/NamedElement">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/NamedElement/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/NamedElement/documentation"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//namespace/Namespace">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//namespace/Namespace/elements"/>
