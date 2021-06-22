@@ -258,6 +258,8 @@
       <genClasses ecoreClass="psm.ecore#//derived/ExpressionType">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//derived/ExpressionType/expression"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//derived/ExpressionType/dialect"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//derived/ExpressionType/parameterType"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//derived/ReferenceExpressionType"/>
       <genClasses ecoreClass="psm.ecore#//derived/ReferenceSelectorType"/>

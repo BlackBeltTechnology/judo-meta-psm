@@ -8,6 +8,7 @@ class PlaceHolder {
 package namespace {
   abstract class NamedElement {
     attr String[1] name;
+    attr String documentation;
   }
 
   abstract class Namespace extends NamedElement {
@@ -253,6 +254,7 @@ package data {
     val EntitySequence[*] sequences;
     val BoundOperation[*] operations;
     val constraint.InvariantConstraint[*] constraints;
+    ref service.MappedTransferObjectType defaultRepresentation;
   }
 
   abstract class Relation extends ReferenceTypedElement, EntityMember {
@@ -275,6 +277,7 @@ package data {
     @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfAttribute(this).get();")
     op EntityType[1] getEntityType();
     attr boolean[1] identifier;
+    attr boolean[1] unmappedDefaultOnly = false;
   }
 
   class AssociationEnd extends Relation {
@@ -283,6 +286,7 @@ package data {
     op Relation getOpposite();
     ref AssociationEnd partner;
     attr boolean[1] reverseCascadeDelete = false;
+    attr boolean[1] unmappedDefaultOnly = false;
   }
 
   abstract class ReferenceTypedElement extends namespace.NamedElement {
@@ -390,6 +394,7 @@ package ~derived {
   abstract class ExpressionType {
     attr String[1] expression;
     attr ExpressionDialect[1] dialect;
+    ref service.TransferObjectType parameterType;
   }
 
   enum ExpressionDialect {
@@ -425,6 +430,7 @@ package service {
     ref accesspoint.AbstractActorType#transferObjectType actorType;
     attr boolean[1] optional = false;
     ref TransferObjectType override;
+    attr boolean[1] queryCustomizer = false;
   }
 
   class TransferObjectRelation extends namespace.NamedElement {
@@ -448,7 +454,7 @@ package service {
     !ordered op boolean[1] isExposedGraph();
     val type.Cardinality[1] cardinality;
     ref data.ReferenceTypedElement binding;
-    ref ~derived.StaticNavigation defaultValue;
+    ref ~derived.ReferenceAccessor defaultValue;
     ref ~derived.ReferenceAccessor range;
     ref TransferObjectType[1] target;
     attr boolean[1] embedded = false;
@@ -463,7 +469,7 @@ package service {
     @GenModel(body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;")
     op boolean[1] isPrimitive();
     attr boolean[1] required;
-    ref ~derived.StaticData defaultValue;
+    ref ~derived.PrimitiveAccessor defaultValue;
     ref type.Primitive[1] dataType;
     ref data.PrimitiveTypedElement binding;
     attr String claimType;
