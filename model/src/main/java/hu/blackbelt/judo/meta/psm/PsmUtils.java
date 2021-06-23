@@ -834,7 +834,8 @@ public class PsmUtils {
     			.collect(Collectors.toSet()));
     	
     	Set<TransferObjectRelation> boundRelations = transferObject.getRelations().stream()
-    			.filter(r -> r.getBinding() != null)
+    			.filter(r -> r.getBinding() != null &&
+                        ((r.getBinding() instanceof Containment && r.isEmbedded()) || !(r.getBinding() instanceof Containment)))
     			.collect(Collectors.toSet());
     	Set<TransferAttribute> boundAttributes = transferObject.getAttributes().stream()
     			.filter(a -> a.getBinding() != null)
