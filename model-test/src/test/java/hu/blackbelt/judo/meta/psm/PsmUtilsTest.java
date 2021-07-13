@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static hu.blackbelt.judo.meta.psm.PsmUtils.setId;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
@@ -37,8 +38,7 @@ import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PsmUtilsTest extends NorthwindTest {
 
@@ -594,4 +594,38 @@ public class PsmUtilsTest extends NorthwindTest {
 		assertTrue(expected1.contains(binding3));
 
 	}
+
+	@Test
+	public void testValidateUniqueXmiids() {
+		final PsmModel psmModel = PsmModel.buildPsmModel()
+				.uri(URI.createURI(createdSourceModelName))
+				.name("test")
+				.build();
+
+		final Model m = newModelBuilder().withName("M").build();
+		psmModel.addContent(m);
+
+		final PsmUtils psmUtils = new PsmUtils();
+
+		final EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").build();
+		final EntityType entityType2 = newEntityTypeBuilder().withName("entityType2").build();
+		m.getElements().addAll(Arrays.asList(entityType1, entityType2));
+
+		// #1 - unknown ResourceSet
+		assertThrows(IllegalStateException.class, psmUtils::validateUniqueXmiids);
+
+		psmUtils.setResourceSet(psmModel.getResourceSet());
+
+		// #2 - unique xmiid
+		setId(entityType1, "EntityType1Xmiid");
+		setId(entityType2, "EntityType2Xmiid");
+
+		psmUtils.validateUniqueXmiids();
+
+		// #3 - non-unique xmiid
+		setId(entityType2, "EntityType1Xmiid");
+
+		assertThrows(IllegalStateException.class, psmUtils::validateUniqueXmiids);
+	}
+
 }

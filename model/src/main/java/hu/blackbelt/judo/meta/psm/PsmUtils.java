@@ -1,47 +1,25 @@
 package hu.blackbelt.judo.meta.psm;
 
-import hu.blackbelt.judo.meta.psm.data.Attribute;
-import hu.blackbelt.judo.meta.psm.data.BoundOperation;
-import hu.blackbelt.judo.meta.psm.data.Containment;
-import hu.blackbelt.judo.meta.psm.data.EntitySequence;
-import hu.blackbelt.judo.meta.psm.data.EntityType;
-import hu.blackbelt.judo.meta.psm.data.OperationBody;
-import hu.blackbelt.judo.meta.psm.data.PrimitiveTypedElement;
-import hu.blackbelt.judo.meta.psm.data.ReferenceTypedElement;
-import hu.blackbelt.judo.meta.psm.data.Relation;
+import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.measure.DerivedMeasure;
-import hu.blackbelt.judo.meta.psm.measure.DurationType;
-import hu.blackbelt.judo.meta.psm.measure.DurationUnit;
-import hu.blackbelt.judo.meta.psm.measure.Measure;
-import hu.blackbelt.judo.meta.psm.measure.Unit;
+import hu.blackbelt.judo.meta.psm.measure.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Namespace;
 import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
-import hu.blackbelt.judo.meta.psm.service.BoundTransferOperation;
-import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.OperationDeclaration;
-import hu.blackbelt.judo.meta.psm.service.TransferAttribute;
-import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
-import hu.blackbelt.judo.meta.psm.service.TransferObjectType;
-import hu.blackbelt.judo.meta.psm.service.TransferOperation;
-import hu.blackbelt.judo.meta.psm.service.TransferOperationBehaviourType;
-import hu.blackbelt.judo.meta.psm.service.UnboundOperation;
+import hu.blackbelt.judo.meta.psm.service.*;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
@@ -55,6 +33,22 @@ public class PsmUtils {
 
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
+
+    private ResourceSet resourceSet;
+
+    public PsmUtils() {
+        resourceSet = null;
+    }
+
+    public PsmUtils(ResourceSet resourceSet) {
+        this.resourceSet = resourceSet;
+    }
+
+    public void setResourceSet(ResourceSet resourceSet) {
+        this.resourceSet = resourceSet;
+    }
+
+    private final Log log = new Slf4jLog();
 
     /**
      * Convert namespace to string.
@@ -844,6 +838,66 @@ public class PsmUtils {
     	names.removeIf(n -> boundRelations.stream().anyMatch(r -> r.getBinding().getName().equalsIgnoreCase(n)) || 
     						boundAttributes.stream().anyMatch(a -> a.getBinding().getName().equalsIgnoreCase(n)));
     	return names;
+    }
+
+    /**
+     * Get id of {@link EObject} in XML if it has a resource
+     *
+     * @param eObject {@link EObject} with id
+     * @return <i>eObject's</i> id if it has a resource, null otherwise
+     */
+    public static String getId(EObject eObject) {
+        XMLResource xmlResource = (XMLResource) eObject.eResource();
+        return xmlResource == null
+               ? null
+               : xmlResource.getID(eObject);
+    }
+
+    /**
+     * Set id of {@link EObject} in XML if it has a resource
+     *
+     * @param eObject {@link EObject} with id
+     * @param id      new id
+     * @throws IllegalStateException if <i>eObject</i> does not have a resource
+     */
+    public static void setId(EObject eObject, String id) {
+        XMLResource xmlResource = (XMLResource) eObject.eResource();
+        if (xmlResource == null) {
+            throw new IllegalStateException("Id " + id + " cannot be set: target object " + eObject + " does not have a resource");
+        }
+        xmlResource.setID(eObject, id);
+    }
+
+    /**
+     * Check if all {@link EObject}s' xmiid-s are unique
+     *
+     * @throws IllegalStateException if model's ResourceSet is unknown (null) or duplicates were found
+     * @see PsmUtils#PsmUtils(ResourceSet)
+     * @see PsmUtils#setResourceSet(ResourceSet)
+     */
+    public void validateUniqueXmiids() {
+        if (resourceSet == null) {
+            throw new IllegalStateException("Model's ResourceSet is unknown (null)");
+        }
+
+        log.debug("Xmiid validation started...");
+        final List<String> ids = all(resourceSet)
+                .filter(o -> o instanceof EObject)
+                .map(o -> getId((EObject) o))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        final Set<String> nonUniqueXmiids = ids.stream()
+                .filter(id -> {
+                    log.debug("Checking id: " + id);
+                    return ids.stream().filter(id::equals).count() > 1;
+                })
+                .collect(Collectors.toSet());
+
+        if (nonUniqueXmiids.size() != 0) {
+            final StringBuilder builder = new StringBuilder();
+            nonUniqueXmiids.forEach(id -> builder.append("Xmiid ").append(id).append(" must be unique\n"));
+            throw new IllegalStateException("There are non-unique xmiid-s\n" + builder.toString());
+        }
     }
 
     /**
