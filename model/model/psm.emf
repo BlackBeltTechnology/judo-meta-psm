@@ -317,14 +317,14 @@ package data {
   abstract interface EntityMember {
   }
 
-  abstract class Sequence {
+  abstract class Sequence extends namespace.NamedElement {
     attr long[1] initialValue = "0";
     attr long[1] increment = "1";
     attr long maximumValue;
     attr boolean[1] cyclic = false;
   }
 
-  class EntitySequence extends EntityMember, Sequence, namespace.NamedElement {
+  class EntitySequence extends EntityMember, Sequence {
   }
 
   class NamespaceSequence extends Sequence, namespace.NamespaceElement {
