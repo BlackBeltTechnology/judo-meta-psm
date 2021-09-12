@@ -18,9 +18,10 @@ import org.osgi.service.log.LogService;
 
 import javax.inject.Inject;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 
-import static hu.blackbelt.judo.meta.psm.osgi.itest.PsmKarafFeatureProvider.*;
+import static hu.blackbelt.judo.meta.psm.osgi.itest.KarafFeatureProvider.*;
 import static org.junit.Assert.assertFalse;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.OptionUtils.combine;
@@ -46,9 +47,9 @@ public class PsmModelLoadITest {
     PsmModel psmModel;
 
     @Configuration
-    public Option[] config() throws FileNotFoundException, UnsupportedEncodingException {
+    public Option[] config() throws FileNotFoundException, UnsupportedEncodingException, MalformedURLException {
 
-        return combine(getRuntimeFeaturesForMetamodel(this.getClass()),
+        return combine(karafConfig(this.getClass()),
                 mavenBundle(maven()
                         .groupId("hu.blackbelt.judo.meta")
                         .artifactId("hu.blackbelt.judo.meta.psm.osgi")
