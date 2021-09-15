@@ -8,7 +8,7 @@ import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders;
 import hu.blackbelt.model.northwind.services.CategoryInfo;
 import hu.blackbelt.model.northwind.services.ProductInfo;
-import hu.blackbelt.model.northwind.types.Binary;
+import hu.blackbelt.model.northwind.types.Photo;
 import hu.blackbelt.model.northwind.types.String;
 import hu.blackbelt.model.northwind.types.Text;
 
@@ -29,7 +29,7 @@ public class Category {
     public BoundOperation listProducts = newBoundOperationBuilder().build();
     public BoundOperation moveProducts = newBoundOperationBuilder().build();
 
-    public void init(Package $package, String $string, Text $text, Binary $binary, Product $product, Employee $employee,
+    public void init(Package $package, String $string, Text $text, Photo $photo, Product $product, Employee $employee,
                      hu.blackbelt.model.northwind.services.Category $category, hu.blackbelt.model.northwind.services.Product $product_,
                      CategoryInfo $categoryInfo, ProductInfo $productInfo) {
         useEntityType($).withName("Category")
@@ -41,7 +41,7 @@ public class Category {
                         .withDataType($text.$)
                 )
                 .withAttributes(useAttribute(picture).withName("picture")
-                        .withDataType($binary.$)
+                        .withDataType($photo.$)
                 )
                 .withRelations(useAssociationEnd(products).withName("products")
                         .withTarget($product.$)

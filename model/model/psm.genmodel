@@ -102,6 +102,10 @@
         <genOperations ecoreOperation="psm.ecore#//type/TimestampType/toString" body="return super.toString();"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//type/FlatPrimitiveType"/>
+      <genClasses ecoreClass="psm.ecore#//type/BinaryType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/BinaryType/mimeTypes"/>
+        <genOperations ecoreOperation="psm.ecore#//type/BinaryType/toString" body="return super.toString();"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Data" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
         disposableProviderFactory="true" dataTypeConverters="true" extensibleProviderFactory="true"

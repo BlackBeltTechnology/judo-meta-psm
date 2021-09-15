@@ -160,6 +160,13 @@ package type {
   abstract class FlatPrimitiveType extends Primitive {
   }
 
+  class BinaryType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr String[*] mimeTypes;
+  }
+
 }
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/data", prefix="data")

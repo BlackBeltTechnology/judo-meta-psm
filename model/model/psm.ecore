@@ -191,6 +191,15 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="FlatPrimitiveType" abstract="true"
         eSuperTypes="#//type/Primitive"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BinaryType" eSuperTypes="#//type/FlatPrimitiveType">
+      <eOperations name="toString" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return super.toString();"/>
+        </eAnnotations>
+      </eOperations>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="mimeTypes" upperBound="-1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
   </eSubpackages>
   <eSubpackages name="data" nsURI="http://blackbelt.hu/judo/meta/psm/data" nsPrefix="data">
     <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//type/Type">
