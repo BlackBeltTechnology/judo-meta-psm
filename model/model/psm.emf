@@ -165,6 +165,7 @@ package type {
     @GenModel(body="return super.toString();")
     op String[1] toString();
     attr String[*] mimeTypes;
+    attr long maxFileSize;
   }
 
 }
@@ -546,6 +547,7 @@ package service {
     REMOVE_REFERENCE = 30;
     GET_RANGE = 31;
     GET_METADATA = 14;
+    GET_UPLOAD_TOKEN = 15;
   }
 
 }
