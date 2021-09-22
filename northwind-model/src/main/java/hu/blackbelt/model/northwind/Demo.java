@@ -160,7 +160,7 @@ public class Demo {
     private ShipmentChange shipmentChange = new ShipmentChange();
     private ShipperInfo shipperInfo = new ShipperInfo();
     private AreaStoredInSquareMetre areaStoredInSquareMetre = new AreaStoredInSquareMetre();
-    private Binary binary = new Binary();
+    private Photo photo = new Photo();
     private Boolean boolean_ = new Boolean();
     private Countries countries = new Countries();
     private Date date = new Date();
@@ -251,7 +251,7 @@ public class Demo {
         work.init(measures.$, force, length);
 
         // types
-        binary.init(types.$);
+        photo.init(types.$);
         boolean_.init(types.$);
         countries.init(types.$);
         date.init(types.$);
@@ -279,11 +279,11 @@ public class Demo {
 
         // entities
         address.init(entities.$, string, city, text);
-        category.init(entities.$, string, text, binary, product, employee, category_, product_, categoryInfo, productInfo);
+        category.init(entities.$, string, text, photo, product, employee, category_, product_, categoryInfo, productInfo);
         city.init(entities.$, string);
         company.init(entities.$, string, phone, customer, product, gps);
         customer.init(entities.$, order, address);
-        employee.init(entities.$, string, date, phone, binary, text, person, order,
+        employee.init(entities.$, string, date, phone, photo, text, person, order,
                 address, territory, category);
         induvidual.init(entities.$, phone, person, customer);
         internationalAddress.init(entities.$, countries, address);

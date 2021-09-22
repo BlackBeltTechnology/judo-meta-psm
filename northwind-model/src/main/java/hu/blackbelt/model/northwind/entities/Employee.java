@@ -32,7 +32,7 @@ public class Employee {
 
 
     public void init(Package $package,
-                     String $string, Date $date, Phone $phone, Binary $binary, Text $text,
+                     String $string, Date $date, Phone $phone, Photo $photo, Text $text,
                      Person $person, Order $order, Address $address, Territory $territory, Category $category) {
 
         useEntityType($).withName("Employee")
@@ -59,7 +59,7 @@ public class Employee {
                 )
                 .withAttributes(useAttribute(photo)
                         .withName("photo")
-                        .withDataType($binary.$)
+                        .withDataType($photo.$)
                 )
                 .withAttributes(useAttribute(notes)
                         .withName("notes")
