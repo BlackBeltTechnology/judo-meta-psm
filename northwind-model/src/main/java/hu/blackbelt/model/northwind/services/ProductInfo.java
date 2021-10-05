@@ -80,6 +80,7 @@ public class ProductInfo {
                         ))
                 .withOperations(useUnboundOperation(getRangeReferenceCategory)
                         .withName("_getRangeReferenceCategory")
+                        .withImmutable(true)
                         .withBehaviour(newTransferOperationBehaviourBuilder()
                                 .withBehaviourType(TransferOperationBehaviourType.GET_RANGE)
                                 .withOwner(category)

@@ -523,6 +523,7 @@ package service {
   abstract class TransferOperation extends namespace.NamedElement, OperationDeclaration {
     !ordered op data.OperationBody getImplementation();
     val TransferOperationBehaviour behaviour;
+    attr boolean[1] immutable = false;
   }
 
   class TransferOperationBehaviour {
