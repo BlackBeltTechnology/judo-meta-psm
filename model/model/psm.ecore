@@ -594,6 +594,11 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="immutable" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="false"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="embeddedDelete" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+          defaultValueLiteral="false"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="embeddedUpdate" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransferOperationBehaviour">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="behaviourType" lowerBound="1"
