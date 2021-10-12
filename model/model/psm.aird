@@ -78,7 +78,7 @@
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_VjV9QA7gEemYKLassfSQTg" name="menu CD" repPath="#_VjQdsA7gEemYKLassfSQTg">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_uVzdBxEfEemYKLassfSQTg" name="operation CD" repPath="#_uVzdABEfEemYKLassfSQTg" changeId="1a2f8965-b9bf-443e-b910-2d4a650f3505">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_uVzdBxEfEemYKLassfSQTg" name="operation CD" repPath="#_uVzdABEfEemYKLassfSQTg" changeId="4a8e10cc-a66d-44c3-99c4-46195f741b96">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="psm.ecore#//service"/>
       </ownedRepresentationDescriptors>
@@ -14827,17 +14827,17 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
       </ownedElements>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_KwpLUSqoEeybvI8OvqJuAg" name="embeddedDelete : EBoolean = false" tooltipText="">
-        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/embeddedDelete"/>
-        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/embeddedDelete"/>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_KwpLUSqoEeybvI8OvqJuAg" name="deleteOnResult : EBoolean = false" tooltipText="">
+        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/deleteOnResult"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/deleteOnResult"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_KwrAgCqoEeybvI8OvqJuAg" labelAlignment="LEFT" description="_mdhZsRFBEemYKLassfSQTg">
           <labelFormat>bold</labelFormat>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
       </ownedElements>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_KwsOoCqoEeybvI8OvqJuAg" name="embeddedUpdate : EBoolean = false" tooltipText="">
-        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/embeddedUpdate"/>
-        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/embeddedUpdate"/>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_KwsOoCqoEeybvI8OvqJuAg" name="updateOnResult : EBoolean = false" tooltipText="">
+        <target xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/updateOnResult"/>
+        <semanticElements xmi:type="ecore:EAttribute" href="psm.ecore#//service/TransferOperation/updateOnResult"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_Kws1sCqoEeybvI8OvqJuAg" labelAlignment="LEFT" description="_mdhZsRFBEemYKLassfSQTg">
           <labelFormat>bold</labelFormat>
         </ownedStyle>
