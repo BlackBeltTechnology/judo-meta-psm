@@ -66,8 +66,8 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 
-        <epsilon-runtime-version>1.4.0.20210919_103207_8f2ef01_develop</epsilon-runtime-version>
-        <epsilon-runtime-eclipse-version>1.4.0.20210919_133947_3330a32_develop</epsilon-runtime-eclipse-version>
+        <epsilon-runtime-version>1.4.0.20211022_072214_ed58056d_develop</epsilon-runtime-version>
+        <epsilon-runtime-eclipse-version>1.4.0.20211022_200317_8c3c9893_develop</epsilon-runtime-eclipse-version>
                 
 		<src.dir>src/main</src.dir>
 
@@ -75,9 +75,9 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<tycho-version>2.5.0</tycho-version>
 
-		<emf-genmodel-generator-version>1.0.1</emf-genmodel-generator-version>
-		<judo-genmodel-generator-version>1.0.0</judo-genmodel-generator-version>
-		<judo-epp-common-version>4.19.0.20210706_170220_0c21c18_develop</judo-epp-common-version>
+		<emf-genmodel-generator-version>1.0.2.20211021_110357_261394e2_develop</emf-genmodel-generator-version>
+		<judo-genmodel-generator-version>1.0.1.20211024_233306_21dd275f_develop</judo-genmodel-generator-version>
+		<judo-epp-common-version>4.19.0.20211022_122608_10e6ef76_develop</judo-epp-common-version>
 
 		<xtext-version>2.25.0</xtext-version>
 		<emf-mwe2-launch-version>2.12.1</emf-mwe2-launch-version>
@@ -238,7 +238,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
 								<pluginExecution>
@@ -414,7 +414,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 
@@ -434,7 +434,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -453,7 +453,7 @@
                                 		</goals>
                                 	</pluginExecutionFilter>
                                 	<action>
-                                		<ignore></ignore>
+                                		<ignore />
                                 	</action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -472,7 +472,7 @@
                                 		</goals>
                                 	</pluginExecutionFilter>
                                 	<action>
-                                		<ignore></ignore>
+                                		<ignore />
                                 	</action>
                                 </pluginExecution>
 							</pluginExecutions>
