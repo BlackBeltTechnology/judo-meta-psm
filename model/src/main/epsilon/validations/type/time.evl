@@ -1,0 +1,10 @@
+context PSM!TimeType {
+
+	constraint TimeBaseUnitIsValid {
+		check:	(self.baseUnit == PSM!DurationType#nanosecond) or
+		        (self.baseUnit == PSM!DurationType#microsecond) or
+				(self.baseUnit == PSM!DurationType#millisecond) or
+				(self.baseUnit == PSM!DurationType#second)
+		message: "Base unit of time type: " + self.name + " is invalid."
+	}
+}
