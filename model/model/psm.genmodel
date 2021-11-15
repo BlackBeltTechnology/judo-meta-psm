@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/hu.blackbelt.judo.meta.psm.model/src-gen" modelPluginID="hu.blackbelt.judo.meta.psm.model"
-    modelName="Psm" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    modelName="Psm" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="" importerID="org.eclipse.emf.importer.ecore" featureDelegation="Dynamic"
     complianceLevel="11.0" copyrightFields="false" operationReflection="true" importOrganizing="true"
-    oSGiCompatible="true" updateClasspath="false">
+    oSGiCompatible="true">
   <foreignModel>psm.ecore</foreignModel>
   <genPackages prefix="Psm" basePackage="hu.blackbelt.judo.meta" resource="XMI" disposableProviderFactory="true"
       dataTypeConverters="true" extensibleProviderFactory="true" childCreationExtenders="true"
@@ -106,6 +106,10 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/BinaryType/mimeTypes"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/BinaryType/maxFileSize"/>
         <genOperations ecoreOperation="psm.ecore#//type/BinaryType/toString" body="return super.toString();"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//type/TimeType">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//type/TimeType/baseUnit"/>
+        <genOperations ecoreOperation="psm.ecore#//type/TimeType/toString" body="return super.toString();"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Data" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"

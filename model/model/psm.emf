@@ -168,6 +168,13 @@ package type {
     attr long maxFileSize;
   }
 
+  class TimeType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr measure.DurationType[1] baseUnit = "second";
+  }
+
 }
 
 @namespace(uri="http://blackbelt.hu/judo/meta/psm/data", prefix="data")
@@ -524,6 +531,8 @@ package service {
     !ordered op data.OperationBody getImplementation();
     val TransferOperationBehaviour behaviour;
     attr boolean[1] immutable = false;
+    attr boolean[1] deleteOnResult = false;
+    attr boolean[1] updateOnResult = false;
   }
 
   class TransferOperationBehaviour {

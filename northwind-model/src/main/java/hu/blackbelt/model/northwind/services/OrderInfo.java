@@ -20,6 +20,9 @@ public class OrderInfo {
     public MappedTransferObjectType $ = newMappedTransferObjectTypeBuilder().build();
 
     public TransferAttribute orderDate = newTransferAttributeBuilder().build();
+    public TransferAttribute deliveryFrom = newTransferAttributeBuilder().build();
+    public TransferAttribute deliveryTo = newTransferAttributeBuilder().build();
+
     public TransferAttribute shipperName = newTransferAttributeBuilder().build();
     public TransferAttribute priority = newTransferAttributeBuilder().build();
     public TransferAttribute shipped = newTransferAttributeBuilder().build();
@@ -49,7 +52,7 @@ public class OrderInfo {
     public void init(Package $package, String $string, TimeStamp $timeStamp, Priority $priority, Boolean $boolean,
                      Gps $gps, Integer $integer, Double $double, MassStoredInGrams $massStoredInGrams,
                      Order $order, OrderItem $orderItem, ShipperInfo $shipperInfo, CategoryInfo $categoryInfo,
-                     ShipmentChange $shipmentChange, Comment $comment) {
+                     ShipmentChange $shipmentChange, Comment $comment, Time $time) {
         useMappedTransferObjectType($)
                 .withName("OrderInfo")
                 .withEntityType($order.$)
@@ -58,6 +61,16 @@ public class OrderInfo {
                         .withRequired(true)
                         .withDataType($timeStamp.$)
                         .withBinding($order.orderDate)
+                )
+                .withAttributes(useTransferAttribute(deliveryFrom)
+                        .withName("deliveryFrom")
+                        .withDataType($time.$)
+                        .withBinding($order.deliveryFrom)
+                )
+                .withAttributes(useTransferAttribute(deliveryTo)
+                        .withName("deliveryTo")
+                        .withDataType($time.$)
+                        .withBinding($order.deliveryTo)
                 )
                 .withAttributes(useTransferAttribute(priority)
                         .withName("priority")
