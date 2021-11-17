@@ -51,6 +51,7 @@
         <genOperations ecoreOperation="psm.ecore#//type/Primitive/isTimestamp" body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimestampType;"/>
         <genOperations ecoreOperation="psm.ecore#//type/Primitive/isEnumeration" body="return this instanceof hu.blackbelt.judo.meta.psm.type.EnumerationType;"/>
         <genOperations ecoreOperation="psm.ecore#//type/Primitive/isMeasured" body="return this instanceof hu.blackbelt.judo.meta.psm.measure.MeasuredType;"/>
+        <genOperations ecoreOperation="psm.ecore#//type/Primitive/isTime" body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimeType;"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//type/CustomType">
         <genOperations ecoreOperation="psm.ecore#//type/CustomType/toString" body="return super.toString();"/>
