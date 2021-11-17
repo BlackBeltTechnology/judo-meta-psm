@@ -2,20 +2,13 @@ package hu.blackbelt.judo.meta.psm;
 
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newBooleanTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCustomTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newDateTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newEnumerationMemberBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newEnumerationTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newPasswordTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newTimestampTypeBuilder;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 
+import hu.blackbelt.judo.meta.psm.type.*;
 import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,13 +25,6 @@ import hu.blackbelt.judo.meta.psm.measure.DurationType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.judo.meta.psm.type.BooleanType;
-import hu.blackbelt.judo.meta.psm.type.CustomType;
-import hu.blackbelt.judo.meta.psm.type.DateType;
-import hu.blackbelt.judo.meta.psm.type.NumericType;
-import hu.blackbelt.judo.meta.psm.type.PasswordType;
-import hu.blackbelt.judo.meta.psm.type.StringType;
-import hu.blackbelt.judo.meta.psm.type.TimestampType;
 
 class PsmValidationTypeTest {
 
@@ -232,4 +218,28 @@ class PsmValidationTypeTest {
 						"TimeStampBaseUnitIsValid|Base unit of timestamp type: yearTimestamp is invalid."),
 				Collections.emptyList());
 	}
+
+	@Test
+	void testTimeBaseUnitIsValid() throws Exception {
+		log.info("Testing constraint: TimeBaseUnitIsValid");
+
+		TimeType weekTime = newTimeTypeBuilder().withName("weekTime")
+				.withBaseUnit(DurationType.WEEK).build();
+		TimeType monthTime = newTimeTypeBuilder().withName("monthTime")
+				.withBaseUnit(DurationType.MONTH).build();
+		TimeType yearTime = newTimeTypeBuilder().withName("yearTime")
+				.withBaseUnit(DurationType.YEAR).build();
+
+		Model m = newModelBuilder().withName("M")
+				.withElements(ImmutableList.of(weekTime, monthTime, yearTime)).build();
+
+		psmModel.addContent(m);
+
+		runEpsilon(
+				ImmutableList.of("TimeBaseUnitIsValid|Base unit of time type: weekTime is invalid.",
+						"TimeBaseUnitIsValid|Base unit of time type: monthTime is invalid.",
+						"TimeBaseUnitIsValid|Base unit of time type: yearTime is invalid."),
+				Collections.emptyList());
+	}
+
 }
