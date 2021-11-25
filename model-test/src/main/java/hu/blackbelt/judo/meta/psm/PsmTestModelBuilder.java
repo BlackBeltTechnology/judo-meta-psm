@@ -114,7 +114,9 @@ public class PsmTestModelBuilder {
         Date dateType = new Date();
         dateType.init(types.$);
         TimeStamp timeStampType = new TimeStamp();
+        Time timeType = new Time();
         timeStampType.init(types.$);
+        timeType.init(types.$);
         Measured measured = new Measured();
         measured.init(types.$);
         Measures measures = new Measures();
@@ -142,6 +144,7 @@ public class PsmTestModelBuilder {
         dataTypes.put("Boolean", booleanType.$);
         dataTypes.put("Date", dateType.$);
         dataTypes.put("Timestamp", timeStampType.$);
+        dataTypes.put("Time", timeType.$);
         dataTypes.put("MassStoredInKilograms", massStoredInKilograms.$);
         dataTypes.put("MassStoredInGrams", massStoredInGrams.$);
         dataTypes.put("MassIntegerKg", massIntegerKg);

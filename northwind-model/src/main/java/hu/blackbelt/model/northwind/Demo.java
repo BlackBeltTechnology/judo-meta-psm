@@ -4,7 +4,6 @@ import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionExceptio
 import hu.blackbelt.epsilon.runtime.execution.impl.StringBuilderLogger;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.judo.meta.psm.type.TimeType;
 import hu.blackbelt.model.northwind.entities.Address;
 import hu.blackbelt.model.northwind.entities.Category;
 import hu.blackbelt.model.northwind.entities.City;
