@@ -35,6 +35,8 @@ public class Order {
     public Attribute freight = newAttributeBuilder().build();
     public Attribute shipName = newAttributeBuilder().build();
     public Attribute priority = newAttributeBuilder().build();
+    public Attribute deliveryFrom = newAttributeBuilder().build();
+    public Attribute deliveryTo = newAttributeBuilder().build();
 
     public AssociationEnd customer = newAssociationEndBuilder().build();
     public AssociationEnd shipper = newAssociationEndBuilder().build();
@@ -68,12 +70,21 @@ public class Order {
                      Integer $integer, Gps $gps, Priority $priority, MassStoredInGrams $massStoredInGrams,
                      Customer $customer, Shipper $shipper, Employee $employee,
                      InternationalAddress $internationalAddress, OrderDetail $orderDetail, Category $category,
-                     Territory $territory, OrderInfo $orderInfo, OrderItem $orderItem, CategoryInfo $categoryInfo) {
+                     Territory $territory, OrderInfo $orderInfo, OrderItem $orderItem, CategoryInfo $categoryInfo,
+                     Time $time) {
         useEntityType($).withName("Order")
                 .withAttributes(useAttribute(orderDate)
                         .withName("orderDate")
                         .withRequired(true)
                         .withDataType($timeStamp.$)
+                )
+                .withAttributes(useAttribute(deliveryFrom)
+                        .withName("deliveryFrom")
+                        .withDataType($time.$)
+                )
+                .withAttributes(useAttribute(deliveryTo)
+                        .withName("deliveryTo")
+                        .withDataType($time.$)
                 )
                 .withAttributes(useAttribute(requiredDate)
                         .withName("requiredDate")

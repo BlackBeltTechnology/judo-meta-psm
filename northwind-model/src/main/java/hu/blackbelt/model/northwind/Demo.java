@@ -177,6 +177,7 @@ public class Demo {
     private String string = new String();
     private Text text = new Text();
     private TimeStamp timeStamp = new TimeStamp();
+    private hu.blackbelt.model.northwind.types.Time timetype = new hu.blackbelt.model.northwind.types.Time();
     private TimeStoredInMonths timeStoredInMonths = new TimeStoredInMonths();
     private TimeStoredInSeconds timeStoredInSeconds = new TimeStoredInSeconds();
     private Titles titles = new Titles();
@@ -266,6 +267,7 @@ public class Demo {
         string.init(types.$);
         text.init(types.$);
         timeStamp.init(types.$);
+        timetype.init(types.$);
         titles.init(types.$);
         url.init(types.$);
 
@@ -292,7 +294,7 @@ public class Demo {
         onlineInternationalOrder.init(entities.$, string, internationalOrder, onlineOrder);
         onlineOrder.init(entities.$, url, order);
         order.init(entities.$, string, timeStamp, double_, boolean_, integer, gps, priority, massStoredInGrams,
-                customer, shipper, employee, internationalAddress, orderDetail, category, territory, orderInfo, orderItem, categoryInfo);
+                customer, shipper, employee, internationalAddress, orderDetail, category, territory, orderInfo, orderItem, categoryInfo, timetype);
         orderDetail.init(entities.$, string, double_, integer, boolean_, massStoredInGrams, product, category, orderItem, productInfo);
         paymentList.init(entities.$, employee);
         person.init(entities.$, string, titles);
@@ -320,7 +322,7 @@ public class Demo {
         optionaProductInfo.$.setOverride(productInfo.$);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories, orderItem);
-        orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
+        orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment, timetype);
         internationalOrderInfo.init(services.$, string, double_, internationalOrder, orderInfo, timeStamp, priority, boolean_, gps, integer, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment);
 
         // Static Navigation
