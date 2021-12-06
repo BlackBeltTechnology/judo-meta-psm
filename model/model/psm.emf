@@ -69,6 +69,9 @@ package type {
 
     @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.measure.MeasuredType;")
     op boolean[1] isMeasured();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimeType;")
+    op boolean[1] isTime();
   }
 
   class CustomType extends FlatPrimitiveType {
@@ -166,6 +169,13 @@ package type {
     op String[1] toString();
     attr String[*] mimeTypes;
     attr long maxFileSize;
+  }
+
+  class TimeType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr measure.DurationType[1] baseUnit = "second";
   }
 
 }
@@ -524,6 +534,8 @@ package service {
     !ordered op data.OperationBody getImplementation();
     val TransferOperationBehaviour behaviour;
     attr boolean[1] immutable = false;
+    attr boolean[1] deleteOnResult = false;
+    attr boolean[1] updateOnResult = false;
   }
 
   class TransferOperationBehaviour {
