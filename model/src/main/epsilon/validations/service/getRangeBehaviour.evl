@@ -2,19 +2,25 @@ context PSM!TransferOperationBehaviour {
 
 	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_RANGE
 	
-	constraint OwnerIsRelationUnboundBehaviourGetRange {
-		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectRelation)
-		message: "Owner of '" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be a relation."
+	constraint OwnerIsRelationOrOperationUnboundBehaviourGetRange {
+		check: self.owner.isDefined() and (self.owner.isKindOf(PSM!TransferObjectRelation) or self.owner.isKindOf(PSM!TransferOperation))
+		message: "Owner of '" + self.behaviourType + "' operation: " + self.eContainer.name  + " (in: " + self.eContainer.eContainer.name + ") must be a relation or operation."
 	}
 	
 	constraint OwnerIsValidGetRangeBehaviour {
-		check: self.eContainer.eContainer.getRelations().includes(self.owner)
-		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation of the transfer object type containing the operation"
+		check: self.eContainer.eContainer.getRelations().includes(self.owner) or self.eContainer.eContainer.getOperations().includes(self.owner)
+		message: "Owner of '" + self.behaviourType + "' behaviour  (" + self.eContainer.eContainer.name + "." + self.eContainer.name + ") must be a relation or operation of the transfer object type containing the operation"
+	}
+	
+	constraint OperationOwnerIsValidGetRange {
+		guard: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferOperation)
+		check: self.owner.inputRange.isDefined() and self.owner.input.isDefined() and self.owner.input.type == self.owner.inputRange.target
+		message: "Input range relation for operation: " + self.owner.name  + " (in: " + self.eContainer.eContainer.name + ") must be defined and match the operation input type."
 	}
 	
 	constraint GetRangeBehaviourInputParameterIsDefined {
     	guard: self.satisfies("OwnerIsValidGetRangeBehaviour")
-    	check: self.eContainer.input.isDefined()
+    	check: self.eContainer.input.isDefined() 
     	message: "'GET_RANGE' operation: " + self.eContainer.name + " must have an input parameter named 'input'"
     }
     
