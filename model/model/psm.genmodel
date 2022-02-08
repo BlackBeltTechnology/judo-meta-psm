@@ -388,6 +388,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferOperation/immutable"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferOperation/deleteOnResult"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//service/TransferOperation/updateOnResult"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//service/TransferOperation/inputRange"/>
         <genOperations ecoreOperation="psm.ecore#//service/TransferOperation/getImplementation"/>
       </genClasses>
       <genClasses ecoreClass="psm.ecore#//service/TransferOperationBehaviour">
