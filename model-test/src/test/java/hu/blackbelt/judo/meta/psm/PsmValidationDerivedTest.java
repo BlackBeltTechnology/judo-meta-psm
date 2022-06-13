@@ -3,26 +3,17 @@ package hu.blackbelt.judo.meta.psm;
 import com.google.common.collect.ImmutableList;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
-import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
-import hu.blackbelt.judo.meta.psm.derived.StaticNavigation;
-import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
-import hu.blackbelt.judo.meta.psm.data.Attribute;
-import hu.blackbelt.judo.meta.psm.data.EntityType;
-import hu.blackbelt.judo.meta.psm.derived.DataProperty;
-import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
-import hu.blackbelt.judo.meta.psm.derived.StaticData;
+import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
+import hu.blackbelt.judo.meta.psm.data.*;
+import hu.blackbelt.judo.meta.psm.derived.*;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.type.CustomType;
 import hu.blackbelt.judo.meta.psm.type.StringType;
-
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.emf.common.util.URI;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.util.Collection;
@@ -34,14 +25,12 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 
+@Slf4j
 class PsmValidationDerivedTest {
-
-    Logger logger = LoggerFactory.getLogger(PsmValidationDerivedTest.class);
 
     private final String createdSourceModelName = "urn:psm.judo-meta-psm";
 
     private PsmModel psmModel;
-    private Log log = new Slf4jLog();
 
     @BeforeEach
     void setUp() {
@@ -52,22 +41,22 @@ class PsmValidationDerivedTest {
     }
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
-        try {
-        	logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
+        try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
+        	bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
         	Assertions.assertTrue(psmModel.isValid());
-        	PsmEpsilonValidator.validatePsm(log,
+        	PsmEpsilonValidator.validatePsm(bufferedLog,
                     psmModel,
                     new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
                     expectedErrors,
                     expectedWarnings);
         } catch (EvlScriptExecutionException ex) {
-            logger.error("EVL failed", ex);
-            logger.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
-            logger.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
-            logger.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
-            logger.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
-            logger.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
-            logger.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
+            log.error("EVL failed", ex);
+            log.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
+            log.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
+            log.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
+            log.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
+            log.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
+            log.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
             throw ex;
         }
     }
