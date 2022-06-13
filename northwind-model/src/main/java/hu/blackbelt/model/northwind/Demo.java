@@ -1,80 +1,28 @@
 package hu.blackbelt.model.northwind;
 
+import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
-import hu.blackbelt.epsilon.runtime.execution.impl.StringBuilderLogger;
+import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
-import hu.blackbelt.model.northwind.entities.Address;
 import hu.blackbelt.model.northwind.entities.Category;
-import hu.blackbelt.model.northwind.entities.City;
-import hu.blackbelt.model.northwind.entities.Company;
-import hu.blackbelt.model.northwind.entities.Customer;
-import hu.blackbelt.model.northwind.entities.Employee;
-import hu.blackbelt.model.northwind.entities.Induvidual;
-import hu.blackbelt.model.northwind.entities.InternationalAddress;
-import hu.blackbelt.model.northwind.entities.InternationalOrder;
-import hu.blackbelt.model.northwind.entities.MailingList;
-import hu.blackbelt.model.northwind.entities.OnlineInternationalOrder;
-import hu.blackbelt.model.northwind.entities.OnlineOrder;
-import hu.blackbelt.model.northwind.entities.Order;
-import hu.blackbelt.model.northwind.entities.OrderDetail;
-import hu.blackbelt.model.northwind.entities.PaymentList;
-import hu.blackbelt.model.northwind.entities.Person;
 import hu.blackbelt.model.northwind.entities.Product;
-import hu.blackbelt.model.northwind.entities.Region;
-import hu.blackbelt.model.northwind.entities.Shipper;
-import hu.blackbelt.model.northwind.entities.Store;
-import hu.blackbelt.model.northwind.entities.Supplier;
-import hu.blackbelt.model.northwind.entities.Territory;
+import hu.blackbelt.model.northwind.entities.*;
 import hu.blackbelt.model.northwind.extension.services.GetRangeInputProductInfoCategory;
-import hu.blackbelt.model.northwind.measures.Acceleration;
-import hu.blackbelt.model.northwind.measures.AmountOfSubstance;
-import hu.blackbelt.model.northwind.measures.Area;
-import hu.blackbelt.model.northwind.measures.Capacitance;
-import hu.blackbelt.model.northwind.measures.Density;
-import hu.blackbelt.model.northwind.measures.ElectricCharge;
-import hu.blackbelt.model.northwind.measures.ElectricCurrent;
-import hu.blackbelt.model.northwind.measures.ElectricPotential;
-import hu.blackbelt.model.northwind.measures.ElectricalConductance;
-import hu.blackbelt.model.northwind.measures.ElectricalResistance;
-import hu.blackbelt.model.northwind.measures.Force;
-import hu.blackbelt.model.northwind.measures.Frequency;
-import hu.blackbelt.model.northwind.measures.Illuminance;
-import hu.blackbelt.model.northwind.measures.Inductance;
-import hu.blackbelt.model.northwind.measures.Length;
-import hu.blackbelt.model.northwind.measures.LuminousIntensity;
-import hu.blackbelt.model.northwind.measures.MagneticFlux;
-import hu.blackbelt.model.northwind.measures.MagneticFluxDensity;
-import hu.blackbelt.model.northwind.measures.Mass;
-import hu.blackbelt.model.northwind.measures.Momentum;
-import hu.blackbelt.model.northwind.measures.MonthBasedTime;
-import hu.blackbelt.model.northwind.measures.Power;
-import hu.blackbelt.model.northwind.measures.Pressure;
-import hu.blackbelt.model.northwind.measures.Temperature;
-import hu.blackbelt.model.northwind.measures.ThermodynamicTemperature;
 import hu.blackbelt.model.northwind.measures.Time;
-import hu.blackbelt.model.northwind.measures.Velocity;
-import hu.blackbelt.model.northwind.measures.Volume;
-import hu.blackbelt.model.northwind.measures.Work;
+import hu.blackbelt.model.northwind.measures.*;
 import hu.blackbelt.model.northwind.services.*;
-import hu.blackbelt.model.northwind.types.*;
 import hu.blackbelt.model.northwind.types.Boolean;
 import hu.blackbelt.model.northwind.types.Double;
 import hu.blackbelt.model.northwind.types.Float;
 import hu.blackbelt.model.northwind.types.Integer;
 import hu.blackbelt.model.northwind.types.Long;
 import hu.blackbelt.model.northwind.types.String;
-import hu.blackbelt.model.northwind.types.measured.AreaStoredInSquareMetre;
-import hu.blackbelt.model.northwind.types.measured.MassStoredInGrams;
-import hu.blackbelt.model.northwind.types.measured.MassStoredInKilograms;
-import hu.blackbelt.model.northwind.types.measured.TimeStoredInMonths;
-import hu.blackbelt.model.northwind.types.measured.TimeStoredInSeconds;
-import hu.blackbelt.model.northwind.types.measured.VelocityStoredInKmPerHour;
-import hu.blackbelt.model.northwind.types.measured.VolumeStoredInLitre;
+import hu.blackbelt.model.northwind.types.*;
+import hu.blackbelt.model.northwind.types.measured.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static hu.blackbelt.judo.meta.psm.PsmEpsilonValidator.calculatePsmValidationScriptURI;
 import static hu.blackbelt.judo.meta.psm.PsmEpsilonValidator.validatePsm;
@@ -82,6 +30,7 @@ import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilder
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.useModel;
 import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.SaveArguments.psmSaveArgumentsBuilder;
 
+@Slf4j
 public class Demo {
     public Model $ = newModelBuilder().build();
 
@@ -348,7 +297,7 @@ public class Demo {
         return psmModel;
     }
 
-    public static void main(java.lang.String[] args) throws URISyntaxException, IOException {
+    public static void main(java.lang.String[] args) throws Exception {
         Demo demo = new Demo();
         PsmModel psmModel = demo.fullDemo();
 
@@ -366,9 +315,8 @@ public class Demo {
         } else {
 
             System.out.println(psmModel.asString());
-            try {
-                validatePsm(new StringBuilderLogger(StringBuilderLogger.LogLevel.DEBUG),
-                        psmModel, calculatePsmValidationScriptURI());
+            try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
+                validatePsm(bufferedLog, psmModel, calculatePsmValidationScriptURI());
             } catch (ScriptExecutionException e) {
                 System.err.println(e.toString());
             }
