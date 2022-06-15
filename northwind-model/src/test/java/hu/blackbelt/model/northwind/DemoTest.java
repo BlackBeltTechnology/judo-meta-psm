@@ -1,14 +1,10 @@
 package hu.blackbelt.model.northwind;
 
-import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
-import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.net.URISyntaxException;
+import org.junit.jupiter.api.*;
 
 import static hu.blackbelt.judo.meta.psm.PsmEpsilonValidator.calculatePsmValidationScriptURI;
 import static hu.blackbelt.judo.meta.psm.PsmEpsilonValidator.validatePsm;
@@ -26,7 +22,7 @@ class DemoTest {
     }
 
     @Test
-    public void testValidation() throws URISyntaxException, ScriptExecutionException {
+    public void testValidation() throws Exception {
         Demo demo = new Demo();
         PsmModel psmModel = demo.fullDemo();
 
@@ -35,6 +31,8 @@ class DemoTest {
         log.info(psmModel.getDiagnosticsAsString());
 
         assertTrue(psmModel.isValid());
-        validatePsm(new Slf4jLog(log), psmModel, calculatePsmValidationScriptURI());
+        try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
+            validatePsm(bufferedLog, psmModel, calculatePsmValidationScriptURI());
+        }
     }
 }

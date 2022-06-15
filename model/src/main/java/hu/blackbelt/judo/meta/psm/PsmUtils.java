@@ -1,15 +1,14 @@
 package hu.blackbelt.judo.meta.psm;
 
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
-import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
+import hu.blackbelt.epsilon.runtime.execution.impl.LogLevel;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.measure.*;
-import hu.blackbelt.judo.meta.psm.namespace.Model;
-import hu.blackbelt.judo.meta.psm.namespace.Namespace;
-import hu.blackbelt.judo.meta.psm.namespace.NamespaceElement;
 import hu.blackbelt.judo.meta.psm.namespace.Package;
+import hu.blackbelt.judo.meta.psm.namespace.*;
 import hu.blackbelt.judo.meta.psm.service.*;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
@@ -22,9 +21,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.stream.*;
 
 /**
  * Utils for PSM models.
@@ -47,8 +44,6 @@ public class PsmUtils {
     public void setResourceSet(ResourceSet resourceSet) {
         this.resourceSet = resourceSet;
     }
-
-    private final Log log = new Slf4jLog();
 
     /**
      * Convert namespace to string.
@@ -359,7 +354,7 @@ public class PsmUtils {
                 .collect(Collectors.toSet()));
         return operations;
     }
-    
+
     public static EList<BoundOperation> getAllAbstractBoundOperations(final EntityType entityType) {
         EList<BoundOperation> operations = new UniqueEList<>();
         operations.addAll(entityType.getOperations().stream().filter(op -> op.isAbstract()).collect(Collectors.toList()));
@@ -368,7 +363,7 @@ public class PsmUtils {
                 .collect(Collectors.toList()));
         return operations;
     }
-    
+
     public static EList<BoundOperation> getAllNonAbstractBoundOperations(final EntityType entityType) {
         EList<BoundOperation> operations = new UniqueEList<>();
         operations.addAll(entityType.getOperations().stream().filter(op -> !op.isAbstract()).collect(Collectors.toList()));
@@ -566,7 +561,7 @@ public class PsmUtils {
         operationNames.addAll(operationNamesSet);
         return operationNames;
     }
-    
+
     /**
      * Get unique list of all (inherited and not inherited) bound transfer operations of a given transfer object type.
      *
@@ -580,9 +575,9 @@ public class PsmUtils {
     			.filter(o -> o instanceof BoundTransferOperation)
     			.map(b -> (BoundTransferOperation)b)
     			.collect(Collectors.toSet()));
-    	return operations; 
+    	return operations;
     }
-    
+
     /**
      * Get unique list of all (inherited and not inherited) unbound operations of a given transfer object type.
      *
@@ -596,7 +591,7 @@ public class PsmUtils {
     			.filter(o -> o instanceof UnboundOperation)
     			.map(u -> (UnboundOperation)u)
     			.collect(Collectors.toSet()));
-    	return operations; 
+    	return operations;
     }
 
     /**
@@ -623,7 +618,7 @@ public class PsmUtils {
                 });
         return implementations;
     }
-    
+
     public static Optional<OperationBody> getOperationImplementationByName(final EntityType entityType, final String name) {
         final Optional<BoundOperation> boundOperation = entityType.getOperations().stream().filter(o -> o.getName().equalsIgnoreCase(name))
                 .findAny();
@@ -815,18 +810,18 @@ public class PsmUtils {
 
         return result;
     }
-    
+
     public static Set<String> getUnboundRequiredFeaturesOfMappingTarget(final MappedTransferObjectType transferObject) {
     	Set<String> names = getAllRelations(transferObject.getEntityType()).stream()
     			.filter(r -> r.getCardinality().getLower() > 0)
     			.map(r -> r.getName())
     			.collect(Collectors.toSet());
-    	
+
     	names.addAll(getAllAttributes(transferObject.getEntityType()).stream()
     			.filter(a -> a.isRequired())
     			.map(a -> a.getName())
     			.collect(Collectors.toSet()));
-    	
+
     	Set<TransferObjectRelation> boundRelations = transferObject.getRelations().stream()
     			.filter(r -> r.getBinding() != null &&
                         ((r.getBinding() instanceof Containment && r.isEmbedded()) || !(r.getBinding() instanceof Containment)))
@@ -834,8 +829,8 @@ public class PsmUtils {
     	Set<TransferAttribute> boundAttributes = transferObject.getAttributes().stream()
     			.filter(a -> a.getBinding() != null)
     			.collect(Collectors.toSet());
-    	
-    	names.removeIf(n -> boundRelations.stream().anyMatch(r -> r.getBinding().getName().equalsIgnoreCase(n)) || 
+
+    	names.removeIf(n -> boundRelations.stream().anyMatch(r -> r.getBinding().getName().equalsIgnoreCase(n)) ||
     						boundAttributes.stream().anyMatch(a -> a.getBinding().getName().equalsIgnoreCase(n)));
     	return names;
     }
@@ -876,6 +871,16 @@ public class PsmUtils {
      * @see PsmUtils#setResourceSet(ResourceSet)
      */
     public void validateUniqueXmiids() {
+        try (Log log = new BufferedSlf4jLogger(LogLevel.DEBUG)) {
+            validateUniqueXmiids(log);
+        } catch (IllegalStateException ise) {
+            throw ise;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void validateUniqueXmiids(final Log log) {
         if (resourceSet == null) {
             throw new IllegalStateException("Model's ResourceSet is unknown (null)");
         }
