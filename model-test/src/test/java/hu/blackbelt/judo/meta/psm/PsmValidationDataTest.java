@@ -1,52 +1,11 @@
 package hu.blackbelt.judo.meta.psm;
 
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAssociationEndBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newAttributeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newBoundOperationBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newContainmentBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntitySequenceBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newEntityTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.newOperationBodyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newDataPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newNavigationPropertyBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newReferenceExpressionTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
-import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newMappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newParameterBuilder;
-import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.newUnmappedTransferObjectTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newCardinalityBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newNumericTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.newStringTypeBuilder;
-import static hu.blackbelt.judo.meta.psm.constraint.util.builder.ConstraintBuilders.newInvariantConstraintBuilder;
-import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.newLogicalExpressionTypeBuilder;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.eclipse.emf.common.util.URI;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.ImmutableList;
-
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException;
-import hu.blackbelt.epsilon.runtime.execution.impl.Slf4jLog;
+import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.meta.psm.constraint.InvariantConstraint;
-import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
-import hu.blackbelt.judo.meta.psm.data.Attribute;
-import hu.blackbelt.judo.meta.psm.data.BoundOperation;
-import hu.blackbelt.judo.meta.psm.data.Containment;
-import hu.blackbelt.judo.meta.psm.data.EntitySequence;
-import hu.blackbelt.judo.meta.psm.data.EntityType;
-import hu.blackbelt.judo.meta.psm.data.Relation;
+import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
@@ -56,15 +15,28 @@ import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.service.UnmappedTransferObjectType;
 import hu.blackbelt.judo.meta.psm.type.NumericType;
 import hu.blackbelt.judo.meta.psm.type.StringType;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.emf.common.util.URI;
+import org.junit.jupiter.api.*;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+
+import static hu.blackbelt.judo.meta.psm.constraint.util.builder.ConstraintBuilders.newInvariantConstraintBuilder;
+import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
+import static hu.blackbelt.judo.meta.psm.derived.util.builder.DerivedBuilders.*;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
+import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
+import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
+
+@Slf4j
 class PsmValidationDataTest {
-
-	Logger logger = LoggerFactory.getLogger(PsmValidationDataTest.class);
 
 	private final String createdSourceModelName = "urn:psm.judo-meta-psm";
 
 	private PsmModel psmModel;
-	private Log log = new Slf4jLog();
 
 	@BeforeEach
 	void setUp() {
@@ -72,20 +44,20 @@ class PsmValidationDataTest {
 	}
 
 	private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
-		try {
-			logger.debug("PSM diagnostics: {}", psmModel.getDiagnosticsAsString());
+		try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
+			bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
         	Assertions.assertTrue(psmModel.isValid());
-			PsmEpsilonValidator.validatePsm(log, psmModel,
+			PsmEpsilonValidator.validatePsm(bufferedLog, psmModel,
 					new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."), expectedErrors,
 					expectedWarnings);
 		} catch (EvlScriptExecutionException ex) {
-			logger.error("EVL failed", ex);
-			logger.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
-			logger.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
-			logger.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
-			logger.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
-			logger.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
-			logger.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
+			log.error("EVL failed", ex);
+			log.error("\u001B[31m - expected errors: {}\u001B[0m", expectedErrors);
+			log.error("\u001B[31m - unexpected errors: {}\u001B[0m", ex.getUnexpectedErrors());
+			log.error("\u001B[31m - errors not found: {}\u001B[0m", ex.getErrorsNotFound());
+			log.error("\u001B[33m - expected warnings: {}\u001B[0m", expectedWarnings);
+			log.error("\u001B[33m - unexpected warnings: {}\u001B[0m", ex.getUnexpectedWarnings());
+			log.error("\u001B[33m - warnings not found: {}\u001B[0m", ex.getWarningsNotFound());
 			throw ex;
 		}
 	}
