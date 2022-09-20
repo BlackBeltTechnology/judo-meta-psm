@@ -1065,17 +1065,6 @@
                                 <phase>process-sources</phase>
                                 <configuration>
                                     <licenseName>epl_v2</licenseName>
-                                    <roots>
-                                        <root>model/src/main/java</root>
-                                        <root>model-test/src/main/java</root>
-                                        <root>model-test/src/test/java</root>
-                                        <root>northwind-model/src/main/java</root>
-                                        <root>northwind-model/src/test/java</root>
-                                        <root>osgi/src/main/java</root>
-                                        <root>osgi-itest/src/test/java</root>
-                                        <root>runtime/src/main/java</root>
-                                        <root>runtime/src/test/java</root>
-                                    </roots>
                                 </configuration>
                             </execution>
                             <execution>
@@ -1093,5 +1082,6 @@
                 </plugins>
             </build>
         </profile>
+
     </profiles>
 </project>
