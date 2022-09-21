@@ -1,0 +1,21 @@
+context PSM!Measure {
+
+    // base unit of measure should be defined (recommended only, base unit is used for calculations)
+    critique BaseUnitShouldBeDefined {
+        check: self.units.exists(u | u.rateDividend = u.rateDivisor)
+        message: "No base unit is defined for measure: " + self.name
+    }
+    
+    // measure name should be unique
+    critique MeasureNameIsUnique {
+        check: not PSM!Measure.all.excluding(self).selectOne(m | m.name == self.name).isDefined()
+        message: "There are two or more measures of the same name: " + self.name
+    }
+    
+    // symbol of measures must be unique
+    constraint MeasureSymbolIsUnique {
+        guard: self.symbol.isDefined()
+        check: not PSM!Measure.all.excluding(self).selectOne(m | m.symbol == self.symbol).isDefined()
+        message: "Measure symbol is not unique: " + self.symbol + " (measure: " + self.name + ")"
+    }
+}

@@ -1,0 +1,48 @@
+context PSM!TransferObjectRelation {
+
+    // transfer object relation of unmapped transfer object types must be static
+    /*constraint UnmappedTransferObjectTypeHasNoRelationBinding {
+        guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(PSM!UnmappedTransferObjectType)
+        check: not self.binding.isDefined()
+        message: "Transfer object relation " + self.name + " of unmapped transfer object " + self.eContainer().name + " must not have binding." 
+    }*/
+    
+    constraint TargetMatchesBindingTarget{
+        guard:  self.target.isKindOf(PSM!MappedTransferObjectType) and self.binding.isDefined()
+        check:  self.target.entityType.getAllSuperEntityTypes().including(self.target.entityType).contains(self.binding.target)
+        message: "EntityType of mapped transfer object type " + self.target.name + " (target of transfer object relation " + self.name
+                    + ") must match the target of the binding of transfer object relation " + self.name + "."  
+    }
+    
+    constraint CardinalityMatchesBindingCardinality {
+        guard:  self.binding.isDefined() and not self.eContainer.optional
+        check:  (self.cardinality.lower == self.binding.cardinality.lower) and
+                (self.cardinality.upper == self.binding.cardinality.upper)
+        message: "Transfer object relation " + self.name + " and its binding must have the same cardinality."
+    }
+
+    constraint TransferObjectRelationIsEmbedded {
+        guard: self.target.isKindOf(PSM!UnmappedTransferObjectType)
+        check: self.embedded or self.eContainer.isAccessPoint()
+        message: "Transfer object relation " + self.name + " is referencing to unembedded unmapped transfer object type: " + self.target.name
+    }
+    
+    constraint TransferObjectRelationBindingIsValid {
+        guard: self.satisfies("NamedElementHasContainer") and self.eContainer.isKindOf(PSM!MappedTransferObjectType) and self.binding.isDefined()
+        check:  self.eContainer().entityType.getAllSuperEntityTypes().including(self.eContainer().entityType).contains(self.binding.eContainer())
+        message: "Binding of transfer object relation " + self.name + " of mapped transfer object " + self.eContainer().name +
+                " must match the entity type of the mapped transfer object."
+    }
+    
+    constraint EmbeddedOnBothSidesAreNotAllowed {
+    	guard: self.binding.isDefined() 
+    				and self.satisfies("TargetMatchesBindingTarget") 
+    				and self.satisfies("CardinalityMatchesBindingCardinality") 
+    				and self.satisfies("TransferObjectRelationBindingIsValid")
+    		and self.embedded and self.binding.isKindOf(PSM!AssociationEnd) and self.binding.partner.isDefined()
+    	check: not self.target.relations.exists(r | r.embedded
+    												and r.binding.isDefined()
+    												and r.binding == self.binding.partner)
+    	message: "Circular aggregation found on relation: " + psmUtils.transferObjectRelationToString(self)
+    }
+}

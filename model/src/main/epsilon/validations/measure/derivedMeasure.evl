@@ -1,0 +1,8 @@
+context PSM!DerivedMeasure {
+
+    // circular references in derived measure definitions is invalid
+    constraint NoCircularReferencesOfDerivedMeasures {
+        check: not self.getAllTermMeasures().contains(self)
+        message: "Derived measure definition " + self.name + " is recursive"
+    }
+}

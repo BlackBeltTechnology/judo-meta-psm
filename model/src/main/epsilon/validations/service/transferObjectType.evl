@@ -1,0 +1,9 @@
+context PSM!TransferObjectType {
+
+    // transfer object type names should be unique
+    critique TransferObjectTypeNamesAreUnique {
+        guard: self.satisfies("NamedElementIsUniqueInItsContainer")
+        check: not PSM!TransferObjectType.all.excluding(self).selectOne(t | t.name.toLowerCase() == self.name.toLowerCase()).isDefined()
+        message: "There are two or more transfer object types of the same name: " + self.name
+    }
+}

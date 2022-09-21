@@ -1,0 +1,8 @@
+context PSM!Model {
+
+	// standalone models are supported only, loading multiple JUDO models (that are referencing to each other) is not supported
+	constraint StandaloneModelLoadedOnly {
+	   check: PSM!Model.all().size() == 1
+	   message: "Standalone models are supported only"
+	}
+}

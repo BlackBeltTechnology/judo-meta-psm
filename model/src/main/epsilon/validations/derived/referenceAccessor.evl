@@ -1,0 +1,8 @@
+context PSM!ReferenceAccessor {
+
+    constraint SetterExpressionsAreNotSupportedYet {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.setterExpression.isDefined()
+        message: "Setter expressions are not supported yet (" + self.eContainer().name + "." + self.name + ")"
+    } 
+}

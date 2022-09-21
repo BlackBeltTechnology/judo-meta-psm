@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+<plugin>
+
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            constraints="validations/psm-plugin-validator.evl"
+            modelName="PSM"
+            namespaceURI="http://blackbelt.hu/judo/meta/psm/namespace">
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/type">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/data">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/behavior">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/constraint">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/script">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/derived">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/service">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/accesspoint">
+            </additionalNamespaceURI>    
+            <additionalNamespaceURI
+                  namespaceURI="http://blackbelt.hu/judo/meta/psm/measure">
+            </additionalNamespaceURI>    
+      </constraintsBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="org.eclipse.epsilon.evl.emf.validation.EvlMarkerResolutionGenerator"
+            markerType="org.eclipse.emf.ecore.diagnostic">
+      </markerResolutionGenerator>
+      <markerResolutionGenerator
+            class="org.eclipse.epsilon.evl.emf.validation.EvlMarkerResolutionGenerator"
+            markerType="org.eclipse.emf.ecoretools.diagram.diagnostic">
+      </markerResolutionGenerator>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+         <tool
+			class="hu.blackbelt.judo.meta.psm.PsmUtils"
+			defaultName="psmUtils"/>
+   </extension>
+
+
+
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm"
+            class="hu.blackbelt.judo.meta.psm.PsmPackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="psm"
+            class="hu.blackbelt.judo.meta.psm.util.PsmResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/namespace"
+            class="hu.blackbelt.judo.meta.psm.namespace.NamespacePackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-namespace"
+            class="hu.blackbelt.judo.meta.psm.namespace.util.NamespaceResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/type"
+            class="hu.blackbelt.judo.meta.psm.type.TypePackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-type"
+            class="hu.blackbelt.judo.meta.psm.type.util.TypeResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/data"
+            class="hu.blackbelt.judo.meta.psm.data.DataPackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-data"
+            class="hu.blackbelt.judo.meta.psm.data.util.DataResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/constraint"
+            class="hu.blackbelt.judo.meta.psm.constraint.ConstraintPackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-constraint"
+            class="hu.blackbelt.judo.meta.psm.constraint.util.ConstraintResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/script"
+            class="hu.blackbelt.judo.meta.psm.script.ScriptPackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-script"
+            class="hu.blackbelt.judo.meta.psm.script.util.ScriptResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/derived"
+            class="hu.blackbelt.judo.meta.psm.derived.DerivedPackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-derived"
+            class="hu.blackbelt.judo.meta.psm.derived.util.DerivedResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/service"
+            class="hu.blackbelt.judo.meta.psm.service.ServicePackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-service"
+            class="hu.blackbelt.judo.meta.psm.service.util.ServiceResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/accesspoint"
+            class="hu.blackbelt.judo.meta.psm.accesspoint.AccesspointPackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-accesspoint"
+            class="hu.blackbelt.judo.meta.psm.accesspoint.util.AccesspointResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated psm -->
+      <package
+            uri="http://blackbelt.hu/judo/meta/psm/measure"
+            class="hu.blackbelt.judo.meta.psm.measure.MeasurePackage"
+            genModel="model/psm.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated psm -->
+      <parser
+            type="judo-meta-psm-measure"
+            class="hu.blackbelt.judo.meta.psm.measure.util.MeasureResourceFactoryImpl"/>
+   </extension>
+</plugin>
