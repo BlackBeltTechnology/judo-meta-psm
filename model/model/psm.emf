@@ -1,0 +1,638 @@
+@namespace(uri="http://blackbelt.hu/judo/meta/psm", prefix="psm")
+package psm;
+
+class PlaceHolder {
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/namespace", prefix="namespace")
+package namespace {
+  abstract class NamedElement {
+    attr String[1] name;
+    attr String documentation;
+  }
+
+  abstract class Namespace extends NamedElement {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.namespaceToString(this);")
+    op String[1] toString();
+    val NamespaceElement[*] elements;
+    val Package[*] packages;
+  }
+
+  class Model extends Namespace {
+  }
+
+  class Package extends Namespace {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getNamespaceOfPackage(this).get();")
+    op Namespace[1] getNamespace();
+  }
+
+  abstract class NamespaceElement extends NamedElement {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.namespaceElementToString(this);")
+    op String[1] toString();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getNamespaceOfNamespaceElement(this).get();")
+    op Namespace[1] getNamespace();
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/type", prefix="type")
+package type {
+  abstract class Primitive extends DataType {
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.NumericType;")
+    op boolean[1] isNumeric();
+
+    @GenModel(body="return isNumeric() && ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getScale() == 0;")
+    op boolean[1] isInteger();
+
+    @GenModel(body="return isNumeric() && ((hu.blackbelt.judo.meta.psm.type.NumericType)this).getScale() > 0;")
+    op boolean[1] isDecimal();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.StringType;")
+    op boolean[1] isString();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.BooleanType;")
+    op boolean[1] isBoolean();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.DateType;")
+    op boolean[1] isDate();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimestampType;")
+    op boolean[1] isTimestamp();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.EnumerationType;")
+    op boolean[1] isEnumeration();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.measure.MeasuredType;")
+    op boolean[1] isMeasured();
+
+    @GenModel(body="return this instanceof hu.blackbelt.judo.meta.psm.type.TimeType;")
+    op boolean[1] isTime();
+  }
+
+  class CustomType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+  }
+
+  class StringType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr int[1] maxLength;
+    attr RegExp regExp;
+  }
+
+  class NumericType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr int[1] precision;
+    attr int[1] scale;
+  }
+
+  class BooleanType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+  }
+
+  class EnumerationType extends Primitive {
+
+    @GenModel(body="return getMembers().stream().filter(m -> java.util.Objects.equals(name, m.getName())).count() > 0;")
+    op boolean[1] contains(!ordered String[1] name);
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    val EnumerationMember[+] members;
+  }
+
+  class EnumerationMember extends namespace.NamedElement {
+    attr int[1] ordinal;
+  }
+
+  abstract class Type extends namespace.NamespaceElement {
+  }
+
+  abstract class DataType extends Type {
+  }
+
+  class XMLType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr XmlNamespace[1] xmlNamespace;
+    attr XmlElement[1] xmlElement;
+  }
+
+  class Cardinality {
+    attr int[1] lower = 0;
+    attr int[1] upper = 1;
+  }
+
+  datatype RegExp : java.lang.String;
+
+  class PasswordType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+  }
+
+  datatype XmlNamespace : java.lang.String;
+
+  datatype XmlElement : java.lang.String;
+
+  class DateType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+  }
+
+  class TimestampType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr measure.DurationType[1] baseUnit = "second";
+  }
+
+  abstract class FlatPrimitiveType extends Primitive {
+  }
+
+  class BinaryType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr String[*] mimeTypes;
+    attr long maxFileSize;
+  }
+
+  class TimeType extends FlatPrimitiveType {
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+    attr measure.DurationType[1] baseUnit = "second";
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/data", prefix="data")
+package data {
+  class EntityType extends type.Type {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllSuperEntityTypes(this);")
+    !ordered op EntityType[*] getAllSuperEntityTypes();
+
+    @GenModel(body="        final java.util.Collection<EntityType> base = new java.util.ArrayList<>(getAllSuperEntityTypes());
+        base.add(this);
+
+        final java.util.Optional<java.util.Optional<Attribute>> attribute = base.stream()
+                .filter(e -> e.getAttributes().stream().anyMatch(a -> java.util.Objects.equals(name, a.getName()))) // get all types containing attribute named name
+                .map(e -> e.getAttributes().stream().filter(a -> java.util.Objects.equals(name, a.getName())).findFirst()) // get attributes of types
+                .findFirst(); // redefining attributes is not supported
+        final java.util.Optional<java.util.Optional<DataProperty>> dataProperty = base.stream()
+                .filter(e -> e.getDataProperties().stream().anyMatch(d -> java.util.Objects.equals(name, d.getName()))) // get all types containing data property named name
+                .map(e -> e.getDataProperties().stream().filter(d -> java.util.Objects.equals(name, d.getName())).findFirst()) // get data properties of types
+                .findFirst(); // redefining data properties is not supported
+
+        if (attribute.isPresent()) {
+            return attribute.get().get();
+        } else if (dataProperty.isPresent()) {
+            return dataProperty.get().get();
+        } else {
+            return null;
+        }")
+    op PrimitiveTypedElement getAttribute(!ordered String[1] name);
+
+    @GenModel(body="        final java.util.Collection<EntityType> base = new java.util.ArrayList<>(getAllSuperEntityTypes());
+        base.add(this);
+
+        final java.util.Optional<java.util.Optional<Relation>> relation = base.stream()
+                .filter(e -> e.getRelations().stream().anyMatch(r -> java.util.Objects.equals(name, r.getName()))) // get all types containing reference named name
+                .map(e -> e.getRelations().stream().filter(r -> java.util.Objects.equals(name, r.getName())).findFirst()) // get references of types
+                .findFirst(); // redefining references is not supported
+        final java.util.Optional<java.util.Optional<NavigationProperty>> navigationProperty = base.stream()
+                .filter(e -> e.getNavigationProperties().stream().anyMatch(n -> java.util.Objects.equals(name, n.getName()))) // get all types containing navigation property named name
+                .map(e -> e.getNavigationProperties().stream().filter(n -> java.util.Objects.equals(name, n.getName())).findFirst()) // get navigation properties of types
+                .findFirst(); // redefining navigation properties is not supported
+
+        if (relation.isPresent()) {
+            return relation.get().get();
+        } else if (navigationProperty.isPresent()) {
+            return navigationProperty.get().get();
+        } else {
+            return null;
+        }")
+    op ReferenceTypedElement getReference(!ordered String[1] name);
+
+    @GenModel(body="        final PrimitiveTypedElement attribute = getAttribute(name);
+
+        if (attribute != null) {
+            return attribute.getDataType();
+        } else {
+            return null;
+        }")
+    op type.Primitive getAttributeType(!ordered String[1] name);
+
+    @GenModel(body="return super.toString();")
+    op String[1] toString();
+
+    @GenModel(body="return getRelations().stream().anyMatch(r -> r instanceof hu.blackbelt.judo.meta.psm.data.Containment);")
+    op boolean[1] isContainer();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isContainment(this);")
+    op boolean[1] isContainment();
+    !ordered op Relation[*] getAllRelations();
+    !ordered op Attribute[*] getAllAttributes();
+    !ordered op ~derived.DataProperty[*] getAllDataProperties();
+    !ordered op ~derived.NavigationProperty[*] getAllNavigationProperties();
+    !ordered op EntitySequence[*] getAllSequences();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationByName(this,name);")
+    !unique op OperationBody[1] getInheritedOperationImplementationByName(String name);
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationImplementationsByName(this,name);")
+    !unique op OperationBody[*] getInheritedOperationImplementationsByName(String name);
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getInheritedOperationNames(this);")
+    op String[*] getInheritedOperationNames();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllOperationNames(this);")
+    op String[*] getAllOperationNames();
+    ref EntityType[*] superEntityTypes;
+    attr boolean[1] ~abstract;
+    val Attribute[*] attributes;
+    val Relation[*] relations;
+    val ~derived.DataProperty[*] dataProperties;
+    val ~derived.NavigationProperty[*] navigationProperties;
+    val EntitySequence[*] sequences;
+    val BoundOperation[*] operations;
+    val constraint.InvariantConstraint[*] constraints;
+    ref service.MappedTransferObjectType defaultRepresentation;
+  }
+
+  abstract class Relation extends ReferenceTypedElement, EntityMember {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.relationToString(this);")
+    op String[1] toString();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfRelation(this).get();")
+    op EntityType[1] getEntityType();
+  }
+
+  class Attribute extends PrimitiveTypedElement, EntityMember {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.attributeToString(this);")
+    op String[1] toString();
+
+    @GenModel(body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;")
+    op boolean[1] isPrimitive();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfAttribute(this).get();")
+    op EntityType[1] getEntityType();
+    attr boolean[1] identifier;
+    attr boolean[1] unmappedDefaultOnly = false;
+  }
+
+  class AssociationEnd extends Relation {
+
+    @GenModel(body="return getTarget() != null ? getTarget().getRelations().stream().filter(r -> org.eclipse.emf.ecore.util.EcoreUtil.equals(r.getTarget(), this)).findAny().orElse(null) : null;")
+    op Relation getOpposite();
+    ref AssociationEnd partner;
+    attr boolean[1] reverseCascadeDelete = false;
+    attr boolean[1] unmappedDefaultOnly = false;
+  }
+
+  abstract class ReferenceTypedElement extends namespace.NamedElement {
+
+    @GenModel(body="if (getCardinality() == null) {
+    return false;
+} else {
+    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;
+}")
+    op boolean[1] isCollection();
+
+    @GenModel(body="return getCardinality() != null && getCardinality().getLower() > 0;")
+    op boolean[1] isRequired();
+    op EntityType[1] getEntityType();
+    ref EntityType[1] target;
+    val type.Cardinality[1] cardinality;
+  }
+
+  abstract class PrimitiveTypedElement extends namespace.NamedElement {
+    op EntityType[1] getEntityType();
+    ref type.Primitive[1] dataType;
+    attr boolean[1] required;
+  }
+
+  class Containment extends Relation {
+  }
+
+  abstract interface EntityMember {
+  }
+
+  abstract class Sequence extends namespace.NamedElement {
+    attr long[1] initialValue = "0";
+    attr long[1] increment = "1";
+    attr long maximumValue;
+    attr boolean[1] cyclic = false;
+  }
+
+  class EntitySequence extends EntityMember, Sequence {
+  }
+
+  class NamespaceSequence extends Sequence, namespace.NamespaceElement {
+  }
+
+  class BoundOperation extends namespace.NamedElement, service.OperationDeclaration {
+    val OperationBody implementation;
+    ref service.MappedTransferObjectType[1] instanceRepresentation;
+    attr boolean[1] ~abstract = false;
+  }
+
+  class OperationBody {
+    attr boolean[1] stateful;
+    attr boolean[1] customImplementation;
+    attr script.Script body;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/constraint", prefix="constraint")
+package constraint {
+  class InvariantConstraint extends namespace.NamedElement {
+    val ~derived.LogicalExpressionType[1] expression;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/script", prefix="script")
+package script {
+  datatype Script : java.lang.String;
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/derived", prefix="derived")
+package ~derived {
+  class DataProperty extends PrimitiveAccessor {
+
+    @GenModel(body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;")
+    op boolean[1] isPrimitive();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfDataProperty(this).get();")
+    op data.EntityType[1] getEntityType();
+  }
+
+  class NavigationProperty extends ReferenceAccessor {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getEntityTypeOfNavigationProperty(this).get();")
+    op data.EntityType[1] getEntityType();
+  }
+
+  class StaticNavigation extends ReferenceAccessor, namespace.NamespaceElement {
+  }
+
+  abstract class PrimitiveAccessor extends data.PrimitiveTypedElement {
+    val DataExpressionType[1] getterExpression;
+    val AttributeSelectorType setterExpression;
+  }
+
+  class StaticData extends PrimitiveAccessor, namespace.NamespaceElement {
+  }
+
+  abstract class ReferenceAccessor extends data.ReferenceTypedElement {
+    val ReferenceExpressionType[1] getterExpression;
+    val ReferenceSelectorType setterExpression;
+  }
+
+  abstract class ExpressionType {
+    attr String[1] expression;
+    attr ExpressionDialect[1] dialect;
+    ref service.TransferObjectType parameterType;
+  }
+
+  enum ExpressionDialect {
+    JQL = 0;
+    XML = 1;
+  }
+
+  class ReferenceExpressionType extends ExpressionType {
+  }
+
+  class ReferenceSelectorType extends ReferenceExpressionType {
+  }
+
+  class DataExpressionType extends ExpressionType {
+  }
+
+  class AttributeSelectorType extends DataExpressionType {
+  }
+
+  class LogicalExpressionType extends DataExpressionType {
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/service", prefix="service")
+package service {
+  abstract class TransferObjectType extends type.DataType {
+    !ordered op boolean[1] isAccessPoint();
+    ref TransferAttribute representation;
+    val TransferObjectRelation[*] relations;
+    val TransferAttribute[*] attributes;
+    val TransferOperation[*] operations;
+    ref accesspoint.AbstractActorType#transferObjectType actorType;
+    attr boolean[1] optional = false;
+    ref TransferObjectType override;
+    attr boolean[1] queryCustomizer = false;
+  }
+
+  class TransferObjectRelation extends namespace.NamedElement {
+
+    @GenModel(body="if (getCardinality() == null) {
+    return false;
+} else {
+    return getCardinality().getUpper() == -1 || getCardinality().getUpper() > 1;
+}")
+    op boolean[1] isCollection();
+
+    @GenModel(body="return getCardinality() != null && getCardinality().getLower() > 0;")
+    op boolean[1] isRequired();
+
+    @GenModel(body="return (getBinding() instanceof hu.blackbelt.judo.meta.psm.data.Relation) ||
+                (getBinding() instanceof hu.blackbelt.judo.meta.psm.derived.ReferenceAccessor) && ((hu.blackbelt.judo.meta.psm.derived.ReferenceAccessor)getBinding()).getSetterExpression() != null;")
+    op boolean[1] isMutable();
+
+    @GenModel(body="return (eContainer() instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType);")
+    op boolean[1] isNavigable();
+    !ordered op boolean[1] isExposedGraph();
+    val type.Cardinality[1] cardinality;
+    ref data.ReferenceTypedElement binding;
+    ref ~derived.ReferenceAccessor defaultValue;
+    ref ~derived.ReferenceAccessor range;
+    ref TransferObjectType[1] target;
+    attr boolean[1] embedded = false;
+    attr boolean[1] embeddedCreate;
+    attr boolean[1] embeddedUpdate;
+    attr boolean[1] embeddedDelete = false;
+    attr boolean[1] access = false;
+  }
+
+  class TransferAttribute extends namespace.NamedElement {
+
+    @GenModel(body="return getDataType() instanceof hu.blackbelt.judo.meta.psm.type.Primitive;")
+    op boolean[1] isPrimitive();
+    attr boolean[1] required;
+    ref ~derived.PrimitiveAccessor defaultValue;
+    ref type.Primitive[1] dataType;
+    ref data.PrimitiveTypedElement binding;
+    attr String claimType;
+  }
+
+  class MappedTransferObjectType extends TransferObjectType {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isAbstractMappedTransferObjectType(this);")
+    op boolean[1] isAbstract();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.isInstantiableMappedTransferObjectType(this);")
+    op boolean[1] isInstantiable();
+    ref data.EntityType[1] entityType;
+    val ~derived.LogicalExpressionType filter;
+  }
+
+  abstract class OperationDeclaration {
+    val Parameter[*] faults;
+    val Parameter output;
+    val Parameter input;
+  }
+
+  class UnmappedTransferObjectType extends TransferObjectType {
+  }
+
+  class UnboundOperation extends TransferOperation {
+    val data.OperationBody implementation;
+    attr boolean[1] initializer = false;
+  }
+
+  class Parameter extends namespace.NamedElement {
+    val type.Cardinality[1] cardinality;
+    ref TransferObjectType[1] type;
+  }
+
+  class BoundTransferOperation extends TransferOperation {
+
+    @GenModel(body="return (eContainer instanceof hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType) ? hu.blackbelt.judo.meta.psm.PsmUtils.getOperationImplementationByName(((hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType)eContainer).getEntityType(), getBinding().getName()).orElse(null) : null;")
+    !ordered op data.OperationBody getImplementation();
+    ref data.BoundOperation[1] binding;
+  }
+
+  abstract class TransferOperation extends namespace.NamedElement, OperationDeclaration {
+    !ordered op data.OperationBody getImplementation();
+    val TransferOperationBehaviour behaviour;
+    attr boolean[1] immutable = false;
+    attr boolean[1] deleteOnResult = false;
+    attr boolean[1] updateOnResult = false;
+  }
+
+  class TransferOperationBehaviour {
+    attr TransferOperationBehaviourType[1] behaviourType;
+    ref TransferObjectRelation relation;
+    ref namespace.NamedElement[1] owner;
+  }
+
+  enum TransferOperationBehaviourType {
+    GET_TEMPLATE = 17;
+    GET_PRINCIPAL = 18;
+    LIST = 20;
+    CREATE_INSTANCE = 21;
+    VALIDATE_CREATE = 22;
+    REFRESH = 23;
+    UPDATE_INSTANCE = 24;
+    VALIDATE_UPDATE = 25;
+    DELETE_INSTANCE = 26;
+    SET_REFERENCE = 27;
+    UNSET_REFERENCE = 28;
+    ADD_REFERENCE = 29;
+    REMOVE_REFERENCE = 30;
+    GET_RANGE = 31;
+    GET_METADATA = 14;
+    GET_UPLOAD_TOKEN = 15;
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/accesspoint", prefix="accesspoint")
+package accesspoint {
+  abstract class AbstractActorType extends service.TransferObjectType {
+    ref service.TransferObjectType#actorType transferObjectType;
+    attr String realm;
+    attr String kind;
+  }
+
+  class MappedActorType extends AbstractActorType, service.MappedTransferObjectType {
+    attr boolean[1] managed = false;
+  }
+
+  class ActorType extends AbstractActorType, service.UnmappedTransferObjectType {
+  }
+
+}
+
+@namespace(uri="http://blackbelt.hu/judo/meta/psm/measure", prefix="measure")
+package measure {
+  class Measure extends namespace.NamespaceElement {
+    val Unit[*] units;
+    attr String symbol;
+  }
+
+  class MeasuredType extends type.NumericType {
+    ref Unit[1] storeUnit;
+  }
+
+  class Unit extends namespace.NamedElement {
+
+    @GenModel(body="return getSymbol() != null ? getSymbol() : getName();")
+    op String[1] toString();
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getMeasure(this).get();")
+    op Measure[1] getMeasure();
+    attr double[1] rateDividend = "1";
+    attr double[1] rateDivisor = "1";
+    attr String symbol;
+  }
+
+  class MeasureDefinitionTerm {
+    attr int[1] exponent = 1;
+    ref Unit[1] unit;
+  }
+
+  enum DurationType {
+    nanosecond = 8;
+    microsecond = 9;
+    millisecond = 0;
+    second = 1;
+    minute = 2;
+    hour = 3;
+    day = 4;
+    week = 5;
+    month = 6;
+    year = 7;
+  }
+
+  class DurationUnit extends Unit {
+    attr DurationType[1] unitType;
+  }
+
+  class DerivedMeasure extends Measure {
+
+    @GenModel(body="return hu.blackbelt.judo.meta.psm.PsmUtils.getAllTermMeasures(this);")
+    op Measure[+] getAllTermMeasures();
+    val MeasureDefinitionTerm[+] terms;
+  }
+
+}
+

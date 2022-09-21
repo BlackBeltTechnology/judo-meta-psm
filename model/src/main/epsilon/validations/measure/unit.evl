@@ -1,0 +1,24 @@
+context PSM!Unit {
+
+    // unit name should be unique
+    critique UnitNameIsUnique {
+        check: not PSM!Unit.all.excluding(self)
+                    .exists(u | u.name.toLowerCase() == self.name.toLowerCase() or (u.symbol.isDefined() and u.symbol.toLowerCase() == self.name.toLowerCase()) )
+        message: "There are two or more units of the same name: " + self.name + " (in measure: " + self.eContainer.name + ")"
+    }
+    
+    // unit symbol should be unique
+    critique UnitSymbolIsUnique {
+        guard: self.symbol.isDefined() and self.satisfies("UnitSymbolIsUniqueInMeasure")
+        check: not PSM!Unit.all.excluding(self)
+                    .exists(u | u.name.toLowerCase() == self.symbol.toLowerCase() or (u.symbol.isDefined() and u.symbol == self.symbol) )
+        message: "There are two or more units that have the same symbol: " + self.symbol + " (unit: " + self.name + ", measure: " + self.eContainer.name + ")"
+    }
+    
+    //unit symbol must be unique in its measure
+    constraint UnitSymbolIsUniqueInMeasure {
+        guard: self.symbol.isDefined() and self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer.units.excluding(self).exists(u | u.symbol.isDefined() and u.symbol == self.symbol)
+        message: "Unit symbol: " + self.symbol + " of unit: " + self.name + " of measure: " + self.eContainer.name + " is not unique"
+    }
+}

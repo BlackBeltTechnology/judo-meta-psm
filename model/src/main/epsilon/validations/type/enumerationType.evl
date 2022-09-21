@@ -1,0 +1,8 @@
+context PSM!EnumerationType {
+    
+    // enumerations should have at least 2 members
+    critique EnumerationContainsAtLeastTwoMembers {
+        check: self.members.size() > 1
+        message: "Enum " + self.name + " has no or only a single member"
+    }
+}

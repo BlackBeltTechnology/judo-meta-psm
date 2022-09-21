@@ -1,0 +1,22 @@
+context PSM!Cardinality {
+
+    constraint CardinalityLowerIsGreaterThanOrEqualToZero {
+        guard: self.eContainer.isDefined()
+        check: self.lower >= 0
+        message: "Lower attribute of element: " + self.eContainer.name + " must be greater than or equal to zero"
+    }
+    
+    // lower property must be less or equal to upper property
+    constraint CardinalityLowerMustBeLessOrEqualToUpper {
+        guard: self.eContainer.isDefined()
+        check: self.upper == -1 or self.lower <= self.upper
+        message: "Lower (" + self.lower + ") must be less or equal to upper (" + self.upper + ") of element: " + self.eContainer.name
+    }
+    
+    // upper attribute must be at least 1    
+    constraint CardinalityUpperIsAtLeastOne {
+        guard: self.eContainer.isDefined()
+        check: self.upper > 0 or self.upper == -1
+        message: "Invalid upper attribute of element: " + self.eContainer.name
+    }
+}

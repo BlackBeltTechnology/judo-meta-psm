@@ -1,0 +1,16 @@
+context PSM!NavigationProperty {
+    
+    constraint InheritedAndOwnNavigationPropertyNameIsUniqueInEntityType {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer().getAllSuperEntityTypes()
+                    .collect(c | c.eContents()).flatten()
+                    .select(c | c.isKindOf(PSM!NamedElement))
+                    .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
+        message: "Navigation property: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
+    }
+    
+    constraint NavigationProptertyIsSingleOrCollection {
+    	check: self.cardinality.lower == 0 and (self.cardinality.upper == 1 or self.cardinality.upper == -1)
+    	message: "Navigation property " + self.name + " of entity type " + self.eContainer.name + " cannot be required."
+    }
+}

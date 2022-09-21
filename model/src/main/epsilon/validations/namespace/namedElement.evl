@@ -1,0 +1,43 @@
+context PSM!NamedElement {
+
+    constraint NamedElementHasContainer {
+        guard: not self.isKindOf(PSM!Model)
+        check: self.eContainer.isDefined()
+        message: "Named element " + self.name + " has no container"
+    }
+    
+    constraint NamedElementIsUniqueInItsContainer {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer.eContents.select(c | c.isKindOf(PSM!NamedElement)).excluding(self).exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
+        message: "Named element " + self.name + " is not unique in its container"
+    }
+    
+    constraint ElementNameNotEmpty {
+        check: self.name.length() > 0
+        message: "Named element name must contain at least one character. Zero length name found in " + self
+    }
+
+    constraint ElementNameContainsValidCharacters {
+        guard: self.satisfies("ElementNameNotEmpty")
+        check: self.name.matches("([a-z]|[A-Z]|[0-9]|_)+")
+        message: "Named element's name can only contain english letters (A-Z, a-z), digits (0-9) and underscore characters (_): " + self.name
+    }
+
+    constraint ElementNameCannotContainSubsequentUnderscores {
+        guard: self.satisfies("ElementNameNotEmpty")
+        check: not "__".isSubstringOf(self.name)
+        message: "Named element's name cannot contain two subsequent underscore characters: " + self.name
+    }
+
+    constraint ElementNameFirstCharacterCannotBeDigit {
+        guard: self.satisfies("ElementNameNotEmpty")
+        check: self.name.characterAt(0).matches("[a-z]|[A-Z]|_")
+        message: "Named element's name must start with an english letter or an underscore: " + self.name
+    }
+
+    constraint ElementNameLastCharacterCannotBeUnderscore {
+        guard: self.satisfies("ElementNameNotEmpty")
+        check: not self.name.endsWith("_")
+        message: "Named element's name must end with an english letter or a digit: " + self.name
+    }
+}

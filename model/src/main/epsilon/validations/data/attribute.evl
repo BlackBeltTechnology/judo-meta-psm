@@ -1,0 +1,11 @@
+context PSM!Attribute {
+
+    constraint InheritedAndOwnAttributeNameIsUniqueInEntityType {
+        guard: self.satisfies("NamedElementHasContainer")
+        check: not self.eContainer().getAllSuperEntityTypes()
+                    .collect(c | c.eContents()).flatten()
+                    .select(c | c.isKindOf(PSM!NamedElement))
+                    .exists(ne | ne.name.toLowerCase() == self.name.toLowerCase())
+        message: "Attribute: " + self.name + " has the same name as inherited content(s) of entity type: " + self.eContainer().name
+    }
+}

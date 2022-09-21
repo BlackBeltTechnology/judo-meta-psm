@@ -1,0 +1,46 @@
+context PSM!AssociationEnd {
+
+    constraint CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne {
+        guard: self.reverseCascadeDelete == true
+        check : self.cardinality.upper == 1
+        message: "Cascade delete behavior only allowed on endpoints if their upper cardinality is 1: " + self.name
+    }
+
+    // partner of an endpoint must be a different one
+    constraint PartnerIsNotSelf {
+        guard: self.partner.isDefined()
+        check: self.partner <> self
+        message: "Self partner relation found: " + self
+    }
+
+    // opposite partner must be defined if a partner in endpoint is already defined
+    constraint OppositePartnerIsDefined {
+        guard: self.partner.isDefined() and self.satisfies("PartnerIsNotSelf")
+    	check: self.partner.partner.isDefined()
+    	message: "Missing opposite partner relation for " + self
+    }
+
+    // if partners are specified on both sides of a relation then endpoints must relation to each other
+    constraint ValidPartnerRelations {
+    	guard: self.partner.isDefined() and self.satisfies("OppositePartnerIsDefined")
+    	check: self.partner.partner = self
+    	message: "Opposite partner relation of " + self.partner + " must be " + self
+    }
+
+    // target and partner types must be aligned
+    constraint ValidPartnerType {
+        guard: self.partner.isDefined()
+        check: self.partner.getEntityType() = self.target and self.partner.target = self.getEntityType()
+        message: "Invalid partner type: " + self.partner + " for " + self
+    }
+
+	critique AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound {
+	    guard: self.partner.isDefined()
+	       and self.satisfies("ValidPartnerRelations") 
+	       		and self.satisfies("ValidPartnerType")
+	       		and self.partner.satisfiesAll("ValidPartnerRelations") 
+	       		and self.partner.satisfies("ValidPartnerType")
+	    check: ((self.cardinality.lower == 0) or (self.partner.cardinality.lower == 0))
+	    message: "At least one reference of a bidirectional association should have lower bound with zero: " + self + " or " + self.partner
+	}
+}

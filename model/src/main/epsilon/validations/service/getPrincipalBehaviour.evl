@@ -1,0 +1,48 @@
+context PSM!TransferOperationBehaviour {
+	
+	guard: self.eContainer.isDefined() and self.behaviourType == PSM!TransferOperationBehaviourType#GET_PRINCIPAL
+	
+	constraint OperationOfGetPrincipalBehaviourIsValid {
+		check: self.eContainer.isKindOf(PSM!UnboundOperation)
+		message: "'GET_PRINCIPAL' behaviour type must be owned by unbound operation"
+	}
+	
+	constraint OwnerOfGetPrincipalBehaviourIsValid {
+		check: self.owner.isDefined() and self.owner.isKindOf(PSM!TransferObjectType)
+		message: "Owner of 'GET_PRINCIPAL' behaviour must be a transfer object type"
+	}
+	
+	constraint RelationOfGetPrincipalBehaviourIsUndefined {
+		check: self.relation.isUndefined()
+		message: "Relation for 'GET_PRINCIPAL' behaviour types must be undefined"
+	}
+
+	constraint GetPrincipalOperationInputNameIsValid {
+        check: not self.eContainer.input.isDefined()
+        message: "'GET_PRINCIPAL' operation's input parameter must not exists (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputParameterIsDefined {
+        check: self.eContainer.output.isDefined()
+        message: "'GET_PRINCIPAL' operation must have an output parameter named 'output' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputNameIsValid {
+        guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.name == "output"
+        message: "'GET_PRINCIPAL' operation's output parameter must be named 'output' (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputTypeIsValid {
+        guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.type == self.owner.transferObjectType
+        message: "Type of 'GET_PRINCIPAL' operation's output parameter must be type of exposed graph's mapped transfer object type (operation: " + self.eContainer.name + ")"
+    }
+
+    constraint GetPrincipalOperationOutputCardinalityIsValid {
+        guard: self.satisfies("GetPrincipalOperationOutputParameterIsDefined")
+        check: self.eContainer.output.cardinality.lower == 0 and
+            self.eContainer.output.cardinality.upper == 1
+        message: "Cardinality of 'GET_PRINCIPAL' operation's output parameter must be 0..1 (operation: " + self.eContainer.name + ")"
+    }
+}
