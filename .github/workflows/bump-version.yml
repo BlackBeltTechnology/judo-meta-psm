@@ -10,7 +10,7 @@ on:
         default: "Auto"
 
 jobs:
-  release:
+  bump-version:
     runs-on: judong
     timeout-minutes: 30
     env:
