@@ -81,7 +81,7 @@ jobs:
       - name: ⏭️ Increase version number
         id: next_version
         run: |-
-          NEXT_VERSION="${{ github.event.inputs.next_version }}"
+          NEXT_VERSION="${{ github.event.inputs.next_version }}-SNAPSHOT"
           if [ -z "$NEXT_VERSION" ] || [ $NEXT_VERSION == "Auto" ]; then
             NEXT_VERSION=`(echo $(./mvnw build-helper:parse-version org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate \
               -Dtycho.mode=maven -DskipModules=true -Dexpression="parsedVersion.majorVersion" -q -DforceStdout) &&\
