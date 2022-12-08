@@ -17,6 +17,8 @@
       <genClasses image="false" ecoreClass="psm.ecore#//namespace/NamedElement">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/NamedElement/name"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/NamedElement/documentation"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//namespace/NamedElement/annotations"/>
       </genClasses>
       <genClasses image="false" ecoreClass="psm.ecore#//namespace/Namespace">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//namespace/Namespace/elements"/>
@@ -33,6 +35,15 @@
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.namespaceElementToString(this);"/>
         <genOperations ecoreOperation="psm.ecore#//namespace/NamespaceElement/getNamespace"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getNamespaceOfNamespaceElement(this).get();"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//namespace/Annotation">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/Annotation/name"/>
+        <genFeatures children="true" createChild="true" propertySortChoices="true"
+            ecoreFeature="ecore:EReference psm.ecore#//namespace/Annotation/details"/>
+      </genClasses>
+      <genClasses ecoreClass="psm.ecore#//namespace/AnnotationDetail">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/AnnotationDetail/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/AnnotationDetail/value"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Type" basePackage="hu.blackbelt.judo.meta.psm" resource="XMI"
