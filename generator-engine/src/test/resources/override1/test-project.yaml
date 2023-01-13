@@ -1,0 +1,10 @@
+templates:
+  - name: actorname
+    pathExpression: "#actorType.name + '/actorname'"
+    templateName: test1/actorname.hbs
+    actorTypeBased: true
+
+  - name: actornameOverride1
+    pathExpression: "#actorType.name + '/actornameOverride1'"
+    templateName: test1/actornameOverride1.hbs
+    actorTypeBased: true
