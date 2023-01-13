@@ -5,8 +5,6 @@ import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
-import hu.blackbelt.judo.meta.psm.generator.engine.PsmGenerator;
-import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.model.northwind.Demo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NorthwindTest {
 
     public static final String NORTHWIND_TEST = "northwind-test";
-    public static final String OVERRIDE_1 = "override1";
-    public static final String OVERRIDE_2 = "override2";
+    public static final String BASE = "base";
+    public static final String OVERRIDE = "override";
     private final String TEST_SOURCE_MODEL_NAME = "urn:test.judo-meta-psm";
     private final String TEST = "northwind";
     private final String TARGET_TEST_CLASSES = "target/test-classes";
@@ -58,8 +56,8 @@ public class NorthwindTest {
         File testOutput =  new File(TARGET_TEST_CLASSES, NORTHWIND_TEST);
 
         LinkedHashMap uris = new LinkedHashMap();
-        uris.put(new File(TARGET_TEST_CLASSES, OVERRIDE_1).toString(), new File(TARGET_TEST_CLASSES, OVERRIDE_1).toURI());
-        uris.put(new File(TARGET_TEST_CLASSES, OVERRIDE_2).toString(), new File(TARGET_TEST_CLASSES, OVERRIDE_2).toURI());
+        uris.put(new File(TARGET_TEST_CLASSES, BASE).toString(), new File(TARGET_TEST_CLASSES, BASE).toURI());
+        uris.put(new File(TARGET_TEST_CLASSES, OVERRIDE).toString(), new File(TARGET_TEST_CLASSES, OVERRIDE).toURI());
 
         try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
             PsmGenerator.generateToDirectory(PsmGeneratorParameter.psmGeneratorParameter()
@@ -85,7 +83,7 @@ public class NorthwindTest {
         assertTrue(new File(testOutput, "ExternalUser").isDirectory());
         assertTrue(new File(testOutput, "InternalUser").isDirectory());
 
-        assertThat(linesOf(new File(testOutput, "InternalUser/actorname"))).containsExactly(
+        assertThat(linesOf(new File(testOutput, "InternalUser/actorToOverride"))).containsExactly(
                 "DECORATED Name: InternalUser",
                 "Extra: extra",
                 "FQName: demo::InternalUser",
@@ -97,7 +95,8 @@ public class NorthwindTest {
                 ""
         );
 
-        assertThat(linesOf(new File(testOutput, "InternalUser/actornameOverride1"))).containsExactly(
+        assertThat(linesOf(new File(testOutput, "InternalUser/actorReplaced"))).containsExactly(
+                "REPLACED",
                 "Name: InternalUser",
                 "FQName: demo::InternalUser",
                 "PlainName: internaluser",
@@ -107,6 +106,10 @@ public class NorthwindTest {
                 "Package Name FQ: ",
                 ""
         );
+
+        assertThat(!new File(testOutput, "InternalUser/actorToReplace").exists());
+
+        assertThat(!new File(testOutput, "InternalUser/actorToDelete").exists());
 
     }
 

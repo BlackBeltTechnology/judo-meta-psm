@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -62,12 +63,16 @@ public class GeneratorModel {
 	}
 
 	public void overrideTemplates(Collection<GeneratorTemplate> overridedTemplates) {
-		Collection<GeneratorTemplate> replaceableTemplates = new HashSet<>();
+		Collection<GeneratorTemplate> templatesToReplace = new HashSet<>();
+
 		templates.forEach(t -> {
-			overridedTemplates.stream().filter(o -> o.getName().equals(t.getTemplateName())).forEach(f -> replaceableTemplates.add(f));
+			overridedTemplates.stream().filter(o ->
+					(o.getName() != null && o.getName().equals(t.getName())) ||
+					(o.getName() == null && o.getTemplateName().equals(t.getTemplateName()))
+			).forEach(f -> templatesToReplace.add(t));
 		});
-		templates.removeAll(replaceableTemplates);
-		templates.addAll(overridedTemplates);
+		templates.removeAll(templatesToReplace);
+		templates.addAll(overridedTemplates.stream().filter(o -> !o.isIgnore()).collect(Collectors.toList()));
 	}
 }
 

@@ -3,8 +3,13 @@
                xsi:schemaLocation="http://maven.apache.org/verifications/1.0.0 http://maven.apache.org/xsd/verifications-1.0.0.xsd">
     <files>
         <file>
-            <location>target/test-classes/psm/file/InternalUser/actorname</location>
+            <location>target/test-classes/psm/file/InternalUser/actornameToOverride</location>
             <contains>DECORATED</contains>
         </file>
+        <file>
+            <location>target/test-classes/psm/file/InternalUser/actornameReplaced</location>
+            <contains>REPLACED</contains>
+        </file>
+
     </files>
 </verifications>

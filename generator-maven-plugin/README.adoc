@@ -15,8 +15,8 @@ Include the plugin as a dependency in your Maven project. Change `LATEST_VERSION
 
 ```
 <plugin>
-    <groupId>hu.blackbelt.judo.archetype</groupId>
-	<artifactId>judo-psm-archetype-maven-plugin</artifactId>
+    <groupId>hu.blackbelt.judo.meta</groupId>
+	<artifactId>judo-psm-gemerator-maven-plugin</artifactId>
     <version>LATEST_VERSION</version>
     ...
 </plugin>
@@ -31,8 +31,8 @@ Executing a template for an PSM model
 ```
 
 <plugin>
-    <groupId>hu.blackbelt.judo.archetype</groupId>
-    <artifactId>judo-psm-archetype-maven-plugin</artifactId>
+    <groupId>hu.blackbelt.judo.meta</groupId>
+    <artifactId>judo-psm-gemerator-maven-plugin</artifactId>
     <version>${judo-psm-archetype-version}</version>
     <executions>
         <execution>
@@ -46,7 +46,7 @@ Executing a template for an PSM model
                     mvn:hu.blackbelt.judo.tatami:judo-tatami-northwind-psm:${judo-tatami-version}!model/northwind-psm.model
                 </psm>
                 <uris> <!-- 2 -->
-                    <uri>mvn:hu.blackbelt.judo.archetype:judo-psm-fullstack-project-archetype:${judo-psm-fullstack-project-archetype-version}</uri>
+                    <uri>mvn:hu.blackbelt.judo.meta:judo-psm-fullstack-project-archetype:${judo-psm-fullstack-project-archetype-version}</uri>
                     <uri>${basedir}/src/main/resources</uri>
                 </uris>
                 <helpers> <!-- 3 -->
@@ -139,6 +139,80 @@ existing templates can be overrided only. The content of project file is used to
 template definition or can be added new templates. The ovirrided preferences reverse ordered, so the last defined override is the strongest.
 All of the templates can be decorated, when the original file name is suffixed with `override.hbs`. When it is
 defined the original one can be included with the standard fragment syntax of handlebars.
+Another way of override is to redefine the template for the given template name.
+
+
+=== Example
+
+There is two template. First one is the 'base`, second one is the `overrrided`.
+The effective output will be calculated that way that the `override` is rolled to `base`.
+Means if the `override` template entry with the same `name` have an entry, all
+off the original definition is replaced to the `override` version. When a
+`override` template does not contain the original name, nothing will happend, except
+the `base` entry's `templateName` file is placed as override template.
+There is one special field, called `ignore` which is excluding the `base` template.
+
+==== `base`
+
+```
+templates:
+  - name: testOverride
+    pathExpression: "#actorType.name + '/actorToOverride'"
+    templateName: test1/actorToOverride.hbs
+    actorTypeBased: true
+
+  - name: testReplace
+    pathExpression: "#actorType.name + '/actorToReplace'"
+    templateName: test1/actorToReplace.hbs
+    actorTypeBased: true
+
+  - name: testDelete
+    pathExpression: "#actorType.name + '/actorToDelete'"
+    templateName: test1/actorToDelete.hbs
+    actorTypeBased: true
+```
+
+With templates:
+
+- `test1/actorToDelete.hbs`
+- `test1/actorToOverride.hbs`
+- `test1/actorToReplace.hbs`
+
+Effective output is:
+
+- `/actorName/actorToOverrride`
+- `/actorName/actorToReplace`
+- `/actorName/actorToDelete`
+
+
+==== `override`
+
+
+```
+templates:
+  - name: testReplace
+    pathExpression: "#actorType.name + '/actorReplaced'"
+    templateName: test1/actorReplaced.hbs
+    actorTypeBased: true
+
+  - name: testDelete
+    ignore: true
+```
+
+
+With templates:
+
+- `test1/actorReplaced.hbs`
+- `test1/actorToOverride.override.hbs`
+
+
+In this case the effective output is:
+
+- `/actorName/actorToOverrride`  (with the content of `actorToOverride.override.hbs`)
+- `/actorName/actorReplaced`
+
+
+
 
 === Example:
 To decorate `file_for_actor.test.hbs,` put `file_for_actor.test.override.hbs` file. The original content can be referenced:
