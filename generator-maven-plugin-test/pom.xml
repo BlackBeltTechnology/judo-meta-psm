@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hu.blackbelt.judo.meta</groupId>
+        <artifactId>hu.blackbelt.judo.meta.psm</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>judo-psm-generator-maven-plugin-test</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Judo :: PSM :: Model :: Generator :: Maven :: Plugin :: TEST</name>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <judo-tatami-version>${project.version}</judo-tatami-version>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Unpack PSM -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>unpack-northwind-psm-model</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>hu.blackbelt.judo.meta</groupId>
+                                    <artifactId>hu.blackbelt.judo.meta.psm.model.northwind</artifactId>
+                                    <version>${project.version}</version>
+                                    <outputDirectory>${basedir}/target/classes/psm</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-simple</artifactId>
+                        <version>${slf4j-version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-verifier-plugin</artifactId>
+                <version>1.1</version>
+                <configuration>
+                    <verificationFile>src/test/verifier/verification.xml</verificationFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>verify-files</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>hu.blackbelt.judo.meta</groupId>
+                <artifactId>judo-psm-generator-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-file</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+
+                        <configuration>
+                            <uris>
+                                <uri>${basedir}/src/test/resources/base</uri>
+                                <uri>${basedir}/src/test/resources/override</uri>
+                            </uris>
+                            <!--
+                            <helpers>
+                                <helper>hu.blackbelt.judo.meta.psm.generator.maven.plugin.test.TestHelper</helper>
+                            </helpers>
+                            -->
+                            <type>test-project</type>
+                            <psm>${basedir}/target/classes/psm/northwind-psm.model</psm>
+                            <destination>${basedir}/target/test-classes/psm/file</destination>
+                            <templateParameters>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${project.version}</version>
+                                <projectPostfix>-custom</projectPostfix>
+                                <languages></languages>
+                            </templateParameters>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <uris>
+                                <uri>${basedir}/src/test/resources/base</uri>
+                                <uri>${basedir}/src/test/resources/override</uri>
+                            </uris>
+                            <!--
+                            <helpers>
+                                <helper>hu.blackbelt.judo.meta.psm.generator.maven.plugin.test.TestHelper</helper>
+                            </helpers>
+                            -->
+                            <type>test-project</type>
+                            <psm>mvn:hu.blackbelt.judo.meta:hu.blackbelt.judo.meta.psm.model.northwind:${project.version}!northwind-psm.model</psm>
+                            <destination>${basedir}/target/test-classes/psm/artifact</destination>
+                            <templateParameters>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${project.version}</version>
+                            </templateParameters>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>execute-psm-test-model-from-artifact-singleclient</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <uris>
+                                <uri>${basedir}/src/test/resources/base</uri>
+                                <uri>${basedir}/src/test/resources/override</uri>
+                            </uris>
+                            <!--
+                            <helpers>
+                                <helper>hu.blackbelt.judo.meta.psm.generator.maven.plugin.test.TestHelper</helper>
+                            </helpers>
+                            -->
+                            <type>test-project</type>
+                            <psm>${basedir}/target/classes/psm/northwind-psm.model</psm>
+                            <destination>${basedir}/target/test-classes/psm/singleclient</destination>
+                            <actors>
+                                <actor>northwind__authexternaluser</actor>
+                            </actors>
+                            <templateParameters>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <version>${project.version}</version>
+                            </templateParameters>
+                        </configuration>
+                    </execution>
+
+                </executions>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>hu.blackbelt.judo.meta</groupId>
+                        <artifactId>hu.blackbelt.judo.meta.psm.model.northwind</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            hu.blackbelt.judo.meta
+                                        </groupId>
+                                        <artifactId>
+                                            judo-psm-generator-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.0.0-SNAPSHOT,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>generate</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
+            <version>0.19.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.github.jknack</groupId>
+            <artifactId>handlebars</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>5.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.blackbelt.judo.meta</groupId>
+            <artifactId>hu.blackbelt.judo.meta.psm.model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.blackbelt.judo.generator</groupId>
+            <artifactId>judo-generator-commons</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>
