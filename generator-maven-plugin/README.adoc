@@ -26,7 +26,7 @@ Include the plugin as a dependency in your Maven project. Change `LATEST_VERSION
 
 == Usage
 
-Executing a template for an PSM model
+Executing a template for an UI model
 
 ```
 
@@ -97,7 +97,7 @@ be presented in plugin's or the project's dependencies. When a helper implements
 interface automatically registered as a handlebar value resolver. When `scanDependencies` parameter is `true`, the scanned
 helpers and the given ones are merged.
 
-<4> Project type. It is used to resolve the project descriptor yaml files. The yaml file name is `<project type>-project.yam;`.
+<4> Project type. It is used to resolve the project descriptor yaml files. The yaml file name is `<project type>.yaml`.
 One template can countains several project type description, so same templates can be used for multiple project skeleton types.
 
 <5> Destination path where the transformation output is generated. When no actor or more than one actor is defined, for all actors
@@ -128,20 +128,20 @@ templating is running in multiple threads.
 
 == Generation
 
-For code generation handlebars template is used. The `<project type>-project.yaml` file
+For code generation handlebars template is used. The `<project type>.yaml` file
 describes what template is used for that and control which parameters
 are passed and PSM model can control HOW the templates can be used.
 
 == Override templates in generation
 
-The template override can contain a `<project type>-project.yaml` which can be empty, on that case the
-existing templates can be overrided only. The content of project file is used to override existing
-template definition or can be added new templates. The ovirrided preferences reverse ordered, so the last defined override is the strongest.
+The template overrides can contain a `<project type>.yaml` which can be empty, on that case the
+existing templates can be overrided only. The contents of project files can be used to override existing
+template definition or can be added new templates. The overrided preferences are processed in a reverse order, so the last defined override is the strongest.
 All of the templates can be decorated, when the original file name is suffixed with `override.hbs`. When it is
 defined the original one can be included with the standard fragment syntax of handlebars.
 Another way of override is to redefine the template for the given template name.
 
-== <project type>-project.yaml file
+== <project type>.yaml file
 
 This file is used to control generation process. This file is using the PSM model and the given helpers.
 
@@ -167,7 +167,7 @@ handlebars helper and SpringEL helper too.
 <1> The name of the template. It can be used to redefine template in a later override.
 
 <2> Factory expression is used to create files. It returns a list of
-objects which is used as root context for the given handlebar template. (`templateName`)
+objects which are used as root context for the given handlebar template. (`templateName`)
 
 <3> When actorTypeBased template used, the template called for all actor types and
 the `actorType` variables is defined.
@@ -196,10 +196,10 @@ the generation have to ignore the given file to keep the edited version. To achi
 
 === Example
 
-There is two template. First one is the 'base`, second one is the `override`.
+There are two templates. First one is the 'base`, second one is the `override`.
 The effective output will be calculated that way that the `override` is rolled to `base`.
-Means if the `override` template entry with the same `name` have an entry, all
-off the original definition is replaced to the `override` version. When a
+Means if the `override` template entry with the same `name` has an entry, all
+off the original definitions are replaced with the `override` version. When a
 `override` template does not contain the original name, nothing will happend, except
 the `base` entry's `templateName` file is placed as override template.
 There is one special field, called `exclude` which is excluding the `base` template.
