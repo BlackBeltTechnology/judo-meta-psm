@@ -196,13 +196,13 @@ the generation have to ignore the given file to keep the edited version. To achi
 
 === Example
 
-There is two template. First one is the 'base`, second one is the `overrrided`.
+There is two template. First one is the 'base`, second one is the `overrrid`.
 The effective output will be calculated that way that the `override` is rolled to `base`.
 Means if the `override` template entry with the same `name` have an entry, all
 off the original definition is replaced to the `override` version. When a
 `override` template does not contain the original name, nothing will happend, except
 the `base` entry's `templateName` file is placed as override template.
-There is one special field, called `ignore` which is excluding the `base` template.
+There is one special field, called `exclude` which is excluding the `base` template.
 
 ==== `base`
 
