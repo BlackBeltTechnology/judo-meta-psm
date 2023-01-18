@@ -72,7 +72,7 @@ public class GeneratorModel {
 			).forEach(f -> templatesToReplace.add(t));
 		});
 		templates.removeAll(templatesToReplace);
-		templates.addAll(overridedTemplates.stream().filter(o -> !o.isIgnore()).collect(Collectors.toList()));
+		templates.addAll(overridedTemplates.stream().filter(o -> !o.isExclude()).collect(Collectors.toList()));
 	}
 }
 

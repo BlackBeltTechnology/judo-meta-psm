@@ -48,7 +48,7 @@ public class GeneratorTemplate {
 	private boolean actorTypeBased = false;
 
 	@Builder.Default
-	private boolean ignore = false;
+	private boolean exclude = false;
 
 	@Builder.Default
 	private Collection<TemplateSpringELExpression> templateContext = new HashSet();

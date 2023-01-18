@@ -1,5 +1,5 @@
-JUDO Tatami PSM Archetype maven plugin
-======================================
+JUDO PSM Generator maven plugin
+===============================
 
 This plugin manages and executes generators for JUDO PSM models.
 
@@ -16,7 +16,7 @@ Include the plugin as a dependency in your Maven project. Change `LATEST_VERSION
 ```
 <plugin>
     <groupId>hu.blackbelt.judo.meta</groupId>
-	<artifactId>judo-psm-gemerator-maven-plugin</artifactId>
+	<artifactId>judo-psm-generator-maven-plugin</artifactId>
     <version>LATEST_VERSION</version>
     ...
 </plugin>
@@ -32,7 +32,7 @@ Executing a template for an PSM model
 
 <plugin>
     <groupId>hu.blackbelt.judo.meta</groupId>
-    <artifactId>judo-psm-gemerator-maven-plugin</artifactId>
+    <artifactId>judo-psm-generator-maven-plugin</artifactId>
     <version>${judo-psm-archetype-version}</version>
     <executions>
         <execution>
@@ -141,6 +141,58 @@ All of the templates can be decorated, when the original file name is suffixed w
 defined the original one can be included with the standard fragment syntax of handlebars.
 Another way of override is to redefine the template for the given template name.
 
+== <project type>-project.yaml file
+
+This file is used to control generation process. This file is using the PSM model and the given helpers.
+
+For expression processing, the SpringEL expression language is used. The helpers are binded as
+handlebars helper and SpringEL helper too.
+
+```
+- name: file_for_actor (1)
+  factoryExpression: "{#actorTypes}" (2)
+  actorTypeBased: false (3)
+  exclude: false (4)
+  pathExpression: >
+    'lib/' +
+    #path(#actorType.name) + '/' +
+    'file_for_actor.test' (5)
+  templateName: lib/file_for_actor.test.hbs (6)
+  templateContext: (7)
+    - name: actorTypeAsVariable
+      expression: "#self"
+  copy: false (8)
+```
+
+<1> The name of the template. It can be used to redefine template in a later override.
+
+<2> Factory expression is used to create files. It returns a list of
+objects which is used as root context for the given handlebar template. (`templateName`)
+
+<3> When actorTypeBased template used, the template called for all actor types and
+the `actorType` variables is defined.
+
+<4> This parameter can be used in an override to exclude the given template from a generation.
+With this parameter only the `name` is effective
+
+<5> Path expression return with a path where the generated file is placed.
+
+<6> Template is used for generation.
+
+<7> Template context is used to put expression result to template
+variable.
+
+<8> It can be used to copy a binary file. In this case the template file used as binary, no
+templating is performed. In this case `factoryExpression`, `pathExpression` are used.
+
+
+== Ignore files on generation
+
+Sometimes a developer needs to replace generated file with custom developed file. On that case
+the generation have to ignore the given file to keep the edited version. To achieve this
+`.generator-ignore` file can be used.  It uses glob format, so the usage is same as '.gitignore'.
+
+
 
 === Example
 
@@ -196,7 +248,7 @@ templates:
     actorTypeBased: true
 
   - name: testDelete
-    ignore: true
+    exclude: true
 ```
 
 
@@ -210,66 +262,3 @@ In this case the effective output is:
 
 - `/actorName/actorToOverrride`  (with the content of `actorToOverride.override.hbs`)
 - `/actorName/actorReplaced`
-
-
-
-
-=== Example:
-To decorate `file_for_actor.test.hbs,` put `file_for_actor.test.override.hbs` file. The original content can be referenced:
-
-```
-The original content:
-{{> lib/file_for_actor.test.hbs }}
-```
-
-== <project type>-project.yaml file
-
-This file is used to control generation process. This file is using the PSM model and the given helpers.
-
-For expression processing, the SpringEL expression language is used. The helpers are binded as
-handlebars helper and SpringEL helper too.
-
-```
-- factoryExpression: "{#actorTypes}" (1)
-  actorTypeBased: false
-  pathExpression: >
-    'lib/' +
-    #path(#actorType.name) + '/' +
-    'file_for_actor.test' (3)
-  templateName: lib/file_for_actor.test.hbs (4)
-  templateContext: (5)
-    - name: actorTypeAsVariable
-      expression: "#self"
-```
-
-<1> Factory expression is used to create files. It returns a list of
-objects which is used as root context for the given handlebar temlate. (`templateName`)
-
-<2> When actorTypeBased templare used, the template called for all actor types and
-the `actorType` variables is defined.
-
-<3> Path expression return with a path where the generated file is placed.
-
-<4> Template is used for generation.
-
-<5> Template context is used to put expression result to template
-variable.
-
-```
-- overwriteExpression: false
-  factoryExpression: "{#model}"
-  pathExpression: "'.gitignore'"
-  templateName: gitignore
-  copy: true (1)
-
-```
-
-<1> For static file without any template `copy` attribute can be used.
-
-
-== Ignore files on generation
-
-Sometimes a developer needs to replace generated file with custom develped file. On that case
-the generation have to ignore the given file to keep the edited version. To achive this
-`.generator-ignore` file can be used.  It uses glob format, so the usage is same as '.gitignore'.
-
