@@ -64,6 +64,7 @@ Executing a template for an UI model
         </execution>
     </executions>
 
+    <!--  these dependencies are just example models for testing. -->
     <dependencies>
         <dependency>
             <groupId>hu.blackbelt.judo.meta</groupId>
@@ -73,8 +74,8 @@ Executing a template for an UI model
 
         <dependency>
             <groupId>hu.blackbelt.judo.meta</groupId>
-            <artifactId>hu.blackbelt.judo.meta.psm.model.northwind</artifactId>
-            <version>${judo-meta-psm-version}</version>
+            <artifactId>judo-psm-fullstack-project-archetype</artifactId>
+            <version>${judo-psm-fullstack-project-archetype-version}</version>
         </dependency>
 
     </dependencies>
@@ -120,9 +121,9 @@ It can implement any of the following methods, depends on which context can be r
 <8> Scan dependencies. It scans classpath for classes annotated with `@hu.blackbelt.judo.generator.commons.annotations.TemplateHelper` and
 `@hu.blackbelt.judo.generator.commons.annotations.ContextAccessor` annotated classes.
 
-<9> Actors used to generation. When it is not set all actors are generated. To define use coma separated fully qualified name of actor class.
+<9> Actors used for generation. When it is not set all actors are generated. To define use coma separated fully qualified name of actor class.
 
-Recommended to store the context in ThreadLocal, because
+Our recommendation is to store the context in ThreadLocal, because
 templating is running in multiple threads.
 
 
@@ -170,12 +171,12 @@ handlebars helper and SpringEL helper too.
 objects which are used as root context for the given handlebar template. (`templateName`)
 
 <3> When actorTypeBased template used, the template called for all actor types and
-the `actorType` variables is defined.
+the `actorType` variable is defined.
 
 <4> This parameter can be used in an override to exclude the given template from a generation.
 With this parameter only the `name` is effective
 
-<5> Path expression return with a path where the generated file is placed.
+<5> Path expression returns with a path where the generated file is placed.
 
 <6> Template is used for generation.
 
@@ -189,7 +190,7 @@ templating is performed. In this case `factoryExpression`, `pathExpression` are 
 == Ignore files on generation
 
 Sometimes a developer needs to replace generated file with custom developed file. On that case
-the generation have to ignore the given file to keep the edited version. To achieve this
+the generator has to ignore the given file to keep the edited version. To achieve this
 `.generator-ignore` file can be used.  It uses glob format, so the usage is same as '.gitignore'.
 
 

@@ -38,7 +38,7 @@ import java.util.zip.ZipOutputStream;
 public class PsmGenerator {
 
     public static final String NAME = "name";
-    public static final Boolean CLIENT_TEMPLATE_DEBUG = System.getProperty("clientTemplateDebug") != null;
+    public static final Boolean TEMPLATE_DEBUG = System.getProperty("templateDebug") != null;
     public static final String YAML = ".yaml";
     public static final String ADD_DEBUG_TO_TEMPLATE = "addDebugToTemplate";
     public static final String TEMPLATE = "template";
@@ -90,7 +90,7 @@ public class PsmGenerator {
             // It returns the function, the context creation itself is called when template is processed.
             Function<Object, Context.Builder> defaultHandlebarsContextBuilder = o -> {
                 ImmutableMap.Builder params = ImmutableMap.<String, Object>builder()
-                    .put(ADD_DEBUG_TO_TEMPLATE, CLIENT_TEMPLATE_DEBUG)
+                    .put(ADD_DEBUG_TO_TEMPLATE, TEMPLATE_DEBUG)
                     .put(ACTOR_TYPES, actorTypes)
                     .put(TEMPLATE, generatorTemplate)
                     .put(SELF, o)
@@ -113,7 +113,7 @@ public class PsmGenerator {
             // SpringEL Context builder
             Function<Object, StandardEvaluationContext> defaultSpringELContextProvider = o -> {
                 StandardEvaluationContext templateContext = parameter.generatorContext.createSpringEvaluationContext();
-                templateContext.setVariable(ADD_DEBUG_TO_TEMPLATE, CLIENT_TEMPLATE_DEBUG);
+                templateContext.setVariable(ADD_DEBUG_TO_TEMPLATE, TEMPLATE_DEBUG);
                 templateContext.setVariable(ACTOR_TYPES, actorTypes);
                 templateContext.setVariable(TEMPLATE, generatorTemplate);
                 templateContext.setVariable(SELF, o);
