@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.github.jknack.handlebars.internal.lang3.builder.ReflectionToStringBuilder;
-import com.github.jknack.handlebars.internal.lang3.builder.ToStringStyle;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,9 +54,9 @@ public class GeneratorModel {
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Yaml file read error: " + yaml.toString(), e);
 		}
-		if (model != null) {
-			log.debug(ReflectionToStringBuilder.toString(model.getTemplates(), ToStringStyle.MULTI_LINE_STYLE));
-		}
+		// if (model != null) {
+		//	log.debug(ReflectionToStringBuilder.toString(model.getTemplates(), ToStringStyle.MULTI_LINE_STYLE));
+		// }
 		return model;
 	}
 
