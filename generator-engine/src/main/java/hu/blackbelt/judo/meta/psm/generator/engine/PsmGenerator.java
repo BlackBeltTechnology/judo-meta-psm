@@ -248,7 +248,7 @@ public class PsmGenerator {
                 if (!generatorIgnore.shouldExcludeFile(outFile.toPath())) {
                     try {
                         if (outFile.exists()) {
-                            log.warn("File already exists, overwrite: " + outFile.getAbsolutePath());
+                            log.debug("File already exists, overwrite: " + outFile.getAbsolutePath());
                             outFile.delete();
                         }
                         ByteStreams.copy(new ByteArrayInputStream(f.getContent()), new FileOutputStream(outFile));
@@ -271,7 +271,7 @@ public class PsmGenerator {
                 if (!generatorIgnore.shouldExcludeFile(outFile.toPath())) {
                     try {
                         if (outFile.exists()) {
-                            log.warn("File already exists, overwrite: " + outFile.getAbsolutePath());
+                            log.debug("File already exists, overwrite: " + outFile.getAbsolutePath());
                             outFile.delete();
                         }
                         ByteStreams.copy(new ByteArrayInputStream(f.getContent()), new FileOutputStream(outFile));
