@@ -247,9 +247,14 @@ public class PsmGenerator {
                 outFile.getParentFile().mkdirs();
                 if (!generatorIgnore.shouldExcludeFile(outFile.toPath())) {
                     try {
+                        if (outFile.exists()) {
+                            log.warn("File already exists, overwrite: " + outFile.getAbsolutePath());
+                            outFile.delete();
+                        }
                         ByteStreams.copy(new ByteArrayInputStream(f.getContent()), new FileOutputStream(outFile));
                     } catch (Exception exception) {
-                        log.error("Could not write file: " + outFile.getAbsolutePath(), exception);
+                        log.error("Could not write file: " + outFile.getAbsolutePath());
+                        throw new RuntimeException(exception);
                     }
                 }
             });
@@ -265,9 +270,14 @@ public class PsmGenerator {
                 outFile.getParentFile().mkdirs();
                 if (!generatorIgnore.shouldExcludeFile(outFile.toPath())) {
                     try {
+                        if (outFile.exists()) {
+                            log.warn("File already exists, overwrite: " + outFile.getAbsolutePath());
+                            outFile.delete();
+                        }
                         ByteStreams.copy(new ByteArrayInputStream(f.getContent()), new FileOutputStream(outFile));
                     } catch (Exception exception) {
-                        log.error("Could not write file: " + outFile.getAbsolutePath(), exception);
+                        log.error("Could not write file: " + outFile.getAbsolutePath());
+                        throw new RuntimeException(exception);
                     }
                 }
             });
