@@ -22,7 +22,11 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="packages" upperBound="-1"
           eType="#//namespace/Package" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          defaultValueLiteral="1.0.0"/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace">
       <eOperations name="getNamespace" lowerBound="1" eType="#//namespace/Namespace">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

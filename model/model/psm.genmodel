@@ -25,7 +25,9 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference psm.ecore#//namespace/Namespace/packages"/>
         <genOperations ecoreOperation="psm.ecore#//namespace/Namespace/toString" body="return hu.blackbelt.judo.meta.psm.PsmUtils.namespaceToString(this);"/>
       </genClasses>
-      <genClasses ecoreClass="psm.ecore#//namespace/Model"/>
+      <genClasses ecoreClass="psm.ecore#//namespace/Model">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute psm.ecore#//namespace/Model/version"/>
+      </genClasses>
       <genClasses ecoreClass="psm.ecore#//namespace/Package">
         <genOperations ecoreOperation="psm.ecore#//namespace/Package/getNamespace"
             body="return hu.blackbelt.judo.meta.psm.PsmUtils.getNamespaceOfPackage(this).get();"/>
