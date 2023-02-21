@@ -25,7 +25,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//namespace/Namespace">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-          defaultValueLiteral="1.0.0"/>
+          defaultValueLiteral="$MODEL_VERSION_PLACEHOLDER$"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//namespace/Namespace">
       <eOperations name="getNamespace" lowerBound="1" eType="#//namespace/Namespace">
