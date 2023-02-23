@@ -54,19 +54,9 @@ import static java.util.Optional.ofNullable;
 
 @Component(immediate = true)
 @Slf4j
-@Designate(ocd = PsmModelBundleTracker.TrackerConfig.class)
 public class PsmModelBundleTracker {
 
     public static final String PSM_MODELS = "Psm-Models";
-
-    @ObjectClassDefinition(name="Psm Model Bundle TTracker")
-    public @interface TrackerConfig {
-        @AttributeDefinition(
-                name = "Tags",
-                description = "Which tags are on the loaded model when there is no one defined in bundle"
-        )
-        String tags() default "";
-    }
 
     @Reference
     BundleTrackerManager bundleTrackerManager;
@@ -75,11 +65,8 @@ public class PsmModelBundleTracker {
 
     Map<String, PsmModel> psmModels = new HashMap<>();
 
-    TrackerConfig config;
-
     @Activate
-    public void activate(final ComponentContext componentContext, final TrackerConfig trackerConfig) {
-        this.config = trackerConfig;
+    public void activate(final ComponentContext componentContext) {
         bundleTrackerManager.registerBundleCallback(this.getClass().getName(),
                 new PsmRegisterCallback(componentContext.getBundleContext()),
                 new PsmUnregisterCallback(),
