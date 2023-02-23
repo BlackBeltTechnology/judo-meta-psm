@@ -169,7 +169,6 @@ public class Demo {
         java.lang.String createdSourceModelName = "urn:psm.judo-meta-psm";
         PsmModel psmModel = PsmModel.buildPsmModel()
                 .uri(org.eclipse.emf.common.util.URI.createURI(createdSourceModelName))
-                .name("demo")
                 .build();
         return psmModel;
     }

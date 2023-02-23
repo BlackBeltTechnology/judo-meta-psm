@@ -55,7 +55,6 @@ class PsmValidationTest {
     void setUp () {
         psmModel = PsmModel.buildPsmModel()
                 .uri(URI.createURI(createdSourceModelName))
-                .name("test")
                 .build();
     }
 

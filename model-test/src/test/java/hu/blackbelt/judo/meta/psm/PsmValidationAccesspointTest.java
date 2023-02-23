@@ -41,7 +41,7 @@ class PsmValidationAccesspointTest {
 
 	@BeforeEach
 	void setUp() {
-		psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test").build();
+		psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).build();
 	}
 
 	private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
