@@ -74,7 +74,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testMappedTransferObjectOfAbstractEntity() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		EntityType entityType = newEntityTypeBuilder().withName("entityType").withAbstract_(true).build();
@@ -90,7 +90,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testMappedTransferObjectOwnBoundOperation() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		BoundOperation operation = newBoundOperationBuilder().withName("operation").withAbstract_(true).build();
@@ -109,7 +109,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testMappedTransferObjectBoundOperationsWithSameName() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
@@ -144,7 +144,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testgetAllOperationNames() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
@@ -184,7 +184,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testGetOperationImplementationZeroInherited() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		EntityType entityType1 = newEntityTypeBuilder().withName("entityType1").withAbstract_(false).build();
@@ -221,7 +221,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testGetOperationImplementationOneInherited() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		OperationBody implementation1 = newOperationBodyBuilder().build();
@@ -255,7 +255,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testGetOperationImplementationTwoInherited() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		OperationBody implementation1 = newOperationBodyBuilder().build();
@@ -292,7 +292,7 @@ public class PsmUtilsTest extends NorthwindTest {
 
 	@Test
 	public void testGetOperationImplementationThreeInherited() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 
 		OperationBody implementation1 = newOperationBodyBuilder().build();
@@ -340,7 +340,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetAllRelations() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
         AssociationEnd relation1 = newAssociationEndBuilder().withName("r1").withCardinality(newCardinalityBuilder().withUpper(1).withLower(0).build()).build();
@@ -368,7 +368,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetAllAttributes() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
         NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
@@ -398,7 +398,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetAllDataProperties() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
         NumericType integer = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
@@ -453,7 +453,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetAllNavigationProperties() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
         AssociationEnd e1 = newAssociationEndBuilder().withName("e1").withCardinality(newCardinalityBuilder().build()).build();
@@ -506,7 +506,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetAllSequences() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
         EntitySequence s1 = newEntitySequenceBuilder().withName("s1").build();
@@ -542,7 +542,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetAllBoundOperations() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
 		BoundOperation operation1 = newBoundOperationBuilder().withName("operation1").withImplementation(newOperationBodyBuilder().build()).build();
@@ -579,7 +579,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	
 	@Test
 	public void testGetInheritedOperationsByName() {
-		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName)).name("test")
+		final PsmModel psmModel = PsmModel.buildPsmModel().uri(URI.createURI(createdSourceModelName))
 				.build();
 		
 		BoundOperation binding1 = newBoundOperationBuilder().withName("operation").withImplementation(newOperationBodyBuilder().build()).build();
@@ -619,7 +619,7 @@ public class PsmUtilsTest extends NorthwindTest {
 	public void testValidateUniqueXmiids() {
 		final PsmModel psmModel = PsmModel.buildPsmModel()
 				.uri(URI.createURI(createdSourceModelName))
-				.name("test")
+				
 				.build();
 
 		final Model m = newModelBuilder().withName("M").build();

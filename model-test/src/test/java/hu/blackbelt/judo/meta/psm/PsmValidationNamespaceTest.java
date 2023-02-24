@@ -57,7 +57,6 @@ class PsmValidationNamespaceTest {
     void setUp () {
         psmModel = PsmModel.buildPsmModel()
                 .uri(URI.createURI(createdSourceModelName))
-                .name("test")
                 .build();
     }
 
