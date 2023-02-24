@@ -90,12 +90,12 @@ public class PsmModelLoadITest {
         PsmModel psmModel = demModel.fullDemo();
 
         return bundle()
-                .add( "model/" + DEMO + ".judo-meta-psm",
+                .add( "model/" + psmModel.getName() + "-psm.model",
                         new ByteArrayInputStream(psmModel.asString().getBytes("UTF-8")))
                 .set( Constants.BUNDLE_MANIFESTVERSION, "2")
-                .set( Constants.BUNDLE_SYMBOLICNAME, DEMO + "-psm" )
+                .set( Constants.BUNDLE_SYMBOLICNAME, psmModel.getName() + "-psm" )
                 //set( Constants.IMPORT_PACKAGE, "meta/psm;version=\"" + getConfiguration(META_PSM_IMPORT_RANGE) +"\"")
-                .set( "Psm-Models", "file=model/" + DEMO + ".judo-meta-psm;version=1.0.0;name=" + DEMO + ";checksum=notset;meta-version-range=\"[1.0.0,2)\"")
+                .set( "Psm-Models", "name=" + psmModel.getName() + ";file=model/" + psmModel.getName() + "-psm.model")
                 .build( withBnd());
     }
 
