@@ -44,5 +44,7 @@ Workflow {
 	component = hu.blackbelt.judo.eclipse.emf.genmodel.generator.runtimemodel.RuntimeModelGeneratorWorkflow {
 		modelDir = "${rootPath}/${modelDir}"
 		javaGenPath = "${rootPath}/${javaGenPath}"
+		resolveModelName = "psmModelResourceSupport.getStreamOfPsmNamespaceModel().findFirst().orElseThrow(() -> new IllegalStateException(\"Could not get PSM model\")).getName()"
+		resolveModelVersion = "psmModelResourceSupport.getStreamOfPsmNamespaceModel().findFirst().orElseThrow(() -> new IllegalStateException(\"Could not get PSM model\")).getVersion()"
 	}
 }

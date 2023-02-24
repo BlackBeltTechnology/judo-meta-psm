@@ -54,19 +54,9 @@ import static java.util.Optional.ofNullable;
 
 @Component(immediate = true)
 @Slf4j
-@Designate(ocd = PsmModelBundleTracker.TrackerConfig.class)
 public class PsmModelBundleTracker {
 
     public static final String PSM_MODELS = "Psm-Models";
-
-    @ObjectClassDefinition(name="Psm Model Bundle TTracker")
-    public @interface TrackerConfig {
-        @AttributeDefinition(
-                name = "Tags",
-                description = "Which tags are on the loaded model when there is no one defined in bundle"
-        )
-        String tags() default "";
-    }
 
     @Reference
     BundleTrackerManager bundleTrackerManager;
@@ -75,11 +65,8 @@ public class PsmModelBundleTracker {
 
     Map<String, PsmModel> psmModels = new HashMap<>();
 
-    TrackerConfig config;
-
     @Activate
-    public void activate(final ComponentContext componentContext, final TrackerConfig trackerConfig) {
-        this.config = trackerConfig;
+    public void activate(final ComponentContext componentContext) {
         bundleTrackerManager.registerBundleCallback(this.getClass().getName(),
                 new PsmRegisterCallback(componentContext.getBundleContext()),
                 new PsmUnregisterCallback(),
@@ -117,31 +104,21 @@ public class PsmModelBundleTracker {
                 if (psmModelRegistrations.containsKey(key)) {
                     log.error("Psm model already loaded: " + key);
                 } else {
-                    if (params.containsKey(PsmModel.META_VERSION_RANGE)) {
-                        VersionRange versionRange = new VersionRange(params.get(PsmModel.META_VERSION_RANGE).replaceAll("\"", ""));
-                        if (versionRange.includes(bundleContext.getBundle().getVersion())) {
-                            // Unpack model
-                            try {
-                                PsmModel psmModel = loadPsmModel(psmLoadArgumentsBuilder()
-                                        .inputStream(trackedBundle.getEntry(params.get("file")).openStream())
-                                        .name(params.get(PsmModel.NAME))
-                                        .version(trackedBundle.getVersion().toString())
-                                        .checksum(ofNullable(params.get(PsmModel.CHECKSUM)).orElse("notset"))
-                                        .tags(Stream.of(ofNullable(params.get(PsmModel.TAGS)).orElse(config.tags()).split(",")).collect(Collectors.toSet()))
-                                        .acceptedMetaVersionRange(Optional.of(versionRange.toString()).orElse("[0,99)")));
+                    // Unpack model
+                    try {
+                        PsmModel psmModel = loadPsmModel(psmLoadArgumentsBuilder()
+                                .inputStream(trackedBundle.getEntry(params.get("file")).openStream()));
 
-                                log.info("Registering Psm model: " + psmModel);
+                        log.info("Registering Psm model: " + psmModel);
 
-                                ServiceRegistration<PsmModel> modelServiceRegistration = bundleContext.registerService(PsmModel.class, psmModel, psmModel.toDictionary());
-                                psmModels.put(key, psmModel);
-                                psmModelRegistrations.put(key, modelServiceRegistration);
+                        ServiceRegistration<PsmModel> modelServiceRegistration = bundleContext.registerService(PsmModel.class, psmModel, psmModel.toDictionary());
+                        psmModels.put(key, psmModel);
+                        psmModelRegistrations.put(key, modelServiceRegistration);
 
-                            } catch (IOException | PsmModel.PsmValidationException e) {
-                                log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId(), e);
-                            }
-                        }
+                    } catch (IOException | PsmModel.PsmValidationException e) {
+                        log.error("Could not load Psm model: " + params.get(PsmModel.NAME) + " from bundle: " + trackedBundle.getBundleId(), e);
                     }
-                }
+        }
             }
         }
 
