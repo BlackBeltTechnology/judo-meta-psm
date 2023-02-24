@@ -381,8 +381,7 @@ public class GenerateProjectMojo extends AbstractMojo {
                                     of(psmUri).orElseThrow(() ->
                                                     new IllegalArgumentException("psmModel or psmModelSourceUri have to be defined"))
                                             .toURL().openStream())
-                            .validateModel(false)
-                            .name("forName"));
+                            .validateModel(false));
 
                     psmModelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
                             .resourceSet(psmModel.getResourceSet())
