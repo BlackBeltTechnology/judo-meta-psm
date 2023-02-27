@@ -40,7 +40,7 @@ public class NorthwindTest {
 
     @BeforeEach
     void setUp() {
-        psmModel = buildPsmModel().uri(org.eclipse.emf.common.util.URI.createURI(TEST_SOURCE_MODEL_NAME)).name(TEST).build();
+        psmModel = buildPsmModel().uri(org.eclipse.emf.common.util.URI.createURI(TEST_SOURCE_MODEL_NAME)).build();
     }
 
     @AfterEach
