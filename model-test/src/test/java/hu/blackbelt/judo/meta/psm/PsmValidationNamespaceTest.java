@@ -9,13 +9,13 @@ package hu.blackbelt.judo.meta.psm;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -62,8 +62,8 @@ class PsmValidationNamespaceTest {
 
     private void runEpsilon (Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
-        	bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
-        	Assertions.assertTrue(psmModel.isValid());
+            bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
+            Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(bufferedLog,
                     psmModel,
                     new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
@@ -80,7 +80,7 @@ class PsmValidationNamespaceTest {
             throw ex;
         }
     }
-    
+
     @Test
     void testStandaloneModelLoadedOnly () throws Exception {
         log.info("Testing constraint: StandaloneModelLoadedOnly");
@@ -107,7 +107,7 @@ class PsmValidationNamespaceTest {
         runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element pkg has no container"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testNamespaceElementBelongsToOneNamespace () throws Exception {
         log.info("Testing constraint: NamedElementHasContainer");
@@ -215,11 +215,11 @@ class PsmValidationNamespaceTest {
         runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element n has no container"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testNamedElementHasContainer() throws Exception {
         log.info("Testing constraint: NamedElementHasContainer");
-        
+
         Model m = newModelBuilder().withName("M").build();
         Package p = newPackageBuilder().withName("p").build();
 
@@ -227,7 +227,7 @@ class PsmValidationNamespaceTest {
         psmModel.addContent(p);
         runEpsilon(ImmutableList.of("NamedElementHasContainer|Named element p has no container"), Collections.emptyList());
     }
-    
+
     @Test
     void testDataPropertyNameIsUnique () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
@@ -248,7 +248,7 @@ class PsmValidationNamespaceTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"),
+                "NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"),
                 Collections.emptyList());
     }
 
@@ -276,7 +276,7 @@ class PsmValidationNamespaceTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element n is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element n is not unique in its container"),
+                "NamedElementIsUniqueInItsContainer|Named element n is not unique in its container"),
                 Collections.emptyList());
     }
 
@@ -303,10 +303,10 @@ class PsmValidationNamespaceTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element a is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element a is not unique in its container"),
+                "NamedElementIsUniqueInItsContainer|Named element a is not unique in its container"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testRelationNameIsUnique () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
@@ -332,10 +332,10 @@ class PsmValidationNamespaceTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element e is not unique in its container"),
+                "NamedElementIsUniqueInItsContainer|Named element e is not unique in its container"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testNoAttributeAndRelationAreWithTheSameName () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
@@ -357,25 +357,25 @@ class PsmValidationNamespaceTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element x is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element x is not unique in its container"),
+                "NamedElementIsUniqueInItsContainer|Named element x is not unique in its container"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testNamedElementIsUniqueInItsContainer() throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
-        
+
         Model m = newModelBuilder().withName("M")
-        		.withPackages(ImmutableList.of(
-        				newPackageBuilder().withName("p").build(),
-        				newPackageBuilder().withName("P").build()))
-        		.build();
+                .withPackages(ImmutableList.of(
+                        newPackageBuilder().withName("p").build(),
+                        newPackageBuilder().withName("P").build()))
+                .build();
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element P is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"), Collections.emptyList());
+                "NamedElementIsUniqueInItsContainer|Named element p is not unique in its container"), Collections.emptyList());
     }
-    
+
     @Test
     void testNamespaceHasUniqueElementNames () throws Exception {
         log.info("Testing constraint: NamedElementIsUniqueInItsContainer");
@@ -396,18 +396,18 @@ class PsmValidationNamespaceTest {
         psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of(
-        		"NamedElementIsUniqueInItsContainer|Named element string is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element String is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element E is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"),
-        		ImmutableList.of(
-				"PrimitiveTypeNamesAreUnique|Primitive type name is not unique: String",
-				"PrimitiveTypeNamesAreUnique|Primitive type name is not unique: string"
-        		));
+                "NamedElementIsUniqueInItsContainer|Named element string is not unique in its container",
+                "NamedElementIsUniqueInItsContainer|Named element String is not unique in its container",
+                "NamedElementIsUniqueInItsContainer|Named element e is not unique in its container",
+                "NamedElementIsUniqueInItsContainer|Named element E is not unique in its container",
+                "NamedElementIsUniqueInItsContainer|Named element p is not unique in its container",
+                "NamedElementIsUniqueInItsContainer|Named element P is not unique in its container"),
+                ImmutableList.of(
+                "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: String",
+                "PrimitiveTypeNamesAreUnique|Primitive type name is not unique: string"
+                ));
     }
-    
+
 
     @Test
     void testEnumerationMemberNameIsUnique () throws Exception {
@@ -432,10 +432,10 @@ class PsmValidationNamespaceTest {
         psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("NamedElementIsUniqueInItsContainer|Named element A is not unique in its container",
-        		"NamedElementIsUniqueInItsContainer|Named element A is not unique in its container"),
+                "NamedElementIsUniqueInItsContainer|Named element A is not unique in its container"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testNamespaceElementNameNotEmpty () throws Exception {
         log.info("Testing constraint: ElementNameNotEmpty");
@@ -448,7 +448,7 @@ class PsmValidationNamespaceTest {
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("ElementNameNotEmpty|Named element name must contain at least one character. Zero length name found in M::"), Collections.emptyList());
     }
-    
+
     @Test
     void testNamespaceElementNameContainsValidCharacters () throws Exception {
         log.info("Testing constraint: ElementNameContainsValidCharacters");
@@ -461,7 +461,7 @@ class PsmValidationNamespaceTest {
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("ElementNameContainsValidCharacters|Named element's name can only contain english letters (A-Z, a-z), digits (0-9) and underscore characters (_): string$string"), Collections.emptyList());
     }
-    
+
     @Test
     void testNamespaceElementNameContainsNoSubsequentUnderscores () throws Exception {
         log.info("Testing constraint: ElementNameCannotContainSubsequentUnderscores");

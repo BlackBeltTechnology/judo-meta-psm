@@ -9,13 +9,13 @@ package hu.blackbelt.judo.meta.psm;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -92,7 +92,7 @@ public class PsmTestModelBuilder {
     private Model $;
     private Entities entities;
     private Services services;
-    
+
     private Map<String, Primitive> dataTypes = new HashMap<>();
     private Set<ScriptTestBuilders> scriptTestBuilders = new LinkedHashSet<>();
     private Set<ScriptTestActorTypeBuilder> actorTypeBuilders = new LinkedHashSet<>();
@@ -148,7 +148,7 @@ public class PsmTestModelBuilder {
         MassStoredInGrams massStoredInGrams = new MassStoredInGrams();
         massStoredInGrams.init(measured.$, mass);
         MeasuredType massIntegerKg = newMeasuredTypeBuilder()
-        		.withName("MassIntegerKg").withPrecision(9).withScale(0).withStoreUnit(mass.kilogram).build();
+                .withName("MassIntegerKg").withPrecision(9).withScale(0).withStoreUnit(mass.kilogram).build();
         usePackage(measured.$).withElements(massIntegerKg).build();
 
         Countries countries = new Countries();
