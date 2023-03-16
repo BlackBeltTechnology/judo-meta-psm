@@ -9,13 +9,13 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -53,61 +53,61 @@ import java.util.*;
 @ToString(exclude = "parser")
 public class GeneratorTemplate {
 
-	private String name;
+    private String name;
 
-	private String factoryExpression;
-	private String pathExpression;
+    private String factoryExpression;
+    private String pathExpression;
 
-	private String template;
+    private String template;
 
-	private String templateName;
+    private String templateName;
 
-	private String templateBaseUri;
+    private String templateBaseUri;
 
-	@Builder.Default
-	private boolean actorTypeBased = false;
+    @Builder.Default
+    private boolean actorTypeBased = false;
 
-	@Builder.Default
-	private boolean exclude = false;
+    @Builder.Default
+    private boolean exclude = false;
 
-	@Builder.Default
-	private Collection<TemplateSpringELExpression> templateContext = new HashSet();
+    @Builder.Default
+    private Collection<TemplateSpringELExpression> templateContext = new HashSet();
 
-	@Builder.Default
-	@Getter
-	private ExpressionParser parser = new SpelExpressionParser();
+    @Builder.Default
+    @Getter
+    private ExpressionParser parser = new SpelExpressionParser();
 
-	@Builder.Default
-	private boolean copy = false;
+    @Builder.Default
+    private boolean copy = false;
 
-	public Map<String, org.springframework.expression.Expression> parseExpressions() {
-		Map<String, org.springframework.expression.Expression> templateExpressions = new HashMap<>();
-		templateContext.stream().forEach(ctx -> {
-			final org.springframework.expression.Expression contextTemplate = parser.parseExpression(ctx.getExpression());
-			templateExpressions.put(ctx.getName(), contextTemplate);
-		});
-		return templateExpressions;
-	}
+    public Map<String, org.springframework.expression.Expression> parseExpressions() {
+        Map<String, org.springframework.expression.Expression> templateExpressions = new HashMap<>();
+        templateContext.stream().forEach(ctx -> {
+            final org.springframework.expression.Expression contextTemplate = parser.parseExpression(ctx.getExpression());
+            templateExpressions.put(ctx.getName(), contextTemplate);
+        });
+        return templateExpressions;
+    }
 
-	public TemplateEvaluator getTemplateEvalulator(PsmGeneratorContext projectGenerator, StandardEvaluationContext standardEvaluationContext) throws IOException {
-		return new TemplateEvaluator(projectGenerator, this, standardEvaluationContext);
-	}
+    public TemplateEvaluator getTemplateEvalulator(PsmGeneratorContext projectGenerator, StandardEvaluationContext standardEvaluationContext) throws IOException {
+        return new TemplateEvaluator(projectGenerator, this, standardEvaluationContext);
+    }
 
-	public void evalToContextBuilder(TemplateEvaluator templateEvaluator, Context.Builder contextBuilder, StandardEvaluationContext templateExpressionContext) {
-		templateContext.stream().forEach(ctx -> {
-			Expression expression = templateEvaluator.getTemplateExpressions().get(ctx.getName());
-			if (expression != null) {
-				try {
-					Class type = templateEvaluator.getTemplateExpressions().get(ctx.getName()).getValueType(templateExpressionContext);
-					Object rootObject = templateEvaluator.getTemplateExpressions().get(ctx.getName()).getValue(templateExpressionContext, type);
-					Object value = templateEvaluator.getTemplateExpressions().get(ctx.getName()).getValue(templateExpressionContext, rootObject);
-					contextBuilder.combine(ctx.getName(), value);
-				} catch (Exception e) {
-					throw new IllegalArgumentException("Could not evaluate template context expression: " + expression.getExpressionString() + " in " + this);
-				}
-			}
-		});
-	}
+    public void evalToContextBuilder(TemplateEvaluator templateEvaluator, Context.Builder contextBuilder, StandardEvaluationContext templateExpressionContext) {
+        templateContext.stream().forEach(ctx -> {
+            Expression expression = templateEvaluator.getTemplateExpressions().get(ctx.getName());
+            if (expression != null) {
+                try {
+                    Class type = templateEvaluator.getTemplateExpressions().get(ctx.getName()).getValueType(templateExpressionContext);
+                    Object rootObject = templateEvaluator.getTemplateExpressions().get(ctx.getName()).getValue(templateExpressionContext, type);
+                    Object value = templateEvaluator.getTemplateExpressions().get(ctx.getName()).getValue(templateExpressionContext, rootObject);
+                    contextBuilder.combine(ctx.getName(), value);
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("Could not evaluate template context expression: " + expression.getExpressionString() + " in " + this);
+                }
+            }
+        });
+    }
 
 }
 
