@@ -9,13 +9,13 @@ package hu.blackbelt.judo.meta.psm;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -410,7 +410,7 @@ public class PsmUtils {
     /**
      * Compares input, output and fault parameters of two operation declarations.
      *
-     * @param op1 operation declaration, op2	operation declaration
+     * @param op1 operation declaration, op2    operation declaration
      * @return true if the input, output and fault types and cardinalities are the same for both operations
      */
     public static boolean parametersAreCompatible(final OperationDeclaration op1, final OperationDeclaration op2) {
@@ -589,13 +589,13 @@ public class PsmUtils {
      * @return unique list of the inherited and own bound transfer operations of a transfer object type
      */
     public static EList<BoundTransferOperation> getAllBoundTransferOperations(final MappedTransferObjectType transferObjectType) {
-    	EList<BoundTransferOperation> operations = new UniqueEList<>();
-    	operations.addAll(transferObjectType.getOperations()
-    			.stream()
-    			.filter(o -> o instanceof BoundTransferOperation)
-    			.map(b -> (BoundTransferOperation)b)
-    			.collect(Collectors.toSet()));
-    	return operations;
+        EList<BoundTransferOperation> operations = new UniqueEList<>();
+        operations.addAll(transferObjectType.getOperations()
+                .stream()
+                .filter(o -> o instanceof BoundTransferOperation)
+                .map(b -> (BoundTransferOperation)b)
+                .collect(Collectors.toSet()));
+        return operations;
     }
 
     /**
@@ -605,13 +605,13 @@ public class PsmUtils {
      * @return unique list of the inherited and own unbound operations of a transfer object type
      */
     public static EList<UnboundOperation> getAllUnboundOperations(final TransferObjectType transferObjectType) {
-    	EList<UnboundOperation> operations = new UniqueEList<>();
-    	operations.addAll(transferObjectType.getOperations()
-    			.stream()
-    			.filter(o -> o instanceof UnboundOperation)
-    			.map(u -> (UnboundOperation)u)
-    			.collect(Collectors.toSet()));
-    	return operations;
+        EList<UnboundOperation> operations = new UniqueEList<>();
+        operations.addAll(transferObjectType.getOperations()
+                .stream()
+                .filter(o -> o instanceof UnboundOperation)
+                .map(u -> (UnboundOperation)u)
+                .collect(Collectors.toSet()));
+        return operations;
     }
 
     /**
@@ -682,9 +682,9 @@ public class PsmUtils {
                     final Optional<BoundOperation> boundOperation = s.getOperations().stream()
                             .filter(o -> o.getName().equalsIgnoreCase(name)).findAny();
                     if (boundOperation.isPresent()) {
-                        	operations.add(boundOperation.get());
+                            operations.add(boundOperation.get());
                     } else {
-                    	operations.addAll(getInheritedBoundOperationsByName(s, name));
+                        operations.addAll(getInheritedBoundOperationsByName(s, name));
                     }
                 });
         return operations;
@@ -832,27 +832,27 @@ public class PsmUtils {
     }
 
     public static Set<String> getUnboundRequiredFeaturesOfMappingTarget(final MappedTransferObjectType transferObject) {
-    	Set<String> names = getAllRelations(transferObject.getEntityType()).stream()
-    			.filter(r -> r.getCardinality().getLower() > 0)
-    			.map(r -> r.getName())
-    			.collect(Collectors.toSet());
+        Set<String> names = getAllRelations(transferObject.getEntityType()).stream()
+                .filter(r -> r.getCardinality().getLower() > 0)
+                .map(r -> r.getName())
+                .collect(Collectors.toSet());
 
-    	names.addAll(getAllAttributes(transferObject.getEntityType()).stream()
-    			.filter(a -> a.isRequired())
-    			.map(a -> a.getName())
-    			.collect(Collectors.toSet()));
+        names.addAll(getAllAttributes(transferObject.getEntityType()).stream()
+                .filter(a -> a.isRequired())
+                .map(a -> a.getName())
+                .collect(Collectors.toSet()));
 
-    	Set<TransferObjectRelation> boundRelations = transferObject.getRelations().stream()
-    			.filter(r -> r.getBinding() != null &&
+        Set<TransferObjectRelation> boundRelations = transferObject.getRelations().stream()
+                .filter(r -> r.getBinding() != null &&
                         ((r.getBinding() instanceof Containment && r.isEmbedded()) || !(r.getBinding() instanceof Containment)))
-    			.collect(Collectors.toSet());
-    	Set<TransferAttribute> boundAttributes = transferObject.getAttributes().stream()
-    			.filter(a -> a.getBinding() != null)
-    			.collect(Collectors.toSet());
+                .collect(Collectors.toSet());
+        Set<TransferAttribute> boundAttributes = transferObject.getAttributes().stream()
+                .filter(a -> a.getBinding() != null)
+                .collect(Collectors.toSet());
 
-    	names.removeIf(n -> boundRelations.stream().anyMatch(r -> r.getBinding().getName().equalsIgnoreCase(n)) ||
-    						boundAttributes.stream().anyMatch(a -> a.getBinding().getName().equalsIgnoreCase(n)));
-    	return names;
+        names.removeIf(n -> boundRelations.stream().anyMatch(r -> r.getBinding().getName().equalsIgnoreCase(n)) ||
+                            boundAttributes.stream().anyMatch(a -> a.getBinding().getName().equalsIgnoreCase(n)));
+        return names;
     }
 
     /**
