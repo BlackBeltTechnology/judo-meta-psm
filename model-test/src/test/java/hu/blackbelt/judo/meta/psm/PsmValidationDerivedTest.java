@@ -9,13 +9,13 @@ package hu.blackbelt.judo.meta.psm;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -61,9 +61,9 @@ class PsmValidationDerivedTest {
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
-        	bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
-        	Assertions.assertTrue(psmModel.isValid());
-        	PsmEpsilonValidator.validatePsm(bufferedLog,
+            bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
+            Assertions.assertTrue(psmModel.isValid());
+            PsmEpsilonValidator.validatePsm(bufferedLog,
                     psmModel,
                     new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
                     expectedErrors,
@@ -86,7 +86,7 @@ class PsmValidationDerivedTest {
 
         CustomType custom1 = newCustomTypeBuilder().withName("custom1").build();
         CustomType custom2 = newCustomTypeBuilder().withName("custom2").build();
-        
+
         StaticData staticData1 = newStaticDataBuilder().withName("staticData")
                 .withDataType(custom1)
                 .withGetterExpression(newDataExpressionTypeBuilder().withExpression("5").build())
@@ -104,7 +104,7 @@ class PsmValidationDerivedTest {
                 .build();
 
         psmModel.addContent(m);
-        
+
         runEpsilon(Collections.emptyList(),
                 ImmutableList.of(
                         "StaticDataNamesAreUnique|Static data name is not unique: staticData",
@@ -117,7 +117,7 @@ class PsmValidationDerivedTest {
 
         EntityType entity1 = newEntityTypeBuilder().withName("entity1").build();
         EntityType entity2 = newEntityTypeBuilder().withName("entity2").build();
-        
+
         StaticNavigation staticNavigation1 = newStaticNavigationBuilder().withName("staticNavigation")
                 .withTarget(entity1)
                 .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1))
@@ -190,18 +190,18 @@ class PsmValidationDerivedTest {
         StringType string = newStringTypeBuilder().withName("string").withMaxLength(255).build();
 
         EntityType target = newEntityTypeBuilder().withName("target").build();
-        
+
         AssociationEnd e1 = newAssociationEndBuilder().withName("member").withCardinality(newCardinalityBuilder().build())
-        		.withTarget(target).build();
+                .withTarget(target).build();
         AssociationEnd e2 = newAssociationEndBuilder().withName("e2").withCardinality(newCardinalityBuilder().build())
-        		.withTarget(target).build();
+                .withTarget(target).build();
 
         NavigationProperty navigation1 = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().build())
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.member").build())
-        		.withTarget(target).build();
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.member").build())
+                .withTarget(target).build();
         NavigationProperty navigation2 = newNavigationPropertyBuilder().withName("member").withCardinality(newCardinalityBuilder().build())
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e2").build())
-        		.withTarget(target).build();
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e2").build())
+                .withTarget(target).build();
 
         EntityType superSuperEntityType = newEntityTypeBuilder().withName("superSuperEntityType")
                 .withRelations(ImmutableList.of(e1))
@@ -257,15 +257,15 @@ class PsmValidationDerivedTest {
         log.info("Testing constraint: SetterExpressionsAreNotSupportedYet (ReferenceAccessor)");
 
         EntityType target = newEntityTypeBuilder().withName("target").build();
-        
+
         NavigationProperty nav = newNavigationPropertyBuilder()
-		        .withName("myMother")
-		        .withCardinality(newCardinalityBuilder().build())
-		        .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.mother").build())
-		        .withSetterExpression(newReferenceSelectorTypeBuilder().withExpression("self.mother").build())
-		        .withTarget(target)
-		        .build();
-        
+                .withName("myMother")
+                .withCardinality(newCardinalityBuilder().build())
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.mother").build())
+                .withSetterExpression(newReferenceSelectorTypeBuilder().withExpression("self.mother").build())
+                .withTarget(target)
+                .build();
+
         final EntityType personType = newEntityTypeBuilder().withName("Person")
                 .withNavigationProperties(ImmutableList.of(nav))
                 .build();
@@ -278,29 +278,29 @@ class PsmValidationDerivedTest {
                 ImmutableList.of("SetterExpressionsAreNotSupportedYet|Setter expressions are not supported yet (Person.myMother)"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testNotRequiredIfDerived() throws Exception {
 
         StringType string = newStringTypeBuilder().withName("string").withMaxLength(255).build();
 
         EntityType target = newEntityTypeBuilder().withName("target").build();
-        
+
         AssociationEnd relation = newAssociationEndBuilder().withName("relation").withCardinality(newCardinalityBuilder().build())
-        		.withTarget(target).build();
-        
+                .withTarget(target).build();
+
         Attribute attribute = newAttributeBuilder().withName("attribute").withDataType(string).build();
 
         NavigationProperty navigation = newNavigationPropertyBuilder().withName("navigation").withCardinality(newCardinalityBuilder().withLower(1).build())
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.relation").build())
-        		.withTarget(target).build();
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.relation").build())
+                .withTarget(target).build();
 
         DataProperty property = newDataPropertyBuilder().withName("property").withDataType(string).withRequired(true)
-        		.withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.attribute").build()).build();
+                .withGetterExpression(newDataExpressionTypeBuilder().withExpression("self.attribute").build()).build();
 
         EntityType entityType = newEntityTypeBuilder().withName("entityType")
-        		.withRelations(relation)
-        		.withAttributes(attribute)
+                .withRelations(relation)
+                .withAttributes(attribute)
                 .withNavigationProperties(navigation)
                 .withDataProperties(property)
                 .build();
@@ -309,7 +309,7 @@ class PsmValidationDerivedTest {
 
         psmModel.addContent(m);
         runEpsilon(ImmutableList.of("DataPropertyIsNotRequired|Data property property of entity type entityType cannot be required.",
-        		"NavigationProptertyIsSingleOrCollection|Navigation property navigation of entity type entityType cannot be required."),
+                "NavigationProptertyIsSingleOrCollection|Navigation property navigation of entity type entityType cannot be required."),
                 Collections.emptyList());
     }
 }
