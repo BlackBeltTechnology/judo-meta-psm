@@ -9,13 +9,13 @@ package hu.blackbelt.judo.meta.psm;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -65,8 +65,8 @@ class PsmValidationServiceTest {
 
     private void runEpsilon(Collection<String> expectedErrors, Collection<String> expectedWarnings) throws Exception {
         try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
-        	bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
-        	Assertions.assertTrue(psmModel.isValid());
+            bufferedLog.debug("PSM diagnostics: " + psmModel.getDiagnosticsAsString());
+            Assertions.assertTrue(psmModel.isValid());
             PsmEpsilonValidator.validatePsm(bufferedLog,
                     psmModel,
                     new File("../model/src/main/epsilon/validations/psm.evl").toURI().resolve("."),
@@ -502,12 +502,12 @@ class PsmValidationServiceTest {
     @Test
     void testTransferObjectRelationIsEmbedded() throws Exception {
         log.info("Testing constraint: TransferObjectRelationIsEmbedded");
-        
+
         UnmappedTransferObjectType target = newUnmappedTransferObjectTypeBuilder().withName("target").build();
-        
+
         TransferObjectRelation r = newTransferObjectRelationBuilder().withName("R").withTarget(target)
-        		.withCardinality(newCardinalityBuilder().build()).build();
-        
+                .withCardinality(newCardinalityBuilder().build()).build();
+
         UnmappedTransferObjectType o = newUnmappedTransferObjectTypeBuilder().withName("O").withRelations(r).build();
 
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(o,target)).build();
@@ -529,23 +529,23 @@ class PsmValidationServiceTest {
         EntityType target0 = newEntityTypeBuilder().withName("target0").build();
         MappedTransferObjectType target0Mapping = newMappedTransferObjectTypeBuilder().withName("target0Mapping").withEntityType(target0).build();
         NavigationProperty n0 = newNavigationPropertyBuilder().withName("n0").withCardinality(newCardinalityBuilder().build())
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e0").build())
-        		.withTarget(target0)
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e0").build())
+                .withTarget(target0)
                 .build();
-        
+
         EntityType target1 = newEntityTypeBuilder().withName("target1").build();
         MappedTransferObjectType target1Mapping = newMappedTransferObjectTypeBuilder().withName("target1Mapping").withEntityType(target1).build();
         NavigationProperty n1 = newNavigationPropertyBuilder().withName("n1").withCardinality(newCardinalityBuilder().build())
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e1").build())
-        		.withTarget(target1)
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e1").build())
+                .withTarget(target1)
                 .build();
-        
+
         EntityType target2 = newEntityTypeBuilder().withName("target2").build();
         MappedTransferObjectType target2Mapping = newMappedTransferObjectTypeBuilder().withName("target2Mapping").withEntityType(target2).build();
         NavigationProperty n2 = newNavigationPropertyBuilder().withName("n2").withCardinality(newCardinalityBuilder().build())
-        		.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e2").build())
-        		.withTarget(target2)
-        		.build();
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("self.e2").build())
+                .withTarget(target2)
+                .build();
 
         EntityType target = newEntityTypeBuilder().withName("target3").build();
         MappedTransferObjectType targetMapping = newMappedTransferObjectTypeBuilder().withName("targetMapping").withEntityType(target).build();
@@ -561,8 +561,8 @@ class PsmValidationServiceTest {
                 .withNavigationProperties(n1)
                 .build();
         MappedTransferObjectType childMapping = newMappedTransferObjectTypeBuilder().withName("childMapping")
-        		//.withSuperTransferObjectTypes(parentMapping)
-        		.withEntityType(child).build();
+                //.withSuperTransferObjectTypes(parentMapping)
+                .withEntityType(child).build();
         EntityType friend = newEntityTypeBuilder().withName("friend")
                 .withRelations(e2)
                 .withNavigationProperties(n2)
@@ -616,12 +616,12 @@ class PsmValidationServiceTest {
     @Test
     void testTransferObjectTypeNamesAreUnique() throws Exception {
         log.info("Testing critique: TransferObjectTypeNamesAreUnique");
-        
+
         EntityType entity = newEntityTypeBuilder().withName("entity").build();
         MappedTransferObjectType transferObject1 = newMappedTransferObjectTypeBuilder().withName("TransferObject")
-        		.withEntityType(entity).build();
+                .withEntityType(entity).build();
         UnmappedTransferObjectType transferObject2 = newUnmappedTransferObjectTypeBuilder().withName("transferObject").build();
-        
+
         Package p1 = newPackageBuilder().withName("pkg1").withElements(ImmutableList.of(transferObject1,entity)).build();
         Package p2 = newPackageBuilder().withName("pkg2").withElements(transferObject2).build();
 
@@ -706,14 +706,14 @@ class PsmValidationServiceTest {
         UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
                 newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(-1).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())
-        		.build();
+                .build();
         UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
                 .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(-2).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())
                 .build();
-        
+
         EntityType entity = newEntityTypeBuilder().withName("entity").build();
-        
+
         MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
                 .withEntityType(entity)
                 .withOperations(ImmutableList.of(unbound1,unbound2))
@@ -737,15 +737,15 @@ class PsmValidationServiceTest {
 
         UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound").withInput(
                 newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(2).withUpper(1).build()).withType(unmapped).build())
-        		.withImplementation(newOperationBodyBuilder().build())
-        		.build();
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
         UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
                 .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(3).withUpper(2).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())
                 .build();
 
         EntityType entity = newEntityTypeBuilder().withName("entity").build();
-        
+
         MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
                 .withEntityType(entity)
                 .withOperations(ImmutableList.of(unbound1, unbound2))
@@ -768,16 +768,16 @@ class PsmValidationServiceTest {
         UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
 
         UnboundOperation unbound1 = newUnboundOperationBuilder().withName("bound")
-        		.withInput(newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
-        		.withImplementation(newOperationBodyBuilder().build())
-        		.build();
+                .withInput(newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
+                .withImplementation(newOperationBodyBuilder().build())
+                .build();
         UnboundOperation unbound2 = newUnboundOperationBuilder().withName("unbound")
                 .withOutput(newParameterBuilder().withName("output").withCardinality(newCardinalityBuilder().withLower(0).withUpper(0).build()).withType(unmapped).build())
                 .withImplementation(newOperationBodyBuilder().build())
                 .build();
-        
+
         EntityType entityType = newEntityTypeBuilder().withName("entity").build();
-        
+
         MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
                 .withEntityType(entityType)
                 .withOperations(ImmutableList.of(unbound1,unbound2))
@@ -792,20 +792,20 @@ class PsmValidationServiceTest {
                 "CardinalityUpperIsAtLeastOne|Invalid upper attribute of element: input"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testOwnerIsMappedTransferObjectType() throws Exception {
         log.info("Testing constraint: OwnerIsMappedTransferObjectType");
-        
+
         BoundOperation operation1 = newBoundOperationBuilder().withName("operation1").build();
-        
+
         EntityType entityType = newEntityTypeBuilder().withName("entityType").withOperations(operation1).build();
         MappedTransferObjectType transferObjectType = newMappedTransferObjectTypeBuilder().withName("transferObjectType")
-        		.withEntityType(entityType).build();
+                .withEntityType(entityType).build();
         operation1.setInstanceRepresentation(transferObjectType);
-        
+
         BoundTransferOperation transferOp = newBoundTransferOperationBuilder().withName("transferOp").withBinding(operation1).build();
-        
+
         UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").withOperations(transferOp).build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
@@ -817,24 +817,24 @@ class PsmValidationServiceTest {
             "OwnerIsMappedTransferObjectType|Container of bound transfer operation must be mapped transfer object type (operation: transferOp)"),
             Collections.emptyList());
     }
-    
+
     @Test
     void testBindingIsValid() throws Exception {
         log.info("Testing constraint: BindingIsValid");
-        
+
         BoundOperation operation = newBoundOperationBuilder().withName("operation").build();
-        
+
         EntityType entityType = newEntityTypeBuilder().withName("entityType").withOperations(operation).build();
         MappedTransferObjectType transferObjectType = newMappedTransferObjectTypeBuilder().withName("transferObjectType")
-        		.withEntityType(entityType).build();
+                .withEntityType(entityType).build();
         operation.setInstanceRepresentation(transferObjectType);
-        
+
         BoundTransferOperation transferOp = newBoundTransferOperationBuilder().withName("transferOp").withBinding(operation).build();
-        
+
         EntityType otherEntityType = newEntityTypeBuilder().withName("other").build();
         MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
-        		.withEntityType(otherEntityType)
-        		.withOperations(transferOp).build();
+                .withEntityType(otherEntityType)
+                .withOperations(transferOp).build();
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
                             entityType,transferObjectType,mapped,otherEntityType)).build();
@@ -845,7 +845,7 @@ class PsmValidationServiceTest {
             "BindingIsValid|Binding of bound transfer operation must be an operation of the owner transfer object type (operation: transferOp)"),
             Collections.emptyList());
     }
-    
+
     @Test
     void testParametersAreValid() throws Exception {
         log.info("Testing constraint: ParametersAreValid");
@@ -854,25 +854,25 @@ class PsmValidationServiceTest {
         UnmappedTransferObjectType otherType = newUnmappedTransferObjectTypeBuilder().withName("otherType").build();
 
         BoundOperation operation1 = newBoundOperationBuilder()
-        		.withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().build()).build()).withName("operation1").build();
+                .withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().build()).build()).withName("operation1").build();
         BoundOperation operation2 = newBoundOperationBuilder()
-        		.withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().build()).build()).withName("operation2").build();
+                .withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().build()).build()).withName("operation2").build();
         BoundOperation operation3 = newBoundOperationBuilder().withName("operation3").build();
-        
+
         EntityType entityType = newEntityTypeBuilder().withName("entityType").withOperations(ImmutableList.of(operation1,operation2,operation3)).build();
         MappedTransferObjectType transferObjectType = newMappedTransferObjectTypeBuilder().withName("transferObjectType")
-        		.withEntityType(entityType).build();
+                .withEntityType(entityType).build();
         operation1.setInstanceRepresentation(transferObjectType);
         operation2.setInstanceRepresentation(transferObjectType);
         operation3.setInstanceRepresentation(transferObjectType);
-        
+
         BoundTransferOperation transferOp1 = newBoundTransferOperationBuilder().withName("transferOp1")
-        		.withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build()).withBinding(operation1).build();
+                .withInput(newParameterBuilder().withName("inp").withType(type).withCardinality(newCardinalityBuilder().withLower(1).withUpper(2).build()).build()).withBinding(operation1).build();
         BoundTransferOperation transferOp2 = newBoundTransferOperationBuilder().withName("transferOp2")
-        		.withInput(newParameterBuilder().withName("inp").withType(otherType).withCardinality(newCardinalityBuilder().build()).build()).withBinding(operation2).build();
+                .withInput(newParameterBuilder().withName("inp").withType(otherType).withCardinality(newCardinalityBuilder().build()).build()).withBinding(operation2).build();
         BoundTransferOperation transferOp3 = newBoundTransferOperationBuilder().withName("transferOp3")
-        		.withInput(newParameterBuilder().withName("inp").withType(otherType).withCardinality(newCardinalityBuilder().build()).build()).withBinding(operation3).build();
-        
+                .withInput(newParameterBuilder().withName("inp").withType(otherType).withCardinality(newCardinalityBuilder().build()).build()).withBinding(operation3).build();
+
         transferObjectType.getOperations().addAll(ImmutableList.of(transferOp1,transferOp2,transferOp3));
 
         Model model = newModelBuilder().withName("M").withElements(ImmutableList.of(
@@ -886,7 +886,7 @@ class PsmValidationServiceTest {
             "ParametersAreValid|Parameters of bound transfer operation must match binding's parameters (operation: transferOp3)"),
             Collections.emptyList());
     }
-    
+
     @Test
     void testInitOperationCannotHaveInput() throws Exception {
         log.info("Testing constraint: InitOperationCannotHaveInput");
@@ -894,13 +894,13 @@ class PsmValidationServiceTest {
         UnmappedTransferObjectType unmapped = newUnmappedTransferObjectTypeBuilder().withName("unmapped").build();
 
         UnboundOperation unbound = newUnboundOperationBuilder().withName("unbound")
-        		.withInput(newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).withType(unmapped).build())
-        		.withImplementation(newOperationBodyBuilder().build())
-        		.withInitializer(true)
-        		.build();
-        
+                .withInput(newParameterBuilder().withName("input").withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build()).withType(unmapped).build())
+                .withImplementation(newOperationBodyBuilder().build())
+                .withInitializer(true)
+                .build();
+
         EntityType entityType = newEntityTypeBuilder().withName("entity").build();
-        
+
         MappedTransferObjectType mapped = newMappedTransferObjectTypeBuilder().withName("mapped")
                 .withEntityType(entityType)
                 .withOperations(ImmutableList.of(unbound))
@@ -914,55 +914,55 @@ class PsmValidationServiceTest {
                 "InitOperationCannotHaveInput|Initializer operation: unbound cannot have input."),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testEmbeddedOnBothSidesAreNotAllowed() throws Exception {
         log.info("Testing constraint: EmbeddedOnBothSidesAreNotAllowed");
-        
-		EntityType e1 = newEntityTypeBuilder().withName("E1").build();
-		EntityType e2 = newEntityTypeBuilder().withName("E2").build();
 
-		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1")
-				.withEntityType(e1).build();
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("T2")
-				.withEntityType(e2).build();
-		
-		AssociationEnd end1 = newAssociationEndBuilder().withName("end1").withTarget(e2)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		AssociationEnd end2 = newAssociationEndBuilder().withName("end2").withTarget(e1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		e1.getRelations().add(end1);
-		e2.getRelations().add(end2);
-		end1.setPartner(end2);
-		end2.setPartner(end1);
-		
-		TransferObjectRelation r1 = newTransferObjectRelationBuilder().withName("r1")
-				.withTarget(t2)
-				.withEmbedded(true)
-				.withBinding(end1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		t1.getRelations().add(r1);
-		
-		TransferObjectRelation r2 = newTransferObjectRelationBuilder().withName("r2")
-				.withTarget(t1)
-				.withEmbedded(true)
-				.withBinding(end2)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		t2.getRelations().add(r2);
-        
+        EntityType e1 = newEntityTypeBuilder().withName("E1").build();
+        EntityType e2 = newEntityTypeBuilder().withName("E2").build();
+
+        MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1")
+                .withEntityType(e1).build();
+        MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("T2")
+                .withEntityType(e2).build();
+
+        AssociationEnd end1 = newAssociationEndBuilder().withName("end1").withTarget(e2)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        AssociationEnd end2 = newAssociationEndBuilder().withName("end2").withTarget(e1)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        e1.getRelations().add(end1);
+        e2.getRelations().add(end2);
+        end1.setPartner(end2);
+        end2.setPartner(end1);
+
+        TransferObjectRelation r1 = newTransferObjectRelationBuilder().withName("r1")
+                .withTarget(t2)
+                .withEmbedded(true)
+                .withBinding(end1)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        t1.getRelations().add(r1);
+
+        TransferObjectRelation r2 = newTransferObjectRelationBuilder().withName("r2")
+                .withTarget(t1)
+                .withEmbedded(true)
+                .withBinding(end2)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        t2.getRelations().add(r2);
+
         Model m = newModelBuilder().withName("M").withElements(ImmutableList.of(e1,e2,t1,t2)).build();
 
         psmModel.addContent(m);
 
         runEpsilon(ImmutableList.of("EmbeddedOnBothSidesAreNotAllowed|Circular aggregation found on relation: M::E2.r2",
-        		"EmbeddedOnBothSidesAreNotAllowed|Circular aggregation found on relation: M::E1.r1"),
+                "EmbeddedOnBothSidesAreNotAllowed|Circular aggregation found on relation: M::E1.r1"),
                 Collections.emptyList());
     }
-    
+
     @Test
     void testAllRequiredFeaturesHaveBindingIfCreatable() throws Exception {
         log.info("Testing constraint: AllRequiredFeaturesHaveBindingIfCreatable");
-        
+
         NumericType integerType = newNumericTypeBuilder().withName("int").withPrecision(10).withScale(1).build();
         StringType stringType = newStringTypeBuilder().withName("string").withMaxLength(255).build();
 
@@ -970,119 +970,119 @@ class PsmValidationServiceTest {
         Attribute attribute1 = newAttributeBuilder().withName("attribute1").withRequired(true).withDataType(stringType).build();
         Attribute attribute2 = newAttributeBuilder().withName("attribute2").withRequired(true).withDataType(integerType).build();
         Attribute attribute3 = newAttributeBuilder().withName("attribute3").withRequired(true).withDataType(stringType).build();
-        
-		EntityType p = newEntityTypeBuilder().withName("p").build();
-		EntityType e1 = newEntityTypeBuilder().withName("e1").withSuperEntityTypes(p)
-				.withAttributes(ImmutableList.of(attribute0,attribute1))
-				.build();
-		EntityType c = newEntityTypeBuilder().withName("c").withSuperEntityTypes(e1).build();
-		EntityType e2 = newEntityTypeBuilder().withName("e2")
-				.withAttributes(ImmutableList.of(attribute2,attribute3))
-				.build();
-		EntityType e3 = newEntityTypeBuilder().withName("e3").build();
-		
-		AssociationEnd association0 = newAssociationEndBuilder().withName("association0")
-						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-									.withTarget(e3).build();
-		AssociationEnd association1 = newAssociationEndBuilder().withName("association1")
-				.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-				.withTarget(e3).build();
-		
-		e1.getRelations().add(association0);
-		e2.getRelations().add(association1);
-		
-		MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName("pt")
-				.withEntityType(p).build();
-		MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
-				.withName("t1")
-				.withEntityType(e1)
-				.build();
-		MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName("ct")
-				//.withSuperTransferObjectTypes(t1)
-				.withEntityType(c)
-				.build();
-		MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("t2")
-				.withEntityType(e2).build();
 
-		TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("relation").withTarget(t2)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		t1.getRelations().add(relation);
-		
-		TransferObjectRelation relation2 = newTransferObjectRelationBuilder().withName("relation").withTarget(t2)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		ct.getRelations().add(relation2);
+        EntityType p = newEntityTypeBuilder().withName("p").build();
+        EntityType e1 = newEntityTypeBuilder().withName("e1").withSuperEntityTypes(p)
+                .withAttributes(ImmutableList.of(attribute0,attribute1))
+                .build();
+        EntityType c = newEntityTypeBuilder().withName("c").withSuperEntityTypes(e1).build();
+        EntityType e2 = newEntityTypeBuilder().withName("e2")
+                .withAttributes(ImmutableList.of(attribute2,attribute3))
+                .build();
+        EntityType e3 = newEntityTypeBuilder().withName("e3").build();
 
-		StaticNavigation sn = newStaticNavigationBuilder().withName("sn").withTarget(e1)
-				.withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
-		TransferObjectRelation eg = newTransferObjectRelationBuilder().withName("eg").withTarget(t1)
-				.withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
-		UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName("ap").withRelations(eg).build();
+        AssociationEnd association0 = newAssociationEndBuilder().withName("association0")
+                        .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                                    .withTarget(e3).build();
+        AssociationEnd association1 = newAssociationEndBuilder().withName("association1")
+                .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                .withTarget(e3).build();
+
+        e1.getRelations().add(association0);
+        e2.getRelations().add(association1);
+
+        MappedTransferObjectType pt = newMappedTransferObjectTypeBuilder().withName("pt")
+                .withEntityType(p).build();
+        MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder()
+                .withName("t1")
+                .withEntityType(e1)
+                .build();
+        MappedTransferObjectType ct = newMappedTransferObjectTypeBuilder().withName("ct")
+                //.withSuperTransferObjectTypes(t1)
+                .withEntityType(c)
+                .build();
+        MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("t2")
+                .withEntityType(e2).build();
+
+        TransferObjectRelation relation = newTransferObjectRelationBuilder().withName("relation").withTarget(t2)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        t1.getRelations().add(relation);
+
+        TransferObjectRelation relation2 = newTransferObjectRelationBuilder().withName("relation").withTarget(t2)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        ct.getRelations().add(relation2);
+
+        StaticNavigation sn = newStaticNavigationBuilder().withName("sn").withTarget(e1)
+                .withGetterExpression(newReferenceExpressionTypeBuilder().withExpression("model::e1"))
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).build();
+        TransferObjectRelation eg = newTransferObjectRelationBuilder().withName("eg").withTarget(t1)
+                .withCardinality(newCardinalityBuilder().withLower(0).withUpper(-1).build()).withBinding(sn).build();
+        UnmappedTransferObjectType ap = newUnmappedTransferObjectTypeBuilder().withName("ap").withRelations(eg).build();
 
         ActorType actor = newActorTypeBuilder().withName("Actor").withTransferObjectType(ap).build();
-		
-		BoundOperation op = newBoundOperationBuilder().withName("binding")
-				.withInstanceRepresentation(t1)
-				.withInput(newParameterBuilder().withName("input")
-						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-						.withType(t2).build())
-				.withOutput(newParameterBuilder().withName("output")
-						.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-						.withType(t2).build())
-				.build();
 
-		e1.getOperations().add(op);
-		
-		t1.getOperations().addAll(ImmutableList.of(
+        BoundOperation op = newBoundOperationBuilder().withName("binding")
+                .withInstanceRepresentation(t1)
+                .withInput(newParameterBuilder().withName("input")
+                        .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                        .withType(t2).build())
+                .withOutput(newParameterBuilder().withName("output")
+                        .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                        .withType(t2).build())
+                .build();
 
-				newUnboundOperationBuilder().withName("create")
-					.withBehaviour(
-							newTransferOperationBehaviourBuilder()
-								.withBehaviourType(TransferOperationBehaviourType.CREATE_INSTANCE).withOwner(relation).build())
-					.withOutput(newParameterBuilder().withName("output").withType(t1)
-							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-							.build())
-					.withInput(newParameterBuilder().withName("input").withType(t1)
-							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-							.build())
-					.build(),
-				
-				newBoundTransferOperationBuilder().withName("create_relation")
-					.withBehaviour(
-							newTransferOperationBehaviourBuilder()
-								.withBehaviourType(TransferOperationBehaviourType.VALIDATE_CREATE).withOwner(relation).build())
-					.withOutput(newParameterBuilder().withName("output").withType(t2)
-							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-							.build())
-					.withInput(newParameterBuilder().withName("input").withType(t2)
-							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-							.build())
-					.withBinding(op)
-					.build()
-		));
-		
-		ct.getOperations().addAll(ImmutableList.of(
-				newBoundTransferOperationBuilder().withName("create_relation")
-					.withBehaviour(
-							newTransferOperationBehaviourBuilder()
-								.withBehaviourType(TransferOperationBehaviourType.CREATE_INSTANCE).withOwner(relation2).build())
-					.withOutput(newParameterBuilder().withName("output").withType(t2)
-							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-							.build())
-					.withInput(newParameterBuilder().withName("input").withType(t2)
-							.withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
-							.build())
-					.withBinding(op)
-					.build()
-		));
+        e1.getOperations().add(op);
 
-		Model model = newModelBuilder().withName("model")
-				.withElements(ImmutableList.of(e1, e2, e3, t1, t2, stringType, integerType, actor, ap, sn, ct, pt, c, p)).build();
+        t1.getOperations().addAll(ImmutableList.of(
 
-		psmModel.addContent(model);
+                newUnboundOperationBuilder().withName("create")
+                    .withBehaviour(
+                            newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE_INSTANCE).withOwner(relation).build())
+                    .withOutput(newParameterBuilder().withName("output").withType(t1)
+                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                            .build())
+                    .withInput(newParameterBuilder().withName("input").withType(t1)
+                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                            .build())
+                    .build(),
 
-		runEpsilon(ImmutableList.of(
-				"AllRequiredFeaturesHaveBindingIfCreatable|t2 is used by create operation and excludes required features: association1, attribute3, attribute2"),
-				Collections.emptyList());
+                newBoundTransferOperationBuilder().withName("create_relation")
+                    .withBehaviour(
+                            newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.VALIDATE_CREATE).withOwner(relation).build())
+                    .withOutput(newParameterBuilder().withName("output").withType(t2)
+                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                            .build())
+                    .withInput(newParameterBuilder().withName("input").withType(t2)
+                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                            .build())
+                    .withBinding(op)
+                    .build()
+        ));
+
+        ct.getOperations().addAll(ImmutableList.of(
+                newBoundTransferOperationBuilder().withName("create_relation")
+                    .withBehaviour(
+                            newTransferOperationBehaviourBuilder()
+                                .withBehaviourType(TransferOperationBehaviourType.CREATE_INSTANCE).withOwner(relation2).build())
+                    .withOutput(newParameterBuilder().withName("output").withType(t2)
+                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                            .build())
+                    .withInput(newParameterBuilder().withName("input").withType(t2)
+                            .withCardinality(newCardinalityBuilder().withLower(1).withUpper(1).build())
+                            .build())
+                    .withBinding(op)
+                    .build()
+        ));
+
+        Model model = newModelBuilder().withName("model")
+                .withElements(ImmutableList.of(e1, e2, e3, t1, t2, stringType, integerType, actor, ap, sn, ct, pt, c, p)).build();
+
+        psmModel.addContent(model);
+
+        runEpsilon(ImmutableList.of(
+                "AllRequiredFeaturesHaveBindingIfCreatable|t2 is used by create operation and excludes required features: association1, attribute3, attribute2"),
+                Collections.emptyList());
     }
 }
