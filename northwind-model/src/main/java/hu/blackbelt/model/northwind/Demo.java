@@ -9,13 +9,13 @@ package hu.blackbelt.model.northwind;
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * This Source Code may also be made available under the following Secondary
  * Licenses when the conditions for such availability set forth in the Eclipse
  * Public License, v. 2.0 are satisfied: GNU General Public License, version 2
  * with the GNU Classpath Exception which is
  * available at https://www.gnu.org/software/classpath/license.html.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
@@ -63,7 +63,7 @@ public class Demo {
     private hu.blackbelt.model.northwind.optional.Services optionalServices = new hu.blackbelt.model.northwind.optional.Services();
     private Extension extension = new Extension();
     private hu.blackbelt.model.northwind.extension.Services extensionServices = new hu.blackbelt.model.northwind.extension.Services();
-    
+
     private Address address = new Address();
     private Category category = new Category();
     private City city = new City();
@@ -278,14 +278,14 @@ public class Demo {
         shipmentChange.init(services.$, string, timeStamp);
         comment.init(services.$, string, text, timeStamp);
         getRangeInputProductInfoCategory.init(extensionServices.$, optionaProductInfo);
-        
+
         // Mapped transfer objects
         category_.init(services.$, string, category, product_);
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         shipperInfo.init(services.$, string, shipper, company, gps);
         product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories);
         optionaProductInfo.init(optionalServices.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
-        
+
         productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories, getRangeInputProductInfoCategory);
         optionaProductInfo.$.setOverride(productInfo.$);
         territoryInfo.init(services.$, string, territory);
