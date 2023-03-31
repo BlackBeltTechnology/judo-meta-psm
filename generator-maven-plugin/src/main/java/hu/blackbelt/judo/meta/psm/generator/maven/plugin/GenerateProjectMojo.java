@@ -21,12 +21,13 @@ package hu.blackbelt.judo.meta.psm.generator.maven.plugin;
  */
 
 import com.google.common.io.Files;
+import hu.blackbelt.judo.generator.commons.ModelGenerator;
 import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
 import hu.blackbelt.judo.meta.psm.PsmUtils;
+import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGenerator;
-import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -477,14 +478,14 @@ public class GenerateProjectMojo extends AbstractMojo {
             extras.putAll(templateParameters);
 
             PsmGenerator.generateToDirectory(PsmGeneratorParameter.psmGeneratorParameter()
-                    .generatorContext(PsmGenerator.createGeneratorContext(
-                            PsmGenerator.CreateGeneratorContextArgument.builder()
-                                    .psmModel(psmModel)
+                    .psmModel(psmModel)
+                    .generatorContext(ModelGenerator.createGeneratorContext(
+                            ModelGenerator.CreateGeneratorContextArgument.builder()
                                     .descriptorName(type)
                                     .uris(uriMap)
                                     .helpers(resolvedHelpers)
                                     .contextAccessor(contextAccessorClass.get())
-                                .build()))
+                                    .build()))
                     .targetDirectoryResolver(() -> destination)
                     .extraContextVariables(() -> extras)
                     .actorTypeTargetDirectoryResolver(a -> destination)
