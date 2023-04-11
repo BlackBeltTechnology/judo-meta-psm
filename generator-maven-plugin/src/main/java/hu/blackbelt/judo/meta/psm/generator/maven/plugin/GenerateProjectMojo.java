@@ -69,8 +69,6 @@ import static java.util.Optional.of;
         requiresDependencyResolution = ResolutionScope.COMPILE)
 public class GenerateProjectMojo extends AbstractMojo {
 
-    public static final String TEMPLATES_BACKEND_PROJECT = "templates/backend-project";
-
     final int BUFFER_SIZE = 4096;
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
@@ -110,13 +108,13 @@ public class GenerateProjectMojo extends AbstractMojo {
     @Parameter(property = "helpers")
     private List<String> helpers = new ArrayList<>();
 
-    @Parameter(property="templateParameters", required = false, readonly = true)
+    @Parameter(property="templateParameters")
     private HashMap<String, String> templateParameters;
 
-    @Parameter(property="contextAccessor", required = false, readonly = true)
+    @Parameter(property="contextAccessor")
     private String contextAccessor;
 
-    @Parameter(property="scanDependencies", required = false, readonly = true, defaultValue = "true")
+    @Parameter(property="scanDependencies", defaultValue = "true")
     private Boolean scanDependencies;
 
     Set<URL> classPathUrls = new HashSet<>();

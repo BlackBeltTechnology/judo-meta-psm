@@ -2,7 +2,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 /*-
  * #%L
- * Judo :: PSM :: Model :: Genetator :: Engine
+ * Judo :: PSM :: Model :: Generator :: Engine
  * %%
  * Copyright (C) 2018 - 2023 BlackBelt Technology
  * %%
@@ -22,10 +22,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.ValueResolver;
-import com.github.jknack.handlebars.io.URLTemplateLoader;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.io.ByteStreams;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.*;
@@ -33,28 +30,21 @@ import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
-import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.io.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.net.URI;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.*;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import static hu.blackbelt.judo.generator.commons.ModelGenerator.*;
 
 /**
  * This class loads descriptor yaml file and processing it.
- * The yaml file contains a entries describes the generation itself. On entry can
+ * The yaml file contains an entries describes the generation itself. On entry can
  * be used to generate several entries of files. @see {@link hu.blackbelt.judo.generator.commons.GeneratorTemplate}
  */
 @Slf4j
@@ -71,7 +61,7 @@ public class PsmGenerator {
     public static final String MODEL = "model";
 
 
-    private static GeneratorParameter mapPsmParameters(PsmGeneratorParameter parameter) {
+    public static GeneratorParameter<ActorType> mapPsmParameters(PsmGeneratorParameter parameter) {
         return GeneratorParameter.<ActorType>generatorParameter()
                 .generatorContext(parameter.generatorContext)
                 .discriminatorPredicate(parameter.actorTypePredicate)
@@ -102,13 +92,14 @@ public class PsmGenerator {
                 try {
                     log.close();
                 } catch (Exception e) {
+                    //noinspection ThrowFromFinallyBlock
                     throw new RuntimeException(e);
                 }
             }
         }
     }
 
-    private static GeneratorResult execute(PsmModel psmModel, GeneratorParameter<ActorType> parameter, Log log) throws InterruptedException, ExecutionException {
+    private static GeneratorResult<ActorType> execute(PsmModel psmModel, GeneratorParameter<ActorType> parameter, Log log) throws InterruptedException, ExecutionException {
         GeneratorResult<ActorType> result = GeneratorResult.<ActorType>generatorResult().build();
 
         PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
@@ -116,7 +107,7 @@ public class PsmGenerator {
                 .build();
 
         modelResourceSupport.getStreamOfPsmAccesspointActorType().forEach(
-                app -> { result.getGeneratedByDiscriminator().put(app, ConcurrentHashMap.newKeySet()); });
+                app -> result.getGeneratedByDiscriminator().put(app, ConcurrentHashMap.newKeySet()));
 
         Set<ActorType> actorTypes = modelResourceSupport.getStreamOfPsmAccesspointActorType()
                 .filter(parameter.getDiscriminatorPredicate()).collect(Collectors.toSet());
@@ -126,20 +117,19 @@ public class PsmGenerator {
 
         List<CompletableFuture<GeneratedFile>> tasks = new ArrayList<>();
 
-        parameter.getGeneratorContext().getGeneratorModel().getTemplates().stream().forEach(generatorTemplate -> {
-
-            // Handlebars context builder
+        // Handlebars context builder
+        for (GeneratorTemplate generatorTemplate : parameter.getGeneratorContext().getGeneratorModel().getTemplates()) {
             // It creates parameters accessible within templates.
             // It returns the function, the context creation itself is called when template is processed.
             Function<Object, Context.Builder> defaultHandlebarsContextBuilder = o -> {
-                ImmutableMap.Builder params = ImmutableMap.<String, Object>builder()
-                    .put(ADD_DEBUG_TO_TEMPLATE, TEMPLATE_DEBUG)
-                    .put(ACTOR_TYPES, actorTypes)
-                    .put(TEMPLATE, generatorTemplate)
-                    .put(SELF, o)
-                    .put(MODEL, model);
+                ImmutableMap.Builder<String, Object> params = ImmutableMap.<String, Object>builder()
+                        .put(ADD_DEBUG_TO_TEMPLATE, TEMPLATE_DEBUG)
+                        .put(ACTOR_TYPES, actorTypes)
+                        .put(TEMPLATE, generatorTemplate)
+                        .put(SELF, o)
+                        .put(MODEL, model);
 
-                Map<String, ?> extraVariables = (Map<String, ?>) parameter.getExtraContextVariables().get();
+                Map<String, ?> extraVariables = parameter.getExtraContextVariables().get();
                 extraVariables.forEach((k, v) -> {
                     if (k != null && v != null) {
                         params.put(k, v);
@@ -162,15 +152,13 @@ public class PsmGenerator {
                 templateContext.setVariable(SELF, o);
                 templateContext.setVariable(MODEL, model);
 
-                Map<String, ?> extraVariables = (Map<String, ?>) parameter.getExtraContextVariables().get();
-                extraVariables.forEach((k, v) -> {
-                    templateContext.setVariable(k, v);
-                });
+                Map<String, ?> extraVariables = parameter.getExtraContextVariables().get();
+                extraVariables.forEach(templateContext::setVariable);
                 return templateContext;
             };
 
             StandardEvaluationContext evaulationContext = defaultSpringELContextProvider.apply(model);
-            final TemplateEvaluator templateEvaulator;
+            final TemplateEvaulator templateEvaulator;
             try {
                 templateEvaulator = generatorTemplate.getTemplateEvalulator(
                         parameter.getGeneratorContext(), evaulationContext);
@@ -182,11 +170,11 @@ public class PsmGenerator {
                 actorTypes.forEach(actorType -> {
                     evaulationContext.setVariable(ACTOR_TYPE, actorType);
 
-                    Collection processingList = new HashSet(Arrays.asList(actorType));
+                    Collection<?> processingList = new HashSet<>(Collections.singletonList(actorType));
                     if (templateEvaulator.getFactoryExpression() != null) {
                         processingList = templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, actorType, Collection.class);
                     }
-                    templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, processingList, Collection.class).stream().forEach(element -> {
+                    for (Object element : templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, processingList, Collection.class)) {
                         tasks.add(CompletableFuture.supplyAsync(() -> {
                             StandardEvaluationContext templateContext = defaultSpringELContextProvider.apply(element);
                             templateContext.setVariable(ACTOR_TYPE, actorType);
@@ -202,16 +190,17 @@ public class PsmGenerator {
                             result.getGeneratedByDiscriminator().get(actorType).add(generatedFile);
                             return generatedFile;
                         }));
-                    });
+                    }
                 });
             } else {
                 evaulationContext.setVariable(TEMPLATE, generatorTemplate);
-                Set iterableCollection = new HashSet(Arrays.asList(generatorTemplate));
+                Set<?> iterableCollection = new HashSet<>(List.of(generatorTemplate));
 
                 if (templateEvaulator.getTemplate() != null) {
                     iterableCollection = actorTypes;
                 }
-                templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, iterableCollection, Collection.class).stream().forEach(element -> {
+
+                for (Object element : templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, iterableCollection, Collection.class)) {
                     tasks.add(CompletableFuture.supplyAsync(() -> {
 
                         StandardEvaluationContext templateContext = defaultSpringELContextProvider.apply(element);
@@ -222,12 +211,12 @@ public class PsmGenerator {
 
                         generatorTemplate.evalToContextBuilder(templateEvaulator, contextBuilder, evaulationContext);
                         GeneratedFile generatedFile = generateFile(parameter.getGeneratorContext(), templateContext, templateEvaulator, generatorTemplate, contextBuilder, log);
-                        ((GeneratorResult<ActorType>) result).getGenerated().add(generatedFile);
+                        result.getGenerated().add(generatedFile);
                         return generatedFile;
                     }));
-                });
+                }
             }
-        });
+        }
 
         StreamHelper.performFutures(tasks);
         return result;
