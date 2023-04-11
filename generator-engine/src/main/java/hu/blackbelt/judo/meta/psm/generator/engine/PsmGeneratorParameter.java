@@ -2,7 +2,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 /*-
  * #%L
- * Judo :: PSM :: Model :: Genetator :: Engine
+ * Judo :: PSM :: Model :: Generator :: Engine
  * %%
  * Copyright (C) 2018 - 2023 BlackBelt Technology
  * %%
@@ -22,7 +22,9 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 import com.google.common.collect.ImmutableMap;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import hu.blackbelt.judo.generator.commons.ModelGeneratorContext;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
+import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import lombok.Builder;
 import lombok.NonNull;
 
@@ -34,7 +36,12 @@ import java.util.function.Supplier;
 
 @Builder(builderMethodName = "psmGeneratorParameter")
 public final class PsmGeneratorParameter {
-    PsmGeneratorContext generatorContext;
+
+    @NonNull
+    PsmModel psmModel;
+
+    @NonNull
+    ModelGeneratorContext generatorContext;
 
     @Builder.Default
     Predicate<ActorType> actorTypePredicate = a -> true;

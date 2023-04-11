@@ -2,7 +2,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 /*-
  * #%L
- * Judo :: PSM :: Model :: Genetator :: Engine
+ * Judo :: PSM :: Model :: Generator :: Engine
  * %%
  * Copyright (C) 2018 - 2023 BlackBelt Technology
  * %%
