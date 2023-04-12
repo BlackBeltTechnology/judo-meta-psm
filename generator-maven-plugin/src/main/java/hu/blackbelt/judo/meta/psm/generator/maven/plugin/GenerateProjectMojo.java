@@ -21,12 +21,13 @@ package hu.blackbelt.judo.meta.psm.generator.maven.plugin;
  */
 
 import com.google.common.io.Files;
+import hu.blackbelt.judo.generator.commons.ModelGenerator;
 import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
 import hu.blackbelt.judo.meta.psm.PsmUtils;
+import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGenerator;
-import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -68,8 +69,6 @@ import static java.util.Optional.of;
         requiresDependencyResolution = ResolutionScope.COMPILE)
 public class GenerateProjectMojo extends AbstractMojo {
 
-    public static final String TEMPLATES_BACKEND_PROJECT = "templates/backend-project";
-
     final int BUFFER_SIZE = 4096;
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
@@ -109,13 +108,13 @@ public class GenerateProjectMojo extends AbstractMojo {
     @Parameter(property = "helpers")
     private List<String> helpers = new ArrayList<>();
 
-    @Parameter(property="templateParameters", required = false, readonly = true)
+    @Parameter(property="templateParameters")
     private HashMap<String, String> templateParameters;
 
-    @Parameter(property="contextAccessor", required = false, readonly = true)
+    @Parameter(property="contextAccessor")
     private String contextAccessor;
 
-    @Parameter(property="scanDependencies", required = false, readonly = true, defaultValue = "true")
+    @Parameter(property="scanDependencies", defaultValue = "true")
     private Boolean scanDependencies;
 
     Set<URL> classPathUrls = new HashSet<>();
@@ -477,14 +476,14 @@ public class GenerateProjectMojo extends AbstractMojo {
             extras.putAll(templateParameters);
 
             PsmGenerator.generateToDirectory(PsmGeneratorParameter.psmGeneratorParameter()
-                    .generatorContext(PsmGenerator.createGeneratorContext(
-                            PsmGenerator.CreateGeneratorContextArgument.builder()
-                                    .psmModel(psmModel)
+                    .psmModel(psmModel)
+                    .generatorContext(ModelGenerator.createGeneratorContext(
+                            ModelGenerator.CreateGeneratorContextArgument.builder()
                                     .descriptorName(type)
                                     .uris(uriMap)
                                     .helpers(resolvedHelpers)
                                     .contextAccessor(contextAccessorClass.get())
-                                .build()))
+                                    .build()))
                     .targetDirectoryResolver(() -> destination)
                     .extraContextVariables(() -> extras)
                     .actorTypeTargetDirectoryResolver(a -> destination)
