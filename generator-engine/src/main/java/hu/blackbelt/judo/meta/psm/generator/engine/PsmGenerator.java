@@ -201,7 +201,7 @@ public class PsmGenerator {
                 Set<?> iterableCollection = new HashSet<>(List.of(generatorTemplate));
 
                 if (templateEvaulator.getTemplate() != null) {
-                    iterableCollection = actorTypes;
+                    iterableCollection = new HashSet<>(Collections.singletonList(model));
                 }
 
                 for (Object element : templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, iterableCollection, Collection.class)) {
