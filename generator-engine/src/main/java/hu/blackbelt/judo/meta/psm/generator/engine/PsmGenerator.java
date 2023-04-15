@@ -26,8 +26,11 @@ import com.google.common.collect.ImmutableMap;
 import hu.blackbelt.epsilon.runtime.execution.api.Log;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.*;
+import hu.blackbelt.judo.meta.psm.PsmUtils;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
+import hu.blackbelt.judo.meta.psm.namespace.Namespace;
+import hu.blackbelt.judo.meta.psm.namespace.Package;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +71,7 @@ public class PsmGenerator {
                 .extraContextVariables(parameter.extraContextVariables)
                 .targetDirectoryResolver(parameter.targetDirectoryResolver)
                 .discriminatorTargetDirectoryResolver(parameter.actorTypeTargetDirectoryResolver)
+                .discriminatorTargetNameResolver(a -> (fqName((Namespace) a.eContainer(), "_") + "_" + a.getName()).replaceAll("[^\\.A-Za-z0-9_]", "_").toLowerCase())
                 .log(parameter.log)
                 .performExecutor(p -> execute(parameter))
                 .build();
@@ -197,7 +201,7 @@ public class PsmGenerator {
                 Set<?> iterableCollection = new HashSet<>(List.of(generatorTemplate));
 
                 if (templateEvaulator.getTemplate() != null) {
-                    iterableCollection = actorTypes;
+                    iterableCollection = new HashSet<>(Collections.singletonList(model));
                 }
 
                 for (Object element : templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, iterableCollection, Collection.class)) {
@@ -230,4 +234,19 @@ public class PsmGenerator {
         ModelGenerator.generateToDirectory(mapPsmParameters(parameter));
     }
 
+    public static String fqName(final Namespace namespace, String separator) {
+        if (namespace instanceof Model) {
+            return namespace.getName();
+        } else if (namespace instanceof Package) {
+            final Optional<Namespace> containerNamespace = PsmUtils.getNamespaceOfPackage((Package) namespace);
+            if (containerNamespace.isPresent()) {
+                return fqName(containerNamespace.get(), separator) + separator + namespace.getName();
+            } else {
+                // relative path is returned
+                return separator + namespace.getName();
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid namespace - " + namespace.getName());
+        }
+    }
 }
