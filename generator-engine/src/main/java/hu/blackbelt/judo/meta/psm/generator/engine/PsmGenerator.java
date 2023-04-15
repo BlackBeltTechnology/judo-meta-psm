@@ -246,7 +246,7 @@ public class PsmGenerator {
                 return separator + namespace.getName();
             }
         } else {
-            throw new IllegalArgumentException("Invalid namespace");
+            throw new IllegalArgumentException("Invalid namespace - " + namespace.getName());
         }
     }
 }
