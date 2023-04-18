@@ -109,6 +109,20 @@
                         </configuration>
                     </execution>
 
+
+                    <execution>
+                        <id>execute-psm-checksum-from-file</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>checksum</goal>
+                        </goals>
+
+                        <configuration>
+                            <psm>${basedir}/target/classes/psm/northwind-psm.model</psm>
+                            <destination>${basedir}/target/test-classes/psm/file</destination>
+                        </configuration>
+                    </execution>
+
                     <execution>
                         <id>execute-psm-test-model-from-artifact</id>
                         <phase>generate-test-resources</phase>
