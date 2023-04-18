@@ -249,4 +249,25 @@ public class PsmGenerator {
             throw new IllegalArgumentException("Invalid namespace - " + namespace.getName());
         }
     }
+
+    public static void recalculateChecksumForDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
+        recalculateChecksumForDirectory(builder.build());
+    }
+
+    public static void recalculateChecksumForDirectory(PsmGeneratorParameter parameter) throws Exception {
+
+        GeneratorParameter<ActorType> genericParams = mapPsmParameters(parameter);
+
+        PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
+                .resourceSet(parameter.psmModel.getResourceSet())
+                .build();
+
+        Set<ActorType> applications = modelResourceSupport
+                .getStreamOfPsmAccesspointActorType()
+                .filter(genericParams.getDiscriminatorPredicate())
+                .collect(Collectors.toSet());
+
+        ModelGenerator.recalculateChecksumToDirectory(genericParams, applications);
+    }
+
 }
