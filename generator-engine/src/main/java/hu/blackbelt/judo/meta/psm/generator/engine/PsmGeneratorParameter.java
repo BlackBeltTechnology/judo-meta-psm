@@ -40,8 +40,8 @@ public final class PsmGeneratorParameter {
     @NonNull
     PsmModel psmModel;
 
-    @NonNull
-    ModelGeneratorContext generatorContext;
+    @Builder.Default
+    ModelGeneratorContext generatorContext = null;
 
     @Builder.Default
     Predicate<ActorType> actorTypePredicate = a -> true;

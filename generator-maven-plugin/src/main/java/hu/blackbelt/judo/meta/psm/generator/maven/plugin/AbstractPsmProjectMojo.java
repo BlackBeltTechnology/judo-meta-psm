@@ -21,13 +21,10 @@ package hu.blackbelt.judo.meta.psm.generator.maven.plugin;
  */
 
 import com.google.common.io.Files;
-import hu.blackbelt.judo.generator.commons.ModelGenerator;
-import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
 import hu.blackbelt.judo.meta.psm.PsmUtils;
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import hu.blackbelt.judo.meta.psm.support.PsmModelResourceSupport;
-import hu.blackbelt.judo.meta.psm.generator.engine.PsmGenerator;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -59,20 +56,16 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static hu.blackbelt.judo.meta.psm.runtime.PsmModel.LoadArguments.psmLoadArgumentsBuilder;
 import static java.util.Optional.of;
 
-@Mojo(name = "generate",
-        defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
-        requiresDependencyResolution = ResolutionScope.COMPILE)
-public class GenerateProjectMojo extends AbstractMojo {
+public abstract class AbstractPsmProjectMojo extends AbstractMojo {
 
     final int BUFFER_SIZE = 4096;
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
-    private MavenProject project;
+    public MavenProject project;
 
     @Component
     public RepositorySystem repoSystem;
@@ -85,39 +78,88 @@ public class GenerateProjectMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${plugin}", readonly = true)
 
-    private PluginDescriptor pluginDescriptor;
-
-    @Parameter(property = "type", required = true)
-    private String type;
+    public PluginDescriptor pluginDescriptor;
 
     @Parameter(property = "psm")
-    private String psm;
+    public String psm;
 
     @Parameter(property = "destination", defaultValue = "${project.basedir}/target/backend-project")
-    private File destination;
+    public File destination;
 
     @Parameter(property = "modelName")
-    private String modelName;
+    public String modelName;
 
     @Parameter(property = "actors")
-    private List<String> actors;
-
-    @Parameter(property = "uris")
-    private List<String> uris = new ArrayList<>();
-
-    @Parameter(property = "helpers")
-    private List<String> helpers = new ArrayList<>();
-
-    @Parameter(property="templateParameters")
-    private HashMap<String, String> templateParameters;
-
-    @Parameter(property="contextAccessor")
-    private String contextAccessor;
-
-    @Parameter(property="scanDependencies", defaultValue = "true")
-    private Boolean scanDependencies;
+    public List<String> actors;
 
     Set<URL> classPathUrls = new HashSet<>();
+
+
+    public abstract void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception;
+
+
+    public PsmGeneratorParameter.PsmGeneratorParameterBuilder addPsmModel(PsmGeneratorParameter.PsmGeneratorParameterBuilder psmGeneratorParameterBuilder) throws MojoExecutionException {
+        URI psmUri = null;
+        PsmModel psmModel = null;
+        PsmModelResourceSupport psmModelResourceSupport = null;
+
+        if (psm != null && !psm.trim().equals("")) {
+            psmUri = getArtifact(psm).toURI();
+
+            if (modelName == null || modelName.trim().equals("")) {
+                try {
+                    psmModel = PsmModel.loadPsmModel(psmLoadArgumentsBuilder()
+                            .inputStream(
+                                    of(psmUri).orElseThrow(() ->
+                                                    new IllegalArgumentException("psmModel or psmModelSourceUri have to be defined"))
+                                            .toURL().openStream())
+                            .validateModel(false));
+
+                    psmModelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
+                            .resourceSet(psmModel.getResourceSet())
+                            .build();
+
+                    modelName = psmModelResourceSupport.getStreamOfPsmNamespaceModel()
+                            .findFirst().orElseThrow(() -> new IllegalStateException("Cannot find Model element")).getName();
+                } catch (IOException | PsmModel.PsmValidationException e) {
+                    throw new MojoExecutionException("Could not load model: ", e);
+                }
+            }
+        }
+        psmGeneratorParameterBuilder.psmModel(psmModel);
+        return psmGeneratorParameterBuilder;
+    }
+
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+
+        // Needed for to access project's dependencies.
+        // Info: http://blog.chalda.cz/2018/02/17/Maven-plugin-and-fight-with-classloading.html
+        try {
+            setContextClassLoader();
+        } catch (Exception e) {
+            throw new MojoExecutionException("Failed to set classloader", e);
+        }
+
+
+        PsmGeneratorParameter.PsmGeneratorParameterBuilder osmGeneratorParameterBuilder = PsmGeneratorParameter.psmGeneratorParameter();
+        addPsmModel(osmGeneratorParameterBuilder);
+
+        osmGeneratorParameterBuilder
+                .targetDirectoryResolver(() -> destination)
+                .actorTypeTargetDirectoryResolver(a -> destination)
+                .actorTypePredicate(a -> actors == null || actors.isEmpty() || actors.contains(PsmUtils.namespaceToString(a.getNamespace()) + "::" + a.getName()));
+
+        try {
+            performExecutionOnPsmParameters(osmGeneratorParameterBuilder);
+        } catch (URISyntaxException e) {
+            throw new MojoExecutionException("Invalid URL: ", e);
+        } catch (IOException e) {
+            throw new MojoExecutionException("IO Error: ", e);
+        } catch (Exception e) {
+            throw new MojoExecutionException("Unknown exception: ", e);
+        }
+    }
 
     private void setContextClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
         // Project dependencies
@@ -141,7 +183,7 @@ public class GenerateProjectMojo extends AbstractMojo {
         getLog().debug("Set urls for URLClassLoader: " + Arrays.asList(urlsForClassLoader));
 
         // need to define parent classloader which knows all dependencies of the plugin
-        ClassLoader classLoader = new URLClassLoader(urlsForClassLoader, GenerateProjectMojo.class.getClassLoader());
+        ClassLoader classLoader = new URLClassLoader(urlsForClassLoader, AbstractPsmProjectMojo.class.getClassLoader());
         Thread.currentThread().setContextClassLoader(classLoader);
     }
 
@@ -375,126 +417,4 @@ public class GenerateProjectMojo extends AbstractMojo {
         return resolutionResult;
     }
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-
-        // Needed for to access project's dependencies.
-        // Info: http://blog.chalda.cz/2018/02/17/Maven-plugin-and-fight-with-classloading.html
-        try {
-            setContextClassLoader();
-        } catch (Exception e) {
-            throw new MojoExecutionException("Failed to set classloader", e);
-        }
-
-        URI psmUri = null;
-        PsmModel psmModel = null;
-        PsmModelResourceSupport psmModelResourceSupport = null;
-
-        if (psm != null && !psm.trim().equals("")) {
-            psmUri = getArtifact(psm).toURI();
-
-            if (modelName == null || modelName.trim().equals("")) {
-                try {
-                    psmModel = PsmModel.loadPsmModel(psmLoadArgumentsBuilder()
-                            .inputStream(
-                                    of(psmUri).orElseThrow(() ->
-                                                    new IllegalArgumentException("psmModel or psmModelSourceUri have to be defined"))
-                                            .toURL().openStream())
-                            .validateModel(false));
-
-                    psmModelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
-                            .resourceSet(psmModel.getResourceSet())
-                            .build();
-
-                    modelName = psmModelResourceSupport.getStreamOfPsmNamespaceModel()
-                            .findFirst().orElseThrow(() -> new IllegalStateException("Cannot find Model element")).getName();
-                } catch (IOException | PsmModel.PsmValidationException e) {
-                    throw new MojoExecutionException("Could not load model: ", e);
-                }
-            }
-        }
-
-        try {
-            LinkedHashMap<String, URI> uriMap = new LinkedHashMap<>();
-            if (uris != null) {
-                for (String uri : uris) {
-                    uriMap.put(uri, getResolvedTemplateDirectory(uri).toURI());
-                }
-            }
-
-            Collection<Class> resolvedHelpers = new HashSet<>();
-            for (String helperClass : helpers) {
-                try {
-                    Class clazz = Thread.currentThread().getContextClassLoader().loadClass(helperClass);
-                    resolvedHelpers.add(clazz);
-                } catch (Exception e) {
-                    getLog().error("Could not load helper class: " + helperClass);
-                }
-            }
-
-            AtomicReference<Class> contextAccessorClass = new AtomicReference<>();
-
-            if (scanDependencies) {
-                getLog().info("Scanning classpath for helpers...");
-                try {
-                    Collection<Class> scannedHelpers = TemplateHelperFinder.collectHelpersAsClass(Thread.currentThread().getContextClassLoader());
-                    for (Class helper : scannedHelpers) {
-                        getLog().info("Helper found: " + helper.getName());
-                    }
-                    if (scannedHelpers.size() == 0) {
-                        getLog().warn("No class with @TemplateHelper found");
-                    }
-                    resolvedHelpers.addAll(scannedHelpers);
-                } catch (IOException e) {
-                    throw new MojoExecutionException("Could not scan dependencies", e);
-                }
-
-                if (contextAccessor == null || contextAccessor.isBlank()) {
-                    TemplateHelperFinder.findContextAccessorAsClass(Thread.currentThread().getContextClassLoader()).ifPresent(c -> {
-                        getLog().info("ContextAccessor class found: " + c.getName());
-                        contextAccessorClass.set(c);
-                    });
-                }
-            }
-
-            if (contextAccessor != null && !"".equals(contextAccessor.trim())) {
-                try {
-                    contextAccessorClass.set(Thread.currentThread().getContextClassLoader().loadClass(contextAccessor));
-                } catch (Exception e) {
-                    throw new IllegalArgumentException("Could not load contextAccessor class: " + contextAccessor, e);
-                }
-            }
-
-            Map<String, Object> extras = project.getProperties().entrySet().stream().collect(
-                    Collectors.toMap(
-                            e -> String.valueOf(e.getKey()),
-                            e -> e.getValue(),
-                            (prev, next) -> next, HashMap::new
-                    ));
-
-            extras.putAll(repoSession.getConfigProperties());
-            extras.putAll(templateParameters);
-
-            PsmGenerator.generateToDirectory(PsmGeneratorParameter.psmGeneratorParameter()
-                    .psmModel(psmModel)
-                    .generatorContext(ModelGenerator.createGeneratorContext(
-                            ModelGenerator.CreateGeneratorContextArgument.builder()
-                                    .descriptorName(type)
-                                    .uris(uriMap)
-                                    .helpers(resolvedHelpers)
-                                    .contextAccessor(contextAccessorClass.get())
-                                    .build()))
-                    .targetDirectoryResolver(() -> destination)
-                    .extraContextVariables(() -> extras)
-                    .actorTypeTargetDirectoryResolver(a -> destination)
-                    .actorTypePredicate(a -> actors == null || actors.isEmpty() || actors.contains(PsmUtils.namespaceToString(a.getNamespace()) + "::" + a.getName())));
-
-        } catch (URISyntaxException e) {
-            throw new MojoExecutionException("Invalid URL: ", e);
-        } catch (IOException e) {
-            throw new MojoExecutionException("IO Error: ", e);
-        } catch (Exception e) {
-            throw new MojoExecutionException("Unknown exception: ", e);
-        }
-    }
 }
