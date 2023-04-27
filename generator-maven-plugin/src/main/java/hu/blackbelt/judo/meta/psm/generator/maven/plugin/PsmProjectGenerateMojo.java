@@ -83,11 +83,11 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
         AtomicReference<Class> contextAccessorClass = new AtomicReference<>();
 
         if (scanDependencies) {
-            getLog().info("Scanning classpath for helpers...");
+            getLog().debug("Scanning classpath for helpers...");
             try {
                 Collection<Class> scannedHelpers = TemplateHelperFinder.collectHelpersAsClass(Thread.currentThread().getContextClassLoader());
                 for (Class helper : scannedHelpers) {
-                    getLog().info("Helper found: " + helper.getName());
+                    getLog().debug("Helper found: " + helper.getName());
                 }
                 if (scannedHelpers.size() == 0) {
                     getLog().warn("No class with @TemplateHelper found");
@@ -99,7 +99,7 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
 
             if (contextAccessor == null || contextAccessor.isBlank()) {
                 TemplateHelperFinder.findContextAccessorAsClass(Thread.currentThread().getContextClassLoader()).ifPresent(c -> {
-                    getLog().info("ContextAccessor class found: " + c.getName());
+                    getLog().debug("ContextAccessor class found: " + c.getName());
                     contextAccessorClass.set(c);
                 });
             }
