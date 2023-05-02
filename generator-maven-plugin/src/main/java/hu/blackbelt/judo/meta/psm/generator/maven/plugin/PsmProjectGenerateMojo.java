@@ -61,6 +61,8 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
     @Parameter(property="scanDependencies", defaultValue = "true")
     private Boolean scanDependencies;
 
+    @Parameter(property="validateChecksum", defaultValue = "true")
+    private Boolean validateChecksum;
     @Override
     public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder psmGeneratorParameterBuilder) throws Exception {
         LinkedHashMap<String, URI> uriMap = new LinkedHashMap<>();
@@ -131,6 +133,7 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
                                 .helpers(resolvedHelpers)
                                 .contextAccessor(contextAccessorClass.get())
                                 .build()))
+                .validateChecksum(validateChecksum)
                 .extraContextVariables(() -> extras);
 
         PsmGenerator.generateToDirectory(psmGeneratorParameterBuilder);

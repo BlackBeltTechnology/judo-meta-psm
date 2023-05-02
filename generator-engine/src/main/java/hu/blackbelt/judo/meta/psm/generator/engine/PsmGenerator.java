@@ -74,6 +74,7 @@ public class PsmGenerator {
                 .discriminatorTargetNameResolver(a -> (fqName((Namespace) a.eContainer(), "_") + "_" + a.getName()).replaceAll("[^\\.A-Za-z0-9_]", "_").toLowerCase())
                 .log(parameter.log)
                 .performExecutor(p -> execute(parameter))
+                .validateChecksum(parameter.validateChecksum)
                 .build();
     }
 
