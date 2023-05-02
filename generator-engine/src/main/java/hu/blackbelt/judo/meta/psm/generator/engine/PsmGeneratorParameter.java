@@ -56,4 +56,7 @@ public final class PsmGeneratorParameter {
 
     @Builder.Default
     Supplier<Map<String, ?>> extraContextVariables = () -> ImmutableMap.of();
+
+    @Builder.Default
+    boolean validateChecksum = true;
 }
