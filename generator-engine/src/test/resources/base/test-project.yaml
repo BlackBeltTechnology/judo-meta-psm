@@ -13,3 +13,9 @@ templates:
     pathExpression: "#actorType.name + '/actorToDelete'"
     templateName: test1/actorToDelete.hbs
     actorTypeBased: true
+
+  - name: testNotGenerated
+    pathExpression: "#actorType.name + '/actorToNotGenerated'"
+    templateName: test1/actorToNotGenerated.hbs
+    actorTypeBased: true
+    conditionExpression: false
