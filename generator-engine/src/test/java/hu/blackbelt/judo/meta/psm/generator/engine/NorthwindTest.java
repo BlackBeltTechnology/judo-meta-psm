@@ -132,6 +132,8 @@ public class NorthwindTest {
 
         assertThat(!new File(testOutput, "InternalUser/actorToDelete").exists());
 
+        assertThat(!new File(testOutput, "InternalUser/actorToNotGenerated").exists());
+
     }
 
     static <T> Stream<T> asStream(Iterator<T> sourceIterator, boolean parallel) {
