@@ -63,6 +63,10 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
 
     @Parameter(property="validateChecksum", defaultValue = "true")
     private Boolean validateChecksum;
+
+    @Parameter(property="scanPackages")
+    private List<String> scanPackages = new ArrayList<>();
+
     @Override
     public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder psmGeneratorParameterBuilder) throws Exception {
         LinkedHashMap<String, URI> uriMap = new LinkedHashMap<>();
@@ -87,7 +91,7 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
         if (scanDependencies) {
             getLog().debug("Scanning classpath for helpers...");
             try {
-                Collection<Class> scannedHelpers = TemplateHelperFinder.collectHelpersAsClass(Thread.currentThread().getContextClassLoader());
+                Collection<Class> scannedHelpers = TemplateHelperFinder.collectHelpersAsClass(scanPackages, Thread.currentThread().getContextClassLoader());
                 for (Class helper : scannedHelpers) {
                     getLog().debug("Helper found: " + helper.getName());
                 }
@@ -100,7 +104,7 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
             }
 
             if (contextAccessor == null || contextAccessor.isBlank()) {
-                TemplateHelperFinder.findContextAccessorAsClass(Thread.currentThread().getContextClassLoader()).ifPresent(c -> {
+                TemplateHelperFinder.findContextAccessorAsClass(scanPackages, Thread.currentThread().getContextClassLoader()).ifPresent(c -> {
                     getLog().debug("ContextAccessor class found: " + c.getName());
                     contextAccessorClass.set(c);
                 });
