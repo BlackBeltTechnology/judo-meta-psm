@@ -65,7 +65,7 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
     private Boolean validateChecksum;
 
     @Parameter(property="scanPackages")
-    private List<String> scanPackages = new ArrayList<>();
+    private List<String> scanPackages;
 
     @Override
     public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder psmGeneratorParameterBuilder) throws Exception {
