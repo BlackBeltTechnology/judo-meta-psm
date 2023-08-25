@@ -21,7 +21,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
  */
 
 import com.google.common.collect.ImmutableMap;
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import org.slf4j.Logger;
 import hu.blackbelt.judo.generator.commons.ModelGeneratorContext;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
@@ -52,7 +52,7 @@ public final class PsmGeneratorParameter {
     @NonNull
     Supplier<File> targetDirectoryResolver;
 
-    Log log;
+    Logger log;
 
     @Builder.Default
     Supplier<Map<String, ?>> extraContextVariables = () -> ImmutableMap.of();
