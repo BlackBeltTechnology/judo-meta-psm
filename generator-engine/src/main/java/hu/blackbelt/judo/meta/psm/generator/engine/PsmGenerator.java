@@ -23,7 +23,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.ValueResolver;
 import com.google.common.collect.ImmutableMap;
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import org.slf4j.Logger;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.*;
 import hu.blackbelt.judo.meta.psm.PsmUtils;
@@ -83,7 +83,7 @@ public class PsmGenerator {
     }
     public static GeneratorResult<ActorType> execute(PsmGeneratorParameter parameter) throws RuntimeException {
         final AtomicBoolean loggerToBeClosed = new AtomicBoolean(false);
-        Log log = Objects.requireNonNullElseGet(parameter.log,
+        Logger log = Objects.requireNonNullElseGet(parameter.log,
                                                 () -> {
                                                     loggerToBeClosed.set(true);
                                                     return new BufferedSlf4jLogger(PsmGenerator.log);
@@ -95,7 +95,9 @@ public class PsmGenerator {
         } finally {
             if (loggerToBeClosed.get()) {
                 try {
-                    log.close();
+                    if (log instanceof Closeable) {
+                        ((Closeable) log).close();
+                    }
                 } catch (Exception e) {
                     //noinspection ThrowFromFinallyBlock
                     throw new RuntimeException(e);
@@ -104,7 +106,7 @@ public class PsmGenerator {
         }
     }
 
-    private static GeneratorResult<ActorType> execute(PsmModel psmModel, GeneratorParameter<ActorType> parameter, Log log) throws InterruptedException, ExecutionException {
+    private static GeneratorResult<ActorType> execute(PsmModel psmModel, GeneratorParameter<ActorType> parameter, Logger log) throws InterruptedException, ExecutionException {
         GeneratorResult<ActorType> result = GeneratorResult.<ActorType>generatorResult().build();
 
         PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
