@@ -21,7 +21,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
  */
 
 import com.google.common.collect.ImmutableMap;
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import org.slf4j.Logger;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.ModelGenerator;
 import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
@@ -80,7 +80,7 @@ public class NorthwindTest {
         uris.put(new File(TARGET_TEST_CLASSES, BASE).toString(), new File(TARGET_TEST_CLASSES, BASE).toURI());
         uris.put(new File(TARGET_TEST_CLASSES, OVERRIDE).toString(), new File(TARGET_TEST_CLASSES, OVERRIDE).toURI());
 
-        try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
+        try (BufferedSlf4jLogger bufferedLog = new BufferedSlf4jLogger(log)) {
             PsmGenerator.generateToDirectory(PsmGeneratorParameter.psmGeneratorParameter()
                             .psmModel(psmModel)
                             .generatorContext(ModelGenerator.createGeneratorContext(

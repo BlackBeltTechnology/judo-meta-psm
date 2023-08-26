@@ -21,7 +21,7 @@ package hu.blackbelt.judo.meta.psm;
  */
 
 import hu.blackbelt.epsilon.runtime.execution.ExecutionContext;
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import org.slf4j.Logger;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
 import org.eclipse.epsilon.common.util.UriUtil;
@@ -39,13 +39,13 @@ import static java.util.Collections.singletonMap;
 
 public class PsmEpsilonValidator {
 
-    public static void validatePsm(Log log,
+    public static void validatePsm(Logger log,
                                    PsmModel psmModel,
                                    URI scriptRoot) throws ScriptExecutionException, URISyntaxException {
         validatePsm(log, psmModel, scriptRoot, emptyList(), null);
     }
 
-    public static void validatePsm(Log log,
+    public static void validatePsm(Logger log,
                                    PsmModel psmModel,
                                    URI scriptRoot,
                                    Collection<String> expectedErrors,

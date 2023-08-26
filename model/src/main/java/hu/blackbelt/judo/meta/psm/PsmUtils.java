@@ -20,7 +20,7 @@ package hu.blackbelt.judo.meta.psm;
  * #L%
  */
 
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import org.slf4j.Logger;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.epsilon.runtime.execution.impl.LogLevel;
 import hu.blackbelt.judo.meta.psm.data.*;
@@ -891,7 +891,7 @@ public class PsmUtils {
      * @see PsmUtils#setResourceSet(ResourceSet)
      */
     public void validateUniqueXmiids() {
-        try (Log log = new BufferedSlf4jLogger(LogLevel.DEBUG)) {
+        try (BufferedSlf4jLogger log = new BufferedSlf4jLogger(LogLevel.DEBUG)) {
             validateUniqueXmiids(log);
         } catch (IllegalStateException ise) {
             throw ise;
@@ -900,7 +900,7 @@ public class PsmUtils {
         }
     }
 
-    private void validateUniqueXmiids(final Log log) {
+    private void validateUniqueXmiids(final Logger log) {
         if (resourceSet == null) {
             throw new IllegalStateException("Model's ResourceSet is unknown (null)");
         }
