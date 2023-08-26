@@ -20,7 +20,7 @@ package hu.blackbelt.model.northwind;
  * #L%
  */
 
-import hu.blackbelt.epsilon.runtime.execution.api.Log;
+import org.slf4j.Logger;
 import hu.blackbelt.epsilon.runtime.execution.exceptions.ScriptExecutionException;
 import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
@@ -334,7 +334,7 @@ public class Demo {
         } else {
 
             System.out.println(psmModel.asString());
-            try (Log bufferedLog = new BufferedSlf4jLogger(log)) {
+            try (BufferedSlf4jLogger bufferedLog = new BufferedSlf4jLogger(log)) {
                 validatePsm(bufferedLog, psmModel, calculatePsmValidationScriptURI());
             } catch (ScriptExecutionException e) {
                 System.err.println(e.toString());
