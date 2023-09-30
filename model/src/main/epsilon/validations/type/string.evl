@@ -7,9 +7,9 @@ context PSM!StringType {
 	}
 
     // maxLength <= 4000
-	constraint MaxLengthIsNotTooLarge {
+	critique MaxLengthIsNotTooLarge {
 		check: self.maxLength <= 4000
-		message: "MaxLength must be less than/equals to 4000: " + self.name
+		message: "MaxLength is recommended to be less than/equals to 4000: " + self.name
 	}
 
     // regular expression must be syntactically correct
