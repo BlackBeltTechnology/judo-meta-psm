@@ -189,8 +189,8 @@ class PsmValidationTypeTest {
                 .withElements(newStringTypeBuilder().withName("String").withMaxLength(4001).build()).build();
 
         psmModel.addContent(m);
-        runEpsilon(ImmutableList.of("MaxLengthIsNotTooLarge|MaxLength must be less than/equals to 4000: String"),
-                Collections.emptyList());
+        runEpsilon(Collections.emptyList(),
+                ImmutableList.of("MaxLengthIsNotTooLarge|MaxLength is recommended to be less than/equals to 4000: String"));
     }
 
     @Test
