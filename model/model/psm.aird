@@ -78,7 +78,7 @@
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_VjV9QA7gEemYKLassfSQTg" name="menu CD" repPath="#_VjQdsA7gEemYKLassfSQTg" changeId="1705996530541">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_uVzdBxEfEemYKLassfSQTg" name="operation CD" repPath="#_uVzdABEfEemYKLassfSQTg" changeId="1705996714359">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_uVzdBxEfEemYKLassfSQTg" name="operation CD" repPath="#_uVzdABEfEemYKLassfSQTg" changeId="1706184988941">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="psm.ecore#//service"/>
       </ownedRepresentationDescriptors>
@@ -14573,11 +14573,15 @@
               <styles xmi:type="notation:FontStyle" xmi:id="_K8QScbnFEe61lLAYDU1Ihg" fontName=".AppleSystemUIFont" fontHeight="8"/>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_K8QScrnFEe61lLAYDU1Ihg"/>
             </children>
+            <children xmi:type="notation:Node" xmi:id="_gAqKULt7Ee6K54Gxz1lEOw" type="3010" element="_gARv5bt7Ee6K54Gxz1lEOw">
+              <styles xmi:type="notation:FontStyle" xmi:id="_gAqKUbt7Ee6K54Gxz1lEOw" fontName=".AppleSystemUIFont" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_gAqKUrt7Ee6K54Gxz1lEOw"/>
+            </children>
             <styles xmi:type="notation:SortingStyle" xmi:id="_m52VRTtbEeqVGudBNoMWFQ"/>
             <styles xmi:type="notation:FilteringStyle" xmi:id="_m52VRjtbEeqVGudBNoMWFQ"/>
           </children>
           <styles xmi:type="notation:ShapeStyle" xmi:id="_m52VQTtbEeqVGudBNoMWFQ" fontName="Noto Sans" fontHeight="8"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_m52VQjtbEeqVGudBNoMWFQ" x="1002" y="24" width="278" height="315"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_m52VQjtbEeqVGudBNoMWFQ" x="1002" y="24" width="278" height="335"/>
         </children>
         <children xmi:type="notation:Node" xmi:id="_gtvi4DtcEeqVGudBNoMWFQ" type="2003" element="_gtfrQDtcEeqVGudBNoMWFQ">
           <children xmi:type="notation:Node" xmi:id="_gtwJ8DtcEeqVGudBNoMWFQ" type="5007"/>
@@ -15459,6 +15463,14 @@
         <target xmi:type="ecore:EEnumLiteral" href="psm.ecore#//service/TransferOperationBehaviourType/EXPORT"/>
         <semanticElements xmi:type="ecore:EEnumLiteral" href="psm.ecore#//service/TransferOperationBehaviourType/EXPORT"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_K5mnEbnFEe61lLAYDU1Ihg" labelAlignment="LEFT">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']"/>
+      </ownedElements>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_gARv5bt7Ee6K54Gxz1lEOw" name="VALIDATE_OPERATION_INPUT" tooltipText="">
+        <target xmi:type="ecore:EEnumLiteral" href="psm.ecore#//service/TransferOperationBehaviourType/VALIDATE_OPERATION_INPUT"/>
+        <semanticElements xmi:type="ecore:EEnumLiteral" href="psm.ecore#//service/TransferOperationBehaviourType/VALIDATE_OPERATION_INPUT"/>
+        <ownedStyle xmi:type="diagram:BundledImage" uid="_gASW4Lt7Ee6K54Gxz1lEOw" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']"/>
