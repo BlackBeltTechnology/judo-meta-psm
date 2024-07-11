@@ -22,16 +22,20 @@ package hu.blackbelt.judo.meta.psm.generator.maven.plugin;
 
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGenerator;
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
-import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
-@Mojo(name = "checksum",
-        defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
+@Mojo(name = "clean",
+        defaultPhase = LifecyclePhase.CLEAN,
         requiresDependencyResolution = ResolutionScope.COMPILE,
         threadSafe = true)
-public class PsmProjectCalculateChecksumMojo extends AbstractPsmProjectMojo {
-
+public class PsmProjectCleanMojo extends AbstractPsmProjectMojo {
+    
     @Override
-    public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder psmGeneratorParameterBuilder) throws Exception {
-        PsmGenerator.recalculateChecksumForDirectory(psmGeneratorParameterBuilder);
+    public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder parameter) throws Exception {
+        PsmGenerator.cleanGeneratedFromChecksumInDirectory(parameter);
     }
+
+
 }
