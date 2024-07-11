@@ -28,7 +28,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 @Mojo(name = "clean",
         defaultPhase = LifecyclePhase.CLEAN,
-        requiresDependencyResolution = ResolutionScope.COMPILE)
+        requiresDependencyResolution = ResolutionScope.COMPILE,
+        threadSafe = true)
 public class PsmProjectCleanMojo extends AbstractPsmProjectMojo {
     
     @Override

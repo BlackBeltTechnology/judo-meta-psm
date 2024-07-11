@@ -26,7 +26,8 @@ import org.apache.maven.plugins.annotations.*;
 
 @Mojo(name = "checksum",
         defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
-        requiresDependencyResolution = ResolutionScope.COMPILE)
+        requiresDependencyResolution = ResolutionScope.COMPILE,
+        threadSafe = true)
 public class PsmProjectCalculateChecksumMojo extends AbstractPsmProjectMojo {
 
     @Override

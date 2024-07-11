@@ -40,7 +40,8 @@ import java.util.stream.Collectors;
 
 @Mojo(name = "generate",
         defaultPhase = LifecyclePhase.GENERATE_RESOURCES,
-        requiresDependencyResolution = ResolutionScope.COMPILE)
+        requiresDependencyResolution = ResolutionScope.COMPILE,
+        threadSafe = true)
 public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
 
     @Parameter(property = "type", required = true)

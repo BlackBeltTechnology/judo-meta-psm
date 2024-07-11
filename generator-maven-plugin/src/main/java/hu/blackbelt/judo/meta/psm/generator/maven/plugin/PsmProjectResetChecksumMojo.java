@@ -29,7 +29,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 @Mojo(name = "resetChecksum",
         defaultPhase = LifecyclePhase.CLEAN,
-        requiresDependencyResolution = ResolutionScope.COMPILE)
+        requiresDependencyResolution = ResolutionScope.COMPILE,
+        threadSafe = true)
 public class PsmProjectResetChecksumMojo extends AbstractPsmProjectMojo {
 
 

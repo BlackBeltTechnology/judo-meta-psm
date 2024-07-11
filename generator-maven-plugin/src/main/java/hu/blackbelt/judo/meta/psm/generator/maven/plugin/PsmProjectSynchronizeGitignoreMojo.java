@@ -28,7 +28,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 @Mojo(name = "synchronizeGitignore",
         defaultPhase = LifecyclePhase.PROCESS_RESOURCES,
-        requiresDependencyResolution = ResolutionScope.COMPILE)
+        requiresDependencyResolution = ResolutionScope.COMPILE,
+        threadSafe = true)
 public class PsmProjectSynchronizeGitignoreMojo extends AbstractPsmProjectMojo {
     
     @Override
