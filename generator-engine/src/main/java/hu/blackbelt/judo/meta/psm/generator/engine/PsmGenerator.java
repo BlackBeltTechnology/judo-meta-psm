@@ -236,7 +236,7 @@ public class PsmGenerator {
     public static void generateToDirectory(PsmGeneratorParameter parameter) throws Exception {
         ModelGenerator.generateToDirectory(mapPsmParameters(parameter));
     }
-
+    
     public static String fqName(final Namespace namespace, String separator) {
         if (namespace instanceof Model) {
             return namespace.getName();
@@ -251,6 +251,66 @@ public class PsmGenerator {
         } else {
             throw new IllegalArgumentException("Invalid namespace - " + namespace.getName());
         }
+    }
+
+    public static void resetChecksumsInDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
+        resetChecksumsInDirectory(builder.build());
+    }
+
+    public static void resetChecksumsInDirectory(PsmGeneratorParameter parameter) throws Exception {
+
+        GeneratorParameter<ActorType> genericParams = mapPsmParameters(parameter);
+
+        PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
+                .resourceSet(parameter.psmModel.getResourceSet())
+                .build();
+
+        Set<ActorType> applications = modelResourceSupport
+                .getStreamOfPsmAccesspointActorType()
+                .filter(genericParams.getDiscriminatorPredicate())
+                .collect(Collectors.toSet());
+
+        ModelGenerator.resetChecksumsInDirectory(genericParams, applications);
+    }
+
+    public static void cleanGeneratedFromChecksumInDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
+        cleanGeneratedFromChecksumInDirectory(builder.build());
+    }
+
+    public static void cleanGeneratedFromChecksumInDirectory(PsmGeneratorParameter parameter) throws Exception {
+
+        GeneratorParameter<ActorType> genericParams = mapPsmParameters(parameter);
+
+        PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
+                .resourceSet(parameter.psmModel.getResourceSet())
+                .build();
+
+        Set<ActorType> applications = modelResourceSupport
+                .getStreamOfPsmAccesspointActorType()
+                .filter(genericParams.getDiscriminatorPredicate())
+                .collect(Collectors.toSet());
+
+        ModelGenerator.cleanGeneratedFromChecksumInDirectory(genericParams, applications);
+    }
+
+    public static void synchronizeGitignoreInDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
+        synchronizeGitignoreInDirectory(builder.build());
+    }
+
+    public static void synchronizeGitignoreInDirectory(PsmGeneratorParameter parameter) throws Exception {
+
+        GeneratorParameter<ActorType> genericParams = mapPsmParameters(parameter);
+
+        PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
+                .resourceSet(parameter.psmModel.getResourceSet())
+                .build();
+
+        Set<ActorType> applications = modelResourceSupport
+                .getStreamOfPsmAccesspointActorType()
+                .filter(genericParams.getDiscriminatorPredicate())
+                .collect(Collectors.toSet());
+
+        ModelGenerator.synchronizeGitignoreInDirectory(genericParams, applications);
     }
 
     public static void recalculateChecksumForDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
