@@ -59,8 +59,6 @@ public class Demo {
     private Types types = new Types();
     private Services services = new Services();
     private Measured measured = new Measured();
-    private Optional optional = new Optional();
-    private hu.blackbelt.model.northwind.optional.Services optionalServices = new hu.blackbelt.model.northwind.optional.Services();
     private Extension extension = new Extension();
     private hu.blackbelt.model.northwind.extension.Services extensionServices = new hu.blackbelt.model.northwind.extension.Services();
 
@@ -125,7 +123,6 @@ public class Demo {
     private hu.blackbelt.model.northwind.services.Product product_ = new hu.blackbelt.model.northwind.services.Product();
     private ProductInfo productInfo = new ProductInfo();
     private GetRangeInputProductInfoCategory getRangeInputProductInfoCategory = new GetRangeInputProductInfoCategory();
-    private hu.blackbelt.model.northwind.optional.services.ProductInfo optionaProductInfo = new hu.blackbelt.model.northwind.optional.services.ProductInfo();
     private ShipmentChange shipmentChange = new ShipmentChange();
     private ShipperInfo shipperInfo = new ShipperInfo();
     private AreaStoredInSquareMetre areaStoredInSquareMetre = new AreaStoredInSquareMetre();
@@ -183,8 +180,6 @@ public class Demo {
         types.init($);
         services.init($);
         measured.init(types.$);
-        optional.init($);
-        optionalServices.init(optional.$);
         extension.init($);
         extensionServices.init(extension.$);
 
@@ -277,17 +272,15 @@ public class Demo {
         // Unmapped transfer object type
         shipmentChange.init(services.$, string, timeStamp);
         comment.init(services.$, string, text, timeStamp);
-        getRangeInputProductInfoCategory.init(extensionServices.$, optionaProductInfo);
+        getRangeInputProductInfoCategory.init(extensionServices.$, productInfo);
 
         // Mapped transfer objects
         category_.init(services.$, string, category, product_);
         categoryInfo.init(services.$, string, category, productInfo, allProducts);
         shipperInfo.init(services.$, string, shipper, company, gps);
         product_.init(services.$, string, double_, massStoredInKilograms, product, category_, allCategories);
-        optionaProductInfo.init(optionalServices.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories);
 
         productInfo.init(services.$, string, integer, double_, boolean_, massStoredInKilograms, product, categoryInfo, allCategories, getRangeInputProductInfoCategory);
-        optionaProductInfo.$.setOverride(productInfo.$);
         territoryInfo.init(services.$, string, territory);
         orderItem.init(services.$, string, integer, double_, boolean_, massStoredInGrams, orderDetail, productInfo, categoryInfo, allProducts, allCategories, orderItem);
         orderInfo.init(services.$, string, timeStamp, priority, boolean_, gps, integer, double_, massStoredInGrams, order, orderItem, shipperInfo, categoryInfo, shipmentChange, comment, timetype);
