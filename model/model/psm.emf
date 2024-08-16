@@ -446,7 +446,6 @@ package service {
     val TransferAttribute[*] attributes;
     val TransferOperation[*] operations;
     ref accesspoint.AbstractActorType#transferObjectType actorType;
-    attr boolean[1] optional = false;
     ref TransferObjectType override;
     attr boolean[1] queryCustomizer = false;
   }
