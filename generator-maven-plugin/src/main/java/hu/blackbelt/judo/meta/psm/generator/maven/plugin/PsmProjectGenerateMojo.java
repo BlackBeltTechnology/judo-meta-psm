@@ -20,6 +20,8 @@ package hu.blackbelt.judo.meta.psm.generator.maven.plugin;
  * #L%
  */
 
+import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
 import hu.blackbelt.judo.generator.commons.ModelGenerator;
 import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
@@ -67,6 +69,15 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
 
     @Parameter(property="scanPackages")
     private List<String> scanPackages;
+
+    @Parameter(property = "parameterDirectory", defaultValue = "${project.basedir}/target/fullstack-project")
+    protected File parameterDirectory;
+
+    @Parameter(property="parameterFiles", defaultValue = "judo-version.properties,generator-parameter.properties")
+    private List<File> parameterFiles;
+
+    @Parameter(property="variablePrecedence", defaultValue = "projectProperties,templateVariables,propertiesFiles,environmentVariables,systemProperties")
+    private List<String> variablePrecedence;
 
     @Override
     public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder psmGeneratorParameterBuilder) throws Exception {
@@ -120,16 +131,58 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
             }
         }
 
-        Map<String, Object> extras = project.getProperties().entrySet().stream().collect(
-                Collectors.toMap(
-                        e -> String.valueOf(e.getKey()),
-                        e -> e.getValue(),
-                        (prev, next) -> next, HashMap::new
-                ));
+        Map<String, Object> extras = new LinkedHashMap<>();
 
-        extras.putAll(repoSession.getConfigProperties());
-        extras.putAll(templateParameters);
+        for (String precedence : variablePrecedence) {
 
+            if (precedence.equalsIgnoreCase("environmentVariables")) {
+                extras.putAll(generalizeTemplateVariableNames(System.getenv().entrySet().stream().collect(
+                        Collectors.toMap(
+                                e -> String.valueOf(e.getKey()),
+                                e -> e.getValue(),
+                                (prev, next) -> next, HashMap::new
+                        ))));
+            } else if (precedence.equalsIgnoreCase("systemVariables")) {
+                extras.putAll(generalizeTemplateVariableNames(System.getenv().entrySet().stream().collect(
+                        Collectors.toMap(
+                                e -> String.valueOf(e.getKey()),
+                                e -> e.getValue(),
+                                (prev, next) -> next, HashMap::new
+                        ))));
+            } else if (precedence.equalsIgnoreCase("projectProperties")) {
+                extras.putAll(generalizeTemplateVariableNames(project.getProperties().entrySet().stream().collect(
+                        Collectors.toMap(
+                                e -> String.valueOf(e.getKey()),
+                                e -> (String) e.getValue(),
+                                (prev, next) -> next, HashMap::new
+                        ))));
+
+            } else if (precedence.equalsIgnoreCase("propertiesFiles")) {
+                if (parameterFiles != null && parameterFiles.size() > 0) {
+                    for (File parameterFile : parameterFiles) {
+                        if (parameterFile != null) {
+                            if (!parameterFile.exists() && parameterDirectory != null) {
+                                parameterFile = new File(parameterDirectory, parameterFile.getName());
+                            }
+                            if (!parameterFile.exists()) {
+                                parameterFile = new File(destination, parameterFile.getName());
+                            }
+                            if (parameterFile.exists()) {
+                                Properties prop = new Properties();
+                                prop.load(new FileReader(parameterFile, Charsets.UTF_8));
+                                extras.putAll(generalizeTemplateVariableNames(Maps.fromProperties(prop)));
+                            } else {
+                                getLog().warn("File is missing:" + parameterFile.getAbsolutePath());
+                            }
+                        }
+                    }
+                }
+            } else if (precedence.equalsIgnoreCase("templateVariables")) {
+                if (templateParameters != null) {
+                    extras.putAll(generalizeTemplateVariableNames(templateParameters));
+                }
+            }
+        }
 
         psmGeneratorParameterBuilder.generatorContext(ModelGenerator.createGeneratorContext(
                         ModelGenerator.CreateGeneratorContextArgument.builder()
@@ -143,4 +196,14 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
 
         PsmGenerator.generateToDirectory(psmGeneratorParameterBuilder);
     }
+
+    private Map<String, String> generalizeTemplateVariableNames(Map<String, String> parametrers) {
+        return parametrers.entrySet().stream().filter(e -> e.getKey() != null && e.getValue() != null).collect(
+                Collectors.toMap(
+                        e -> PsmGenerator.generalizeName(String.valueOf(e.getKey())),
+                        e -> e.getValue(),
+                        (prev, next) -> next, HashMap::new
+                ));
+    }
+
 }
