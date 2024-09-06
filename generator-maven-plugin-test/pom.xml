@@ -99,12 +99,13 @@
                             <type>test-project</type>
                             <psm>${basedir}/target/classes/psm/northwind-psm.model</psm>
                             <destination>${basedir}/target/test-classes/psm/file</destination>
+                            <parameterDirectory>${basedir}/src/test/resources</parameterDirectory>
                             <templateParameters>
                                 <groupId>${project.groupId}</groupId>
                                 <artifactId>${project.artifactId}</artifactId>
                                 <version>${project.version}</version>
                                 <projectPostfix>-custom</projectPostfix>
-                                <languages></languages>
+                                <languages>hu,en</languages>
                             </templateParameters>
                         </configuration>
                     </execution>
@@ -142,10 +143,12 @@
                             <type>test-project</type>
                             <psm>mvn:hu.blackbelt.judo.meta:hu.blackbelt.judo.meta.psm.model.northwind:${project.version}!northwind-psm.model</psm>
                             <destination>${basedir}/target/test-classes/psm/artifact</destination>
+                            <parameterDirectory>${basedir}/src/test/resources</parameterDirectory>
                             <templateParameters>
                                 <groupId>${project.groupId}</groupId>
                                 <artifactId>${project.artifactId}</artifactId>
                                 <version>${project.version}</version>
+                                <languages>hu,en</languages>
                             </templateParameters>
                         </configuration>
                     </execution>
@@ -169,6 +172,7 @@
                             <type>test-project</type>
                             <psm>${basedir}/target/classes/psm/northwind-psm.model</psm>
                             <destination>${basedir}/target/test-classes/psm/singleclient</destination>
+                            <parameterDirectory>${basedir}/src/test/resources</parameterDirectory>
                             <actors>
                                 <actor>northwind__authexternaluser</actor>
                             </actors>
@@ -176,6 +180,7 @@
                                 <groupId>${project.groupId}</groupId>
                                 <artifactId>${project.artifactId}</artifactId>
                                 <version>${project.version}</version>
+                                <languages>hu,en</languages>
                             </templateParameters>
                         </configuration>
                     </execution>

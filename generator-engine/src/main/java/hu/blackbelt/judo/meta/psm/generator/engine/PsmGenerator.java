@@ -181,46 +181,56 @@ public class PsmGenerator {
                     if (templateEvaulator.getFactoryExpression() != null) {
                         processingList = templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, actorType, Collection.class);
                     }
-                    for (Object element : templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, processingList, Collection.class)) {
-                        tasks.add(CompletableFuture.supplyAsync(() -> {
-                            StandardEvaluationContext templateContext = defaultSpringELContextProvider.apply(element);
-                            templateContext.setVariable(ACTOR_TYPE, actorType);
+                    if (processingList == null) {
+                        log.warn("Factory exxpression is defined, but returns null - " + generatorTemplate.toString());
+                    } else {
+                        for (Object element : processingList) {
+                            tasks.add(CompletableFuture.supplyAsync(() -> {
+                                StandardEvaluationContext templateContext = defaultSpringELContextProvider.apply(element);
+                                templateContext.setVariable(ACTOR_TYPE, actorType);
 
-                            Context.Builder contextBuilder = defaultHandlebarsContextBuilder.apply(element)
-                                    .combine(ACTOR_TYPE, actorType);
+                                Context.Builder contextBuilder = defaultHandlebarsContextBuilder.apply(element)
+                                        .combine(ACTOR_TYPE, actorType);
 
-                            callBindContextForTypeIfCan(parameter.getGeneratorContext(), StandardEvaluationContext.class, templateContext);
-                            callBindContextForTypeIfCan(parameter.getGeneratorContext(), Map.class, parameter.getExtraContextVariables().get());
+                                callBindContextForTypeIfCan(parameter.getGeneratorContext(), StandardEvaluationContext.class, templateContext);
+                                callBindContextForTypeIfCan(parameter.getGeneratorContext(), Map.class, parameter.getExtraContextVariables().get());
 
-                            generatorTemplate.evalToContextBuilder(templateEvaulator, contextBuilder, templateContext);
-                            GeneratedFile generatedFile = generateFile(parameter.getGeneratorContext(), templateContext, templateEvaulator, generatorTemplate, contextBuilder, log);
-                            result.getGeneratedByDiscriminator().get(actorType).add(generatedFile);
-                            return generatedFile;
-                        }));
+                                generatorTemplate.evalToContextBuilder(templateEvaulator, contextBuilder, templateContext);
+                                GeneratedFile generatedFile = generateFile(parameter.getGeneratorContext(), templateContext, templateEvaulator, generatorTemplate, contextBuilder, log);
+                                result.getGeneratedByDiscriminator().get(actorType).add(generatedFile);
+                                return generatedFile;
+                            }));
+                        }
                     }
                 });
             } else {
                 evaulationContext.setVariable(TEMPLATE, generatorTemplate);
-                Set<?> iterableCollection = new HashSet<>(List.of(generatorTemplate));
-
+                Collection<?> processingList = new HashSet<>(Collections.singletonList(generatorTemplate));
                 if (templateEvaulator.getTemplate() != null) {
-                    iterableCollection = new HashSet<>(Collections.singletonList(model));
+                    processingList = new HashSet<>(Collections.singletonList(model));
                 }
+                if (templateEvaulator.getFactoryExpression() != null) {
+                    processingList = templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, model, Collection.class);
+                }
+                if (processingList == null) {
+                    log.warn("Factory exxpression is defined, but returns null - " + generatorTemplate.toString());
+                } else {
 
-                for (Object element : templateEvaulator.getFactoryExpressionResultOrValue(generatorTemplate, iterableCollection, Collection.class)) {
-                    tasks.add(CompletableFuture.supplyAsync(() -> {
+                    for (Object element : processingList) {
+                        tasks.add(CompletableFuture.supplyAsync(() -> {
 
-                        StandardEvaluationContext templateContext = defaultSpringELContextProvider.apply(element);
-                        Context.Builder contextBuilder = defaultHandlebarsContextBuilder.apply(element);
+                            StandardEvaluationContext templateContext = defaultSpringELContextProvider.apply(element);
+                            Context.Builder contextBuilder = defaultHandlebarsContextBuilder.apply(element);
 
-                        callBindContextForTypeIfCan(parameter.getGeneratorContext(), StandardEvaluationContext.class, templateContext);
-                        callBindContextForTypeIfCan(parameter.getGeneratorContext(), Map.class, parameter.getExtraContextVariables().get());
+                            callBindContextForTypeIfCan(parameter.getGeneratorContext(), StandardEvaluationContext.class, templateContext);
+                            callBindContextForTypeIfCan(parameter.getGeneratorContext(), Map.class, parameter.getExtraContextVariables().get());
 
-                        generatorTemplate.evalToContextBuilder(templateEvaulator, contextBuilder, evaulationContext);
-                        GeneratedFile generatedFile = generateFile(parameter.getGeneratorContext(), templateContext, templateEvaulator, generatorTemplate, contextBuilder, log);
-                        result.getGenerated().add(generatedFile);
-                        return generatedFile;
-                    }));
+                            generatorTemplate.evalToContextBuilder(templateEvaulator, contextBuilder, evaulationContext);
+                            GeneratedFile generatedFile = generateFile(parameter.getGeneratorContext(), templateContext, templateEvaulator, generatorTemplate, contextBuilder, log);
+                            result.getGenerated().add(generatedFile);
+                            return generatedFile;
+                        }));
+                    }
                 }
             }
         }
@@ -331,6 +341,51 @@ public class PsmGenerator {
                 .collect(Collectors.toSet());
 
         ModelGenerator.recalculateChecksumToDirectory(genericParams, applications);
+    }
+
+    public static String generalizeName(String str) {
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+        boolean isUpperSnakeCae = !str.matches(negateRegex("([A-Z_0-9]*)"));
+        if (isUpperSnakeCae) {
+            return toCamelCase(Arrays.stream(str.split("_")).map(s -> capitalize(s)).collect(Collectors.joining()));
+        } else if (str.matches(".*[.#@_,;:-].*")) {
+            return toCamelCase(Arrays.stream(str.split("[.#@_,;:-]")).map(s -> firstToUpper(s)).collect(Collectors.joining()));
+        }
+        return toCamelCase(str);
+    }
+
+    public static  String negateRegex(String regex) {
+        return "(?!(?:" + regex + ")$).*";
+    }
+
+    public static String toCamelCase(String str) {
+        String[] words = str.split("(?=[A-Z])");
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (i == 0) {
+                word = word.isEmpty() ? word : word.toLowerCase();
+            } else {
+                word = word.isEmpty() ? word : capitalize(word);
+            }
+            builder.append(word);
+        }
+        return builder.toString();
+    }
+    public static String firstToUpper(String str) {
+        if (str != null && str.length() > 1) {
+            return str.substring(0, 1).toUpperCase() + str.substring(1);
+        }
+        return str;
+    }
+
+    private static String capitalize(String str) {
+        if (str != null && str.length() > 1) {
+            return str.substring(0,1).toUpperCase() + str.substring(1).toLowerCase();
+        }
+        return str;
     }
 
 }
