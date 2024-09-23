@@ -303,11 +303,11 @@ public class PsmGenerator {
         ModelGenerator.cleanGeneratedFromChecksumInDirectory(genericParams, applications);
     }
 
-    public static void synchronizeGitignoreInDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
-        synchronizeGitignoreInDirectory(builder.build());
+    public static void synchronizeGitignoreInDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder, Collection<String> ignoredFiles) throws Exception {
+        synchronizeGitignoreInDirectory(builder.build(), ignoredFiles);
     }
 
-    public static void synchronizeGitignoreInDirectory(PsmGeneratorParameter parameter) throws Exception {
+    public static void synchronizeGitignoreInDirectory(PsmGeneratorParameter parameter, Collection<String> ignoredFiles) throws Exception {
 
         GeneratorParameter<ActorType> genericParams = mapPsmParameters(parameter);
 
@@ -320,7 +320,7 @@ public class PsmGenerator {
                 .filter(genericParams.getDiscriminatorPredicate())
                 .collect(Collectors.toSet());
 
-        ModelGenerator.synchronizeGitignoreInDirectory(genericParams, applications);
+        ModelGenerator.synchronizeGitignoreInDirectory(genericParams, applications,  (f) -> ignoredFiles.contains(f));
     }
 
     public static void recalculateChecksumForDirectory(PsmGeneratorParameter.PsmGeneratorParameterBuilder builder) throws Exception {
