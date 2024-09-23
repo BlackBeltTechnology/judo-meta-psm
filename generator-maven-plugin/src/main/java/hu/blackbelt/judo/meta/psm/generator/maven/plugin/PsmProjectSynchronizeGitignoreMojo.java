@@ -24,17 +24,23 @@ import hu.blackbelt.judo.meta.psm.generator.engine.PsmGenerator;
 import hu.blackbelt.judo.meta.psm.generator.engine.PsmGeneratorParameter;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+
+import java.util.List;
 
 @Mojo(name = "synchronizeGitignore",
         defaultPhase = LifecyclePhase.PROCESS_RESOURCES,
         requiresDependencyResolution = ResolutionScope.COMPILE,
         threadSafe = true)
 public class PsmProjectSynchronizeGitignoreMojo extends AbstractPsmProjectMojo {
-    
+
+    @Parameter(name = "ignoredFiles", property = "ignoredFiles", defaultValue = "")
+    protected List<String> ignoredFiles;
+
     @Override
     public void performExecutionOnPsmParameters(PsmGeneratorParameter.PsmGeneratorParameterBuilder parameter) throws Exception {
-        PsmGenerator.synchronizeGitignoreInDirectory(parameter);
+        PsmGenerator.synchronizeGitignoreInDirectory(parameter, ignoredFiles);
     }
 
 }
