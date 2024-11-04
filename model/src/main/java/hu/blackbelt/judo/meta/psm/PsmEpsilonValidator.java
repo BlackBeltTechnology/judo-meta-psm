@@ -72,6 +72,8 @@ public class PsmEpsilonValidator {
             // Transformation script
             executionContext.executeProgram(
                     evlExecutionContextBuilder()
+                            // TODO: https://github.com/eclipse/epsilon/issues/133
+                            .parallel(false)
                             .source(UriUtil.resolve("psm.evl", scriptRoot))
                             .expectedErrors(expectedErrors)
                             .expectedWarnings(expectedWarnings)
