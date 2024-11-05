@@ -60,6 +60,7 @@ public class PsmEpsilonValidator {
                                 .log(log)
                                 .name("PSM")
                                 .validateModel(false)
+                                .useCache(true)
                                 .resource(psmModel.getResource())
                                 .build()))
                 .injectContexts(singletonMap("psmUtils", new PsmUtils()))
