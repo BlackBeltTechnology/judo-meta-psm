@@ -42,7 +42,7 @@ public class PsmEpsilonValidator {
     public static void validatePsm(Logger log,
                                    PsmModel psmModel,
                                    URI scriptRoot) throws ScriptExecutionException, URISyntaxException {
-        validatePsm(log, psmModel, scriptRoot, emptyList(), null);
+        validatePsm(log, psmModel, scriptRoot, emptyList(), emptyList());
     }
 
     public static void validatePsm(Logger log,
@@ -50,6 +50,15 @@ public class PsmEpsilonValidator {
                                    URI scriptRoot,
                                    Collection<String> expectedErrors,
                                    Collection<String> expectedWarnings) throws ScriptExecutionException, URISyntaxException {
+        validatePsm(log, psmModel, scriptRoot, expectedErrors, expectedWarnings, false);
+    }
+
+        public static void validatePsm(Logger log,
+                                   PsmModel psmModel,
+                                   URI scriptRoot,
+                                   Collection<String> expectedErrors,
+                                   Collection<String> expectedWarnings,
+                                   Boolean useCache) throws ScriptExecutionException, URISyntaxException {
 
         ExecutionContext executionContext = executionContextBuilder()
                 .log(log)
@@ -60,8 +69,9 @@ public class PsmEpsilonValidator {
                                 .log(log)
                                 .name("PSM")
                                 .validateModel(false)
-                                .useCache(true)
+                                .useCache(useCache)
                                 .resource(psmModel.getResource())
+                                .parallel(true)
                                 .build()))
                 .injectContexts(singletonMap("psmUtils", new PsmUtils()))
                 .build();
@@ -73,11 +83,10 @@ public class PsmEpsilonValidator {
             // Transformation script
             executionContext.executeProgram(
                     evlExecutionContextBuilder()
-                            // TODO: https://github.com/eclipse/epsilon/issues/133
-                            .parallel(false)
                             .source(UriUtil.resolve("psm.evl", scriptRoot))
                             .expectedErrors(expectedErrors)
                             .expectedWarnings(expectedWarnings)
+                            .parallel(true)
                             .build());
 
         } finally {
