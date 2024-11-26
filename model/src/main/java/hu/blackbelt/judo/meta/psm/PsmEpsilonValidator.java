@@ -50,6 +50,15 @@ public class PsmEpsilonValidator {
                                    URI scriptRoot,
                                    Collection<String> expectedErrors,
                                    Collection<String> expectedWarnings) throws ScriptExecutionException, URISyntaxException {
+        validatePsm(log, psmModel, scriptRoot, expectedErrors, expectedWarnings, false, true);
+    }
+
+        public static void validatePsm(Logger log,
+                                   PsmModel psmModel,
+                                   URI scriptRoot,
+                                   Collection<String> expectedErrors,
+                                   Collection<String> expectedWarnings,
+                                   Boolean useCache, Boolean parallel) throws ScriptExecutionException, URISyntaxException {
 
         ExecutionContext executionContext = executionContextBuilder()
                 .log(log)
@@ -60,7 +69,9 @@ public class PsmEpsilonValidator {
                                 .log(log)
                                 .name("PSM")
                                 .validateModel(false)
+                                .useCache(useCache)
                                 .resource(psmModel.getResource())
+                                .parallel(parallel)
                                 .build()))
                 .injectContexts(singletonMap("psmUtils", new PsmUtils()))
                 .build();
@@ -75,6 +86,7 @@ public class PsmEpsilonValidator {
                             .source(UriUtil.resolve("psm.evl", scriptRoot))
                             .expectedErrors(expectedErrors)
                             .expectedWarnings(expectedWarnings)
+                            .parallel(true)
                             .build());
 
         } finally {
