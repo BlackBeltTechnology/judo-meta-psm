@@ -132,6 +132,9 @@ public class PsmProjectGenerateMojo extends AbstractPsmProjectMojo {
         }
 
         Map<String, Object> extras = new LinkedHashMap<>();
+        if (variablePrecedence == null) {
+            variablePrecedence = Arrays.stream("projectProperties,templateVariables,propertiesFiles,environmentVariables,systemProperties".split(",")).toList();
+        }
 
         for (String precedence : variablePrecedence) {
 
