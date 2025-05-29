@@ -85,8 +85,8 @@
         <tycho-version>4.0.13</tycho-version>
         <jackson-version>2.17.2</jackson-version>
 
-        <emf-genmodel-generator-version>1.1.1.20241127_145607_0fc2fbf1_develop</emf-genmodel-generator-version>
-        <judo-genmodel-generator-version>1.1.2.20241127_155311_6c4ed3a9_develop</judo-genmodel-generator-version>
+        <emf-genmodel-generator-version>1.1.1-SNAPSHOT</emf-genmodel-generator-version>
+        <judo-genmodel-generator-version>1.1.2-SNAPSHOT</judo-genmodel-generator-version>
         <judo-epp-common-version>4.35.0-SNAPSHOT</judo-epp-common-version>
         <judo-generator-commons-version>1.0.0.20241127_150150_30b65e30_develop</judo-generator-commons-version>
 
@@ -838,10 +838,12 @@
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>org.eclipse.emf.ecore</artifactId>
+            <version>2.38.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>org.eclipse.emf.common</artifactId>
+            <version>2.41.0</version>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
