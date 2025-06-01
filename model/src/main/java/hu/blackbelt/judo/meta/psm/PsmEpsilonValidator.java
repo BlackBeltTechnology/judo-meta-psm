@@ -73,7 +73,7 @@ public class PsmEpsilonValidator {
                                 .resource(psmModel.getResource())
                                 .parallel(parallel)
                                 .build()))
-                .injectContexts(singletonMap("psmUtils", new PsmUtils()))
+                .injectContexts(singletonMap("psmUtils", new PsmUtils(psmModel.getResourceSet())))
                 .build();
 
         try {
