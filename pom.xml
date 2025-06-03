@@ -102,6 +102,7 @@
         <!-- Pax exam dependencies -->
         <karaf-version>4.4.7</karaf-version>
         <cxf-version>3.4.4</cxf-version>
+        <spring-version>6.2.7</spring-version>
 
         <osgi-utils-version>1.1.1.20250601_204920_01dd6d46_feature_JNG_6310_UpdateEpsilon</osgi-utils-version>
         <karaf-features-version>2.0.2.20250601_200046_ae1bb67d_feature_JNG_6310_UpdateEpsilon</karaf-features-version>
@@ -916,7 +917,7 @@
                     <plugin>
                         <groupId>org.simplify4u.plugins</groupId>
                         <artifactId>sign-maven-plugin</artifactId>
-                        <version>1.0.1</version>
+                        <version>1.1.0</version>
                         <executions>
                             <execution>
                                 <goals>
