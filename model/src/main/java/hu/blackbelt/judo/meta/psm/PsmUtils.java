@@ -712,10 +712,15 @@ public class PsmUtils {
      * @return rate of duration unit to duration type
      */
     public static Optional<Rate> getRate(final DurationUnit durationUnit, final DurationType durationType) {
-        return getAllContents(durationUnit, DurationUnit.class)
+        var lst = getAllContents(durationUnit, DurationUnit.class)
                 .filter(u -> u.getUnitType() == durationType)
                 .map(u -> new Rate(durationUnit.getRateDividend() * u.getRateDivisor(), u.getRateDividend() * durationUnit.getRateDivisor()))
-                .findAny();
+                .toList();
+        if (lst.size() > 0) {
+            return Optional.of(lst.get(0));
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
