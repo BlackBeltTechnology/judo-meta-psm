@@ -21,8 +21,6 @@ package hu.blackbelt.judo.meta.psm;
  */
 
 import org.slf4j.Logger;
-import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
-import hu.blackbelt.epsilon.runtime.execution.impl.LogLevel;
 import hu.blackbelt.judo.meta.psm.data.*;
 import hu.blackbelt.judo.meta.psm.derived.DataProperty;
 import hu.blackbelt.judo.meta.psm.derived.NavigationProperty;
@@ -37,6 +35,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -47,6 +46,7 @@ import java.util.stream.*;
  * Utils for PSM models.
  */
 public class PsmUtils {
+    Logger log = LoggerFactory.getLogger(PsmUtils.class);
 
     public static final String NAMESPACE_SEPARATOR = "::";
     public static final String FEATURE_SEPARATOR = ".";
@@ -896,7 +896,7 @@ public class PsmUtils {
      * @see PsmUtils#setResourceSet(ResourceSet)
      */
     public void validateUniqueXmiids() {
-        try (BufferedSlf4jLogger log = new BufferedSlf4jLogger(LogLevel.DEBUG)) {
+        try {
             validateUniqueXmiids(log);
         } catch (IllegalStateException ise) {
             throw ise;
