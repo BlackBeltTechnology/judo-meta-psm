@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='utf-8'?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -110,10 +109,10 @@
         <pax-exam-version>4.13.5</pax-exam-version>
 
         <!-- Define overridable properties for tycho-surefire-plugin -->
-        <platformSystemProperties/>
-        <moduleProperties/>
-        <systemProperties/>
-        <additionalTestArguments/>
+        <platformSystemProperties />
+        <moduleProperties />
+        <systemProperties />
+        <additionalTestArguments />
 
         <!-- Code Quality-->
         <sonar-maven-plugin-version>3.9.1.2184</sonar-maven-plugin-version>
@@ -149,7 +148,7 @@
             <layout>p2</layout>
         </repository>
 
-    <repository><id>judong</id><url>https://repository.judo.technology/repository/maven-judong/</url><releases><enabled>true</enabled></releases><snapshots><enabled>false</enabled></snapshots></repository></repositories>
+    </repositories>
 
     <build>
         <plugins>
@@ -356,7 +355,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -378,7 +377,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -396,7 +395,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -418,7 +417,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -437,7 +436,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -456,7 +455,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -475,7 +474,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -494,7 +493,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -513,7 +512,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -532,7 +531,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 
@@ -552,7 +551,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -571,7 +570,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -590,7 +589,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -949,14 +948,14 @@
             <id>release-judong</id>
             <distributionManagement>
                 <snapshotRepository>
-                    <id>judong-distribution</id>
+                    <id>judong-nexus-distribution</id>
                     <!--suppress UnresolvedMavenProperty -->
-                    <url>https://repository.judo.technology/repository/maven-judong-upstream/</url>
+                    <url>https://nexus.judo.technology/repository/maven-judong-snapshots/</url>
                 </snapshotRepository>
                 <repository>
-                    <id>judong-distribution</id>
+                    <id>judong-nexus-distribution</id>
                     <!--suppress UnresolvedMavenProperty -->
-                    <url>https://repository.judo.technology/repository/maven-judong-upstream/</url>
+                    <url>https://nexus.judo.technology/repository/maven-judong-snapshots/</url>
                 </repository>
             </distributionManagement>
         </profile>
@@ -1065,7 +1064,7 @@
                                         <toc>left</toc>
                                         <icons>font</icons>
                                         <sectanchors>true</sectanchors>
-                                        <idprefix/>
+                                        <idprefix />
                                         <idseparator>-</idseparator>
                                     </attributes>
                                 </configuration>
