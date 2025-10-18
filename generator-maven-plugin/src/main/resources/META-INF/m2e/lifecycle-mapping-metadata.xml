@@ -23,6 +23,10 @@
       <pluginExecutionFilter>
         <goals>
           <goal>generate</goal>
+          <goal>clean</goal>
+          <goal>synchronizeGitignore</goal>
+          <goal>resetChecksum</goal>
+          <goal>checksum</goal>
         </goals>
       </pluginExecutionFilter>
         <action>
