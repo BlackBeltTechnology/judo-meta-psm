@@ -354,7 +354,7 @@ public abstract class AbstractPsmProjectMojo extends AbstractMojo {
                     }
                     fileFromArchive = extractArchive(file, subUrl);
                 } catch (IOException e) {
-                    throw new MojoExecutionException("Could not decompress: " + fileFromArchive.getAbsolutePath() + " file: " + fileFromArchive);
+                    throw new MojoExecutionException("Could not decompress: " + fileFromArchive.getAbsolutePath() + " file: " + (fileFromArchive == null ? "" : fileFromArchive));
                 }
                 if (fileFromArchive == null || !fileFromArchive.exists()) {
                     throw new MojoExecutionException("File " + subUrl + " does not exists in " + file.getAbsolutePath());
