@@ -36,8 +36,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(EnumerationMember.class)
 public class EnumerationMemberValidations {
 
-    @Constraint(name = "EnumerationMemberValueIsUnique", message = "Enumeration member value is not unique")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String ENUMERATION_MEMBER_VALUE_IS_UNIQUE = "EnumerationMemberValueIsUnique";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = ENUMERATION_MEMBER_VALUE_IS_UNIQUE, message = "Enumeration member value is not unique")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule enumerationMemberValueIsUnique() {
         return (element, context) -> {
             EnumerationMember self = (EnumerationMember) element;
@@ -52,7 +58,7 @@ public class EnumerationMemberValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "EnumerationMemberValueIsUnique",
+                    ENUMERATION_MEMBER_VALUE_IS_UNIQUE,
                     "Enum member number of enum member: " + self.getName() + " is not unique in enum: " + enumType.getName(),
                     Severity.ERROR,
                     self

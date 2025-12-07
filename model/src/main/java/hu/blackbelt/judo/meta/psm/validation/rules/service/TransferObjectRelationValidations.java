@@ -39,7 +39,16 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(TransferObjectRelation.class)
 public class TransferObjectRelationValidations {
 
-    @Constraint(name = "TargetMatchesBindingTarget", message = "Target entity type must match binding target")
+    // Constraint/Critique name constants
+    private static final String TARGET_MATCHES_BINDING_TARGET = "TargetMatchesBindingTarget";
+    private static final String CARDINALITY_MATCHES_BINDING_CARDINALITY = "CardinalityMatchesBindingCardinality";
+    private static final String TRANSFER_OBJECT_RELATION_IS_EMBEDDED = "TransferObjectRelationIsEmbedded";
+    private static final String TRANSFER_OBJECT_RELATION_BINDING_IS_VALID = "TransferObjectRelationBindingIsValid";
+    private static final String EMBEDDED_ON_BOTH_SIDES_ARE_NOT_ALLOWED = "EmbeddedOnBothSidesAreNotAllowed";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+    @Constraint(name = TARGET_MATCHES_BINDING_TARGET, message = "Target entity type must match binding target")
     public ValidationRule targetMatchesBindingTarget() {
         return (element, context) -> {
             TransferObjectRelation self = (TransferObjectRelation) element;
@@ -61,7 +70,7 @@ public class TransferObjectRelationValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "TargetMatchesBindingTarget",
+                    TARGET_MATCHES_BINDING_TARGET,
                     "EntityType of mapped transfer object type " + self.getTarget().getName() + 
                             " (target of transfer object relation " + self.getName() +
                             ") must match the target of the binding of transfer object relation " + self.getName() + ".",
@@ -74,7 +83,7 @@ public class TransferObjectRelationValidations {
         };
     }
 
-    @Constraint(name = "CardinalityMatchesBindingCardinality", message = "Cardinality must match binding cardinality")
+    @Constraint(name = CARDINALITY_MATCHES_BINDING_CARDINALITY, message = "Cardinality must match binding cardinality")
     public ValidationRule cardinalityMatchesBindingCardinality() {
         return (element, context) -> {
             TransferObjectRelation self = (TransferObjectRelation) element;
@@ -91,7 +100,7 @@ public class TransferObjectRelationValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "CardinalityMatchesBindingCardinality",
+                    CARDINALITY_MATCHES_BINDING_CARDINALITY,
                     "Transfer object relation " + self.getName() + " and its binding must have the same cardinality.",
                     Severity.ERROR,
                     self
@@ -102,7 +111,7 @@ public class TransferObjectRelationValidations {
         };
     }
 
-    @Constraint(name = "TransferObjectRelationIsEmbedded", message = "Relation to unmapped transfer object must be embedded")
+    @Constraint(name = TRANSFER_OBJECT_RELATION_IS_EMBEDDED, message = "Relation to unmapped transfer object must be embedded")
     public ValidationRule transferObjectRelationIsEmbedded() {
         return (element, context) -> {
             TransferObjectRelation self = (TransferObjectRelation) element;
@@ -119,7 +128,7 @@ public class TransferObjectRelationValidations {
 
         if (!self.isEmbedded() && !isAccessPoint) {
             return ValidationResult.fail(
-                    "TransferObjectRelationIsEmbedded",
+                    TRANSFER_OBJECT_RELATION_IS_EMBEDDED,
                     "Transfer object relation " + self.getName() + " is referencing to unembedded unmapped transfer object type: " + self.getTarget().getName(),
                     Severity.ERROR,
                     self
@@ -130,8 +139,8 @@ public class TransferObjectRelationValidations {
         };
     }
 
-    @Constraint(name = "TransferObjectRelationBindingIsValid", message = "Binding must match entity type of mapped transfer object")
-    @Satisfies("namedElementHasContainer")
+    @Constraint(name = TRANSFER_OBJECT_RELATION_BINDING_IS_VALID, message = "Binding must match entity type of mapped transfer object")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule transferObjectRelationBindingIsValid() {
         return (element, context) -> {
             TransferObjectRelation self = (TransferObjectRelation) element;
@@ -153,7 +162,7 @@ public class TransferObjectRelationValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "TransferObjectRelationBindingIsValid",
+                    TRANSFER_OBJECT_RELATION_BINDING_IS_VALID,
                     "Binding of transfer object relation " + self.getName() + " of mapped transfer object " + mappedType.getName() +
                             " must match the entity type of the mapped transfer object.",
                     Severity.ERROR,
@@ -165,8 +174,8 @@ public class TransferObjectRelationValidations {
         };
     }
 
-    @Constraint(name = "EmbeddedOnBothSidesAreNotAllowed", message = "Circular aggregation found on relation")
-    @Satisfies({"targetMatchesBindingTarget", "cardinalityMatchesBindingCardinality", "transferObjectRelationBindingIsValid"})
+    @Constraint(name = EMBEDDED_ON_BOTH_SIDES_ARE_NOT_ALLOWED, message = "Circular aggregation found on relation")
+    @Satisfies({TARGET_MATCHES_BINDING_TARGET, CARDINALITY_MATCHES_BINDING_CARDINALITY, TRANSFER_OBJECT_RELATION_BINDING_IS_VALID})
     public ValidationRule embeddedOnBothSidesAreNotAllowed() {
         return (element, context) -> {
             TransferObjectRelation self = (TransferObjectRelation) element;
@@ -197,7 +206,7 @@ public class TransferObjectRelationValidations {
 
         if (hasCircular) {
             return ValidationResult.fail(
-                    "EmbeddedOnBothSidesAreNotAllowed",
+                    EMBEDDED_ON_BOTH_SIDES_ARE_NOT_ALLOWED,
                     "Circular aggregation found on relation: " + self.eContainer() + "." + self.getName(),
                     Severity.ERROR,
                     self

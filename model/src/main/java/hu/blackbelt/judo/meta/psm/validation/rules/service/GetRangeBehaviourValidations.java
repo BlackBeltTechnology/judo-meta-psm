@@ -35,6 +35,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(TransferOperationBehaviour.class)
 public class GetRangeBehaviourValidations {
 
+    // Constraint/Critique name constants
+    private static final String OWNER_IS_RELATION_OR_OPERATION_UNBOUND_BEHAVIOUR_GET_RANGE = "OwnerIsRelationOrOperationUnboundBehaviourGetRange";
+    private static final String OWNER_IS_VALID_GET_RANGE_BEHAVIOUR = "OwnerIsValidGetRangeBehaviour";
+    private static final String GET_RANGE_BEHAVIOUR_INPUT_PARAMETER_IS_DEFINED = "GetRangeBehaviourInputParameterIsDefined";
+    private static final String GET_RANGE_BEHAVIOUR_INPUT_NAME_IS_VALID = "GetRangeBehaviourInputNameIsValid";
+    private static final String GET_RANGE_BEHAVIOUR_INPUT_CARDINALITY_IS_VALID = "GetRangeBehaviourInputCardinalityIsValid";
+    // External constraint references
+
     private boolean isGetRange(TransferOperationBehaviour self) {
         return self.eContainer() != null && self.getBehaviourType() == TransferOperationBehaviourType.GET_RANGE;
     }
@@ -50,7 +58,7 @@ public class GetRangeBehaviourValidations {
         return String.valueOf(self.eContainer());
     }
 
-    @Constraint(name = "OwnerIsRelationOrOperationUnboundBehaviourGetRange", message = "Owner of GET_RANGE must be a relation or operation")
+    @Constraint(name = OWNER_IS_RELATION_OR_OPERATION_UNBOUND_BEHAVIOUR_GET_RANGE, message = "Owner of GET_RANGE must be a relation or operation")
     public ValidationRule ownerIsRelationOrOperationUnboundBehaviourGetRange() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -62,7 +70,7 @@ public class GetRangeBehaviourValidations {
                 || (!(self.getOwner() instanceof TransferObjectRelation) 
                     && !(self.getOwner() instanceof TransferOperation))) {
             return ValidationResult.fail(
-                    "OwnerIsRelationOrOperationUnboundBehaviourGetRange",
+                    OWNER_IS_RELATION_OR_OPERATION_UNBOUND_BEHAVIOUR_GET_RANGE,
                     "Owner of '" + self.getBehaviourType() + "' operation: " + getOperationName(self) + " must be a relation or operation.",
                     Severity.ERROR,
                     self
@@ -73,7 +81,7 @@ public class GetRangeBehaviourValidations {
         };
     }
 
-    @Constraint(name = "OwnerIsValidGetRangeBehaviour", message = "Owner must be a relation or operation of the containing transfer object type")
+    @Constraint(name = OWNER_IS_VALID_GET_RANGE_BEHAVIOUR, message = "Owner must be a relation or operation of the containing transfer object type")
     public ValidationRule ownerIsValidGetRangeBehaviour() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -96,7 +104,7 @@ public class GetRangeBehaviourValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "OwnerIsValidGetRangeBehaviour",
+                    OWNER_IS_VALID_GET_RANGE_BEHAVIOUR,
                     "Owner of '" + self.getBehaviourType() + "' behaviour  (" + getOperationName(self) + ") must be a relation or operation of the transfer object type containing the operation",
                     Severity.ERROR,
                     self
@@ -107,8 +115,8 @@ public class GetRangeBehaviourValidations {
         };
     }
 
-    @Constraint(name = "GetRangeBehaviourInputParameterIsDefined", message = "GET_RANGE operation must have input parameter")
-    @Satisfies("ownerIsValidGetRangeBehaviour")
+    @Constraint(name = GET_RANGE_BEHAVIOUR_INPUT_PARAMETER_IS_DEFINED, message = "GET_RANGE operation must have input parameter")
+    @Satisfies(OWNER_IS_VALID_GET_RANGE_BEHAVIOUR)
     public ValidationRule getRangeBehaviourInputParameterIsDefined() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -123,7 +131,7 @@ public class GetRangeBehaviourValidations {
         TransferOperation operation = (TransferOperation) self.eContainer();
         if (operation.getInput() == null) {
             return ValidationResult.fail(
-                    "GetRangeBehaviourInputParameterIsDefined",
+                    GET_RANGE_BEHAVIOUR_INPUT_PARAMETER_IS_DEFINED,
                     "'GET_RANGE' operation: " + operation.getName() + " must have an input parameter named 'input'",
                     Severity.ERROR,
                     self
@@ -134,8 +142,8 @@ public class GetRangeBehaviourValidations {
         };
     }
 
-    @Constraint(name = "GetRangeBehaviourInputNameIsValid", message = "GET_RANGE operation input must be named 'input'")
-    @Satisfies("getRangeBehaviourInputParameterIsDefined")
+    @Constraint(name = GET_RANGE_BEHAVIOUR_INPUT_NAME_IS_VALID, message = "GET_RANGE operation input must be named 'input'")
+    @Satisfies(GET_RANGE_BEHAVIOUR_INPUT_PARAMETER_IS_DEFINED)
     public ValidationRule getRangeBehaviourInputNameIsValid() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -154,7 +162,7 @@ public class GetRangeBehaviourValidations {
 
         if (!"input".equals(operation.getInput().getName())) {
             return ValidationResult.fail(
-                    "GetRangeBehaviourInputNameIsValid",
+                    GET_RANGE_BEHAVIOUR_INPUT_NAME_IS_VALID,
                     "'GET_RANGE' operation's input parameter must be named 'input' (operation: " + operation.getName() + ")",
                     Severity.ERROR,
                     self
@@ -165,8 +173,8 @@ public class GetRangeBehaviourValidations {
         };
     }
 
-    @Constraint(name = "GetRangeBehaviourInputCardinalityIsValid", message = "GET_RANGE input cardinality must be 0..1")
-    @Satisfies("getRangeBehaviourInputParameterIsDefined")
+    @Constraint(name = GET_RANGE_BEHAVIOUR_INPUT_CARDINALITY_IS_VALID, message = "GET_RANGE input cardinality must be 0..1")
+    @Satisfies(GET_RANGE_BEHAVIOUR_INPUT_PARAMETER_IS_DEFINED)
     public ValidationRule getRangeBehaviourInputCardinalityIsValid() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -189,7 +197,7 @@ public class GetRangeBehaviourValidations {
                     ? ((TransferObjectType) self.getOwner().eContainer()).getName()
                     : "";
             return ValidationResult.fail(
-                    "GetRangeBehaviourInputCardinalityIsValid",
+                    GET_RANGE_BEHAVIOUR_INPUT_CARDINALITY_IS_VALID,
                     "Cardinality of 'GET_RANGE' operation's input parameter must be 0..1 (operation: " + operation.getName() + " in " + ownerName + ")",
                     Severity.ERROR,
                     self

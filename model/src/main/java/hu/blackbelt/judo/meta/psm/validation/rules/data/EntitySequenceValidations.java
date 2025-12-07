@@ -37,8 +37,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(EntitySequence.class)
 public class EntitySequenceValidations {
 
-    @Constraint(name = "InheritedAndOwnSequenceNameIsUniqueInEntityType", message = "Entity sequence has the same name as inherited content")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String INHERITED_AND_OWN_SEQUENCE_NAME_IS_UNIQUE_IN_ENTITY_TYPE = "InheritedAndOwnSequenceNameIsUniqueInEntityType";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = INHERITED_AND_OWN_SEQUENCE_NAME_IS_UNIQUE_IN_ENTITY_TYPE, message = "Entity sequence has the same name as inherited content")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule inheritedAndOwnSequenceNameIsUniqueInEntityType() {
         return (element, context) -> {
             EntitySequence self = (EntitySequence) element;
@@ -57,7 +63,7 @@ public class EntitySequenceValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "InheritedAndOwnSequenceNameIsUniqueInEntityType",
+                    INHERITED_AND_OWN_SEQUENCE_NAME_IS_UNIQUE_IN_ENTITY_TYPE,
                     "Entity sequence: " + self.getName() + " has the same name as inherited content(s) of entity type: " + entityType.getName(),
                     Severity.ERROR,
                     self

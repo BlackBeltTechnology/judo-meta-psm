@@ -38,6 +38,12 @@ import java.util.Set;
 @ValidationContext(TransferOperationBehaviour.class)
 public class BoundBehaviourValidations {
 
+    // Constraint/Critique name constants
+    private static final String OWNER_OF_BOUND_BEHAVIOUR_IS_RELATION = "OwnerOfBoundBehaviourIsRelation";
+    private static final String OWNER_OF_BOUND_BEHAVIOUR_IS_VALID = "OwnerOfBoundBehaviourIsValid";
+    private static final String CREATE_TARGET_IS_NOT_ABSTRACT = "CreateTargetIsNotAbstract";
+    // External constraint references
+
     private static final Set<TransferOperationBehaviourType> RELATION_OWNER_TYPES = EnumSet.of(
             TransferOperationBehaviourType.LIST,
             TransferOperationBehaviourType.CREATE_INSTANCE,
@@ -64,7 +70,7 @@ public class BoundBehaviourValidations {
         return String.valueOf(self.eContainer());
     }
 
-    @Constraint(name = "OwnerOfBoundBehaviourIsRelation", message = "Owner of behaviour must be a transfer object relation")
+    @Constraint(name = OWNER_OF_BOUND_BEHAVIOUR_IS_RELATION, message = "Owner of behaviour must be a transfer object relation")
     public ValidationRule ownerOfBoundBehaviourIsRelation() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -75,7 +81,7 @@ public class BoundBehaviourValidations {
 
         if (self.getOwner() == null || !(self.getOwner() instanceof TransferObjectRelation)) {
             return ValidationResult.fail(
-                    "OwnerOfBoundBehaviourIsRelation",
+                    OWNER_OF_BOUND_BEHAVIOUR_IS_RELATION,
                     "Owner of '" + self.getBehaviourType() + "' behaviour  (" + getOperationName(self) + ") must be a transfer object relation",
                     Severity.ERROR,
                     self
@@ -86,8 +92,8 @@ public class BoundBehaviourValidations {
         };
     }
 
-    @Constraint(name = "OwnerOfBoundBehaviourIsValid", message = "Owner must be a relation of the containing transfer object type")
-    @Satisfies("ownerOfBoundBehaviourIsRelation")
+    @Constraint(name = OWNER_OF_BOUND_BEHAVIOUR_IS_VALID, message = "Owner must be a relation of the containing transfer object type")
+    @Satisfies(OWNER_OF_BOUND_BEHAVIOUR_IS_RELATION)
     public ValidationRule ownerOfBoundBehaviourIsValid() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -110,7 +116,7 @@ public class BoundBehaviourValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "OwnerOfBoundBehaviourIsValid",
+                    OWNER_OF_BOUND_BEHAVIOUR_IS_VALID,
                     "Owner of '" + self.getBehaviourType() + "' behaviour  (" + getOperationName(self) + ") must be a relation of the transfer object type containing the operation",
                     Severity.ERROR,
                     self
@@ -121,8 +127,8 @@ public class BoundBehaviourValidations {
         };
     }
 
-    @Constraint(name = "CreateTargetIsNotAbstract", message = "Owner of CREATE operation cannot reference abstract entity type")
-    @Satisfies({"ownerOfBoundBehaviourIsRelation", "ownerOfBoundBehaviourIsValid"})
+    @Constraint(name = CREATE_TARGET_IS_NOT_ABSTRACT, message = "Owner of CREATE operation cannot reference abstract entity type")
+    @Satisfies({OWNER_OF_BOUND_BEHAVIOUR_IS_RELATION, OWNER_OF_BOUND_BEHAVIOUR_IS_VALID})
     public ValidationRule createTargetIsNotAbstract() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -142,7 +148,7 @@ public class BoundBehaviourValidations {
         MappedTransferObjectType mappedTarget = (MappedTransferObjectType) relation.getTarget();
         if (mappedTarget.getEntityType() != null && mappedTarget.getEntityType().isAbstract()) {
             return ValidationResult.fail(
-                    "CreateTargetIsNotAbstract",
+                    CREATE_TARGET_IS_NOT_ABSTRACT,
                     "Owner of 'CREATE' operation cannot reference the mapped transfer object of an abstract entity type.",
                     Severity.ERROR,
                     self

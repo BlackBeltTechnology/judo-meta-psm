@@ -35,6 +35,12 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Cardinality.class)
 public class CardinalityValidations {
 
+    // Constraint/Critique name constants
+    private static final String CARDINALITY_LOWER_IS_GREATER_THAN_OR_EQUAL_TO_ZERO = "CardinalityLowerIsGreaterThanOrEqualToZero";
+    private static final String CARDINALITY_LOWER_MUST_BE_LESS_OR_EQUAL_TO_UPPER = "CardinalityLowerMustBeLessOrEqualToUpper";
+    private static final String CARDINALITY_UPPER_IS_AT_LEAST_ONE = "CardinalityUpperIsAtLeastOne";
+
+
     private String getContainerName(Cardinality self) {
         if (self.eContainer() instanceof NamedElement) {
             return ((NamedElement) self.eContainer()).getName();
@@ -42,7 +48,7 @@ public class CardinalityValidations {
         return String.valueOf(self.eContainer());
     }
 
-    @Constraint(name = "CardinalityLowerIsGreaterThanOrEqualToZero", message = "Lower must be greater than or equal to zero")
+    @Constraint(name = CARDINALITY_LOWER_IS_GREATER_THAN_OR_EQUAL_TO_ZERO, message = "Lower must be greater than or equal to zero")
     public ValidationRule cardinalityLowerIsGreaterThanOrEqualToZero() {
         return (element, context) -> {
             Cardinality self = (Cardinality) element;
@@ -53,7 +59,7 @@ public class CardinalityValidations {
 
             if (self.getLower() < 0) {
                 return ValidationResult.fail(
-                        "CardinalityLowerIsGreaterThanOrEqualToZero",
+                        CARDINALITY_LOWER_IS_GREATER_THAN_OR_EQUAL_TO_ZERO,
                         "Lower attribute of element: " + getContainerName(self) + " must be greater than or equal to zero",
                         Severity.ERROR,
                         self
@@ -63,7 +69,7 @@ public class CardinalityValidations {
         };
     }
 
-    @Constraint(name = "CardinalityLowerMustBeLessOrEqualToUpper", message = "Lower must be less or equal to upper")
+    @Constraint(name = CARDINALITY_LOWER_MUST_BE_LESS_OR_EQUAL_TO_UPPER, message = "Lower must be less or equal to upper")
     public ValidationRule cardinalityLowerMustBeLessOrEqualToUpper() {
         return (element, context) -> {
             Cardinality self = (Cardinality) element;
@@ -79,7 +85,7 @@ public class CardinalityValidations {
 
             if (self.getLower() > self.getUpper()) {
                 return ValidationResult.fail(
-                        "CardinalityLowerMustBeLessOrEqualToUpper",
+                        CARDINALITY_LOWER_MUST_BE_LESS_OR_EQUAL_TO_UPPER,
                         "Lower (" + self.getLower() + ") must be less or equal to upper (" + self.getUpper() + ") of element: " + getContainerName(self),
                         Severity.ERROR,
                         self
@@ -89,7 +95,7 @@ public class CardinalityValidations {
         };
     }
 
-    @Constraint(name = "CardinalityUpperIsAtLeastOne", message = "Upper must be at least 1 or -1 (unbounded)")
+    @Constraint(name = CARDINALITY_UPPER_IS_AT_LEAST_ONE, message = "Upper must be at least 1 or -1 (unbounded)")
     public ValidationRule cardinalityUpperIsAtLeastOne() {
         return (element, context) -> {
             Cardinality self = (Cardinality) element;
@@ -100,7 +106,7 @@ public class CardinalityValidations {
 
             if (self.getUpper() <= 0 && self.getUpper() != -1) {
                 return ValidationResult.fail(
-                        "CardinalityUpperIsAtLeastOne",
+                        CARDINALITY_UPPER_IS_AT_LEAST_ONE,
                         "Invalid upper attribute of element: " + getContainerName(self),
                         Severity.ERROR,
                         self

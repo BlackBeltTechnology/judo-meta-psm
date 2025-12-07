@@ -36,8 +36,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Parameter.class)
 public class ParameterValidations {
 
-    @Constraint(name = "FaultCardinalityIsValid", message = "Cardinality of fault parameter must be 1..1")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String FAULT_CARDINALITY_IS_VALID = "FaultCardinalityIsValid";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = FAULT_CARDINALITY_IS_VALID, message = "Cardinality of fault parameter must be 1..1")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule faultCardinalityIsValid() {
         return (element, context) -> {
             Parameter self = (Parameter) element;
@@ -57,7 +63,7 @@ public class ParameterValidations {
 
         if (self.getCardinality().getLower() != 1 || self.getCardinality().getUpper() != 1) {
             return ValidationResult.fail(
-                    "FaultCardinalityIsValid",
+                    FAULT_CARDINALITY_IS_VALID,
                     "Cardinality of fault parameter: " + self.getName() + " must be 1..1",
                     Severity.ERROR,
                     self

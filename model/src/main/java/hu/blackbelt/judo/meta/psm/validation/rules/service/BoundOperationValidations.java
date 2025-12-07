@@ -36,8 +36,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(BoundTransferOperation.class)
 public class BoundOperationValidations {
 
-    @Constraint(name = "OwnerIsMappedTransferObjectType", message = "Container must be mapped transfer object type")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String OWNER_IS_MAPPED_TRANSFER_OBJECT_TYPE = "OwnerIsMappedTransferObjectType";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = OWNER_IS_MAPPED_TRANSFER_OBJECT_TYPE, message = "Container must be mapped transfer object type")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule ownerIsMappedTransferObjectType() {
         return (element, context) -> {
             BoundTransferOperation self = (BoundTransferOperation) element;
@@ -47,7 +53,7 @@ public class BoundOperationValidations {
 
         if (!(self.eContainer() instanceof MappedTransferObjectType)) {
             return ValidationResult.fail(
-                    "OwnerIsMappedTransferObjectType",
+                    OWNER_IS_MAPPED_TRANSFER_OBJECT_TYPE,
                     "Container of bound transfer operation must be mapped transfer object type (operation: " + self.getName() + ")",
                     Severity.ERROR,
                     self

@@ -38,10 +38,20 @@ import java.util.regex.Pattern;
 @ValidationContext(NamedElement.class)
 public class NamedElementValidations {
 
+    // Constraint/Critique name constants
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "NamedElementHasContainer";
+    private static final String NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER = "NamedElementIsUniqueInItsContainer";
+    private static final String ELEMENT_NAME_NOT_EMPTY = "ElementNameNotEmpty";
+    private static final String ELEMENT_NAME_CONTAINS_VALID_CHARACTERS = "ElementNameContainsValidCharacters";
+    private static final String ELEMENT_NAME_CANNOT_CONTAIN_SUBSEQUENT_UNDERSCORES = "ElementNameCannotContainSubsequentUnderscores";
+    private static final String ELEMENT_NAME_FIRST_CHARACTER_CANNOT_BE_DIGIT = "ElementNameFirstCharacterCannotBeDigit";
+    private static final String ELEMENT_NAME_LAST_CHARACTER_CANNOT_BE_UNDERSCORE = "ElementNameLastCharacterCannotBeUnderscore";
+    // External constraint references
+
     private static final Pattern VALID_NAME_PATTERN = Pattern.compile("([a-z]|[A-Z]|[0-9]|_)+");
     private static final Pattern FIRST_CHAR_PATTERN = Pattern.compile("[a-zA-Z_]");
 
-    @Constraint(name = "NamedElementHasContainer", message = "Named element has no container")
+    @Constraint(name = NAMED_ELEMENT_HAS_CONTAINER, message = "Named element has no container")
     public ValidationRule namedElementHasContainer() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
@@ -52,7 +62,7 @@ public class NamedElementValidations {
 
             if (self.eContainer() == null) {
                 return ValidationResult.fail(
-                        "NamedElementHasContainer",
+                        NAMED_ELEMENT_HAS_CONTAINER,
                         "Named element " + self.getName() + " has no container",
                         Severity.ERROR,
                         self
@@ -62,8 +72,8 @@ public class NamedElementValidations {
         };
     }
 
-    @Constraint(name = "NamedElementIsUniqueInItsContainer", message = "Named element is not unique in its container")
-    @Satisfies("namedElementHasContainer")
+    @Constraint(name = NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER, message = "Named element is not unique in its container")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule namedElementIsUniqueInItsContainer() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
@@ -80,7 +90,7 @@ public class NamedElementValidations {
 
             if (hasDuplicate) {
                 return ValidationResult.fail(
-                        "NamedElementIsUniqueInItsContainer",
+                        NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER,
                         "Named element " + self.getName() + " is not unique in its container",
                         Severity.ERROR,
                         self
@@ -90,13 +100,13 @@ public class NamedElementValidations {
         };
     }
 
-    @Constraint(name = "ElementNameNotEmpty", message = "Named element name must contain at least one character")
+    @Constraint(name = ELEMENT_NAME_NOT_EMPTY, message = "Named element name must contain at least one character")
     public ValidationRule elementNameNotEmpty() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
             if (self.getName() == null || self.getName().isEmpty()) {
                 return ValidationResult.fail(
-                        "ElementNameNotEmpty",
+                        ELEMENT_NAME_NOT_EMPTY,
                         "Named element name must contain at least one character. Zero length name found in " + self,
                         Severity.ERROR,
                         self
@@ -106,8 +116,8 @@ public class NamedElementValidations {
         };
     }
 
-    @Constraint(name = "ElementNameContainsValidCharacters", message = "Named element's name can only contain valid characters")
-    @Satisfies("elementNameNotEmpty")
+    @Constraint(name = ELEMENT_NAME_CONTAINS_VALID_CHARACTERS, message = "Named element's name can only contain valid characters")
+    @Satisfies(ELEMENT_NAME_NOT_EMPTY)
     public ValidationRule elementNameContainsValidCharacters() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
@@ -117,7 +127,7 @@ public class NamedElementValidations {
 
             if (!VALID_NAME_PATTERN.matcher(self.getName()).matches()) {
                 return ValidationResult.fail(
-                        "ElementNameContainsValidCharacters",
+                        ELEMENT_NAME_CONTAINS_VALID_CHARACTERS,
                         "Named element's name can only contain english letters (A-Z, a-z), digits (0-9) and underscore characters (_): " + self.getName(),
                         Severity.ERROR,
                         self
@@ -127,8 +137,8 @@ public class NamedElementValidations {
         };
     }
 
-    @Constraint(name = "ElementNameCannotContainSubsequentUnderscores", message = "Named element's name cannot contain subsequent underscores")
-    @Satisfies("elementNameNotEmpty")
+    @Constraint(name = ELEMENT_NAME_CANNOT_CONTAIN_SUBSEQUENT_UNDERSCORES, message = "Named element's name cannot contain subsequent underscores")
+    @Satisfies(ELEMENT_NAME_NOT_EMPTY)
     public ValidationRule elementNameCannotContainSubsequentUnderscores() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
@@ -138,7 +148,7 @@ public class NamedElementValidations {
 
             if (self.getName().contains("__")) {
                 return ValidationResult.fail(
-                        "ElementNameCannotContainSubsequentUnderscores",
+                        ELEMENT_NAME_CANNOT_CONTAIN_SUBSEQUENT_UNDERSCORES,
                         "Named element's name cannot contain two subsequent underscore characters: " + self.getName(),
                         Severity.ERROR,
                         self
@@ -148,8 +158,8 @@ public class NamedElementValidations {
         };
     }
 
-    @Constraint(name = "ElementNameFirstCharacterCannotBeDigit", message = "Named element's name must start with a letter or underscore")
-    @Satisfies("elementNameNotEmpty")
+    @Constraint(name = ELEMENT_NAME_FIRST_CHARACTER_CANNOT_BE_DIGIT, message = "Named element's name must start with a letter or underscore")
+    @Satisfies(ELEMENT_NAME_NOT_EMPTY)
     public ValidationRule elementNameFirstCharacterCannotBeDigit() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
@@ -160,7 +170,7 @@ public class NamedElementValidations {
             String firstChar = String.valueOf(self.getName().charAt(0));
             if (!FIRST_CHAR_PATTERN.matcher(firstChar).matches()) {
                 return ValidationResult.fail(
-                        "ElementNameFirstCharacterCannotBeDigit",
+                        ELEMENT_NAME_FIRST_CHARACTER_CANNOT_BE_DIGIT,
                         "Named element's name must start with an english letter or an underscore: " + self.getName(),
                         Severity.ERROR,
                         self
@@ -170,8 +180,8 @@ public class NamedElementValidations {
         };
     }
 
-    @Constraint(name = "ElementNameLastCharacterCannotBeUnderscore", message = "Named element's name must end with a letter or digit")
-    @Satisfies("elementNameNotEmpty")
+    @Constraint(name = ELEMENT_NAME_LAST_CHARACTER_CANNOT_BE_UNDERSCORE, message = "Named element's name must end with a letter or digit")
+    @Satisfies(ELEMENT_NAME_NOT_EMPTY)
     public ValidationRule elementNameLastCharacterCannotBeUnderscore() {
         return (element, context) -> {
             NamedElement self = (NamedElement) element;
@@ -181,7 +191,7 @@ public class NamedElementValidations {
 
             if (self.getName().endsWith("_")) {
                 return ValidationResult.fail(
-                        "ElementNameLastCharacterCannotBeUnderscore",
+                        ELEMENT_NAME_LAST_CHARACTER_CANNOT_BE_UNDERSCORE,
                         "Named element's name must end with an english letter or a digit: " + self.getName(),
                         Severity.ERROR,
                         self

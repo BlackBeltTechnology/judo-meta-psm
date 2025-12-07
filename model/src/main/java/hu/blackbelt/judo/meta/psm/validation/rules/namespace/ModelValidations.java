@@ -34,7 +34,11 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Model.class)
 public class ModelValidations {
 
-    @Constraint(name = "StandaloneModelLoadedOnly", message = "Standalone models are supported only")
+    // Constraint/Critique name constants
+    private static final String STANDALONE_MODEL_LOADED_ONLY = "StandaloneModelLoadedOnly";
+
+
+    @Constraint(name = STANDALONE_MODEL_LOADED_ONLY, message = "Standalone models are supported only")
     public ValidationRule standaloneModelLoadedOnly() {
         return (element, context) -> {
             Model self = (Model) element;
@@ -42,7 +46,7 @@ public class ModelValidations {
 
             if (modelCount != 1) {
                 return ValidationResult.fail(
-                        "StandaloneModelLoadedOnly",
+                        STANDALONE_MODEL_LOADED_ONLY,
                         "Standalone models are supported only",
                         Severity.ERROR,
                         self

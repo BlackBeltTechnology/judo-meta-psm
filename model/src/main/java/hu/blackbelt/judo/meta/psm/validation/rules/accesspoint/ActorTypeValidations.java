@@ -41,7 +41,11 @@ public class ActorTypeValidations {
     @ValidationContext(MappedTransferObjectType.class)
     public static class MappedTransferObjectActorTypeValidations {
 
-        @Constraint(name = "ActorTypeIsMapped", message = "Actor type must be mapped")
+        // Constraint/Critique name constants
+        private static final String ACTOR_TYPE_IS_MAPPED = "ActorTypeIsMapped";
+
+
+        @Constraint(name = ACTOR_TYPE_IS_MAPPED, message = "Actor type must be mapped")
         public ValidationRule actorTypeIsMapped() {
             return (element, context) -> {
                 MappedTransferObjectType self = (MappedTransferObjectType) element;
@@ -52,7 +56,7 @@ public class ActorTypeValidations {
 
                 if (!(self.getActorType() instanceof MappedActorType)) {
                     return ValidationResult.fail(
-                            "ActorTypeIsMapped",
+                            ACTOR_TYPE_IS_MAPPED,
                             "Actor type must be mapped: " + self.getName(),
                             Severity.ERROR,
                             self
@@ -69,7 +73,11 @@ public class ActorTypeValidations {
     @ValidationContext(UnmappedTransferObjectType.class)
     public static class UnmappedTransferObjectActorTypeValidations {
 
-        @Constraint(name = "ActorTypeIsUnmapped", message = "Actor type must be unmapped")
+        // Constraint/Critique name constants
+        private static final String ACTOR_TYPE_IS_UNMAPPED = "ActorTypeIsUnmapped";
+
+
+        @Constraint(name = ACTOR_TYPE_IS_UNMAPPED, message = "Actor type must be unmapped")
         public ValidationRule actorTypeIsUnmapped() {
             return (element, context) -> {
                 UnmappedTransferObjectType self = (UnmappedTransferObjectType) element;
@@ -83,7 +91,7 @@ public class ActorTypeValidations {
                 // it's NOT a MappedActorType
                 if (self.getActorType() instanceof MappedActorType) {
                     return ValidationResult.fail(
-                            "ActorTypeIsUnmapped",
+                            ACTOR_TYPE_IS_UNMAPPED,
                             "Actor type must be unmapped: " + self.getName(),
                             Severity.ERROR,
                             self

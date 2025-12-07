@@ -34,13 +34,17 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(DerivedMeasure.class)
 public class DerivedMeasureValidations {
 
-    @Constraint(name = "NoCircularReferencesOfDerivedMeasures", message = "Derived measure definition is recursive")
+    // Constraint/Critique name constants
+    private static final String NO_CIRCULAR_REFERENCES_OF_DERIVED_MEASURES = "NoCircularReferencesOfDerivedMeasures";
+
+
+    @Constraint(name = NO_CIRCULAR_REFERENCES_OF_DERIVED_MEASURES, message = "Derived measure definition is recursive")
     public ValidationRule noCircularReferencesOfDerivedMeasures() {
         return (element, context) -> {
             DerivedMeasure self = (DerivedMeasure) element;
         if (self.getAllTermMeasures().contains(self)) {
             return ValidationResult.fail(
-                    "NoCircularReferencesOfDerivedMeasures",
+                    NO_CIRCULAR_REFERENCES_OF_DERIVED_MEASURES,
                     "Derived measure definition " + self.getName() + " is recursive",
                     Severity.ERROR,
                     self

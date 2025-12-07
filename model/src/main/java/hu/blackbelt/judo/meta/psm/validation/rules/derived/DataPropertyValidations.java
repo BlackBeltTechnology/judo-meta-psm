@@ -37,8 +37,15 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(DataProperty.class)
 public class DataPropertyValidations {
 
-    @Constraint(name = "InheritedAndOwnDataPropertyNameIsUniqueInEntityType", message = "Data property has the same name as inherited content")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String INHERITED_AND_OWN_DATA_PROPERTY_NAME_IS_UNIQUE_IN_ENTITY_TYPE = "InheritedAndOwnDataPropertyNameIsUniqueInEntityType";
+    private static final String DATA_PROPERTY_IS_NOT_REQUIRED = "DataPropertyIsNotRequired";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = INHERITED_AND_OWN_DATA_PROPERTY_NAME_IS_UNIQUE_IN_ENTITY_TYPE, message = "Data property has the same name as inherited content")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule inheritedAndOwnDataPropertyNameIsUniqueInEntityType() {
         return (element, context) -> {
             DataProperty self = (DataProperty) element;
@@ -57,7 +64,7 @@ public class DataPropertyValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "InheritedAndOwnDataPropertyNameIsUniqueInEntityType",
+                    INHERITED_AND_OWN_DATA_PROPERTY_NAME_IS_UNIQUE_IN_ENTITY_TYPE,
                     "Data property: " + self.getName() + " has the same name as inherited content(s) of entity type: " + entityType.getName(),
                     Severity.ERROR,
                     self
@@ -68,7 +75,7 @@ public class DataPropertyValidations {
         };
     }
 
-    @Constraint(name = "DataPropertyIsNotRequired", message = "Data property cannot be required")
+    @Constraint(name = DATA_PROPERTY_IS_NOT_REQUIRED, message = "Data property cannot be required")
     public ValidationRule dataPropertyIsNotRequired() {
         return (element, context) -> {
             DataProperty self = (DataProperty) element;
@@ -80,7 +87,7 @@ public class DataPropertyValidations {
 
         if (self.isRequired()) {
             return ValidationResult.fail(
-                    "DataPropertyIsNotRequired",
+                    DATA_PROPERTY_IS_NOT_REQUIRED,
                     "Data property " + self.getName() + " of entity type " + entityType.getName() + " cannot be required.",
                     Severity.ERROR,
                     self

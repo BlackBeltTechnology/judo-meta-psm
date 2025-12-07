@@ -38,6 +38,10 @@ import java.util.Set;
 @ValidationContext(TimestampType.class)
 public class TimestampValidations {
 
+    // Constraint/Critique name constants
+    private static final String TIME_STAMP_BASE_UNIT_IS_VALID = "TimeStampBaseUnitIsValid";
+
+
     private static final Set<DurationType> VALID_BASE_UNITS = EnumSet.of(
             DurationType.NANOSECOND,
             DurationType.MICROSECOND,
@@ -48,13 +52,13 @@ public class TimestampValidations {
             DurationType.DAY
     );
 
-    @Constraint(name = "TimeStampBaseUnitIsValid", message = "Base unit of timestamp type is invalid")
+    @Constraint(name = TIME_STAMP_BASE_UNIT_IS_VALID, message = "Base unit of timestamp type is invalid")
     public ValidationRule timeStampBaseUnitIsValid() {
         return (element, context) -> {
             TimestampType self = (TimestampType) element;
         if (!VALID_BASE_UNITS.contains(self.getBaseUnit())) {
             return ValidationResult.fail(
-                    "TimeStampBaseUnitIsValid",
+                    TIME_STAMP_BASE_UNIT_IS_VALID,
                     "Base unit of timestamp type: " + self.getName() + " is invalid.",
                     Severity.ERROR,
                     self

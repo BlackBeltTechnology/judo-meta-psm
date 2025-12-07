@@ -37,8 +37,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Relation.class)
 public class RelationValidations {
 
-    @Constraint(name = "InheritedAndOwnRelationNameIsUniqueInEntityType", message = "Relation has the same name as inherited content")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String INHERITED_AND_OWN_RELATION_NAME_IS_UNIQUE_IN_ENTITY_TYPE = "InheritedAndOwnRelationNameIsUniqueInEntityType";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = INHERITED_AND_OWN_RELATION_NAME_IS_UNIQUE_IN_ENTITY_TYPE, message = "Relation has the same name as inherited content")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule inheritedAndOwnRelationNameIsUniqueInEntityType() {
         return (element, context) -> {
             Relation self = (Relation) element;
@@ -57,7 +63,7 @@ public class RelationValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "InheritedAndOwnRelationNameIsUniqueInEntityType",
+                    INHERITED_AND_OWN_RELATION_NAME_IS_UNIQUE_IN_ENTITY_TYPE,
                     "Relation: " + self.getName() + " has the same name as inherited content(s) of entity type: " + entityType.getName(),
                     Severity.ERROR,
                     self
