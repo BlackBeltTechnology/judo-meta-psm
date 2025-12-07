@@ -3,7 +3,7 @@
 ## Installing the correct versions of Java, Maven and necessary dependencies
 
 Please make sure your development environment complies with the requirements discussed under the relevant section of the parent
-project's https://github.com/BlackBeltTechnology/judo-community/blob/develop/CONTRIBUTING.adoc[CONTRIBUTING] guide.
+project's [CONTRIBUTING](https://github.com/BlackBeltTechnology/judo-community/blob/develop/CONTRIBUTING.adoc) guide.
 
 ## Code Structure
 
@@ -24,7 +24,9 @@ For this reason, a profile is created which can replace the versions with the de
 
 The following command can be used to update the versions:
 
-`mvn clean install -P update-category-versions -f site/pom.xml`
+```
+mvn clean install -P update-category-versions -f site/pom.xml
+```
 
 **Model modules:**
 
@@ -54,12 +56,14 @@ Go to "Install new software" and add the URL of the site listed on github or the
 contains the metamodel and UI provided for the default editor.
 
 ### Code generation in eclipse
+
 To run code generation inside eclipse, run as MWE2 Workflow:
     hu.blackbelt.judo.meta.psm.model project src/workflow/generateModel.mwe2
 
 ## Troubleshooting
 
 ### Running JUnit tests in Eclipse
+
 There is a problem with Eclipse and Tycho. The classpath does not contain JUnit.
 
 ```
@@ -107,14 +111,14 @@ We will be insisting on a minimal reproduction in order to save maintainers' tim
 bugs. We understand that sometimes it might be hard to extract essentials bits of code from a larger codebase, but we
 really need to isolate the problem before we can fix it.
 
-You can file new issues by filling out our https://github.com/BlackBeltTechnology/judo-meta-psm/issues/new/choose[issue form].
+You can file new issues by filling out our [issue form](https://github.com/BlackBeltTechnology/judo-meta-psm/issues/new/choose).
 
 ### Submitting a PR
 
-This project follows https://guides.github.com/activities/forking/[GitHub's standard forking model]. Please fork the
+This project follows [GitHub's standard forking model](https://guides.github.com/activities/forking/). Please fork the
 project to submit pull requests.
 
-About the working Continous Integration pipeline, please read the corresponding link:.github/CIFLOW.adoc[CI Flow]
+About the working Continous Integration pipeline, please read the corresponding [CI Flow](.github/CIFLOW.md)
 documentation!
 
 ## Commands
