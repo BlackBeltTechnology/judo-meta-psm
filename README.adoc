@@ -18,6 +18,19 @@ point of view this model is the first in the chain, followed by https://github.c
 This project is a building block of the https://github.com/BlackBeltTechnology/judo-community[judo-community] aggregator
 project. In order to better understand how this module fits into our ecosystem, please check the corresponding documentation!
 
+== Model Validation
+
+PSM models are validated using two complementary validation frameworks:
+
+* *EVL (Epsilon Validation Language)*: Original validation implementation located in `model/src/main/epsilon/validations/`
+* *Java Validation Framework (Zeta)*: Native Java validation with better IDE support and ~7.5x performance improvement, located in `model/src/main/java/hu/blackbelt/judo/meta/psm/validation/`
+
+Both frameworks implement identical validation rules and produce consistent results.
+
+See link:docs/validation/README.md[Validation Documentation] for PSM-specific details.
+
+For comprehensive Zeta framework documentation, see the https://github.com/BlackBeltTechnology/judo-zeta[judo-zeta repository].
+
 == Contributing to the project
 
 Everyone is welcome to contribute to JUDO! As a starter, please read the corresponding link:CONTRIBUTING.adoc[CONTRIBUTING] guide for details!

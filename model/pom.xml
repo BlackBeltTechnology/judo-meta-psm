@@ -99,6 +99,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-compiler-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <extraClasspathElements>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.zeta</groupId>
+                            <artifactId>hu.blackbelt.judo.zeta.common</artifactId>
+                            <version>${judo-zeta-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.zeta</groupId>
+                            <artifactId>hu.blackbelt.judo.zeta.annotations</artifactId>
+                            <version>${judo-zeta-version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>hu.blackbelt.judo.zeta</groupId>
+                            <artifactId>hu.blackbelt.judo.zeta.validation-core</artifactId>
+                            <version>${judo-zeta-version}</version>
+                        </dependency>
+                    </extraClasspathElements>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -170,6 +194,20 @@
         <dependency>
             <groupId>hu.blackbelt.epsilon</groupId>
             <artifactId>epsilon-runtime-execution</artifactId>
+        </dependency>
+
+        <!-- Judo Zeta Validation Framework -->
+        <dependency>
+            <groupId>hu.blackbelt.judo.zeta</groupId>
+            <artifactId>hu.blackbelt.judo.zeta.common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hu.blackbelt.judo.zeta</groupId>
+            <artifactId>hu.blackbelt.judo.zeta.annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hu.blackbelt.judo.zeta</groupId>
+            <artifactId>hu.blackbelt.judo.zeta.validation-core</artifactId>
         </dependency>
     </dependencies>
 </project>
