@@ -34,13 +34,18 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(NumericType.class)
 public class NumericValidations {
 
-    @Constraint(name = "ScaleIsLowerThanPrecision", message = "Scale must be less than precision")
+    // Constraint/Critique name constants
+    private static final String SCALE_IS_LOWER_THAN_PRECISION = "ScaleIsLowerThanPrecision";
+    private static final String VALID_SCALE = "ValidScale";
+
+
+    @Constraint(name = SCALE_IS_LOWER_THAN_PRECISION, message = "Scale must be less than precision")
     public ValidationRule scaleIsLowerThanPrecision() {
         return (element, context) -> {
             NumericType self = (NumericType) element;
             if (self.getPrecision() <= self.getScale()) {
                 return ValidationResult.fail(
-                        "ScaleIsLowerThanPrecision",
+                        SCALE_IS_LOWER_THAN_PRECISION,
                         "Scale (" + self.getScale() + ") must be less than precision (" + self.getPrecision() + ")",
                         Severity.ERROR,
                         self
@@ -50,13 +55,13 @@ public class NumericValidations {
         };
     }
 
-    @Constraint(name = "ValidScale", message = "Scale must be at least 0")
+    @Constraint(name = VALID_SCALE, message = "Scale must be at least 0")
     public ValidationRule validScale() {
         return (element, context) -> {
             NumericType self = (NumericType) element;
             if (self.getScale() < 0) {
                 return ValidationResult.fail(
-                        "ValidScale",
+                        VALID_SCALE,
                         "Scale (" + self.getScale() + ") must be at least 0",
                         Severity.ERROR,
                         self

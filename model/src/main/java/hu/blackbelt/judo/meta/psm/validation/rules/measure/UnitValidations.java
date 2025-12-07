@@ -37,6 +37,13 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Unit.class)
 public class UnitValidations {
 
+    // Constraint/Critique name constants
+    private static final String UNIT_NAME_IS_UNIQUE = "UnitNameIsUnique";
+    private static final String UNIT_SYMBOL_IS_UNIQUE = "UnitSymbolIsUnique";
+    private static final String UNIT_SYMBOL_IS_UNIQUE_IN_MEASURE = "UnitSymbolIsUniqueInMeasure";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
     private String getMeasureName(Unit self) {
         if (self.eContainer() instanceof Measure) {
             return ((Measure) self.eContainer()).getName();
@@ -44,7 +51,7 @@ public class UnitValidations {
         return String.valueOf(self.eContainer());
     }
 
-    @Critique(name = "UnitNameIsUnique", message = "Unit name is not unique")
+    @Critique(name = UNIT_NAME_IS_UNIQUE, message = "Unit name is not unique")
     public ValidationRule unitNameIsUnique() {
         return (element, context) -> {
             Unit self = (Unit) element;
@@ -60,7 +67,7 @@ public class UnitValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "UnitNameIsUnique",
+                    UNIT_NAME_IS_UNIQUE,
                     "There are two or more units of the same name: " + self.getName() + " (in measure: " + getMeasureName(self) + ")",
                     Severity.WARNING,
                     self
@@ -71,8 +78,8 @@ public class UnitValidations {
         };
     }
 
-    @Critique(name = "UnitSymbolIsUnique", message = "Unit symbol is not unique")
-    @Satisfies("unitSymbolIsUniqueInMeasure")
+    @Critique(name = UNIT_SYMBOL_IS_UNIQUE, message = "Unit symbol is not unique")
+    @Satisfies(UNIT_SYMBOL_IS_UNIQUE_IN_MEASURE)
     public ValidationRule unitSymbolIsUnique() {
         return (element, context) -> {
             Unit self = (Unit) element;
@@ -93,7 +100,7 @@ public class UnitValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "UnitSymbolIsUnique",
+                    UNIT_SYMBOL_IS_UNIQUE,
                     "There are two or more units that have the same symbol: " + self.getSymbol() + " (unit: " + self.getName() + ", measure: " + getMeasureName(self) + ")",
                     Severity.WARNING,
                     self
@@ -104,8 +111,8 @@ public class UnitValidations {
         };
     }
 
-    @Constraint(name = "UnitSymbolIsUniqueInMeasure", message = "Unit symbol is not unique in measure")
-    @Satisfies("namedElementHasContainer")
+    @Constraint(name = UNIT_SYMBOL_IS_UNIQUE_IN_MEASURE, message = "Unit symbol is not unique in measure")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule unitSymbolIsUniqueInMeasure() {
         return (element, context) -> {
             Unit self = (Unit) element;
@@ -124,7 +131,7 @@ public class UnitValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "UnitSymbolIsUniqueInMeasure",
+                    UNIT_SYMBOL_IS_UNIQUE_IN_MEASURE,
                     "Unit symbol: " + self.getSymbol() + " of unit: " + self.getName() + " of measure: " + measure.getName() + " is not unique",
                     Severity.ERROR,
                     self

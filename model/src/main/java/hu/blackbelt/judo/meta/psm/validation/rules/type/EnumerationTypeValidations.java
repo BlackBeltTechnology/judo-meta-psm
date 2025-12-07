@@ -34,13 +34,17 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(EnumerationType.class)
 public class EnumerationTypeValidations {
 
-    @Critique(name = "EnumerationContainsAtLeastTwoMembers", message = "Enumeration should have at least two members")
+    // Constraint/Critique name constants
+    private static final String ENUMERATION_CONTAINS_AT_LEAST_TWO_MEMBERS = "EnumerationContainsAtLeastTwoMembers";
+
+
+    @Critique(name = ENUMERATION_CONTAINS_AT_LEAST_TWO_MEMBERS, message = "Enumeration should have at least two members")
     public ValidationRule enumerationContainsAtLeastTwoMembers() {
         return (element, context) -> {
             EnumerationType self = (EnumerationType) element;
         if (self.getMembers().size() <= 1) {
             return ValidationResult.fail(
-                    "EnumerationContainsAtLeastTwoMembers",
+                    ENUMERATION_CONTAINS_AT_LEAST_TWO_MEMBERS,
                     "Enum " + self.getName() + " has no or only a single member",
                     Severity.WARNING,
                     self

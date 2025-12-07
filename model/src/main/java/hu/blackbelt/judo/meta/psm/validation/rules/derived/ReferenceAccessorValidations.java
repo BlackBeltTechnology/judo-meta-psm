@@ -36,8 +36,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(ReferenceAccessor.class)
 public class ReferenceAccessorValidations {
 
-    @Constraint(name = "SetterExpressionsAreNotSupportedYet", message = "Setter expressions are not supported yet")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String SETTER_EXPRESSIONS_ARE_NOT_SUPPORTED_YET = "SetterExpressionsAreNotSupportedYet";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = SETTER_EXPRESSIONS_ARE_NOT_SUPPORTED_YET, message = "Setter expressions are not supported yet")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule setterExpressionsAreNotSupportedYet() {
         return (element, context) -> {
             ReferenceAccessor self = (ReferenceAccessor) element;
@@ -51,7 +57,7 @@ public class ReferenceAccessorValidations {
                     : String.valueOf(self.eContainer());
             
             return ValidationResult.fail(
-                    "SetterExpressionsAreNotSupportedYet",
+                    SETTER_EXPRESSIONS_ARE_NOT_SUPPORTED_YET,
                     "Setter expressions are not supported yet (" + containerName + "." + self.getName() + ")",
                     Severity.ERROR,
                     self

@@ -34,7 +34,11 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(StaticNavigation.class)
 public class StaticNavigationValidations {
 
-    @Critique(name = "StaticNavigationNamesAreUnique", message = "Static navigation name is not unique")
+    // Constraint/Critique name constants
+    private static final String STATIC_NAVIGATION_NAMES_ARE_UNIQUE = "StaticNavigationNamesAreUnique";
+
+
+    @Critique(name = STATIC_NAVIGATION_NAMES_ARE_UNIQUE, message = "Static navigation name is not unique")
     public ValidationRule staticNavigationNamesAreUnique() {
         return (element, context) -> {
             StaticNavigation self = (StaticNavigation) element;
@@ -45,7 +49,7 @@ public class StaticNavigationValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "StaticNavigationNamesAreUnique",
+                    STATIC_NAVIGATION_NAMES_ARE_UNIQUE,
                     "Static navigation name is not unique: " + self.getName(),
                     Severity.WARNING,
                     self

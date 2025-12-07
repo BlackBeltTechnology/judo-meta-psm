@@ -35,7 +35,13 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Measure.class)
 public class MeasureValidations {
 
-    @Critique(name = "BaseUnitShouldBeDefined", message = "No base unit is defined for measure")
+    // Constraint/Critique name constants
+    private static final String BASE_UNIT_SHOULD_BE_DEFINED = "BaseUnitShouldBeDefined";
+    private static final String MEASURE_NAME_IS_UNIQUE = "MeasureNameIsUnique";
+    private static final String MEASURE_SYMBOL_IS_UNIQUE = "MeasureSymbolIsUnique";
+
+
+    @Critique(name = BASE_UNIT_SHOULD_BE_DEFINED, message = "No base unit is defined for measure")
     public ValidationRule baseUnitShouldBeDefined() {
         return (element, context) -> {
             Measure self = (Measure) element;
@@ -44,7 +50,7 @@ public class MeasureValidations {
 
         if (!hasBaseUnit) {
             return ValidationResult.fail(
-                    "BaseUnitShouldBeDefined",
+                    BASE_UNIT_SHOULD_BE_DEFINED,
                     "No base unit is defined for measure: " + self.getName(),
                     Severity.WARNING,
                     self
@@ -55,7 +61,7 @@ public class MeasureValidations {
         };
     }
 
-    @Critique(name = "MeasureNameIsUnique", message = "Measure name is not unique")
+    @Critique(name = MEASURE_NAME_IS_UNIQUE, message = "Measure name is not unique")
     public ValidationRule measureNameIsUnique() {
         return (element, context) -> {
             Measure self = (Measure) element;
@@ -66,7 +72,7 @@ public class MeasureValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "MeasureNameIsUnique",
+                    MEASURE_NAME_IS_UNIQUE,
                     "There are two or more measures of the same name: " + self.getName(),
                     Severity.WARNING,
                     self
@@ -77,7 +83,7 @@ public class MeasureValidations {
         };
     }
 
-    @Constraint(name = "MeasureSymbolIsUnique", message = "Measure symbol is not unique")
+    @Constraint(name = MEASURE_SYMBOL_IS_UNIQUE, message = "Measure symbol is not unique")
     public ValidationRule measureSymbolIsUnique() {
         return (element, context) -> {
             Measure self = (Measure) element;
@@ -92,7 +98,7 @@ public class MeasureValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "MeasureSymbolIsUnique",
+                    MEASURE_SYMBOL_IS_UNIQUE,
                     "Measure symbol is not unique: " + self.getSymbol() + " (measure: " + self.getName() + ")",
                     Severity.ERROR,
                     self

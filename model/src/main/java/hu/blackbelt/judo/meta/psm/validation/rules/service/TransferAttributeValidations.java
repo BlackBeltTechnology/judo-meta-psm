@@ -36,7 +36,15 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(TransferAttribute.class)
 public class TransferAttributeValidations {
 
-    @Constraint(name = "DataTypeMatchesBindingDataType", message = "DataType must match binding's dataType")
+    // Constraint/Critique name constants
+    private static final String DATA_TYPE_MATCHES_BINDING_DATA_TYPE = "DataTypeMatchesBindingDataType";
+    private static final String REQUIRED_FLAG_MATCHES_BINDING_REQUIRED_FLAG = "RequiredFlagMatchesBindingRequiredFlag";
+    private static final String TRANSFER_ATTRIBUTE_BINDING_IS_VALID = "TransferAttributeBindingIsValid";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = DATA_TYPE_MATCHES_BINDING_DATA_TYPE, message = "DataType must match binding's dataType")
     public ValidationRule dataTypeMatchesBindingDataType() {
         return (element, context) -> {
             TransferAttribute self = (TransferAttribute) element;
@@ -47,7 +55,7 @@ public class TransferAttributeValidations {
 
         if (self.getDataType() != self.getBinding().getDataType()) {
             return ValidationResult.fail(
-                    "DataTypeMatchesBindingDataType",
+                    DATA_TYPE_MATCHES_BINDING_DATA_TYPE,
                     "DataType of transfer attribute " + self.getName() + " must match the dataType of its binding.",
                     Severity.ERROR,
                     self
@@ -58,7 +66,7 @@ public class TransferAttributeValidations {
         };
     }
 
-    @Constraint(name = "RequiredFlagMatchesBindingRequiredFlag", message = "Required flag must match binding's required flag")
+    @Constraint(name = REQUIRED_FLAG_MATCHES_BINDING_REQUIRED_FLAG, message = "Required flag must match binding's required flag")
     public ValidationRule requiredFlagMatchesBindingRequiredFlag() {
         return (element, context) -> {
             TransferAttribute self = (TransferAttribute) element;
@@ -69,7 +77,7 @@ public class TransferAttributeValidations {
 
         if (self.isRequired() != self.getBinding().isRequired()) {
             return ValidationResult.fail(
-                    "RequiredFlagMatchesBindingRequiredFlag",
+                    REQUIRED_FLAG_MATCHES_BINDING_REQUIRED_FLAG,
                     "Required flag of transfer attribute " + self.getName() + " must equal required flag of its binding.",
                     Severity.ERROR,
                     self
@@ -80,8 +88,8 @@ public class TransferAttributeValidations {
         };
     }
 
-    @Constraint(name = "TransferAttributeBindingIsValid", message = "Binding must match entity type of mapped transfer object")
-    @Satisfies("namedElementHasContainer")
+    @Constraint(name = TRANSFER_ATTRIBUTE_BINDING_IS_VALID, message = "Binding must match entity type of mapped transfer object")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule transferAttributeBindingIsValid() {
         return (element, context) -> {
             TransferAttribute self = (TransferAttribute) element;
@@ -103,7 +111,7 @@ public class TransferAttributeValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "TransferAttributeBindingIsValid",
+                    TRANSFER_ATTRIBUTE_BINDING_IS_VALID,
                     "Binding of transfer attribute " + self.getName() + " of mapped transfer object " + mappedType.getName() +
                             " must match the entity type of the mapped transfer object.",
                     Severity.ERROR,

@@ -38,13 +38,19 @@ import java.util.regex.PatternSyntaxException;
 @ValidationContext(StringType.class)
 public class StringValidations {
 
-    @Constraint(name = "ValidMaxLength", message = "MaxLength must be greater than 0")
+    // Constraint/Critique name constants
+    private static final String VALID_MAX_LENGTH = "ValidMaxLength";
+    private static final String MAX_LENGTH_IS_NOT_TOO_LARGE = "MaxLengthIsNotTooLarge";
+    private static final String VALID_REGEX = "ValidRegex";
+
+
+    @Constraint(name = VALID_MAX_LENGTH, message = "MaxLength must be greater than 0")
     public ValidationRule validMaxLength() {
         return (element, context) -> {
             StringType self = (StringType) element;
             if (self.getMaxLength() <= 0) {
                 return ValidationResult.fail(
-                        "ValidMaxLength",
+                        VALID_MAX_LENGTH,
                         "MaxLength must be greater than 0: " + self.getName(),
                         Severity.ERROR,
                         self
@@ -54,13 +60,13 @@ public class StringValidations {
         };
     }
 
-    @Critique(name = "MaxLengthIsNotTooLarge", message = "MaxLength is recommended to be less than or equal to 4000")
+    @Critique(name = MAX_LENGTH_IS_NOT_TOO_LARGE, message = "MaxLength is recommended to be less than or equal to 4000")
     public ValidationRule maxLengthIsNotTooLarge() {
         return (element, context) -> {
             StringType self = (StringType) element;
             if (self.getMaxLength() > 4000) {
                 return ValidationResult.fail(
-                        "MaxLengthIsNotTooLarge",
+                        MAX_LENGTH_IS_NOT_TOO_LARGE,
                         "MaxLength is recommended to be less than/equals to 4000: " + self.getName(),
                         Severity.WARNING,
                         self
@@ -70,7 +76,7 @@ public class StringValidations {
         };
     }
 
-    @Constraint(name = "ValidRegex", message = "Invalid regular expression")
+    @Constraint(name = VALID_REGEX, message = "Invalid regular expression")
     public ValidationRule validRegex() {
         return (element, context) -> {
             StringType self = (StringType) element;
@@ -84,7 +90,7 @@ public class StringValidations {
                 return ValidationResult.pass();
             } catch (PatternSyntaxException e) {
                 return ValidationResult.fail(
-                        "ValidRegex",
+                        VALID_REGEX,
                         "Invalid regular expression of " + self.getName(),
                         Severity.ERROR,
                         self

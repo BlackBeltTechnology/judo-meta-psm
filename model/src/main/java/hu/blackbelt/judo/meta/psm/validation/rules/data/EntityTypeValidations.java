@@ -44,6 +44,33 @@ import java.util.stream.Collectors;
 @ValidationContext(EntityType.class)
 public class EntityTypeValidations {
 
+    // Constraint/Critique name constants
+    private static final String ENTITY_TYPE_NAMES_ARE_UNIQUE = "EntityTypeNamesAreUnique";
+    private static final String INHERITANCE_IS_NOT_RECURSIVE = "InheritanceIsNotRecursive";
+    private static final String ABSTRACT_ENTITY_TYPE_SUPER_ENTITY_TYPES_ARE_ABSTRACT = "AbstractEntityTypeSuperEntityTypesAreAbstract";
+    private static final String INHERITING_UNIQUE_ATTRIBUTE_NAMES = "InheritingUniqueAttributeNames";
+    private static final String INHERITING_UNIQUE_RELATION_NAMES = "InheritingUniqueRelationNames";
+    private static final String INHERITING_UNIQUE_SEQUENCE_NAMES = "InheritingUniqueSequenceNames";
+    private static final String INHERITING_UNIQUE_DATA_PROPERTY_NAMES = "InheritingUniqueDataPropertyNames";
+    private static final String INHERITING_UNIQUE_NAVIGATION_PROPERTY_NAMES = "InheritingUniqueNavigationPropertyNames";
+    private static final String INHERITED_OPERATION_AND_ATTRIBUTE_NAMES_ARE_UNIQUE = "InheritedOperationAndAttributeNamesAreUnique";
+    private static final String INHERITED_OPERATION_AND_RELATION_NAMES_ARE_UNIQUE = "InheritedOperationAndRelationNamesAreUnique";
+    private static final String INHERITED_OPERATION_AND_SEQUENCE_NAMES_ARE_UNIQUE = "InheritedOperationAndSequenceNamesAreUnique";
+    private static final String INHERITED_OPERATION_AND_NAVIGATION_PROPERTY_NAMES_ARE_UNIQUE = "InheritedOperationAndNavigationPropertyNamesAreUnique";
+    private static final String INHERITED_OPERATION_AND_DATA_PROPERTY_NAMES_ARE_UNIQUE = "InheritedOperationAndDataPropertyNamesAreUnique";
+    private static final String INHERITING_ATTRIBUTES_AND_RELATIONS_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_ATTRIBUTES_AND_SEQUENCES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingAttributesAndSequencesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_ATTRIBUTES_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingAttributesAndDataPropertiesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_ATTRIBUTES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingAttributesAndNavigationPropertiesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_RELATIONS_AND_SEQUENCES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingRelationsAndSequencesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_RELATIONS_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingRelationsAndDataPropertiesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_RELATIONS_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingRelationsAndNavigationPropertiesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_SEQUENCES_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingSequencesAndDataPropertiesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_SEQUENCES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingSequencesAndNavigationPropertiesOfTheSameNameIsNotAllowed";
+    private static final String INHERITING_DATA_PROPERTIES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED = "InheritingDataPropertiesAndNavigationPropertiesOfTheSameNameIsNotAllowed";
+    // External constraint references
+    private static final String NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER = "namedElementIsUniqueInItsContainer";
+
     // Helper methods for getting inherited names
     private Set<String> getInheritedAttributeNames(EntityType entityType) {
         return entityType.getAllSuperEntityTypes().stream()
@@ -87,8 +114,8 @@ public class EntityTypeValidations {
                 .collect(Collectors.toSet());
     }
 
-    @Critique(name = "EntityTypeNamesAreUnique", message = "Entity type name is not unique")
-    @Satisfies("namedElementIsUniqueInItsContainer")
+    @Critique(name = ENTITY_TYPE_NAMES_ARE_UNIQUE, message = "Entity type name is not unique")
+    @Satisfies(NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER)
     public ValidationRule entityTypeNamesAreUnique() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -99,7 +126,7 @@ public class EntityTypeValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "EntityTypeNamesAreUnique",
+                    ENTITY_TYPE_NAMES_ARE_UNIQUE,
                     "There are two or more entity types of the same name: " + self.getName(),
                     Severity.WARNING,
                     self
@@ -110,13 +137,13 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritanceIsNotRecursive", message = "Entity type inheritance is recursive")
+    @Constraint(name = INHERITANCE_IS_NOT_RECURSIVE, message = "Entity type inheritance is recursive")
     public ValidationRule inheritanceIsNotRecursive() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
         if (self.getAllSuperEntityTypes().contains(self)) {
             return ValidationResult.fail(
-                    "InheritanceIsNotRecursive",
+                    INHERITANCE_IS_NOT_RECURSIVE,
                     "Entity type " + self.getName() + " is recursive",
                     Severity.ERROR,
                     self
@@ -127,8 +154,8 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "AbstractEntityTypeSuperEntityTypesAreAbstract", message = "Abstract entity type cannot have non-abstract super entity types")
-    @Satisfies("inheritanceIsNotRecursive")
+    @Constraint(name = ABSTRACT_ENTITY_TYPE_SUPER_ENTITY_TYPES_ARE_ABSTRACT, message = "Abstract entity type cannot have non-abstract super entity types")
+    @Satisfies(INHERITANCE_IS_NOT_RECURSIVE)
     public ValidationRule abstractEntityTypeSuperEntityTypesAreAbstract() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -141,7 +168,7 @@ public class EntityTypeValidations {
 
         if (hasNonAbstractSuper) {
             return ValidationResult.fail(
-                    "AbstractEntityTypeSuperEntityTypesAreAbstract",
+                    ABSTRACT_ENTITY_TYPE_SUPER_ENTITY_TYPES_ARE_ABSTRACT,
                     "Abstract entity type: " + self.getName() + " cannot have non abstract super entity type(s).",
                     Severity.ERROR,
                     self
@@ -152,7 +179,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingUniqueAttributeNames", message = "Inherited attributes have same name")
+    @Constraint(name = INHERITING_UNIQUE_ATTRIBUTE_NAMES, message = "Inherited attributes have same name")
     public ValidationRule inheritingUniqueAttributeNames() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -166,7 +193,7 @@ public class EntityTypeValidations {
             
             if (count > 1) {
                 return ValidationResult.fail(
-                        "InheritingUniqueAttributeNames",
+                        INHERITING_UNIQUE_ATTRIBUTE_NAMES,
                         "Entity type: " + self.getName() + " has inherited attributes of the same name.",
                         Severity.ERROR,
                         self
@@ -178,7 +205,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingUniqueRelationNames", message = "Inherited relations have same name")
+    @Constraint(name = INHERITING_UNIQUE_RELATION_NAMES, message = "Inherited relations have same name")
     public ValidationRule inheritingUniqueRelationNames() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -192,7 +219,7 @@ public class EntityTypeValidations {
             
             if (count > 1) {
                 return ValidationResult.fail(
-                        "InheritingUniqueRelationNames",
+                        INHERITING_UNIQUE_RELATION_NAMES,
                         "Entity type: " + self.getName() + " has inherited relations of the same name.",
                         Severity.ERROR,
                         self
@@ -204,7 +231,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingUniqueSequenceNames", message = "Inherited sequences have same name")
+    @Constraint(name = INHERITING_UNIQUE_SEQUENCE_NAMES, message = "Inherited sequences have same name")
     public ValidationRule inheritingUniqueSequenceNames() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -218,7 +245,7 @@ public class EntityTypeValidations {
             
             if (count > 1) {
                 return ValidationResult.fail(
-                        "InheritingUniqueSequenceNames",
+                        INHERITING_UNIQUE_SEQUENCE_NAMES,
                         "Entity type: " + self.getName() + " has inherited sequences of the same name.",
                         Severity.ERROR,
                         self
@@ -230,7 +257,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingUniqueDataPropertyNames", message = "Inherited data properties have same name")
+    @Constraint(name = INHERITING_UNIQUE_DATA_PROPERTY_NAMES, message = "Inherited data properties have same name")
     public ValidationRule inheritingUniqueDataPropertyNames() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -244,7 +271,7 @@ public class EntityTypeValidations {
             
             if (count > 1) {
                 return ValidationResult.fail(
-                        "InheritingUniqueDataPropertyNames",
+                        INHERITING_UNIQUE_DATA_PROPERTY_NAMES,
                         "Entity type: " + self.getName() + " has inherited data properties of the same name.",
                         Severity.ERROR,
                         self
@@ -256,7 +283,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingUniqueNavigationPropertyNames", message = "Inherited navigation properties have same name")
+    @Constraint(name = INHERITING_UNIQUE_NAVIGATION_PROPERTY_NAMES, message = "Inherited navigation properties have same name")
     public ValidationRule inheritingUniqueNavigationPropertyNames() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -270,7 +297,7 @@ public class EntityTypeValidations {
             
             if (count > 1) {
                 return ValidationResult.fail(
-                        "InheritingUniqueNavigationPropertyNames",
+                        INHERITING_UNIQUE_NAVIGATION_PROPERTY_NAMES,
                         "Entity type: " + self.getName() + " has inherited navigation properties of the same name.",
                         Severity.ERROR,
                         self
@@ -282,7 +309,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritedOperationAndAttributeNamesAreUnique", message = "Inherited operations and attributes have same name")
+    @Constraint(name = INHERITED_OPERATION_AND_ATTRIBUTE_NAMES_ARE_UNIQUE, message = "Inherited operations and attributes have same name")
     public ValidationRule inheritedOperationAndAttributeNamesAreUnique() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -293,7 +320,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritedOperationAndAttributeNamesAreUnique",
+                    INHERITED_OPERATION_AND_ATTRIBUTE_NAMES_ARE_UNIQUE,
                     "Entity type: " + self.getName() + " has inherited operation(s) and inherited attribute(s) of the same name.",
                     Severity.ERROR,
                     self
@@ -304,7 +331,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritedOperationAndRelationNamesAreUnique", message = "Inherited operations and relations have same name")
+    @Constraint(name = INHERITED_OPERATION_AND_RELATION_NAMES_ARE_UNIQUE, message = "Inherited operations and relations have same name")
     public ValidationRule inheritedOperationAndRelationNamesAreUnique() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -315,7 +342,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritedOperationAndRelationNamesAreUnique",
+                    INHERITED_OPERATION_AND_RELATION_NAMES_ARE_UNIQUE,
                     "Entity type: " + self.getName() + " has inherited operation(s) and inherited relation(s) of the same name.",
                     Severity.ERROR,
                     self
@@ -326,7 +353,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritedOperationAndSequenceNamesAreUnique", message = "Inherited operations and sequences have same name")
+    @Constraint(name = INHERITED_OPERATION_AND_SEQUENCE_NAMES_ARE_UNIQUE, message = "Inherited operations and sequences have same name")
     public ValidationRule inheritedOperationAndSequenceNamesAreUnique() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -337,7 +364,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritedOperationAndSequenceNamesAreUnique",
+                    INHERITED_OPERATION_AND_SEQUENCE_NAMES_ARE_UNIQUE,
                     "Entity type: " + self.getName() + " has inherited operation(s) and inherited sequence(s) of the same name.",
                     Severity.ERROR,
                     self
@@ -348,7 +375,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritedOperationAndNavigationPropertyNamesAreUnique", message = "Inherited operations and navigation properties have same name")
+    @Constraint(name = INHERITED_OPERATION_AND_NAVIGATION_PROPERTY_NAMES_ARE_UNIQUE, message = "Inherited operations and navigation properties have same name")
     public ValidationRule inheritedOperationAndNavigationPropertyNamesAreUnique() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -359,7 +386,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritedOperationAndNavigationPropertyNamesAreUnique",
+                    INHERITED_OPERATION_AND_NAVIGATION_PROPERTY_NAMES_ARE_UNIQUE,
                     "Entity type: " + self.getName() + " has inherited operation(s) and inherited navigation properties of the same name.",
                     Severity.ERROR,
                     self
@@ -370,7 +397,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritedOperationAndDataPropertyNamesAreUnique", message = "Inherited operations and data properties have same name")
+    @Constraint(name = INHERITED_OPERATION_AND_DATA_PROPERTY_NAMES_ARE_UNIQUE, message = "Inherited operations and data properties have same name")
     public ValidationRule inheritedOperationAndDataPropertyNamesAreUnique() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -381,7 +408,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritedOperationAndDataPropertyNamesAreUnique",
+                    INHERITED_OPERATION_AND_DATA_PROPERTY_NAMES_ARE_UNIQUE,
                     "Entity type: " + self.getName() + " has inherited operation(s) and inherited data properties of the same name.",
                     Severity.ERROR,
                     self
@@ -392,7 +419,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed", message = "Inherited attributes and relations have same name")
+    @Constraint(name = INHERITING_ATTRIBUTES_AND_RELATIONS_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited attributes and relations have same name")
     public ValidationRule inheritingAttributesAndRelationsOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -403,7 +430,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingAttributesAndRelationsOfTheSameNameIsNotAllowed",
+                    INHERITING_ATTRIBUTES_AND_RELATIONS_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited relation(s) and inherited attribute(s) of the same name.",
                     Severity.ERROR,
                     self
@@ -414,7 +441,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingAttributesAndSequencesOfTheSameNameIsNotAllowed", message = "Inherited attributes and sequences have same name")
+    @Constraint(name = INHERITING_ATTRIBUTES_AND_SEQUENCES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited attributes and sequences have same name")
     public ValidationRule inheritingAttributesAndSequencesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -425,7 +452,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingAttributesAndSequencesOfTheSameNameIsNotAllowed",
+                    INHERITING_ATTRIBUTES_AND_SEQUENCES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited sequence(s) and inherited transfer attribute(s) of the same name.",
                     Severity.ERROR,
                     self
@@ -436,7 +463,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingAttributesAndDataPropertiesOfTheSameNameIsNotAllowed", message = "Inherited attributes and data properties have same name")
+    @Constraint(name = INHERITING_ATTRIBUTES_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited attributes and data properties have same name")
     public ValidationRule inheritingAttributesAndDataPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -447,7 +474,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingAttributesAndDataPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_ATTRIBUTES_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited attribute(s) and inherited data properties of the same name.",
                     Severity.ERROR,
                     self
@@ -458,7 +485,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingAttributesAndNavigationPropertiesOfTheSameNameIsNotAllowed", message = "Inherited attributes and navigation properties have same name")
+    @Constraint(name = INHERITING_ATTRIBUTES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited attributes and navigation properties have same name")
     public ValidationRule inheritingAttributesAndNavigationPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -469,7 +496,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingAttributesAndNavigationPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_ATTRIBUTES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited attribute(s) and inherited navigation properties of the same name.",
                     Severity.ERROR,
                     self
@@ -480,7 +507,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingRelationsAndSequencesOfTheSameNameIsNotAllowed", message = "Inherited relations and sequences have same name")
+    @Constraint(name = INHERITING_RELATIONS_AND_SEQUENCES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited relations and sequences have same name")
     public ValidationRule inheritingRelationsAndSequencesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -491,7 +518,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingRelationsAndSequencesOfTheSameNameIsNotAllowed",
+                    INHERITING_RELATIONS_AND_SEQUENCES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited sequence(s) and inherited relation(s) of the same name.",
                     Severity.ERROR,
                     self
@@ -502,7 +529,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingRelationsAndDataPropertiesOfTheSameNameIsNotAllowed", message = "Inherited relations and data properties have same name")
+    @Constraint(name = INHERITING_RELATIONS_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited relations and data properties have same name")
     public ValidationRule inheritingRelationsAndDataPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -513,7 +540,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingRelationsAndDataPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_RELATIONS_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited relation(s) and inherited data properties of the same name.",
                     Severity.ERROR,
                     self
@@ -524,7 +551,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingRelationsAndNavigationPropertiesOfTheSameNameIsNotAllowed", message = "Inherited relations and navigation properties have same name")
+    @Constraint(name = INHERITING_RELATIONS_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited relations and navigation properties have same name")
     public ValidationRule inheritingRelationsAndNavigationPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -535,7 +562,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingRelationsAndNavigationPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_RELATIONS_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited relation(s) and inherited navigation properties of the same name.",
                     Severity.ERROR,
                     self
@@ -546,7 +573,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingSequencesAndDataPropertiesOfTheSameNameIsNotAllowed", message = "Inherited sequences and data properties have same name")
+    @Constraint(name = INHERITING_SEQUENCES_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited sequences and data properties have same name")
     public ValidationRule inheritingSequencesAndDataPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -557,7 +584,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingSequencesAndDataPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_SEQUENCES_AND_DATA_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited sequence(s) and inherited data properties of the same name.",
                     Severity.ERROR,
                     self
@@ -568,7 +595,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingSequencesAndNavigationPropertiesOfTheSameNameIsNotAllowed", message = "Inherited sequences and navigation properties have same name")
+    @Constraint(name = INHERITING_SEQUENCES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited sequences and navigation properties have same name")
     public ValidationRule inheritingSequencesAndNavigationPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -579,7 +606,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingSequencesAndNavigationPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_SEQUENCES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited sequence(s) and inherited navigation properties of the same name.",
                     Severity.ERROR,
                     self
@@ -590,7 +617,7 @@ public class EntityTypeValidations {
         };
     }
 
-    @Constraint(name = "InheritingDataPropertiesAndNavigationPropertiesOfTheSameNameIsNotAllowed", message = "Inherited data properties and navigation properties have same name")
+    @Constraint(name = INHERITING_DATA_PROPERTIES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED, message = "Inherited data properties and navigation properties have same name")
     public ValidationRule inheritingDataPropertiesAndNavigationPropertiesOfTheSameNameIsNotAllowed() {
         return (element, context) -> {
             EntityType self = (EntityType) element;
@@ -601,7 +628,7 @@ public class EntityTypeValidations {
 
         if (hasConflict) {
             return ValidationResult.fail(
-                    "InheritingDataPropertiesAndNavigationPropertiesOfTheSameNameIsNotAllowed",
+                    INHERITING_DATA_PROPERTIES_AND_NAVIGATION_PROPERTIES_OF_THE_SAME_NAME_IS_NOT_ALLOWED,
                     "Entity type: " + self.getName() + " has inherited data properties and inherited navigation properties of the same name.",
                     Severity.ERROR,
                     self

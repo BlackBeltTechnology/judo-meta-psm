@@ -37,6 +37,15 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(AssociationEnd.class)
 public class AssociationEndValidations {
 
+    // Constraint/Critique name constants
+    private static final String CASCADE_DELETE_ONLY_ALLOWED_IF_UPPER_CARDINALITY_IS_ONE = "CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne";
+    private static final String PARTNER_IS_NOT_SELF = "PartnerIsNotSelf";
+    private static final String OPPOSITE_PARTNER_IS_DEFINED = "OppositePartnerIsDefined";
+    private static final String VALID_PARTNER_RELATIONS = "ValidPartnerRelations";
+    private static final String VALID_PARTNER_TYPE = "ValidPartnerType";
+    private static final String AT_LEAST_ONE_REFERENCE_IN_BIDIRECTIONAL_ASSOCIATION_HAS_ZERO_LOWER_BOUND = "AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound";
+    // External constraint references
+
     private EntityType getEntityType(AssociationEnd self) {
         if (self.eContainer() instanceof EntityType) {
             return (EntityType) self.eContainer();
@@ -44,7 +53,7 @@ public class AssociationEndValidations {
         return null;
     }
 
-    @Constraint(name = "CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne", message = "Cascade delete only allowed if upper cardinality is 1")
+    @Constraint(name = CASCADE_DELETE_ONLY_ALLOWED_IF_UPPER_CARDINALITY_IS_ONE, message = "Cascade delete only allowed if upper cardinality is 1")
     public ValidationRule cascadeDeleteOnlyAllowedIfUpperCardinalityIsOne() {
         return (element, context) -> {
             AssociationEnd self = (AssociationEnd) element;
@@ -55,7 +64,7 @@ public class AssociationEndValidations {
 
         if (self.getCardinality() == null || self.getCardinality().getUpper() != 1) {
             return ValidationResult.fail(
-                    "CascadeDeleteOnlyAllowedIfUpperCardinalityIsOne",
+                    CASCADE_DELETE_ONLY_ALLOWED_IF_UPPER_CARDINALITY_IS_ONE,
                     "Cascade delete behavior only allowed on endpoints if their upper cardinality is 1: " + self.getName(),
                     Severity.ERROR,
                     self
@@ -66,7 +75,7 @@ public class AssociationEndValidations {
         };
     }
 
-    @Constraint(name = "PartnerIsNotSelf", message = "Partner cannot be self")
+    @Constraint(name = PARTNER_IS_NOT_SELF, message = "Partner cannot be self")
     public ValidationRule partnerIsNotSelf() {
         return (element, context) -> {
             AssociationEnd self = (AssociationEnd) element;
@@ -77,7 +86,7 @@ public class AssociationEndValidations {
 
         if (self.getPartner() == self) {
             return ValidationResult.fail(
-                    "PartnerIsNotSelf",
+                    PARTNER_IS_NOT_SELF,
                     "Self partner relation found: " + self,
                     Severity.ERROR,
                     self
@@ -88,8 +97,8 @@ public class AssociationEndValidations {
         };
     }
 
-    @Constraint(name = "OppositePartnerIsDefined", message = "Opposite partner must be defined")
-    @Satisfies("partnerIsNotSelf")
+    @Constraint(name = OPPOSITE_PARTNER_IS_DEFINED, message = "Opposite partner must be defined")
+    @Satisfies(PARTNER_IS_NOT_SELF)
     public ValidationRule oppositePartnerIsDefined() {
         return (element, context) -> {
             AssociationEnd self = (AssociationEnd) element;
@@ -100,7 +109,7 @@ public class AssociationEndValidations {
 
         if (self.getPartner().getPartner() == null) {
             return ValidationResult.fail(
-                    "OppositePartnerIsDefined",
+                    OPPOSITE_PARTNER_IS_DEFINED,
                     "Missing opposite partner relation for " + self,
                     Severity.ERROR,
                     self
@@ -111,8 +120,8 @@ public class AssociationEndValidations {
         };
     }
 
-    @Constraint(name = "ValidPartnerRelations", message = "Invalid partner relations")
-    @Satisfies("oppositePartnerIsDefined")
+    @Constraint(name = VALID_PARTNER_RELATIONS, message = "Invalid partner relations")
+    @Satisfies(OPPOSITE_PARTNER_IS_DEFINED)
     public ValidationRule validPartnerRelations() {
         return (element, context) -> {
             AssociationEnd self = (AssociationEnd) element;
@@ -123,7 +132,7 @@ public class AssociationEndValidations {
 
         if (self.getPartner().getPartner() != self) {
             return ValidationResult.fail(
-                    "ValidPartnerRelations",
+                    VALID_PARTNER_RELATIONS,
                     "Opposite partner relation of " + self.getPartner() + " must be " + self,
                     Severity.ERROR,
                     self
@@ -134,7 +143,7 @@ public class AssociationEndValidations {
         };
     }
 
-    @Constraint(name = "ValidPartnerType", message = "Invalid partner type")
+    @Constraint(name = VALID_PARTNER_TYPE, message = "Invalid partner type")
     public ValidationRule validPartnerType() {
         return (element, context) -> {
             AssociationEnd self = (AssociationEnd) element;
@@ -151,7 +160,7 @@ public class AssociationEndValidations {
 
         if (!isValid) {
             return ValidationResult.fail(
-                    "ValidPartnerType",
+                    VALID_PARTNER_TYPE,
                     "Invalid partner type: " + self.getPartner() + " for " + self,
                     Severity.ERROR,
                     self
@@ -162,8 +171,8 @@ public class AssociationEndValidations {
         };
     }
 
-    @Critique(name = "AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound", message = "At least one reference in bidirectional association should have zero lower bound")
-    @Satisfies({"validPartnerRelations", "validPartnerType"})
+    @Critique(name = AT_LEAST_ONE_REFERENCE_IN_BIDIRECTIONAL_ASSOCIATION_HAS_ZERO_LOWER_BOUND, message = "At least one reference in bidirectional association should have zero lower bound")
+    @Satisfies({VALID_PARTNER_RELATIONS, VALID_PARTNER_TYPE})
     public ValidationRule atLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound() {
         return (element, context) -> {
             AssociationEnd self = (AssociationEnd) element;
@@ -182,7 +191,7 @@ public class AssociationEndValidations {
 
         if (!hasZeroLowerBound) {
             return ValidationResult.fail(
-                    "AtLeastOneReferenceInBidirectionalAssociationHasZeroLowerBound",
+                    AT_LEAST_ONE_REFERENCE_IN_BIDIRECTIONAL_ASSOCIATION_HAS_ZERO_LOWER_BOUND,
                     "At least one reference of a bidirectional association should have lower bound with zero: " + self + " or " + self.getPartner(),
                     Severity.WARNING,
                     self

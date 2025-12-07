@@ -37,8 +37,15 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(NavigationProperty.class)
 public class NavigationPropertyValidations {
 
-    @Constraint(name = "InheritedAndOwnNavigationPropertyNameIsUniqueInEntityType", message = "Navigation property has the same name as inherited content")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String INHERITED_AND_OWN_NAVIGATION_PROPERTY_NAME_IS_UNIQUE_IN_ENTITY_TYPE = "InheritedAndOwnNavigationPropertyNameIsUniqueInEntityType";
+    private static final String NAVIGATION_PROPERTY_IS_SINGLE_OR_COLLECTION = "NavigationPropertyIsSingleOrCollection";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = INHERITED_AND_OWN_NAVIGATION_PROPERTY_NAME_IS_UNIQUE_IN_ENTITY_TYPE, message = "Navigation property has the same name as inherited content")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule inheritedAndOwnNavigationPropertyNameIsUniqueInEntityType() {
         return (element, context) -> {
             NavigationProperty self = (NavigationProperty) element;
@@ -57,7 +64,7 @@ public class NavigationPropertyValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "InheritedAndOwnNavigationPropertyNameIsUniqueInEntityType",
+                    INHERITED_AND_OWN_NAVIGATION_PROPERTY_NAME_IS_UNIQUE_IN_ENTITY_TYPE,
                     "Navigation property: " + self.getName() + " has the same name as inherited content(s) of entity type: " + entityType.getName(),
                     Severity.ERROR,
                     self
@@ -68,7 +75,7 @@ public class NavigationPropertyValidations {
         };
     }
 
-    @Constraint(name = "NavigationPropertyIsSingleOrCollection", message = "Navigation property must be single or collection")
+    @Constraint(name = NAVIGATION_PROPERTY_IS_SINGLE_OR_COLLECTION, message = "Navigation property must be single or collection")
     public ValidationRule navigationPropertyIsSingleOrCollection() {
         return (element, context) -> {
             NavigationProperty self = (NavigationProperty) element;

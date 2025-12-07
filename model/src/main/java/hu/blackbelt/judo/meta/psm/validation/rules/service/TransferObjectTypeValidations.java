@@ -35,8 +35,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(TransferObjectType.class)
 public class TransferObjectTypeValidations {
 
-    @Critique(name = "TransferObjectTypeNamesAreUnique", message = "Transfer object type name is not unique")
-    @Satisfies("namedElementIsUniqueInItsContainer")
+    // Constraint/Critique name constants
+    private static final String TRANSFER_OBJECT_TYPE_NAMES_ARE_UNIQUE = "TransferObjectTypeNamesAreUnique";
+    // External constraint references
+    private static final String NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER = "namedElementIsUniqueInItsContainer";
+
+
+    @Critique(name = TRANSFER_OBJECT_TYPE_NAMES_ARE_UNIQUE, message = "Transfer object type name is not unique")
+    @Satisfies(NAMED_ELEMENT_IS_UNIQUE_IN_ITS_CONTAINER)
     public ValidationRule transferObjectTypeNamesAreUnique() {
         return (element, context) -> {
             TransferObjectType self = (TransferObjectType) element;
@@ -47,7 +53,7 @@ public class TransferObjectTypeValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "TransferObjectTypeNamesAreUnique",
+                    TRANSFER_OBJECT_TYPE_NAMES_ARE_UNIQUE,
                     "There are two or more transfer object types of the same name: " + self.getName(),
                     Severity.WARNING,
                     self

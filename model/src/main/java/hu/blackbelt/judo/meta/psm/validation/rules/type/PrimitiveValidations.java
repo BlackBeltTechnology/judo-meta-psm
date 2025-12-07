@@ -34,7 +34,11 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(Primitive.class)
 public class PrimitiveValidations {
 
-    @Critique(name = "PrimitiveTypeNamesAreUnique", message = "Primitive type name is not unique")
+    // Constraint/Critique name constants
+    private static final String PRIMITIVE_TYPE_NAMES_ARE_UNIQUE = "PrimitiveTypeNamesAreUnique";
+
+
+    @Critique(name = PRIMITIVE_TYPE_NAMES_ARE_UNIQUE, message = "Primitive type name is not unique")
     public ValidationRule primitiveTypeNamesAreUnique() {
         return (element, context) -> {
             Primitive self = (Primitive) element;
@@ -45,7 +49,7 @@ public class PrimitiveValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "PrimitiveTypeNamesAreUnique",
+                    PRIMITIVE_TYPE_NAMES_ARE_UNIQUE,
                     "Primitive type name is not unique: " + self.getName(),
                     Severity.WARNING,
                     self

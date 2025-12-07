@@ -37,8 +37,14 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(InvariantConstraint.class)
 public class InvariantConstraintValidations {
 
-    @Constraint(name = "InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType", message = "Invariant constraint has the same name as inherited content")
-    @Satisfies("namedElementHasContainer")
+    // Constraint/Critique name constants
+    private static final String INHERITED_AND_OWN_INVARIANT_CONSTRAINT_NAME_IS_UNIQUE_IN_ENTITY_TYPE = "InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType";
+    // External constraint references
+    private static final String NAMED_ELEMENT_HAS_CONTAINER = "namedElementHasContainer";
+
+
+    @Constraint(name = INHERITED_AND_OWN_INVARIANT_CONSTRAINT_NAME_IS_UNIQUE_IN_ENTITY_TYPE, message = "Invariant constraint has the same name as inherited content")
+    @Satisfies(NAMED_ELEMENT_HAS_CONTAINER)
     public ValidationRule inheritedAndOwnInvariantConstraintNameIsUniqueInEntityType() {
         return (element, context) -> {
             InvariantConstraint self = (InvariantConstraint) element;
@@ -57,7 +63,7 @@ public class InvariantConstraintValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "InheritedAndOwnInvariantConstraintNameIsUniqueInEntityType",
+                    INHERITED_AND_OWN_INVARIANT_CONSTRAINT_NAME_IS_UNIQUE_IN_ENTITY_TYPE,
                     "Invariant constraint: " + self.getName() + " has the same name as inherited content(s) of entity type: " + entityType.getName(),
                     Severity.ERROR,
                     self

@@ -38,6 +38,10 @@ import java.util.Set;
 @ValidationContext(TimeType.class)
 public class TimeValidations {
 
+    // Constraint/Critique name constants
+    private static final String TIME_BASE_UNIT_IS_VALID = "TimeBaseUnitIsValid";
+
+
     private static final Set<DurationType> VALID_BASE_UNITS = EnumSet.of(
             DurationType.NANOSECOND,
             DurationType.MICROSECOND,
@@ -45,13 +49,13 @@ public class TimeValidations {
             DurationType.SECOND
     );
 
-    @Constraint(name = "TimeBaseUnitIsValid", message = "Base unit of time type is invalid")
+    @Constraint(name = TIME_BASE_UNIT_IS_VALID, message = "Base unit of time type is invalid")
     public ValidationRule timeBaseUnitIsValid() {
         return (element, context) -> {
             TimeType self = (TimeType) element;
         if (!VALID_BASE_UNITS.contains(self.getBaseUnit())) {
             return ValidationResult.fail(
-                    "TimeBaseUnitIsValid",
+                    TIME_BASE_UNIT_IS_VALID,
                     "Base unit of time type: " + self.getName() + " is invalid.",
                     Severity.ERROR,
                     self

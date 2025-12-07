@@ -34,11 +34,17 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(TransferOperationBehaviour.class)
 public class GetTemplateBehaviourValidations {
 
+    // Constraint/Critique name constants
+    private static final String OPERATION_OF_GET_TEMPLATE_BEHAVIOUR_IS_VALID = "OperationOfGetTemplateBehaviourIsValid";
+    private static final String OWNER_OF_GET_TEMPLATE_BEHAVIOUR_IS_VALID = "OwnerOfGetTemplateBehaviourIsValid";
+    private static final String RELATION_OF_GET_TEMPLATE_BEHAVIOUR_IS_UNDEFINED = "RelationOfGetTemplateBehaviourIsUndefined";
+
+
     private boolean isGetTemplate(TransferOperationBehaviour self) {
         return self.eContainer() != null && self.getBehaviourType() == TransferOperationBehaviourType.GET_TEMPLATE;
     }
 
-    @Constraint(name = "OperationOfGetTemplateBehaviourIsValid", message = "GET_TEMPLATE behaviour must be owned by unbound operation")
+    @Constraint(name = OPERATION_OF_GET_TEMPLATE_BEHAVIOUR_IS_VALID, message = "GET_TEMPLATE behaviour must be owned by unbound operation")
     public ValidationRule operationOfGetTemplateBehaviourIsValid() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -48,7 +54,7 @@ public class GetTemplateBehaviourValidations {
 
         if (!(self.eContainer() instanceof UnboundOperation)) {
             return ValidationResult.fail(
-                    "OperationOfGetTemplateBehaviourIsValid",
+                    OPERATION_OF_GET_TEMPLATE_BEHAVIOUR_IS_VALID,
                     "'GET_TEMPLATE' behaviour type must be owned by unbound operation",
                     Severity.ERROR,
                     self
@@ -59,7 +65,7 @@ public class GetTemplateBehaviourValidations {
         };
     }
 
-    @Constraint(name = "OwnerOfGetTemplateBehaviourIsValid", message = "Owner of GET_TEMPLATE behaviour must be a transfer object type")
+    @Constraint(name = OWNER_OF_GET_TEMPLATE_BEHAVIOUR_IS_VALID, message = "Owner of GET_TEMPLATE behaviour must be a transfer object type")
     public ValidationRule ownerOfGetTemplateBehaviourIsValid() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -69,7 +75,7 @@ public class GetTemplateBehaviourValidations {
 
         if (self.getOwner() == null || !(self.getOwner() instanceof TransferObjectType)) {
             return ValidationResult.fail(
-                    "OwnerOfGetTemplateBehaviourIsValid",
+                    OWNER_OF_GET_TEMPLATE_BEHAVIOUR_IS_VALID,
                     "Owner of 'GET_TEMPLATE' behaviour must be a transfer object type",
                     Severity.ERROR,
                     self
@@ -80,7 +86,7 @@ public class GetTemplateBehaviourValidations {
         };
     }
 
-    @Constraint(name = "RelationOfGetTemplateBehaviourIsUndefined", message = "Relation for GET_TEMPLATE behaviour must be undefined")
+    @Constraint(name = RELATION_OF_GET_TEMPLATE_BEHAVIOUR_IS_UNDEFINED, message = "Relation for GET_TEMPLATE behaviour must be undefined")
     public ValidationRule relationOfGetTemplateBehaviourIsUndefined() {
         return (element, context) -> {
             TransferOperationBehaviour self = (TransferOperationBehaviour) element;
@@ -90,7 +96,7 @@ public class GetTemplateBehaviourValidations {
 
         if (self.getRelation() != null) {
             return ValidationResult.fail(
-                    "RelationOfGetTemplateBehaviourIsUndefined",
+                    RELATION_OF_GET_TEMPLATE_BEHAVIOUR_IS_UNDEFINED,
                     "Relation for 'GET_TEMPLATE' behaviour types must be undefined",
                     Severity.ERROR,
                     self

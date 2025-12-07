@@ -35,6 +35,11 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(UnboundOperation.class)
 public class UnboundOperationValidations {
 
+    // Constraint/Critique name constants
+    private static final String BEHAVIOUR_OR_IMPLEMENTATION_IS_REQUIRED = "BehaviourOrImplementationIsRequired";
+    private static final String INIT_OPERATION_CANNOT_HAVE_INPUT = "InitOperationCannotHaveInput";
+
+
     private String getContainerName(UnboundOperation self) {
         if (self.eContainer() instanceof NamedElement) {
             return ((NamedElement) self.eContainer()).getName();
@@ -42,13 +47,13 @@ public class UnboundOperationValidations {
         return String.valueOf(self.eContainer());
     }
 
-    @Constraint(name = "BehaviourOrImplementationIsRequired", message = "Unbound operation must have implementation or behaviour")
+    @Constraint(name = BEHAVIOUR_OR_IMPLEMENTATION_IS_REQUIRED, message = "Unbound operation must have implementation or behaviour")
     public ValidationRule behaviourOrImplementationIsRequired() {
         return (element, context) -> {
             UnboundOperation self = (UnboundOperation) element;
         if (self.getImplementation() == null && self.getBehaviour() == null) {
             return ValidationResult.fail(
-                    "BehaviourOrImplementationIsRequired",
+                    BEHAVIOUR_OR_IMPLEMENTATION_IS_REQUIRED,
                     "Unbound operation must have implementation or behaviour (" + getContainerName(self) + "." + self.getName() + ")",
                     Severity.ERROR,
                     self
@@ -59,7 +64,7 @@ public class UnboundOperationValidations {
         };
     }
 
-    @Constraint(name = "InitOperationCannotHaveInput", message = "Initializer operation cannot have input")
+    @Constraint(name = INIT_OPERATION_CANNOT_HAVE_INPUT, message = "Initializer operation cannot have input")
     public ValidationRule initOperationCannotHaveInput() {
         return (element, context) -> {
             UnboundOperation self = (UnboundOperation) element;
@@ -70,7 +75,7 @@ public class UnboundOperationValidations {
 
         if (self.getInput() != null) {
             return ValidationResult.fail(
-                    "InitOperationCannotHaveInput",
+                    INIT_OPERATION_CANNOT_HAVE_INPUT,
                     "Initializer operation: " + self.getName() + " cannot have input.",
                     Severity.ERROR,
                     self

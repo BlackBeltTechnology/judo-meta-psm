@@ -34,7 +34,11 @@ import hu.blackbelt.judo.zeta.validation.core.Severity;
 @ValidationContext(StaticData.class)
 public class StaticDataValidations {
 
-    @Critique(name = "StaticDataNamesAreUnique", message = "Static data name is not unique")
+    // Constraint/Critique name constants
+    private static final String STATIC_DATA_NAMES_ARE_UNIQUE = "StaticDataNamesAreUnique";
+
+
+    @Critique(name = STATIC_DATA_NAMES_ARE_UNIQUE, message = "Static data name is not unique")
     public ValidationRule staticDataNamesAreUnique() {
         return (element, context) -> {
             StaticData self = (StaticData) element;
@@ -45,7 +49,7 @@ public class StaticDataValidations {
 
         if (hasDuplicate) {
             return ValidationResult.fail(
-                    "StaticDataNamesAreUnique",
+                    STATIC_DATA_NAMES_ARE_UNIQUE,
                     "Static data name is not unique: " + self.getName(),
                     Severity.WARNING,
                     self
