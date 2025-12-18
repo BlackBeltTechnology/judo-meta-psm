@@ -102,6 +102,26 @@ judo-meta-psm/
 | `designer-feature/` | eclipse-feature | Designer UI feature |
 | `site/` | eclipse-repository | P2 update site for Eclipse distribution |
 
+## CLI Integration Layer
+
+This metamodel integrates with the **JUDO Model CLI** (`judo-model-cli`) to provide GraphQL querying capabilities:
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `PsmModelSchema` | `model/src-gen/java/.../cli/` | ModelSchema implementation providing GraphQL operations for PSM queries |
+| `PsmFqnResolverImpl` | `model/src-gen/java/.../cli/` | Resolves PSM Fully Qualified Names (format: `demo::entities::Customer.name`) |
+| `PsmValidatorImpl` | `model/src-gen/java/.../cli/` | Integrates EVL/Java validation with CLI |
+
+**CLI Capabilities:**
+- **GraphQL Queries**: `{ psm { count(type: "EntityType") } }`, `{ entityTypes { fqn name } }`
+- **PSM Queries**: Access all PSM elements (EntityType, TransferObjectType, BoundOperation, etc.)
+- **Validation**: `validate` command using EVL or Java validation framework
+- **Transformation Tracing**: Track PSM elements to RDBMS and UI models
+
+**Generated Files**: CLI integration classes are generated via `model/src/workflow/generateModel.mwe2` using the template in `emf-genmodel-generator/cli/ModelSchemaGenerator.xtend`.
+
+**See Also**: [judo-model-cli/AGENTS.md](../../judo-model-cli/AGENTS.md) for complete CLI documentation.
+
 ## PSM Metamodel Structure
 
 The core metamodel (`model/model/psm.ecore`) defines these packages:
@@ -239,3 +259,4 @@ mvn clean install
 - `docs/validation/README.md` - Validation rules overview
 - `docs/validation/java-validation-framework.md` - PSM-specific Java validation documentation
 - `docs/zeta/` - Complete Zeta validation framework documentation (getting started, user guide, examples, reference)
+- [judo-model-cli/AGENTS.md](../../judo-model-cli/AGENTS.md) - JUDO Model CLI documentation

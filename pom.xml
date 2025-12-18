@@ -94,7 +94,7 @@
         <tycho-version>4.0.13</tycho-version>
         <jackson-version>2.17.2</jackson-version>
 
-        <emf-genmodel-generator-version>1.1.1.20251205_144303_04125fa3_develop</emf-genmodel-generator-version>
+        <emf-genmodel-generator-version>1.1.1-SNAPSHOT</emf-genmodel-generator-version>
         <judo-genmodel-generator-version>1.1.2.20251205_154407_83ad88a7_develop</judo-genmodel-generator-version>
         <judo-epp-common-version>4.35.0.20250605_190936_39ca7ff3_develop</judo-epp-common-version>
         <judo-generator-commons-version>1.0.0.20251205_002803_8f2ad582_develop</judo-generator-commons-version>
@@ -132,6 +132,8 @@
         <sonar.language>java</sonar.language>
         <sonar.java.source>${java.version}</sonar.java.source>
         <jacoco.version>0.8.12</jacoco.version>
+
+        <cli-api-version>1.0.0-SNAPSHOT</cli-api-version>
     </properties>
 
     <repositories>
@@ -183,10 +185,10 @@
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-versions-plugin</artifactId>
             </plugin>
-           
+
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-source-plugin</artifactId>            
+                <artifactId>tycho-source-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -344,7 +346,7 @@
                 </plugin>
 
 
-                <!--This plugin's configuration is used to store Eclipse m2e settings 
+                <!--This plugin's configuration is used to store Eclipse m2e settings
                     only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -548,7 +550,7 @@
                                         <ignore />
                                     </action>
                                 </pluginExecution>
-                                
+
                                 <pluginExecution>
                                     <pluginExecutionFilter>
                                         <groupId>

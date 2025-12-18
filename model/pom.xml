@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>hu.blackbelt.judo.meta</groupId>
         <artifactId>hu.blackbelt.judo.meta.psm</artifactId>
@@ -11,7 +11,7 @@
     </parent>
     <artifactId>hu.blackbelt.judo.meta.psm.model</artifactId>
     <packaging>eclipse-plugin</packaging>
-    
+
     <name>Judo :: Psm :: Model :: Eclipse plugin</name>
     <description>Judo Psm model eclipse plugin</description>
 
@@ -48,6 +48,11 @@
                         <groupId>org.eclipse.emf</groupId>
                         <artifactId>org.eclipse.emf.mwe2.launch</artifactId>
                         <version>${emf-mwe2-launch-version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>hu.blackbelt.eclipse</groupId>
+                        <artifactId>hu.blackbelt.eclipse.emf.genmodel.generator.cli</artifactId>
+                        <version>${emf-genmodel-generator-version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -208,6 +213,13 @@
         <dependency>
             <groupId>hu.blackbelt.judo.zeta</groupId>
             <artifactId>hu.blackbelt.judo.zeta.validation-core</artifactId>
+        </dependency>
+
+        <!-- Model CLI API for implementing ModelSchema interface -->
+        <dependency>
+            <groupId>hu.blackbelt.judo</groupId>
+            <artifactId>judo-model-cli-api</artifactId>
+            <version>${cli-api-version}</version>
         </dependency>
     </dependencies>
 </project>
