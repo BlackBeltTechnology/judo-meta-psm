@@ -25,7 +25,7 @@ Workflow {
 	component = EcoreGenerator {
 		generateCustomClasses = false
 		genModel = "${platformUri}/${modelDir}/psm.genmodel"
-		srcPath = "${platformUri}/src/main/java"   
+		srcPath = "${platformUri}/src/main/java"
 	}
 
 	// Helper for model
@@ -38,7 +38,7 @@ Workflow {
 	component = hu.blackbelt.eclipse.emf.genmodel.generator.builder.BuilderGeneratorWorkflow {
 		modelDir = "${rootPath}/${modelDir}"
 		javaGenPath = "${rootPath}/${javaGenPath}"
-	}	
+	}
 
 	// Judo RuntimeModel for model
 	component = hu.blackbelt.judo.eclipse.emf.genmodel.generator.runtimemodel.RuntimeModelGeneratorWorkflow {
@@ -46,5 +46,13 @@ Workflow {
 		javaGenPath = "${rootPath}/${javaGenPath}"
 		resolveModelName = "psmModelResourceSupport.getStreamOfPsmNamespaceModel().findFirst().orElseThrow(() -> new IllegalStateException(\"Could not get PSM model\")).getName()"
 		resolveModelVersion = "psmModelResourceSupport.getStreamOfPsmNamespaceModel().findFirst().orElseThrow(() -> new IllegalStateException(\"Could not get PSM model\")).getVersion()"
+	}
+
+	// Judo CLI for model
+	component = hu.blackbelt.eclipse.emf.genmodel.generator.cli.CliGeneratorWorkflow {
+		modelDir = "${rootPath}/${modelDir}"
+		javaGenPath = "${rootPath}/${javaGenPath}"
+		resolverClass = "hu.blackbelt.judo.meta.psm.cli.PsmFqnResolverImpl"
+		validatorClass = "hu.blackbelt.judo.meta.psm.cli.PsmValidatorImpl"
 	}
 }

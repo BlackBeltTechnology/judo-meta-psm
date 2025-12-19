@@ -16,7 +16,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.epsilon.evl.emf.validation,
  org.eclipse.epsilon.common,
  hu.blackbelt.epsilon.runtime-execution,
- hu.blackbelt.epsilon.runtime-utils
+ hu.blackbelt.epsilon.runtime-utils,
+ hu.blackbelt.judo.zeta.common;resolution:=optional,
+ hu.blackbelt.judo.zeta.annotations;resolution:=optional,
+ hu.blackbelt.judo.zeta.validation-core;resolution:=optional
 Export-Package: hu.blackbelt.judo.meta.psm,
  hu.blackbelt.judo.meta.psm.accesspoint,
  hu.blackbelt.judo.meta.psm.accesspoint.impl,
@@ -57,6 +60,14 @@ Export-Package: hu.blackbelt.judo.meta.psm,
  hu.blackbelt.judo.meta.psm.type.util,
  hu.blackbelt.judo.meta.psm.type.util.builder,
  hu.blackbelt.judo.meta.psm.util,
- hu.blackbelt.judo.meta.psm.util.builder
+ hu.blackbelt.judo.meta.psm.util.builder,
+ hu.blackbelt.judo.meta.psm.validation,
+ hu.blackbelt.judo.meta.psm.validation.rules.namespace,
+ hu.blackbelt.judo.meta.psm.validation.rules.type,
+ hu.blackbelt.judo.meta.psm.validation.rules.data,
+ hu.blackbelt.judo.meta.psm.validation.rules.derived,
+ hu.blackbelt.judo.meta.psm.validation.rules.measure,
+ hu.blackbelt.judo.meta.psm.validation.rules.service,
+ hu.blackbelt.judo.meta.psm.validation.rules.accesspoint
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: hu.blackbelt.judo.meta.psm.model
