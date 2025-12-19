@@ -145,6 +145,34 @@ public class PsmValidator {
     }
 
     /**
+     * Validates a PSM model and throws an exception if there are any errors.
+     *
+     * @param log      the logger to use
+     * @param psmModel the PSM model to validate
+     * @throws PsmModel.PsmValidationException if validation fails with errors
+     */
+    public static void validatePsm(Logger log, PsmModel psmModel) throws PsmModel.PsmValidationException {
+        List<ValidationResult> results = validate(log, psmModel);
+
+        // Check for errors
+        List<ValidationResult> errors = results.stream()
+                .filter(r -> r.getSeverity() == Severity.ERROR)
+                .collect(Collectors.toList());
+
+        // Log warnings
+        results.stream()
+                .filter(r -> r.getSeverity() == Severity.WARNING)
+                .forEach(w -> log.warn("[{}] {}", w.getConstraintName(), w.getMessage()));
+
+        if (!errors.isEmpty()) {
+            for (ValidationResult error : errors) {
+                log.error("[{}] {}", error.getConstraintName(), error.getMessage());
+            }
+            throw new PsmModel.PsmValidationException(psmModel);
+        }
+    }
+
+    /**
      * Validates a PSM model and throws an exception if there are unexpected errors or warnings.
      *
      * @param log              the logger to use

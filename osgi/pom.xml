@@ -36,7 +36,8 @@
 							*
 						</Import-Package>
 						<Export-Package>
-                            hu.blackbelt.judo.meta.psm*;version=${project.version}
+                            hu.blackbelt.judo.meta.psm*;version=${project.version},
+                            !hu.blackbelt.judo.meta.psm.cli,
                         </Export-Package>
 						<Include-Resource>
                             {maven-resources},
