@@ -201,25 +201,9 @@
             <artifactId>epsilon-runtime-execution</artifactId>
         </dependency>
 
-        <!-- Judo Zeta Validation Framework -->
-        <dependency>
-            <groupId>hu.blackbelt.judo.zeta</groupId>
-            <artifactId>hu.blackbelt.judo.zeta.common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>hu.blackbelt.judo.zeta</groupId>
-            <artifactId>hu.blackbelt.judo.zeta.annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>hu.blackbelt.judo.zeta</groupId>
-            <artifactId>hu.blackbelt.judo.zeta.validation-core</artifactId>
-        </dependency>
-
-        <!-- Model CLI API for implementing ModelSchema interface -->
         <dependency>
             <groupId>hu.blackbelt.judo.cli</groupId>
             <artifactId>judo-cli-api</artifactId>
-            <version>${judo-cli-api-version}</version>
         </dependency>
     </dependencies>
 </project>

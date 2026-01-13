@@ -133,7 +133,7 @@
         <sonar.java.source>${java.version}</sonar.java.source>
         <jacoco.version>0.8.12</jacoco.version>
 
-        <judo-cli-api-version>1.0.0.20260108_122217_1b5b40eb_develop</judo-cli-api-version>
+        <judo-cli-api-version>1.0.0-SNAPSHOT</judo-cli-api-version>
     </properties>
 
     <repositories>
@@ -862,6 +862,11 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback-version}</version>
+            </dependency>
+ 			<dependency>
+                <groupId>hu.blackbelt.judo.cli</groupId>
+                <artifactId>judo-cli-api</artifactId>
+                <version>${judo-cli-api-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
