@@ -1,16 +1,14 @@
 package hu.blackbelt.judo.meta.psm.cli;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import hu.blackbelt.judo.cli.api.FqnCache;
 import hu.blackbelt.judo.cli.api.FqnResolver;
 import hu.blackbelt.judo.meta.psm.PsmUtils;
 import hu.blackbelt.judo.meta.psm.data.Attribute;
@@ -41,22 +39,26 @@ import hu.blackbelt.judo.meta.psm.type.Cardinality;
  * PSM FQN resolver implementation.
  * <p>
  * Implements {@link FqnResolver} from model-cli-api for type-safe FQN resolution.
+ * Uses {@link FqnCache} for lazy loading - elements are only loaded when actually requested.
  */
 public class PsmFqnResolverImpl implements FqnResolver {
 
-    private final Map<String, EObject> cache = new ConcurrentHashMap<>();
     private ResourceSet resourceSet;
+    private FqnCache cache;
 
     @Override
-    public synchronized void bind(ResourceSet resourceSet) {
+    public void bind(ResourceSet resourceSet) {
         this.resourceSet = resourceSet;
-        rebuildCache();
+        this.cache = FqnCache.getCache(resourceSet, this::computeFqn);
     }
 
     @Override
-    public synchronized void unbind() {
+    public void unbind() {
+        if (resourceSet != null) {
+            FqnCache.invalidate(resourceSet);
+        }
         this.resourceSet = null;
-        cache.clear();
+        this.cache = null;
     }
 
     @Override
@@ -71,29 +73,34 @@ public class PsmFqnResolverImpl implements FqnResolver {
 
     @Override
     public Optional<EObject> resolve(String fqn) {
-        if (fqn == null) {
+        if (cache == null) {
             return Optional.empty();
         }
-        return Optional.ofNullable(cache.get(fqn));
+        return cache.resolve(fqn);
     }
 
     @Override
     public Stream<String> getFqnCollection() {
-        return cache.keySet().stream();
+        if (cache == null) {
+            return Stream.empty();
+        }
+        return cache.getFqnCollection();
     }
 
     @Override
     public Optional<String> getFqn(EObject eObject) {
-        return computeFqn(eObject);
+        if (cache == null) {
+            return Optional.empty();
+        }
+        return cache.getFqn(eObject);
     }
 
     @Override
     public Stream<String> findByPattern(String pattern) {
-        if (pattern == null || pattern.isEmpty()) {
-            return getFqnCollection();
+        if (cache == null) {
+            return Stream.empty();
         }
-        return cache.keySet().stream()
-                .filter(fqn -> fqn.matches(pattern));
+        return cache.findByPattern(pattern);
     }
 
     @Override
@@ -112,21 +119,6 @@ public class PsmFqnResolverImpl implements FqnResolver {
                 })
                 .filter(Objects::nonNull)
                 .findFirst();
-    }
-
-    private void rebuildCache() {
-        cache.clear();
-        if (resourceSet == null) {
-            return;
-        }
-        TreeIterator<?> iterator = resourceSet.getAllContents();
-        while (iterator.hasNext()) {
-            Object next = iterator.next();
-            if (next instanceof EObject) {
-                EObject current = (EObject) next;
-                computeFqn(current).ifPresent(fqn -> cache.put(fqn, current));
-            }
-        }
     }
 
     private Optional<String> computeFqn(EObject eObject) {
