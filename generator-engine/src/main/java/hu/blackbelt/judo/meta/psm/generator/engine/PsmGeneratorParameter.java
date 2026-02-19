@@ -22,6 +22,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
+import hu.blackbelt.judo.generator.commons.FileNormalizerRegistry;
 import hu.blackbelt.judo.generator.commons.ModelGeneratorContext;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
@@ -59,4 +60,7 @@ public final class PsmGeneratorParameter {
 
     @Builder.Default
     boolean validateChecksum = true;
+
+    @Builder.Default
+    FileNormalizerRegistry normalizerRegistry = null;
 }

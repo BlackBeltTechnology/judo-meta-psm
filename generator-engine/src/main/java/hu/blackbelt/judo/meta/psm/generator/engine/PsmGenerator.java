@@ -78,6 +78,7 @@ public class PsmGenerator {
                 .log(parameter.log)
                 .performExecutor(p -> execute(parameter))
                 .validateChecksum(parameter.validateChecksum)
+                .normalizerRegistry(parameter.normalizerRegistry)
                 .build();
     }
 
