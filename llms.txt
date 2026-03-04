@@ -37,6 +37,31 @@ Key facts:
 - [feature/feature.xml](feature/feature.xml): Eclipse feature packaging for P2 installation
 - [site/pom.xml](site/pom.xml): Eclipse P2 update site with version-specific URLs
 
+## Depends on
+
+- [judo-cli-api](../judo-cli-api): models/judo-cli-api
+- [judo-generator-commons](../../runtime/judo-generator-commons): runtime/judo-generator-commons
+- [osgi-utils](../../runtime/osgi-utils): runtime/osgi-utils
+- [epsilon-runtime](../../tools/epsilon-runtime): tools/epsilon-runtime
+
+## Used by
+
+- [judo-meta-expression-psm](../judo-meta-expression-psm): models/judo-meta-expression-psm
+- [judo-model-cli](../../runtime/judo-model-cli): runtime/judo-model-cli
+- [judo-platform](../../runtime/judo-platform): runtime/judo-platform
+- [judo-runtime-core-esm-itest](../../runtime/judo-runtime-core-esm-itest): runtime/judo-runtime-core-esm-itest
+- [judo-runtime-core-jsl](../../runtime/judo-runtime-core-jsl): runtime/judo-runtime-core-jsl
+- [judo-script-codegen](../../runtime/judo-script-codegen): runtime/judo-script-codegen
+- [judo-services](../../runtime/judo-services): runtime/judo-services
+- [judo-tatami](../../runtime/judo-tatami): runtime/judo-tatami
+- [judo-tatami-base](../../runtime/judo-tatami-base): runtime/judo-tatami-base
+- [judo-tatami-jsl](../../runtime/judo-tatami-jsl): runtime/judo-tatami-jsl
+- [judo-spring-maven-plugin](../../spring/judo-spring-maven-plugin): spring/judo-spring-maven-plugin
+- [judo-psm-generator-jaxrs](../../template/judo-psm-generator-jaxrs): template/judo-psm-generator-jaxrs
+- [judo-psm-generator-report](../../template/judo-psm-generator-report): template/judo-psm-generator-report
+- [judo-psm-generator-restassured](../../template/judo-psm-generator-restassured): template/judo-psm-generator-restassured
+- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): template/judo-psm-generator-sdk-core
+
 ## Optional
 
 - [.github/workflows/build.yml](.github/workflows/build.yml): CI/CD build pipeline
