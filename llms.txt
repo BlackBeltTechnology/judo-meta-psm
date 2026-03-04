@@ -1,0 +1,46 @@
+# judo-meta-psm
+
+> The PSM (Platform Specific Model) metamodel for the JUDO framework — defines the foundational data model for model-driven application development using Eclipse Modeling Framework (EMF).
+
+Key facts:
+- Java 21, Maven 3.9.4 with Tycho 4.0.13 (Eclipse/OSGi plugin builds)
+- Multi-module project with 10 modules across metamodel, code generation, and OSGi/Eclipse distribution
+- EMF (Ecore) metamodel with Epsilon (EVL) validation rules
+- Code generation engine using Handlebars templates + Spring Expression Language (SpEL)
+- Runs as Eclipse plugin, standalone Java library, or OSGi bundle (Karaf)
+- License: Eclipse Public License 2.0 (EPL-2.0)
+
+## Docs
+
+- [README.md](README.md): Project overview, ecosystem context, and module architecture diagrams
+- [AGENTS.md](AGENTS.md): Developer guide with build commands, directory structure, and coding conventions
+- [CONTRIBUTING.md](CONTRIBUTING.md): Development setup, branching strategy, and submission guidelines
+- [generator-maven-plugin/README.md](generator-maven-plugin/README.md): Maven plugin configuration and template system documentation
+- [model/README.md](model/README.md): PSM operation behaviour reference
+
+## Modules — Core Model
+
+- [model/pom.xml](model/pom.xml): Eclipse plugin containing the Ecore metamodel (psm.ecore), EMF-generated Java classes, Epsilon validators, and PsmUtils
+- [model-test/pom.xml](model-test/pom.xml): JUnit 5 tests exercising Epsilon validators against programmatically constructed models and the Northwind reference model
+- [northwind-model/pom.xml](northwind-model/pom.xml): Reference PSM model based on the Northwind database schema, used across test modules
+
+## Modules — Code Generation
+
+- [generator-engine/pom.xml](generator-engine/pom.xml): Core generation engine reading PSM models + YAML descriptors, evaluating SpEL expressions, rendering Handlebars templates
+- [generator-maven-plugin/pom.xml](generator-maven-plugin/pom.xml): Maven plugin wrapping the generator engine with goals for generate, clean, checksum, and gitignore sync
+- [generator-maven-plugin-test/pom.xml](generator-maven-plugin-test/pom.xml): Integration tests for Maven plugin goal execution
+
+## Modules — OSGi & Eclipse Distribution
+
+- [osgi/pom.xml](osgi/pom.xml): OSGi bundle repackaging the model with PsmModelBundleTracker for automatic model discovery and service registration
+- [osgi-itest/pom.xml](osgi-itest/pom.xml): Pax Exam integration tests validating OSGi bundle lifecycle and service registration
+- [feature/feature.xml](feature/feature.xml): Eclipse feature packaging for P2 installation
+- [site/pom.xml](site/pom.xml): Eclipse P2 update site with version-specific URLs
+
+## Optional
+
+- [.github/workflows/build.yml](.github/workflows/build.yml): CI/CD build pipeline
+- [.github/workflows/release.yml](.github/workflows/release.yml): Manual release pipeline
+- [.github/CIFLOW.md](.github/CIFLOW.md): GitHub Actions pipeline documentation
+- [LICENSE.txt](LICENSE.txt): Eclipse Public License 2.0 text
+- [logback-test.xml](logback-test.xml): Shared test logging configuration
