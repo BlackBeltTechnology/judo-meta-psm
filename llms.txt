@@ -39,28 +39,28 @@ Key facts:
 
 ## Depends on
 
-- [judo-cli-api](../judo-cli-api): models/judo-cli-api
-- [judo-generator-commons](../../runtime/judo-generator-commons): runtime/judo-generator-commons
-- [osgi-utils](../../runtime/osgi-utils): runtime/osgi-utils
-- [epsilon-runtime](../../tools/epsilon-runtime): tools/epsilon-runtime
+- [judo-cli-api](../judo-cli-api): CLI API contracts and caching layer decoupling CLI from metamodels
+- [judo-generator-commons](../../runtime/judo-generator-commons): Handlebars template-based code generation framework
+- [osgi-utils](../../runtime/osgi-utils): OSGi utility library — lifecycle tracking, config monitoring, ranked services
+- [epsilon-runtime](../../tools/epsilon-runtime): Eclipse Epsilon runtime for Maven and OSGi environments
 
 ## Used by
 
-- [judo-meta-expression-psm](../judo-meta-expression-psm): models/judo-meta-expression-psm
-- [judo-model-cli](../../runtime/judo-model-cli): runtime/judo-model-cli
-- [judo-platform](../../runtime/judo-platform): runtime/judo-platform
-- [judo-runtime-core-esm-itest](../../runtime/judo-runtime-core-esm-itest): runtime/judo-runtime-core-esm-itest
-- [judo-runtime-core-jsl](../../runtime/judo-runtime-core-jsl): runtime/judo-runtime-core-jsl
-- [judo-script-codegen](../../runtime/judo-script-codegen): runtime/judo-script-codegen
-- [judo-services](../../runtime/judo-services): runtime/judo-services
-- [judo-tatami](../../runtime/judo-tatami): runtime/judo-tatami
-- [judo-tatami-base](../../runtime/judo-tatami-base): runtime/judo-tatami-base
-- [judo-tatami-jsl](../../runtime/judo-tatami-jsl): runtime/judo-tatami-jsl
-- [judo-spring-maven-plugin](../../spring/judo-spring-maven-plugin): spring/judo-spring-maven-plugin
-- [judo-psm-generator-jaxrs](../../template/judo-psm-generator-jaxrs): template/judo-psm-generator-jaxrs
-- [judo-psm-generator-report](../../template/judo-psm-generator-report): template/judo-psm-generator-report
-- [judo-psm-generator-restassured](../../template/judo-psm-generator-restassured): template/judo-psm-generator-restassured
-- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): template/judo-psm-generator-sdk-core
+- [judo-meta-expression-psm](../judo-meta-expression-psm): Bridges Expression metamodel with PSM for type resolution and measurement support
+- [judo-model-cli](../../runtime/judo-model-cli): CLI for querying and transforming JUDO models via GraphQL
+- [judo-platform](../../runtime/judo-platform): Model-driven OSGi runtime platform with REST APIs and Karaf deployment
+- [judo-runtime-core-esm-itest](../../runtime/judo-runtime-core-esm-itest): Integration tests for ESM-to-RDBMS transformation pipeline
+- [judo-runtime-core-jsl](../../runtime/judo-runtime-core-jsl): JSL support for runtime core — model parsing through to DAOs and schema
+- [judo-script-codegen](../../runtime/judo-script-codegen): Transpiles JCL scripts into executable Java source code
+- [judo-services](../../runtime/judo-services): OSGi runtime services enabling multiple data models in a single Karaf container
+- [judo-tatami](../../runtime/judo-tatami): Model transformation pipeline — ESM/PSM to deployable application artifacts
+- [judo-tatami-base](../../runtime/judo-tatami-base): PSM transformation pipeline — models to schemas, expressions, and configurations
+- [judo-tatami-jsl](../../runtime/judo-tatami-jsl): JSL-to-runtime model transformation engine (PSM, ASM, UI, RDBMS, etc.)
+- [judo-spring-maven-plugin](../../spring/judo-spring-maven-plugin): Maven plugin transforming JSL models into Spring Boot application code
+- [judo-psm-generator-jaxrs](../../template/judo-psm-generator-jaxrs): Generates JAX-RS interfaces, DTOs, and service implementations from PSM
+- [judo-psm-generator-report](../../template/judo-psm-generator-report): Generates JasperReports reporting solutions from PSM models
+- [judo-psm-generator-restassured](../../template/judo-psm-generator-restassured): Generates REST Assured test API clients from PSM
+- [judo-psm-generator-sdk-core](../../template/judo-psm-generator-sdk-core): Generates SDK core layer — DAOs, DTOs, builders, and DI wiring from PSM
 
 ## Optional
 
