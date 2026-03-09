@@ -28,8 +28,6 @@ public class ContainmentBuilder implements IDataBuilder<hu.blackbelt.judo.meta.p
      private boolean m_featureDocumentationSet = false;
      private boolean m_featureNameSet = false;
      private boolean m_featureTargetSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("Containment");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -211,4 +209,5 @@ public class ContainmentBuilder implements IDataBuilder<hu.blackbelt.judo.meta.p
          m_featureAnnotationsBuilder.add(p_containmentBuilder);
          return this;
      }
+
 }

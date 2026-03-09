@@ -21,8 +21,6 @@ public class OperationBodyBuilder implements IDataBuilder<hu.blackbelt.judo.meta
      private boolean m_featureBodySet = false;
      private boolean m_featureCustomImplementationSet = false;
      private boolean m_featureStatefulSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("OperationBody");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -132,5 +130,6 @@ public class OperationBodyBuilder implements IDataBuilder<hu.blackbelt.judo.meta
          m_featureStatefulSet = true;
          return this;
      }
+
 
 }

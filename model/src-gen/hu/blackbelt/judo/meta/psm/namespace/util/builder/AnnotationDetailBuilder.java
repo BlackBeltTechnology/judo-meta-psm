@@ -19,8 +19,6 @@ public class AnnotationDetailBuilder implements INamespaceBuilder<hu.blackbelt.j
      private boolean m_nullCheck = false;
      private boolean m_featureNameSet = false;
      private boolean m_featureValueSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.namespace.NamespacePackage.eINSTANCE.getEClassifier("AnnotationDetail");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -126,5 +124,6 @@ public class AnnotationDetailBuilder implements INamespaceBuilder<hu.blackbelt.j
          m_featureValueSet = true;
          return this;
      }
+
 
 }

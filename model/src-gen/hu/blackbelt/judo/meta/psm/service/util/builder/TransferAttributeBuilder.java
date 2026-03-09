@@ -32,8 +32,6 @@ public class TransferAttributeBuilder implements IServiceBuilder<hu.blackbelt.ju
      private boolean m_featureDocumentationSet = false;
      private boolean m_featureNameSet = false;
      private boolean m_featureRequiredSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("TransferAttribute");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -224,4 +222,5 @@ public class TransferAttributeBuilder implements IServiceBuilder<hu.blackbelt.ju
          m_featureAnnotationsBuilder.add(p_transferAttributeBuilder);
          return this;
      }
+
 }

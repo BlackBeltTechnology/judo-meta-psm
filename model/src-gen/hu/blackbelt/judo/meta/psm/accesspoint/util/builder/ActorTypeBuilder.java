@@ -45,8 +45,6 @@ public class ActorTypeBuilder implements IAccesspointBuilder<hu.blackbelt.judo.m
      private boolean m_featureRelationsSet = false;
      private boolean m_featureRepresentationSet = false;
      private boolean m_featureTransferObjectTypeSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.accesspoint.AccesspointPackage.eINSTANCE.getEClassifier("ActorType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -354,4 +352,5 @@ public class ActorTypeBuilder implements IAccesspointBuilder<hu.blackbelt.judo.m
          m_featureRelationsBuilder.add(p_actorTypeBuilder);
          return this;
      }
+
 }

@@ -32,8 +32,6 @@ public class DataPropertyBuilder implements IDerivedBuilder<hu.blackbelt.judo.me
      private boolean m_featureNameSet = false;
      private boolean m_featureRequiredSet = false;
      private boolean m_featureSetterExpressionSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.derived.DerivedPackage.eINSTANCE.getEClassifier("DataProperty");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -235,4 +233,5 @@ public class DataPropertyBuilder implements IDerivedBuilder<hu.blackbelt.judo.me
          m_featureAnnotationsBuilder.add(p_dataPropertyBuilder);
          return this;
      }
+
 }

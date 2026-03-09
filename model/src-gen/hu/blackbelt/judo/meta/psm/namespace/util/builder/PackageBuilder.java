@@ -27,8 +27,6 @@ public class PackageBuilder implements INamespaceBuilder<hu.blackbelt.judo.meta.
      private boolean m_featureElementsSet = false;
      private boolean m_featureNameSet = false;
      private boolean m_featurePackagesSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.namespace.NamespacePackage.eINSTANCE.getEClassifier("Package");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -223,4 +221,5 @@ public class PackageBuilder implements INamespaceBuilder<hu.blackbelt.judo.meta.
          m_featurePackagesBuilder.add(p_packageBuilder);
          return this;
      }
+
 }

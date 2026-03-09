@@ -29,8 +29,6 @@ public class ParameterBuilder implements IServiceBuilder<hu.blackbelt.judo.meta.
      private boolean m_featureNameSet = false;
      private boolean m_featureTypeSet = false;
      private boolean m_featureWrapAsOptionalSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("Parameter");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -213,4 +211,5 @@ public class ParameterBuilder implements IServiceBuilder<hu.blackbelt.judo.meta.
          m_featureAnnotationsBuilder.add(p_parameterBuilder);
          return this;
      }
+
 }

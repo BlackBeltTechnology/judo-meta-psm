@@ -22,8 +22,6 @@ public class DateTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.psm.
      private boolean m_featureAnnotationsSet = false;
      private boolean m_featureDocumentationSet = false;
      private boolean m_featureNameSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.type.TypePackage.eINSTANCE.getEClassifier("DateType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -161,4 +159,5 @@ public class DateTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.psm.
          m_featureAnnotationsBuilder.add(p_dateTypeBuilder);
          return this;
      }
+
 }

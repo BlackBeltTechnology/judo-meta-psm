@@ -25,8 +25,6 @@ public class EnumerationTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.me
      private boolean m_featureDocumentationSet = false;
      private boolean m_featureMembersSet = false;
      private boolean m_featureNameSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.type.TypePackage.eINSTANCE.getEClassifier("EnumerationType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -201,4 +199,5 @@ public class EnumerationTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.me
          m_featureMembersBuilder.add(p_enumerationTypeBuilder);
          return this;
      }
+
 }

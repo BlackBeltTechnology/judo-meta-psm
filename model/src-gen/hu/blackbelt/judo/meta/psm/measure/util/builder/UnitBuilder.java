@@ -28,8 +28,6 @@ public class UnitBuilder implements IMeasureBuilder<hu.blackbelt.judo.meta.psm.m
      private boolean m_featureRateDividendSet = false;
      private boolean m_featureRateDivisorSet = false;
      private boolean m_featureSymbolSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.measure.MeasurePackage.eINSTANCE.getEClassifier("Unit");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -197,4 +195,5 @@ public class UnitBuilder implements IMeasureBuilder<hu.blackbelt.judo.meta.psm.m
          m_featureAnnotationsBuilder.add(p_unitBuilder);
          return this;
      }
+
 }
