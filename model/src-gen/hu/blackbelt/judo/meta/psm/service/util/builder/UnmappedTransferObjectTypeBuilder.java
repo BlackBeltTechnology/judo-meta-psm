@@ -39,8 +39,6 @@ public class UnmappedTransferObjectTypeBuilder implements IServiceBuilder<hu.bla
      private boolean m_featureQueryCustomizerSet = false;
      private boolean m_featureRelationsSet = false;
      private boolean m_featureRepresentationSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("UnmappedTransferObjectType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -318,4 +316,5 @@ public class UnmappedTransferObjectTypeBuilder implements IServiceBuilder<hu.bla
          m_featureRelationsBuilder.add(p_unmappedTransferObjectTypeBuilder);
          return this;
      }
+
 }

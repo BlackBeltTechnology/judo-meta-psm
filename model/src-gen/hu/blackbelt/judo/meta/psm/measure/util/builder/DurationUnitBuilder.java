@@ -30,8 +30,6 @@ public class DurationUnitBuilder implements IMeasureBuilder<hu.blackbelt.judo.me
      private boolean m_featureRateDivisorSet = false;
      private boolean m_featureSymbolSet = false;
      private boolean m_featureUnitTypeSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.measure.MeasurePackage.eINSTANCE.getEClassifier("DurationUnit");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -209,4 +207,5 @@ public class DurationUnitBuilder implements IMeasureBuilder<hu.blackbelt.judo.me
          m_featureAnnotationsBuilder.add(p_durationUnitBuilder);
          return this;
      }
+
 }

@@ -26,8 +26,6 @@ public class BinaryTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.ps
      private boolean m_featureMaxFileSizeSet = false;
      private boolean m_featureMimeTypesSet = false;
      private boolean m_featureNameSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.type.TypePackage.eINSTANCE.getEClassifier("BinaryType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -198,4 +196,5 @@ public class BinaryTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.ps
          return this;
      }
      
+
 }

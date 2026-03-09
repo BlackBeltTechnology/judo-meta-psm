@@ -25,8 +25,6 @@ public class InvariantConstraintBuilder implements IConstraintBuilder<hu.blackbe
      private boolean m_featureDocumentationSet = false;
      private boolean m_featureExpressionSet = false;
      private boolean m_featureNameSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.constraint.ConstraintPackage.eINSTANCE.getEClassifier("InvariantConstraint");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -186,4 +184,5 @@ public class InvariantConstraintBuilder implements IConstraintBuilder<hu.blackbe
          m_featureAnnotationsBuilder.add(p_invariantConstraintBuilder);
          return this;
      }
+
 }

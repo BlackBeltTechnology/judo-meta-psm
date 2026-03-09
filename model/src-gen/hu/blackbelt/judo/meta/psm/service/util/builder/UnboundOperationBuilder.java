@@ -48,8 +48,6 @@ public class UnboundOperationBuilder implements IServiceBuilder<hu.blackbelt.jud
      private boolean m_featureNameSet = false;
      private boolean m_featureOutputSet = false;
      private boolean m_featureUpdateOnResultSet = false;
-    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
-            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("UnboundOperation");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -356,4 +354,5 @@ public class UnboundOperationBuilder implements IServiceBuilder<hu.blackbelt.jud
          m_featureFaultsBuilder.add(p_unboundOperationBuilder);
          return this;
      }
+
 }
