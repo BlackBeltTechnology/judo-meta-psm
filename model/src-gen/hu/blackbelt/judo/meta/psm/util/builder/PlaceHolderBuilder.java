@@ -15,6 +15,8 @@ public class PlaceHolderBuilder implements IPsmBuilder<hu.blackbelt.judo.meta.ps
 
      // helper attributes
      private boolean m_nullCheck = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.PsmPackage.eINSTANCE.getEClassifier("PlaceHolder");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -93,7 +95,6 @@ public class PlaceHolderBuilder implements IPsmBuilder<hu.blackbelt.judo.meta.ps
         m_nullCheck = p_nullCheck;
         return this;
     }
-
 
 
 }

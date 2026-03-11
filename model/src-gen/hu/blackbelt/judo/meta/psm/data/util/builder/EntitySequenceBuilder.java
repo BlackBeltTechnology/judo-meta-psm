@@ -30,6 +30,8 @@ public class EntitySequenceBuilder implements IDataBuilder<hu.blackbelt.judo.met
      private boolean m_featureInitialValueSet = false;
      private boolean m_featureMaximumValueSet = false;
      private boolean m_featureNameSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("EntitySequence");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -207,5 +209,4 @@ public class EntitySequenceBuilder implements IDataBuilder<hu.blackbelt.judo.met
          m_featureAnnotationsBuilder.add(p_entitySequenceBuilder);
          return this;
      }
-
 }

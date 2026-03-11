@@ -35,6 +35,8 @@ public class AssociationEndBuilder implements IDataBuilder<hu.blackbelt.judo.met
      private boolean m_featureReverseCascadeDeleteSet = false;
      private boolean m_featureTargetSet = false;
      private boolean m_featureUnmappedDefaultOnlySet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("AssociationEnd");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -255,5 +257,4 @@ public class AssociationEndBuilder implements IDataBuilder<hu.blackbelt.judo.met
          m_featureAnnotationsBuilder.add(p_associationEndBuilder);
          return this;
      }
-
 }

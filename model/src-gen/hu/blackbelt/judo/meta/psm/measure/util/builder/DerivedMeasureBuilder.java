@@ -30,6 +30,8 @@ public class DerivedMeasureBuilder implements IMeasureBuilder<hu.blackbelt.judo.
      private boolean m_featureSymbolSet = false;
      private boolean m_featureTermsSet = false;
      private boolean m_featureUnitsSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.measure.MeasurePackage.eINSTANCE.getEClassifier("DerivedMeasure");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -248,5 +250,4 @@ public class DerivedMeasureBuilder implements IMeasureBuilder<hu.blackbelt.judo.
          m_featureUnitsBuilder.add(p_derivedMeasureBuilder);
          return this;
      }
-
 }

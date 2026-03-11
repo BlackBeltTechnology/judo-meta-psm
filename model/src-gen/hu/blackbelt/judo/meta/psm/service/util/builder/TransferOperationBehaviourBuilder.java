@@ -22,6 +22,8 @@ public class TransferOperationBehaviourBuilder implements IServiceBuilder<hu.bla
      private boolean m_featureBehaviourTypeSet = false;
      private boolean m_featureOwnerSet = false;
      private boolean m_featureRelationSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("TransferOperationBehaviour");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -143,6 +145,5 @@ public class TransferOperationBehaviourBuilder implements IServiceBuilder<hu.bla
          m_featureRelationBuilder = p_transferOperationBehaviourBuilder;
          return this;
      }
-
 
 }

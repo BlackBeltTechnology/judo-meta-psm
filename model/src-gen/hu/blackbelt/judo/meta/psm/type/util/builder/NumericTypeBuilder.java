@@ -26,6 +26,8 @@ public class NumericTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.p
      private boolean m_featureNameSet = false;
      private boolean m_featurePrecisionSet = false;
      private boolean m_featureScaleSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.type.TypePackage.eINSTANCE.getEClassifier("NumericType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -183,5 +185,4 @@ public class NumericTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.p
          m_featureAnnotationsBuilder.add(p_numericTypeBuilder);
          return this;
      }
-
 }

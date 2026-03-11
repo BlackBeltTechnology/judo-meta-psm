@@ -50,6 +50,8 @@ public class EntityTypeBuilder implements IDataBuilder<hu.blackbelt.judo.meta.ps
      private boolean m_featureRelationsSet = false;
      private boolean m_featureSequencesSet = false;
      private boolean m_featureSuperEntityTypesSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("EntityType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -477,5 +479,4 @@ public class EntityTypeBuilder implements IDataBuilder<hu.blackbelt.judo.meta.ps
          m_featureSuperEntityTypesBuilder.add(p_entityTypeBuilder);
          return this;
      }
-
 }

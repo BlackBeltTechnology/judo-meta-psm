@@ -26,6 +26,8 @@ public class XMLTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.psm.t
      private boolean m_featureNameSet = false;
      private boolean m_featureXmlElementSet = false;
      private boolean m_featureXmlNamespaceSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.type.TypePackage.eINSTANCE.getEClassifier("XMLType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -189,5 +191,4 @@ public class XMLTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.psm.t
          m_featureAnnotationsBuilder.add(p_xMLTypeBuilder);
          return this;
      }
-
 }

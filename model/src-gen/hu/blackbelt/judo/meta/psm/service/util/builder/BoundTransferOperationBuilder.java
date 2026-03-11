@@ -46,6 +46,8 @@ public class BoundTransferOperationBuilder implements IServiceBuilder<hu.blackbe
      private boolean m_featureNameSet = false;
      private boolean m_featureOutputSet = false;
      private boolean m_featureUpdateOnResultSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("BoundTransferOperation");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -345,5 +347,4 @@ public class BoundTransferOperationBuilder implements IServiceBuilder<hu.blackbe
          m_featureFaultsBuilder.add(p_boundTransferOperationBuilder);
          return this;
      }
-
 }

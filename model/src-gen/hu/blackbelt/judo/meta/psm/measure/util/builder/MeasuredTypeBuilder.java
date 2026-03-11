@@ -29,6 +29,8 @@ public class MeasuredTypeBuilder implements IMeasureBuilder<hu.blackbelt.judo.me
      private boolean m_featurePrecisionSet = false;
      private boolean m_featureScaleSet = false;
      private boolean m_featureStoreUnitSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.measure.MeasurePackage.eINSTANCE.getEClassifier("MeasuredType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -208,5 +210,4 @@ public class MeasuredTypeBuilder implements IMeasureBuilder<hu.blackbelt.judo.me
          m_featureAnnotationsBuilder.add(p_measuredTypeBuilder);
          return this;
      }
-
 }

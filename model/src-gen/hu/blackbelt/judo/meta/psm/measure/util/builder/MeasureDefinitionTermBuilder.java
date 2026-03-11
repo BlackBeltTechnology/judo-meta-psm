@@ -20,6 +20,8 @@ public class MeasureDefinitionTermBuilder implements IMeasureBuilder<hu.blackbel
      private boolean m_nullCheck = false;
      private boolean m_featureExponentSet = false;
      private boolean m_featureUnitSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.measure.MeasurePackage.eINSTANCE.getEClassifier("MeasureDefinitionTerm");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -131,6 +133,5 @@ public class MeasureDefinitionTermBuilder implements IMeasureBuilder<hu.blackbel
          m_featureUnitBuilder = p_measureDefinitionTermBuilder;
          return this;
      }
-
 
 }

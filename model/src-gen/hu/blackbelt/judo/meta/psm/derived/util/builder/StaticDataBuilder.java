@@ -32,6 +32,8 @@ public class StaticDataBuilder implements IDerivedBuilder<hu.blackbelt.judo.meta
      private boolean m_featureNameSet = false;
      private boolean m_featureRequiredSet = false;
      private boolean m_featureSetterExpressionSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.derived.DerivedPackage.eINSTANCE.getEClassifier("StaticData");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -233,5 +235,4 @@ public class StaticDataBuilder implements IDerivedBuilder<hu.blackbelt.judo.meta
          m_featureAnnotationsBuilder.add(p_staticDataBuilder);
          return this;
      }
-
 }

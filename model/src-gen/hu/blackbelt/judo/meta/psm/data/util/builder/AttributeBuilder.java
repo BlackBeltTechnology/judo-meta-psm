@@ -30,6 +30,8 @@ public class AttributeBuilder implements IDataBuilder<hu.blackbelt.judo.meta.psm
      private boolean m_featureNameSet = false;
      private boolean m_featureRequiredSet = false;
      private boolean m_featureUnmappedDefaultOnlySet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("Attribute");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -210,5 +212,4 @@ public class AttributeBuilder implements IDataBuilder<hu.blackbelt.judo.meta.psm
          m_featureAnnotationsBuilder.add(p_attributeBuilder);
          return this;
      }
-
 }

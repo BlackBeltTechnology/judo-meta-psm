@@ -21,6 +21,8 @@ public class DataExpressionTypeBuilder implements IDerivedBuilder<hu.blackbelt.j
      private boolean m_featureDialectSet = false;
      private boolean m_featureExpressionSet = false;
      private boolean m_featureParameterTypeSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.derived.DerivedPackage.eINSTANCE.getEClassifier("DataExpressionType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -133,6 +135,5 @@ public class DataExpressionTypeBuilder implements IDerivedBuilder<hu.blackbelt.j
          m_featureParameterTypeSet = true;
          return this;
      }
-
 
 }

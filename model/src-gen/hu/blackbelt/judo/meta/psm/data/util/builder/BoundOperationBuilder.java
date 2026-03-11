@@ -39,6 +39,8 @@ public class BoundOperationBuilder implements IDataBuilder<hu.blackbelt.judo.met
      private boolean m_featureInstanceRepresentationSet = false;
      private boolean m_featureNameSet = false;
      private boolean m_featureOutputSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.data.DataPackage.eINSTANCE.getEClassifier("BoundOperation");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -299,5 +301,4 @@ public class BoundOperationBuilder implements IDataBuilder<hu.blackbelt.judo.met
          m_featureFaultsBuilder.add(p_boundOperationBuilder);
          return this;
      }
-
 }

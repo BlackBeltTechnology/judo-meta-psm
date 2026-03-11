@@ -43,6 +43,8 @@ public class TransferObjectRelationBuilder implements IServiceBuilder<hu.blackbe
      private boolean m_featureNameSet = false;
      private boolean m_featureRangeSet = false;
      private boolean m_featureTargetSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("TransferObjectRelation");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -295,5 +297,4 @@ public class TransferObjectRelationBuilder implements IServiceBuilder<hu.blackbe
          m_featureAnnotationsBuilder.add(p_transferObjectRelationBuilder);
          return this;
      }
-
 }

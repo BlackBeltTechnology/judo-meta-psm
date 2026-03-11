@@ -45,6 +45,8 @@ public class MappedTransferObjectTypeBuilder implements IServiceBuilder<hu.black
      private boolean m_featureQueryCustomizerSet = false;
      private boolean m_featureRelationsSet = false;
      private boolean m_featureRepresentationSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.service.ServicePackage.eINSTANCE.getEClassifier("MappedTransferObjectType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -363,5 +365,4 @@ public class MappedTransferObjectTypeBuilder implements IServiceBuilder<hu.black
          m_featureRelationsBuilder.add(p_mappedTransferObjectTypeBuilder);
          return this;
      }
-
 }

@@ -26,6 +26,8 @@ public class StringTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.ps
      private boolean m_featureMaxLengthSet = false;
      private boolean m_featureNameSet = false;
      private boolean m_featureRegExpSet = false;
+    private static final org.eclipse.emf.ecore.EClass ECLASS = (org.eclipse.emf.ecore.EClass)
+            hu.blackbelt.judo.meta.psm.type.TypePackage.eINSTANCE.getEClassifier("StringType");
 
     /**
      * This method can be used to override attributes of the builder. It constructs a new builder and copies the current values to it.
@@ -183,5 +185,4 @@ public class StringTypeBuilder implements ITypeBuilder<hu.blackbelt.judo.meta.ps
          m_featureAnnotationsBuilder.add(p_stringTypeBuilder);
          return this;
      }
-
 }
