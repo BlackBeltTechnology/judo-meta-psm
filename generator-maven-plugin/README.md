@@ -1,29 +1,54 @@
-# JUDO PSM Generator maven plugin
+# JUDO PSM Generator Maven Plugin
 
-This plugin manages and executes generators for JUDO PSM models.
+This Maven plugin manages and executes template-based code generators for JUDO PSM models. It transforms PSM model elements into text-based output (source code, configuration files, reports) using Handlebars templates combined with Spring Expression Language (SpEL).
 
-It generates text based codes / reports from PSM model with the given templates.
+## How Generation Works
+
+The plugin reads a PSM model and a set of Handlebars templates, then produces output files according to a YAML project descriptor. The generation pipeline supports layered template overrides, actor-type-based generation, and custom helper classes.
+
+```mermaid
+sequenceDiagram
+    participant Maven
+    participant Mojo as PsmProjectGenerateMojo
+    participant Engine as PsmGenerator
+    participant Templates as Template Resolver
+    participant HBS as Handlebars Engine
+
+    Maven->>Mojo: execute() (generate-resources phase)
+    Mojo->>Mojo: Load PSM model from URI
+    Mojo->>Engine: execute(PsmGeneratorParameter)
+    Engine->>Templates: Load <type>.yaml descriptor
+    Templates-->>Engine: Template definitions
+    loop For each template entry
+        Engine->>Engine: Evaluate factoryExpression (SpEL)
+        Engine->>Engine: Evaluate pathExpression (SpEL)
+        Engine->>HBS: Render template with context
+        HBS-->>Engine: Generated text
+    end
+    Engine-->>Mojo: GeneratorResult
+    Mojo->>Mojo: Write files to destination
+```
 
 ## Requirements
 
-- Maven 3.8.3 and Java 11
+- Maven 3.9.4+
+- Java 21
 
 ## Installation
 
-Include the plugin as a dependency in your Maven project. Change `LATEST_VERSION` to the latest tagged version.
+Include the plugin in your Maven project. Replace `LATEST_VERSION` with the latest tagged version:
 
 ```xml
 <plugin>
     <groupId>hu.blackbelt.judo.meta</groupId>
     <artifactId>judo-psm-generator-maven-plugin</artifactId>
     <version>LATEST_VERSION</version>
-    ...
 </plugin>
 ```
 
 ## Usage
 
-Executing a template for an UI model
+### Full Configuration Example
 
 ```xml
 <plugin>
@@ -38,215 +63,181 @@ Executing a template for an UI model
                 <goal>generate</goal>
             </goals>
             <configuration>
-                <psm> <!-- 1 -->
-                    mvn:hu.blackbelt.judo.tatami:judo-tatami-northwind-psm:${judo-tatami-version}!model/northwind-psm.model
-                </psm>
-                <uris> <!-- 2 -->
-                    <uri>mvn:hu.blackbelt.judo.meta:judo-psm-fullstack-project-archetype:${judo-psm-fullstack-project-archetype-version}</uri>
+                <psm>mvn:hu.blackbelt.judo.tatami:judo-tatami-northwind-psm:${version}!model/northwind-psm.model</psm>
+                <uris>
+                    <uri>mvn:hu.blackbelt.judo.meta:judo-psm-fullstack-project-archetype:${version}</uri>
                     <uri>${basedir}/src/main/resources</uri>
                 </uris>
-                <helpers> <!-- 3 -->
+                <helpers>
                     <helper>hu.blackbelt.judo.psm.fullstack.project.archetype.PsmProjectHelper</helper>
                 </helpers>
-                <type>fullstack-project</type> <!-- 4 -->
-                <destination>${basedir}/target/test-classes/psm/artifact</destination> <!-- 5 -->
-                <templateParameters> <!-- 6 -->
+                <type>fullstack-project</type>
+                <destination>${basedir}/target/test-classes/psm/artifact</destination>
+                <templateParameters>
                     <judoPlatformVersion>${judo-platform-version}</judoPlatformVersion>
                 </templateParameters>
-                <contextAccessor>hu.blackbelt.judo.psm.fullstack.project.archetype.ActorTypeValueResolver</contextAccessor> <!-- 7 -->
-                <scanDependencies>true</scanDependencies> <!-- 8 -->
-                <actors></actors> <!-- 9 -->
+                <contextAccessor>hu.blackbelt.judo.psm.fullstack.project.archetype.ActorTypeValueResolver</contextAccessor>
+                <scanDependencies>true</scanDependencies>
+                <actors></actors>
             </configuration>
         </execution>
     </executions>
-
-    <!--  these dependencies are just example models for testing. -->
     <dependencies>
         <dependency>
             <groupId>hu.blackbelt.judo.meta</groupId>
             <artifactId>hu.blackbelt.judo.meta.psm.model.northwind</artifactId>
             <version>${judo-meta-psm-version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>hu.blackbelt.judo.meta</groupId>
-            <artifactId>judo-psm-fullstack-project-archetype</artifactId>
-            <version>${judo-psm-fullstack-project-archetype-version}</version>
-        </dependency>
-
     </dependencies>
 </plugin>
 ```
 
-In the parameter URI type parameters can be file or mvn with the following coordinate:
-`mvn:<groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>[!path/in/archive]`
+### Configuration Parameters
 
-1. PSM model URI. (Optional)
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `psm` | No | PSM model URI. Supports file paths and Maven artifact coordinates. |
+| `uris` | Yes | Template URIs, loaded in reverse order (last URI has highest priority). Templates from later URIs override earlier ones. |
+| `helpers` | No | Fully qualified class names of helper classes. Available in both SpEL expressions and Handlebars templates. Classes implementing `ValueResolver` are auto-registered as Handlebars value resolvers. |
+| `type` | Yes | Project type identifier. Resolves to `<type>.yaml` descriptor file within the template URIs. |
+| `destination` | No | Output directory. Default: `${project.basedir}/target/classes/model`. When multiple actors are defined, each gets a separate subdirectory by name. |
+| `templateParameters` | No | Key-value pairs accessible in SpEL and Handlebars templates by name. |
+| `contextAccessor` | No | Class that receives Handlebars, SpEL, and parameter contexts via `bindContext()` methods. When `scanDependencies=true`, classes annotated with `@ContextAccessor` are auto-detected. |
+| `scanDependencies` | No | When `true` (default), scans classpath for `@TemplateHelper` and `@ContextAccessor` annotated classes. Discovered helpers are merged with explicitly configured ones. |
+| `actors` | No | Comma-separated FQNs of ActorType classes to generate. When empty, all actors are generated. |
 
-2. Template URIs. The templates loaded from URI's. The order is reverse, first try to load from last URI, when the resource
-not found there step back to previous defined URI. So it's a layered loader, where the templates can be extended and
-overrided with other template packages.
+### URI Format
 
-3. Helper classes. It contains methods which can be used in SpringEL (project yaml definition expressions) and in the
-handlebars templates. The helper classes can be loaded from plugin's classloaders, so the helper's class can
-be presented in plugin's or the project's dependencies. When a helper implements the `com.github.jknack.handlebars.ValueResolver`
-interface automatically registered as a handlebar value resolver. When `scanDependencies` parameter is `true`, the scanned
-helpers and the given ones are merged.
+Both file paths and Maven artifact coordinates are supported:
 
-4. Project type. It is used to resolve the project descriptor yaml files. The yaml file name is `<project type>.yaml`.
-One template can countains several project type description, so same templates can be used for multiple project skeleton types.
+```
+mvn:<groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>[!path/in/archive]
+```
 
-5. Destination path where the transformation output is generated. When no actor or more than one actor is defined, for all actors
-different folder generated by name. Default: ${project.basedir}/target/classes/model.
+## Project Descriptor (`<type>.yaml`)
 
-6. Template parameters. The defined parameters here can be accessed in SpringEL and handlebars
-templates with the same name.
+The YAML descriptor controls what templates are rendered, how output paths are computed, and what context variables are available. All expressions use Spring Expression Language (SpEL).
 
-7. ContextAccessor. It can be used to store Handlebars / SpringEL / Parameters Context which can be accessed by type resolvers.
-When `scanDependencies` value is `true`, the classes annotated with `@hu.blackbelt.judo.generator.commons.annotations.ContextAccessor` are
-set as accessor. When multiple instances are presented, error is thrown.
-It can implement any of the following methods, depends on which context can be registered:
-   - `public static void bindContext(com.github.jknack.handlebars.Context)` Register handlebars context. It is called immediately before templating,
-   so it is not recommended to use to calculate factory or path values with it.
-   - `public static void bindContext(org.springframework.expression.spel.support.StandardEvaluationContext context)` It registers
-   Spring Expression Language context. It is called before any templating, it can be used in yaml and template context too.
-   - `public static void bindContext(java.util.Map<String, Object> parameters`)
-   It is registers the given external parameters. It is called before any templating, it can be used in yaml and template context too.
-
-8. Scan dependencies. It scans classpath for classes annotated with `@hu.blackbelt.judo.generator.commons.annotations.TemplateHelper` and
-`@hu.blackbelt.judo.generator.commons.annotations.ContextAccessor` annotated classes.
-
-9. Actors used for generation. When it is not set all actors are generated. To define use coma separated fully qualified name of actor class.
-
-Our recommendation is to store the context in ThreadLocal, because
-templating is running in multiple threads.
-
-## Generation
-
-For code generation handlebars template is used. The `<project type>.yaml` file
-describes what template is used for that and control which parameters
-are passed and PSM model can control HOW the templates can be used.
-
-## Override templates in generation
-
-The template overrides can contain a `<project type>.yaml` which can be empty, on that case the
-existing templates can be overrided only. The contents of project files can be used to override existing
-template definition or can be added new templates. The overrided preferences are processed in a reverse order, so the last defined override is the strongest.
-All of the templates can be decorated, when the original file name is suffixed with `override.hbs`. When it is
-defined the original one can be included with the standard fragment syntax of handlebars.
-Another way of override is to redefine the template for the given template name.
-
-## \<project type\>.yaml file
-
-This file is used to control generation process. This file is using the PSM model and the given helpers.
-
-For expression processing, the SpringEL expression language is used. The helpers are binded as
-handlebars helper and SpringEL helper too.
+### Template Entry Fields
 
 ```yaml
-- name: file_for_actor                                   # (1)
-  factoryExpression: "{#actorTypes}"                     # (2)
-  actorTypeBased: false                                  # (3)
-  exclude: false                                         # (4)
-  pathExpression: >
+- name: file_for_actor           # (1) Unique template identifier
+  factoryExpression: "{#actorTypes}"  # (2) SpEL expression returning a list of context objects
+  actorTypeBased: false           # (3) If true, template runs once per ActorType
+  exclude: false                  # (4) Set true in overrides to suppress this template
+  pathExpression: >               # (5) SpEL expression computing the output file path
     'lib/' +
     #path(#actorType.name) + '/' +
-    'file_for_actor.test'                                # (5)
-  templateName: lib/file_for_actor.test.hbs              # (6)
-  templateContext:                                       # (7)
+    'file_for_actor.test'
+  templateName: lib/file_for_actor.test.hbs  # (6) Handlebars template file
+  templateContext:                # (7) Additional variables injected into template
     - name: actorTypeAsVariable
       expression: "#self"
-  copy: false                                            # (8)
+  copy: false                    # (8) If true, copy binary file instead of rendering template
 ```
 
-1. The name of the template. It can be used to redefine template in a later override.
+| Field | Description |
+|-------|-------------|
+| `name` | Unique identifier — used for override matching across template layers |
+| `factoryExpression` | SpEL expression returning a list; each item becomes the root context (`#self`) for one template rendering |
+| `actorTypeBased` | When `true`, the template is invoked once per ActorType with `#actorType` available |
+| `exclude` | In override layers, setting this to `true` removes the base template entirely |
+| `pathExpression` | SpEL expression that must return a string — the output file path relative to the destination |
+| `templateName` | Path to the Handlebars `.hbs` template file within the template URIs |
+| `templateContext` | List of `{name, expression}` pairs injected as named variables in the template |
+| `copy` | When `true`, the template file is copied as a binary — no Handlebars rendering is performed |
 
-2. Factory expression is used to create files. It returns a list of
-objects which are used as root context for the given handlebar template. (`templateName`)
+### Template Context Variables
 
-3. When actorTypeBased template used, the template called for all actor types and
-the `actorType` variable is defined.
+These variables are automatically available in SpEL expressions and Handlebars templates:
 
-4. This parameter can be used in an override to exclude the given template from a generation.
-With this parameter only the `name` is effective
+| Variable | Type | Description |
+|----------|------|-------------|
+| `#model` | `Model` | The root PSM model |
+| `#actorTypes` | `List<ActorType>` | All ActorType elements in the model |
+| `#actorType` | `ActorType` | Current ActorType (when `actorTypeBased: true`) |
+| `#self` | `Object` | Current context object from `factoryExpression` |
+| `#template` | `GeneratorTemplate` | Current template definition |
 
-5. Path expression returns with a path where the generated file is placed.
+## Template Override System
 
-6. Template is used for generation.
+Templates support a layered override mechanism. When multiple URIs are configured, they are processed in reverse order (last URI wins). There are three ways to customize generation:
 
-7. Template context is used to put expression result to template
-variable.
+### 1. Replace a Template
 
-8. It can be used to copy a binary file. In this case the template file used as binary, no
-templating is performed. In this case `factoryExpression`, `pathExpression` are used.
-
-## Ignore files on generation
-
-Sometimes a developer needs to replace generated file with custom developed file. On that case
-the generator has to ignore the given file to keep the edited version. To achieve this
-`.generator-ignore` file can be used. It uses glob format, so the usage is same as '.gitignore'.
-
-### Example
-
-There are two templates. First one is the 'base`, second one is the `override`.
-The effective output will be calculated that way that the `override` is rolled to `base`.
-Means if the `override` template entry with the same `name` has an entry, all
-off the original definitions are replaced with the `override` version. When a
-`override` template does not contain the original name, nothing will happend, except
-the `base` entry's `templateName` file is placed as override template.
-There is one special field, called `exclude` which is excluding the `base` template.
-
-#### `base`
+Define an entry in the override layer with the same `name` — all fields from the base are replaced:
 
 ```yaml
-templates:
-  - name: testOverride
-    pathExpression: "#actorType.name + '/actorToOverride'"
-    templateName: test1/actorToOverride.hbs
-    actorTypeBased: true
-
-  - name: testReplace
-    pathExpression: "#actorType.name + '/actorToReplace'"
-    templateName: test1/actorToReplace.hbs
-    actorTypeBased: true
-
-  - name: testDelete
-    pathExpression: "#actorType.name + '/actorToDelete'"
-    templateName: test1/actorToDelete.hbs
-    actorTypeBased: true
-```
-
-With templates:
-
-- `test1/actorToDelete.hbs`
-- `test1/actorToOverride.hbs`
-- `test1/actorToReplace.hbs`
-
-Effective output is:
-
-- `/actorName/actorToOverrride`
-- `/actorName/actorToReplace`
-- `/actorName/actorToDelete`
-
-#### `override`
-
-```yaml
+# Override layer
 templates:
   - name: testReplace
     pathExpression: "#actorType.name + '/actorReplaced'"
     templateName: test1/actorReplaced.hbs
     actorTypeBased: true
+```
 
+### 2. Decorate a Template
+
+Create a file named `<original>.override.hbs` alongside the override. The override template can include the original using Handlebars fragment syntax:
+
+```
+{{> test1/actorToOverride.hbs}}
+<!-- Additional content here -->
+```
+
+### 3. Exclude a Template
+
+Set `exclude: true` in the override layer to remove a base template entirely:
+
+```yaml
+templates:
   - name: testDelete
     exclude: true
 ```
 
-With templates:
+### Override Resolution
 
-- `test1/actorReplaced.hbs`
-- `test1/actorToOverride.override.hbs`
+```mermaid
+flowchart TD
+    base["Base Templates<br/>(first URI)"]
+    override["Override Templates<br/>(second URI)"]
 
-In this case the effective output is:
+    base --> merge{"For each template name"}
+    override --> merge
 
-- `/actorName/actorToOverrride`  (with the content of `actorToOverride.override.hbs`)
-- `/actorName/actorReplaced`
+    merge -->|"Override has same name<br/>with new fields"| replace["Replace: use override definition"]
+    merge -->|"Override .override.hbs<br/>file exists"| decorate["Decorate: wrap original with override"]
+    merge -->|"Override has<br/>exclude: true"| exclude["Exclude: remove template"]
+    merge -->|"No override match"| keep["Keep: use base definition unchanged"]
+```
+
+## Ignoring Generated Files
+
+To prevent the generator from overwriting manually edited files, create a `.generator-ignore` file in the output directory. It uses glob format (same syntax as `.gitignore`).
+
+## Context Accessor
+
+The `contextAccessor` class can implement any combination of these `static` methods to receive different contexts:
+
+```java
+// Handlebars context (called just before rendering — not suitable for factory/path expressions)
+public static void bindContext(com.github.jknack.handlebars.Context context)
+
+// SpEL context (called before any templating — usable in YAML and templates)
+public static void bindContext(org.springframework.expression.spel.support.StandardEvaluationContext context)
+
+// External parameters (called before any templating)
+public static void bindContext(java.util.Map<String, Object> parameters)
+```
+
+> **Tip:** Store context in `ThreadLocal` variables, because template rendering runs in multiple threads.
+
+## Available Maven Goals
+
+| Goal | Description |
+|------|-------------|
+| `generate` | Generate code from PSM model using templates |
+| `reset-checksum` | Reset file checksums for regeneration tracking |
+| `clean` | Remove generated files based on checksum records |
+| `calculate-checksum` | Recalculate checksums for existing generated files |
+| `synchronize-gitignore` | Update `.gitignore` with generated file entries |

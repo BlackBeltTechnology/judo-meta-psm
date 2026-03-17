@@ -1,78 +1,172 @@
-# List of operation behaviours
+# PSM Model — Operation Behaviours
 
-* LIST
-  * **owner**: relation
-  * **description**: get list of instances (return type can be single/many based on cardinality of relation)
-    * access relation: get list of target transfer object type (filtered by attribute of target mapped transfer object type)
-    * derived relation: get result of expression represented as target transfer object type (filtered by attibute of target mapped transfer object type is also added)
-    * stored relation: get result of stored relation (filtered by attibute of target mapped transfer object type is also added)
-    * mapped relation: get result based on resolved mapping
-    * transient relation: not supported
+This document describes the built-in operation behaviours defined in the PSM metamodel. Each behaviour represents a standard CRUD or reference-management operation that the runtime can execute on transfer object types and their relations.
 
-* CREATE_INSTANCE
-  * **owner**: relation
-  * **description**: create a new instance (restricted by filter attribute of mapped transfer object type), new instance is attached if relation type is stored;
-    * access relation: permission is based on CREATE flag of access relation
-    * stored relation: permission is based on CREATE flag of producer (relation/operation)
-    * mapped relation: get result based on resolved mapping
-    * derived relation: not supported
-    * transient relation: not supported
+## Behaviour Overview
 
-* VALIDATE_CREATE
-  * **owner**: relation
-  * **description**: validate input data of a CREATE_INSTANCE operation, rollback on completion
-    * access relation: permission is based on CREATE flag of access relation
-    * stored relation: permission is based on CREATE flag of producer (relation/operation)
-    * mapped relation: get result based on resolved mapping
-    * derived relation: not supported
-    * transient relation: not supported
+```mermaid
+flowchart TD
+    subgraph "Instance Operations"
+        REFRESH["REFRESH<br/>(reload instance)"]
+        UPDATE["UPDATE_INSTANCE<br/>(update attributes)"]
+        VALIDATE_UPDATE["VALIDATE_UPDATE<br/>(dry-run update)"]
+        DELETE["DELETE_INSTANCE<br/>(remove instance)"]
+    end
 
-* REFRESH
-  * **owner**: mapped transfer object type
-  * **description**: refresh (reload) a mapped transfer object type instance
+    subgraph "Collection Operations"
+        LIST["LIST<br/>(query instances)"]
+        CREATE["CREATE_INSTANCE<br/>(new instance)"]
+        VALIDATE_CREATE["VALIDATE_CREATE<br/>(dry-run create)"]
+    end
 
-* UPDATE_INSTANCE
-  * **owner**: mapped transfer object type
-  * **description**: update attributes of a mapped transfer object type; permission is based on UPDATE flag of producer (relation/operation)
+    subgraph "Reference Operations"
+        SET["SET_REFERENCE"]
+        UNSET["UNSET_REFERENCE"]
+        ADD["ADD_REFERENCE"]
+        REMOVE["REMOVE_REFERENCE"]
+        RANGE["GET_RANGE"]
+    end
 
-* VALIDATE_UPDATE
-  * **owner**: mapped transfer object type
-  * **descripton**: validate input data of UPDATE_INSTANCE operation, rollback on completion
+    subgraph "Special Operations"
+        PRINCIPAL["GET_PRINCIPAL<br/>(current user)"]
+        TEMPLATE["GET_TEMPLATE<br/>(default values)"]
+    end
+```
 
-* DELETE_INSTANCE
-  * **owner**: mapped transfer object type
-  * **description**: delete mapped transfer object type instance; permission is based on DELETE flag of producer (relation/operation)
+## Collection Operations
 
-* SET_REFERENCE
-  * **owner**: relation
-  * **subject**: instance of bound operation, container of relation
-  * **description**: set reference of subject to a given value (both single and many relations are supported), permission is based on UPDATE flag of subject
+### LIST
 
-* UNSET_REFERENCE
-  * **owner**: relation
-  * **subject**: instance of bound operation, container of relation
-  * **description**: unset (single, non composition) reference of subject, permission is based on UPDATE flag of subject
+| Property | Value |
+|----------|-------|
+| **Owner** | Relation |
+| **Description** | Get list of instances. Return type is single or many based on the cardinality of the relation. |
 
-* ADD_REFERENCE
-  * **owner**: relation
-  * **subject**: instance of bound operation, container of relation
-  * **description**: add existing instance(s) to (many, non composition) reference of subject, permission is based on UPDATE flag of subject
+Behaviour varies by relation type:
 
-* REMOVE_REFERENCE
-  * **owner**: relation
-  * **subject**: instance of bound operation, container of relation
-  * **description**: remove existing instance(s) to (many, non composition) reference of subject, permission is based on UPDATE flag of subject
+| Relation Type | Behaviour |
+|--------------|-----------|
+| **Access relation** | Returns list of target transfer object type, filtered by attributes of target mapped transfer object type |
+| **Derived relation** | Evaluates expression and returns result as target transfer object type (with attribute filtering) |
+| **Stored relation** | Returns stored relation result (with attribute filtering) |
+| **Mapped relation** | Resolves based on mapping definition |
+| **Transient relation** | Not supported |
 
-* GET_RANGE
-  * **owner**: relation
-  * **subject**: instance of bound operation, container of relation
-  * **description**: get range of (non composition) reference of subject, permission is based on CREATE/UPDATE flag of subject
+### CREATE_INSTANCE
 
-* GET_PRINCIPAL
-  * **owner**: actor type
-  * **description**: get principal (transfer object type representation) of actor (logged in user)
+| Property | Value |
+|----------|-------|
+| **Owner** | Relation |
+| **Description** | Create a new instance (restricted by filter attribute of mapped transfer object type). The new instance is attached if the relation type is stored. |
 
-* GET_TEMPLATE
-  * **owner**: transfer object type
-  * **description**: return transfer object type instance filled with default values (not persisted in case of mapped transfer object type)
-  * not supported yet
+| Relation Type | Permission / Behaviour |
+|--------------|----------------------|
+| **Access relation** | Permission based on CREATE flag of access relation |
+| **Stored relation** | Permission based on CREATE flag of producer (relation/operation) |
+| **Mapped relation** | Resolved based on mapping definition |
+| **Derived relation** | Not supported |
+| **Transient relation** | Not supported |
+
+### VALIDATE_CREATE
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Relation |
+| **Description** | Validate input data of a CREATE_INSTANCE operation, then rollback on completion (dry-run). |
+
+Permission model is identical to CREATE_INSTANCE.
+
+## Instance Operations
+
+### REFRESH
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Mapped transfer object type |
+| **Description** | Refresh (reload) a mapped transfer object type instance from the data store. |
+
+### UPDATE_INSTANCE
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Mapped transfer object type |
+| **Description** | Update attributes of a mapped transfer object type. Permission is based on the UPDATE flag of the producer (relation/operation). |
+
+### VALIDATE_UPDATE
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Mapped transfer object type |
+| **Description** | Validate input data of an UPDATE_INSTANCE operation, then rollback on completion (dry-run). |
+
+### DELETE_INSTANCE
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Mapped transfer object type |
+| **Description** | Delete a mapped transfer object type instance. Permission is based on the DELETE flag of the producer (relation/operation). |
+
+## Reference Operations
+
+All reference operations have an **owner** (the relation) and a **subject** (the instance of the bound operation / container of the relation). Permission for all reference operations is based on the UPDATE flag of the subject.
+
+### SET_REFERENCE
+
+Set the reference of the subject to a given value. Works with both single and many relations.
+
+### UNSET_REFERENCE
+
+Unset a single, non-composition reference of the subject (clear the reference to null).
+
+### ADD_REFERENCE
+
+Add existing instance(s) to a many, non-composition reference of the subject.
+
+### REMOVE_REFERENCE
+
+Remove existing instance(s) from a many, non-composition reference of the subject.
+
+### GET_RANGE
+
+Get the range (available options) for a non-composition reference of the subject. Permission is based on the CREATE or UPDATE flag of the subject.
+
+## Special Operations
+
+### GET_PRINCIPAL
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Actor type |
+| **Description** | Get the principal (transfer object type representation) of the current actor (logged-in user). |
+
+### GET_TEMPLATE
+
+| Property | Value |
+|----------|-------|
+| **Owner** | Transfer object type |
+| **Description** | Return a transfer object type instance filled with default values. Not persisted in case of mapped transfer object type. |
+
+> **Note:** GET_TEMPLATE is not supported yet.
+
+## Operation Permission Model
+
+```mermaid
+flowchart LR
+    subgraph "Permission Flags"
+        C["CREATE"]
+        R["READ"]
+        U["UPDATE"]
+        D["DELETE"]
+    end
+
+    CREATE_INSTANCE --> C
+    LIST --> R
+    UPDATE_INSTANCE --> U
+    DELETE_INSTANCE --> D
+    SET_REFERENCE --> U
+    UNSET_REFERENCE --> U
+    ADD_REFERENCE --> U
+    REMOVE_REFERENCE --> U
+    GET_RANGE --> C
+    GET_RANGE --> U
+```

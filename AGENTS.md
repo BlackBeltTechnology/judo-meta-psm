@@ -1,19 +1,18 @@
-
-# Judo PSM (Platform Specific Model) Meta - Project Documentation
+# JUDO PSM (Platform Specific Model) - Project Documentation
 
 ## Project Overview
 
-**Repository:** BlackBeltTechnology/judo-meta-psm  
-**License:** Eclipse Public License 2.0 (EPL-2.0)  
-**Java Version:** 21  
-**Build System:** Maven 3.9.4+ with Tycho (Eclipse build tooling)
 
-This is a sophisticated Eclipse/Tycho-based metamodel project that:
-1. **Defines** a comprehensive Platform Specific Model (PSM) metamodel via EMF/Ecore
-2. **Generates** Java code from the model using MWE2 workflows
-3. **Provides** both Eclipse UI (Sirius-based designer) and OSGi standalone runtime
-4. **Implements** a code generation framework using Handlebars templates, Epsilon scripting, and Spring Expression Language
-5. **Distributes** via both Maven Central and Eclipse P2 repositories
+**Repository:** BlackBeltTechnology/judo-meta-psm
+**License:** Eclipse Public License 2.0 (EPL-2.0)
+**Java Version:** 21
+**Build System:** Maven 3.9.4 with Tycho 4.0.13 (Eclipse/OSGi plugin builds)
+
+1. **EMF Metamodel**: Defines the PSM (Platform Specific Model) using Eclipse Modeling Framework — the foundational data model for the JUDO framework's model-driven architecture
+2. **Model Validation**: Enforces structural and semantic constraints on PSM models using Epsilon Validation Language (EVL) rules
+3. **Code Generation Engine**: Template-based generation using Handlebars + Spring Expression Language (SpEL) with YAML project descriptors
+4. **Maven Plugin**: Exposes the generator engine as a Maven plugin for downstream projects to generate code from PSM models
+5. **Multi-Platform Runtime**: Runs as an Eclipse plugin, standalone Java library, or OSGi bundle (Karaf)
 
 ## Code Instructions
 
@@ -30,205 +29,168 @@ This is a sophisticated Eclipse/Tycho-based metamodel project that:
 
 ```
 judo-meta-psm/
-├── model/                          # Core PSM metamodel (Ecore)
-├── model-test/                     # Unit tests for metamodel
-├── northwind-model/                # Example PSM model implementation
-├── osgi/                           # OSGi bundle repackaging
-├── osgi-itest/                     # OSGi integration tests (Pax Exam)
-├── generator-engine/               # Code generation engine
-├── generator-maven-plugin/         # Maven plugin for generation
-├── generator-maven-plugin-test/    # Plugin tests
-├── designer/                       # Sirius-based visual editor
-├── designer-eclipse-runtime/       # Eclipse runtime support
-├── designer-defaultmodelfactory/   # Default model factory
-├── designer-templatemodel-default/ # Default template model
-├── designer-templatemodel-empty/   # Empty template model
-├── designer-templatemodel-provider/# Template provider interface
-├── designer-wizard/                # Model creation wizard
-├── feature/                        # Eclipse feature (model)
-├── designer-feature/               # Eclipse feature (designer)
+├── model/                          # Core Eclipse plugin with Ecore metamodel
+│   ├── model/psm.ecore             # Source-of-truth metamodel definition
+│   ├── src/main/java/              # Hand-written Java (PsmUtils, validators, CLI)
+│   ├── src/main/epsilon/           # EVL validation rules
+│   ├── src/workflow/               # MWE2 code generation workflow
+│   └── src-gen/                    # EMF-generated Java (do NOT edit)
+├── model-test/                     # JUnit 5 validation tests
+├── northwind-model/                # Northwind reference/test model
+├── generator-engine/               # Handlebars + SpEL generation engine
+├── generator-maven-plugin/         # Maven mojo wrapping the generator
+├── generator-maven-plugin-test/    # Generator Maven plugin integration tests
+├── osgi/                           # OSGi bundle with service registration
+├── osgi-itest/                     # Pax Exam OSGi integration tests
+├── feature/                        # Eclipse feature definition
 ├── site/                           # Eclipse P2 update site
-├── targetdefinition/               # P2 repository definitions
-└── openspec/                       # OpenSpec change management
+├── .github/workflows/              # CI/CD pipelines
+└── openspec/                       # OpenSpec specifications
 ```
 
 ## Core Modules
 
-### Model Definition Layer
+### Metamodel & Validation
 
 | Module | Type | Purpose |
 |--------|------|---------|
-| `model/` | eclipse-plugin | Core PSM metamodel via Ecore (`psm.ecore`). Generates EMF code, builders, helpers. Contains Epsilon validation rules. |
-| `model-test/` | test | Unit tests for PSM metamodel using JUnit 5 and Epsilon runtime |
-| `northwind-model/` | bundle | Example PSM model demonstrating usage patterns |
+| `model/` | eclipse-plugin | Ecore metamodel (`psm.ecore`), EMF-generated Java classes, Epsilon validators, PsmUtils, CLI integration. Generated code in `src-gen/` via MWE2 workflow. |
+| `model-test/` | jar | JUnit 5 tests exercising Epsilon validators against programmatically constructed models and the Northwind reference model |
+| `northwind-model/` | jar | Reference PSM model based on the Northwind database schema, used across test modules |
 
-### Runtime/OSGi Layer
-
-| Module | Type | Purpose |
-|--------|------|---------|
-| `osgi/` | bundle | Repackages model for OSGi environments using Apache Felix Bundle Plugin |
-| `osgi-itest/` | test | Pax Exam integration tests for Karaf container (4.4.7) |
-
-### Code Generation Layer
+### Code Generation
 
 | Module | Type | Purpose |
 |--------|------|---------|
-| `generator-engine/` | bundle | Core code generation engine using Handlebars, SpEL, and Jackson YAML |
-| `generator-maven-plugin/` | maven-plugin | Maven plugin wrapper with goals: `generate`, `create`, `clean`, `calculate-checksum`, `reset-checksum`, `synchronize-gitignore` |
-| `generator-maven-plugin-test/` | test | Unit and integration tests for Maven plugin |
+| `generator-engine/` | bundle (OSGi) | Core generation engine: reads PSM models + YAML descriptors, evaluates SpEL expressions, renders Handlebars templates. Supports parallel generation and checksum-based change tracking. |
+| `generator-maven-plugin/` | maven-plugin | Maven goals: `generate`, `reset-checksum`, `clean`, `calculate-checksum`, `synchronize-gitignore`. Wraps generator-engine for build integration. |
+| `generator-maven-plugin-test/` | jar | Integration tests for Maven plugin goal execution |
 
-### Designer/UI Layer
-
-| Module | Type | Purpose |
-|--------|------|---------|
-| `designer/` | eclipse-plugin | Sirius-based visual editor for ESM models |
-| `designer-eclipse-runtime/` | eclipse-plugin | Eclipse platform integration |
-| `designer-defaultmodelfactory/` | eclipse-plugin | Default model factory |
-| `designer-templatemodel-*` | eclipse-plugin | Template model configurations |
-| `designer-wizard/` | eclipse-plugin | Model creation wizard |
-
-### Distribution Layer
+### OSGi & Eclipse Distribution
 
 | Module | Type | Purpose |
 |--------|------|---------|
-| `feature/` | eclipse-feature | Bundles model and plugins |
-| `designer-feature/` | eclipse-feature | Designer UI feature |
-| `site/` | eclipse-repository | P2 update site for Eclipse distribution |
-
-## PSM Metamodel Structure
-
-The core metamodel (`model/model/psm.ecore`) defines these packages:
-
-| Package | Purpose |
-|---------|---------|
-| `namespace` | Core namespace, packages, named elements |
-| `type` | Primitive types, custom types, enumerations |
-| `structure` | Data structure definitions |
-| `operation` | Operations and behaviors |
-| `accesspoint` | Access points and actor types |
-| `measure` | Measurement definitions |
-| `ui` | UI-related definitions |
-| `expression` | Expression support |
-| `script` | Script support |
-
-**Validation Rules:** 
-- **EVL (Epsilon):** Located in `model/src/main/epsilon/validations/` using Epsilon Validation Language
-- **Java Validation Framework:** Located in `model/src/main/java/hu/blackbelt/judo/meta/esm/validation/` - Native Java alternative with better IDE support, debugging, and performance
+| `osgi/` | bundle | Repackages the model as an OSGi bundle with `PsmModelBundleTracker` for automatic model discovery and service registration in Karaf |
+| `osgi-itest/` | jar | Pax Exam integration tests validating OSGi bundle lifecycle and service registration |
+| `feature/` | eclipse-feature | Eclipse feature packaging for P2 installation |
+| `site/` | eclipse-repository | Eclipse P2 update site with version-specific URLs |
 
 ## Technology Stack
 
 ### Core Technologies
-- **Eclipse Modeling Framework (EMF)** 2.38.0+ - Metamodel foundation
-- **Ecore** - Model definition language
-- **MWE2** (Model Workflow Engine) 2.13.0 - Code generation workflows
-- **Epsilon** 2.8.0 - Model validation and transformation
-- **Tycho** 4.0.13 - Eclipse plugin build
-
-### Generator Technologies
-- **Handlebars** 4.4.0 - Template engine
-- **Spring Expression Language (SpEL)** - Expression evaluation
-- **Jackson** 2.17.2 - YAML/JSON parsing
-
-### Runtime
-- **Apache Karaf** 4.4.7 - OSGi container
-- **Apache Felix** 6.0.0 - OSGi bundle plugin
-- **Pax Exam** 4.13.5 - OSGi testing
+- **Eclipse EMF 2.21+** — Metamodel framework (Ecore, GenModel, ResourceSet)
+- **Epsilon 2.8.0** — Model validation (EVL) and transformation runtime
+- **Handlebars 4.1.2** — Template engine for code generation
+- **Spring Expression Language 6.2.7** — Expression evaluation in YAML descriptors and templates
+- **Jackson 2.17.2** — YAML/JSON parsing for project descriptors
+- **MWE2** — Modeling Workflow Engine for EMF code generation pipeline
 
 ### Build & Quality
-- **Maven** 3.9.4+ with wrapper
-- **JaCoCo** 0.8.12 - Code coverage
-- **SonarQube** 3.9.1 - Code quality
-- **Lombok** 1.18.34 - Annotation processing
+- **Maven 3.9.4** via wrapper (`./mvnw`)
+- **Tycho 4.0.13** — Eclipse plugin/OSGi build integration
+- **JUnit 5** (Jupiter) — Unit testing
+- **AssertJ** — Fluent assertions
+- **Pax Exam** — OSGi container integration testing
+- **JaCoCo** — Code coverage
+- **SLF4J 2.0.16 + Logback 1.5.12** — Logging
 
 ## Build Commands
 
+All builds use the Maven wrapper. Java 21 is required.
+
 ```bash
-# Standard build
-mvn clean install
-# or with wrapper
+# Full build
 ./mvnw clean install
 
-# Memory requirements (configured in .mvn/jvm.config)
-# -Xms1024m -Xmx2048m
+# Run all tests
+./mvnw clean test
+
+# Build a specific module
+./mvnw -f model/pom.xml clean install
+./mvnw -f generator-engine/pom.xml clean install
+
+# Run a specific test class
+./mvnw test -Dtest=PsmValidationDataTest
+
+# Run a specific test method
+./mvnw test -Dtest=PsmValidationDataTest#testMethodName
+
+# Skip tests
+./mvnw clean install -DskipTests
+
+# Regenerate EMF model code from Ecore
+./mvnw -f model/pom.xml clean generate-sources
+
+# Update Eclipse site category versions
+mvn clean install -P update-category-versions -f site/pom.xml
 ```
 
 ### Maven Profiles
 
 | Profile | Purpose |
 |---------|---------|
-| `modules` | Includes all 17 submodules (default) |
-| `sign-artifacts` | GPG signing for release |
-| `release-central` | Maven Central deployment |
-| `release-judong` | Internal Judo repository |
-| `update-target-versions` | Version substitution in target definitions |
-| `update-category-versions` | Version substitution in P2 site |
-
-## Code Generation Flow
-
-1. **MWE2 Workflow** (`model/src/workflow/generateModel.mwe2`)
-   - Generates EMF code from `esm.ecore`
-   - Produces GenModel-based Java classes
-   - Generates builders and helpers
-
-2. **Model Compilation**
-   - Tycho compiles eclipse-plugin modules
-   - OSGi bundle compilation with Felix
-
-3. **Generator Engine**
-   - Copies Epsilon scripts to `tatami/psm2project`
-   - Maven plugin descriptor generation
-
-4. **Feature/Site Building**
-   - P2 metadata generation
-   - Feature packaging
-   - Update site assembly
+| `modules` | Activates all submodules (default, activates when `!skipModules`) |
+| `sign-artifacts` | Sign JARs with GPG for release distribution |
+| `release-dummy` | Dummy distribution repository for local testing |
+| `release-judong` | Deploy to JUDO Nexus repository |
+| `release-central` | Deploy to Maven Central (OSSRH) |
+| `generate-github-asciidoc-diagrams` | Generate diagram images for GitHub documentation |
+| `update-source-code-license` | Update license headers in source files |
 
 ## Key Configuration Files
 
 | File | Purpose |
 |------|---------|
-| `pom.xml` | Parent POM with module definitions and plugin management |
-| `.mvn/jvm.config` | JVM arguments for Maven build |
-| `.mvn/extensions.xml` | Maven extensions |
-| `model/model/psm.ecore` | Core metamodel definition |
-| `model/model/psm.genmodel` | EMF code generation model |
+| `pom.xml` | Root POM: version management (`${revision}`), dependency versions, build plugins, profiles |
+| `.mvn/wrapper/maven-wrapper.properties` | Maven 3.9.4 wrapper configuration |
+| `model/model/psm.ecore` | Ecore metamodel definition — source of truth for all PSM concepts |
+| `model/model/psm.genmodel` | EMF GenModel controlling Java code generation from Ecore |
+| `model/src/workflow/generateModel.mwe2` | MWE2 workflow: EcoreGenerator → HelperGenerator → BuilderGenerator → RuntimeModelGenerator |
+| `model/src/main/epsilon/validations/psm.evl` | Root Epsilon validation file importing all domain validators |
+| `logback-test.xml` | Shared test logging configuration |
+| `.github/workflows/build.yml` | Main CI pipeline (build, test, deploy) |
+| `.github/workflows/release.yml` | Manual release pipeline |
 
 ## Development Environment
 
 **Required:**
-- Java 21 JDK
-- Maven 3.9.4+
-- Eclipse IDE with:
-  - m2e (Maven integration)
-  - Epsilon plugin
-  - Modeling tools
-  - Sirius (for designer)
-  - Xtext/Xtend plugins
+- Java 21 JDK (OpenJDK Zulu recommended)
+- Maven 3.9.4+ (or use `./mvnw`)
+
+**For Eclipse IDE work:**
+- m2e plugin
+- Epsilon plugin
+- Eclipse Modeling Tools
+
+**Verify setup:**
+```bash
+java -version    # Must be 21
+./mvnw --version # Must be 3.9.4+
+```
 
 ## Git Workflow
 
 - **Main Branch:** `develop`
-- **Versioning:** SNAPSHOT-based development (currently 1.2.0-SNAPSHOT)
-- **Version Placeholder:** `$VERSION_PLACEHOLDER$` in model metadata
-- **Release Process:** CI/CD via Wercker with Maven Central and P2 deployment
+- **Release Branch:** `master` (latest stable release)
+- **Versioning:** `1.3.0-SNAPSHOT` (Maven) / `1.3.0.qualifier` (Eclipse) — kept in sync by Tycho
+- **Branching Model:** GitFlow — `feature/JNG-xxx`, `release/X.Y.Z`, `bugfix/JNG-xxx`, `support/JNG-xxx`, `hotfix/JNG-xxx`
+- **Commit Convention:** Every commit must reference a JIRA ticket (`JNG-xxxx`)
 
 ## Important Notes
 
-1. **Understand EMF/Ecore patterns** before modifying model code
-2. **Respect Tycho build constraints** when modifying Eclipse plugins
-3. **Validation rules** - Two implementations available:
-   - **EVL (Epsilon):** Located in `model/src/main/epsilon/validations/`
-   - **Java Validation Framework:** Located in `osgi/src/main/java/hu/blackbelt/judo/meta/psm/validation/`
-   - See `docs/validation/java-validation-framework.md` for Java framework documentation
-4. **Generator templates use Handlebars** - Located in generator-engine module
-5. **Use OpenSpec for significant changes** - See `openspec/AGENTS.md` for proposal workflow
+1. **Generated code in `model/src-gen/`** is produced by MWE2 and should never be edited manually. Regenerate with `./mvnw -f model/pom.xml clean generate-sources`.
+2. **Validation rules are written in Epsilon (`.evl` files)**, not Java. The entry point is `psm.evl` which imports domain-specific validators from subdirectories.
+3. **No Lombok in Eclipse modules** — Tycho does not support Lombok. All model code is EMF-generated.
+4. **Dual versioning system** — Maven SNAPSHOT and Eclipse qualifier versions are equivalent (`1.0.0-SNAPSHOT` = `1.0.0.qualifier`). Tycho replaces qualifiers with timestamps on CI.
+5. **FQN format uses `::` as namespace separator** — e.g., `Model::Package::EntityType`, with `.` for features: `Model::Package::Entity.attributeName`.
+6. **Template override system** — Generator templates support layered overrides via multiple URIs, with `exclude`, `replace`, and `decorator` (`.override.hbs`) mechanisms.
+7. **OSGi bundle tracking** — The `osgi` module uses `Psm-Models` manifest header to auto-discover and register PSM models as OSGi services.
+8. **Test models are built programmatically** — Model tests construct PSM models in Java using EMF builders, then validate with Epsilon. The Northwind model serves as a comprehensive reference.
 
 ## Related Documentation
 
-- `README.adoc` - Project overview
-- `AGENTS.md` - Detailed project documentation for AI assistants
-- `openspec/AGENTS.md` - OpenSpec workflow for spec-driven development
-- `openspec/project.md` - Project conventions for OpenSpec
-- `docs/validation/README.md` - Validation rules overview
-- `docs/validation/java-validation-framework.md` - PSM-specific Java validation documentation
-- `docs/zeta/` - Complete Zeta validation framework documentation (getting started, user guide, examples, reference)
+- [README](README.md) — Project overview and ecosystem context
+- [Contributing Guide](CONTRIBUTING.md) — Development setup, branching, and submission guidelines
+- [CI Flow](.github/CIFLOW.md) — GitHub Actions pipeline documentation
+- [Generator Plugin](generator-maven-plugin/README.md) — Maven plugin configuration and template system
+- [Model Operations](model/README.md) — PSM operation behaviour reference

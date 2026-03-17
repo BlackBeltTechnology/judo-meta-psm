@@ -1,136 +1,206 @@
 # Contributing to JUDO
 
-## Installing the correct versions of Java, Maven and necessary dependencies
+This guide covers everything you need to set up a development environment, understand the project structure, and submit changes to judo-meta-psm.
 
-Please make sure your development environment complies with the requirements discussed under the relevant section of the parent
-project's [CONTRIBUTING](https://github.com/BlackBeltTechnology/judo-community/blob/develop/CONTRIBUTING.adoc) guide.
+## Development Environment Setup
+
+### Prerequisites
+
+Your development environment must comply with the requirements in the parent project's [Contributing Guide](https://github.com/BlackBeltTechnology/judo-community/blob/develop/CONTRIBUTING.adoc). In summary:
+
+- **Java 21** JDK (OpenJDK Zulu recommended)
+- **Maven 3.9.4+** (or use the included `./mvnw` wrapper)
+
+### Verify Your Setup
+
+```bash
+java -version    # Should show Java 21
+./mvnw --version # Should show Maven 3.9.4+
+```
 
 ## Code Structure
 
-This project follows a standard Java project structure, governed by Maven, with potential Maven submodules.
+This project follows standard Maven conventions with additional Eclipse/OSGi tooling via Tycho. Modules are grouped into three categories:
 
-**Eclipse-related submodules:**
+### Eclipse Modules
 
-* `/feature`: Eclipse feature repository - allows us to use this as a feature for eclipse installation
-* `/site`: Eclipse Update Site - all built versions are compiled as an update site.
-The site definition contains the required referenced repositories required by plugins.
-* `/targetdefinition`: Eclipse target definition defines the P2 repositories for all the required MANIFEST features.
+| Module | Purpose |
+|--------|---------|
+| `feature/` | Eclipse feature definition — packages the model plugin for Eclipse installation |
+| `site/` | Eclipse P2 Update Site — built versions are compiled as update sites with version-specific URLs |
 
-The Judo update sites are based on versions, therefore all versions have their own update sites. This results in versions
-being coded in the URL. The category definition in tycho is loaded as an extension, because there is no way to replace
-the version numbers before tycho is activated.
+> **Note:** Update site URLs encode version numbers. Because Tycho loads the category definition before Maven can substitute properties, a special Maven profile handles version replacement:
+>
+> ```bash
+> mvn clean install -P update-category-versions -f site/pom.xml
+> ```
 
-For this reason, a profile is created which can replace the versions with the dependency versions defined in the parent.
+### Model Modules
 
-The following command can be used to update the versions:
+| Module | Purpose |
+|--------|---------|
+| `model/` | Eclipse plugin containing the Ecore metamodel and EMF-generated Java classes. Builders and helpers are generated via MWE2 workflow. |
+| `model-test/` | Unit tests for PSM model validation using Epsilon validators |
+| `northwind-model/` | Reference test model based on the classic Northwind database schema |
 
+### OSGi Modules
+
+| Module | Purpose |
+|--------|---------|
+| `osgi/` | OSGi bundle that repackages the model and adds services for consumption in transformation pipelines on non-Eclipse platforms |
+| `osgi-itest/` | Integration tests for the OSGi bundle using Pax Exam |
+
+### Code Generation Modules
+
+| Module | Purpose |
+|--------|---------|
+| `generator-engine/` | Core generation engine using Handlebars templates, SpringEL expressions, and YAML descriptors |
+| `generator-maven-plugin/` | Maven plugin that wraps the generator engine for use in downstream project builds |
+| `generator-maven-plugin-test/` | Integration tests for the Maven plugin |
+
+### Module Dependency Flow
+
+```mermaid
+graph LR
+    subgraph "Core"
+        model["model<br/>(Ecore + EMF)"]
+    end
+    subgraph "Testing"
+        northwind["northwind-model"]
+        modeltest["model-test"]
+    end
+    subgraph "Generation"
+        geneng["generator-engine"]
+        genmvn["generator-maven-plugin"]
+        genmvntest["generator-maven-plugin-test"]
+    end
+    subgraph "OSGi/Eclipse"
+        osgi["osgi"]
+        osgitest["osgi-itest"]
+        feature["feature"]
+        site["site"]
+    end
+
+    model --> geneng
+    model --> osgi
+    model --> modeltest
+    northwind --> modeltest
+    geneng --> genmvn
+    genmvn --> genmvntest
+    osgi --> osgitest
+    osgi --> feature
+    feature --> site
 ```
-mvn clean install -P update-category-versions -f site/pom.xml
-```
-
-**Model modules:**
-
-* `/model`: Eclipse plugin. It contains the model and ecore generated java classes. Builder and Helpers added with MWE2 workflow.
-* `/model-test`: Module containing model tests
-* `/northwind-model`: Actual test model based on the commonly used Northwind database model
-
-**OSGI wrapper:**
-
-* `/osgi`: OSGi bundle. It repackages the model and adds extra information / services for consumers to be able to use
-it in transformation pipelines in other platforms.
-* `/osgi-itest`: Wrapper module tests
 
 ## Working with Eclipse
 
-### Plugin requirements
+### Required Eclipse Plugins
 
-- m2e
-- epsilon
-- modeling tools
+- **m2e** — Maven integration
+- **Epsilon** — Model validation language support
+- **Modeling Tools** — EMF/Ecore editors
 
 ### Installation
 
-In Eclipse, we can install the plugin via P2 sites.
+Install the PSM plugin via P2 update sites: go to *Install New Software* and add the URL from the GitHub releases page (or point to an uncompressed ZIP folder). The plugin includes the metamodel and default editor UI.
 
-Go to "Install new software" and add the URL of the site listed on github or the uncompressed ZIP folder. The plugin
-contains the metamodel and UI provided for the default editor.
+### Code Generation in Eclipse
 
-### Code generation in eclipse
+To run code generation inside Eclipse, use the MWE2 Launcher:
 
-To run code generation inside eclipse, run as MWE2 Workflow:
-    hu.blackbelt.judo.meta.psm.model project src/workflow/generateModel.mwe2
+1. Navigate to `hu.blackbelt.judo.meta.psm.model` project
+2. Right-click `src/workflow/generateModel.mwe2`
+3. Run As → MWE2 Workflow
+
+### Build Lifecycle
+
+```mermaid
+flowchart LR
+    subgraph "model/ build phases"
+        gensrc["generate-sources<br/>(MWE2 → EMF code)"]
+        compile["compile<br/>(Java 21)"]
+        test["test<br/>(JUnit 5)"]
+        pkg["package<br/>(eclipse-plugin)"]
+    end
+    gensrc --> compile --> test --> pkg
+
+    subgraph "generator-engine/ build phases"
+        compile2["compile"] --> test2["test"] --> pkg2["package<br/>(OSGi bundle)"]
+    end
+```
 
 ## Troubleshooting
 
-### Running JUnit tests in Eclipse
+### JUnit Tests in Eclipse
 
-There is a problem with Eclipse and Tycho. The classpath does not contain JUnit.
+There is a known issue with Eclipse and Tycho where the classpath does not include JUnit automatically. A `Required-Bundle` entry has been added to the OSGi Manifest as a workaround (not the Tycho-recommended approach).
 
-```
-<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-```
+See: [Eclipse Bug 534587](https://bugs.eclipse.org/bugs/show_bug.cgi?id=534587)
 
-Now a `Required-Bundle` has been added to the OSGi Manifest which is not the Tycho recommended way.
+### Lombok Incompatibility
 
-https://bugs.eclipse.org/bugs/show_bug.cgi?id=534587
-
-### Problems with Lombok
-
-Tycho does not support Lombok generation directly as mentioned in https://github.com/rzwitserloot/lombok/issues/285.
-This will be fixed in a later version. No lombok is used in the eclipse projects, every source code file is generated.
+Tycho does not support Lombok code generation directly ([lombok#285](https://github.com/rzwitserloot/lombok/issues/285)). **No Lombok is used in Eclipse plugin modules** — all source code in `model/` is EMF-generated.
 
 ## Version Policy
 
-Two worlds collide in this project. Maven and Eclipse have a different view about versions. While Maven is using `SNAPSHOT`
-versions, Eclipse is using `.quialifier` in the qualifier part of semantic version.
+This project bridges two versioning conventions:
 
-Which means that: `1.0.0.qualifier` is the equivalent of Maven's `1.0.0-SNAPSHOT` notation.
+| Convention | Format | Example |
+|-----------|--------|---------|
+| **Maven** | `MAJOR.MINOR.PATCH-SNAPSHOT` | `1.3.0-SNAPSHOT` |
+| **Eclipse/OSGi** | `MAJOR.MINOR.PATCH.qualifier` | `1.3.0.qualifier` |
 
-To address this, the Tycho Versions Plugin is used to replace the qualifier and Maven versions for a technical version
-number in every build.
+These are equivalent: `1.0.0.qualifier` = `1.0.0-SNAPSHOT`. The Tycho Versions Plugin replaces qualifiers with a technical version number (timestamp + commit hash) in every CI build.
 
 ## Submission Guidelines
 
 ### Submitting an Issue
 
-Before you submit an issue, please search the issue tracker. An issue for your problem may already exist and has been
-resolved, or the discussion might inform you of workarounds readily available.
+Before submitting, search the [issue tracker](https://github.com/BlackBeltTechnology/judo-meta-psm/issues) — your problem may already be resolved.
 
-We want to fix all the issues as soon as possible, but before fixing a bug we need to reproduce and confirm it. Having a
-reproducible scenario gives us wealth of important information without going back and forth with you requiring
-additional information, such as:
+To help us reproduce and fix bugs quickly, please provide:
 
-- the output of `java -version`, `mvn -version`
-- `pom.xml` or `.flattened-pom.xml` (when applicable)
-- and most importantly - a use-case that fails
+- Output of `java -version` and `mvn -version`
+- Relevant `pom.xml` or `.flattened-pom.xml`
+- A minimal reproduction case
 
-A minimal reproduction allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are
-fixing the right problem.
+### Submitting a Pull Request
 
-We will be insisting on a minimal reproduction in order to save maintainers' time and ultimately be able to fix more
-bugs. We understand that sometimes it might be hard to extract essentials bits of code from a larger codebase, but we
-really need to isolate the problem before we can fix it.
+This project follows [GitHub's standard forking model](https://guides.github.com/activities/forking/). Fork the repository, make your changes, and submit a pull request.
 
-You can file new issues by filling out our [issue form](https://github.com/BlackBeltTechnology/judo-meta-psm/issues/new/choose).
+> **Important:** Every commit must reference a JIRA ticket number (e.g., `JNG-1234`).
 
-### Submitting a PR
-
-This project follows [GitHub's standard forking model](https://guides.github.com/activities/forking/). Please fork the
-project to submit pull requests.
-
-About the working Continous Integration pipeline, please read the corresponding [CI Flow](.github/CIFLOW.md)
-documentation!
+For details on the CI pipeline, see the [CI Flow documentation](.github/CIFLOW.md).
 
 ## Commands
 
 ### Run Tests
 
-```sh
-$ mvn clean test
+```bash
+./mvnw clean test
 ```
 
-### Run Full build
+### Run Full Build
 
-```sh
-$ mvn clean install
+```bash
+./mvnw clean install
+```
+
+### Run a Specific Test
+
+```bash
+./mvnw test -Dtest=PsmValidationDataTest
+./mvnw test -Dtest=PsmValidationDataTest#testMethodName
+```
+
+### Skip Tests
+
+```bash
+./mvnw clean install -DskipTests
+```
+
+### Regenerate EMF Model Code
+
+```bash
+./mvnw -f model/pom.xml clean generate-sources
 ```
