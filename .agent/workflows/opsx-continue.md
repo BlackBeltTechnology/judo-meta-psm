@@ -38,7 +38,7 @@ Continue working on a change by creating the next artifact.
    **If all artifacts are complete (`isComplete: true`)**:
    - Congratulate the user
    - Show final status including the schema used
-   - Suggest: "All artifacts created! You can now implement this change with `/opsx:apply` or archive it with `/opsx:archive`."
+   - Suggest: "All artifacts created! You can now implement this change or archive it."
    - STOP
 
    ---
@@ -93,7 +93,7 @@ Common artifact patterns:
 **spec-driven schema** (proposal → specs → design → tasks):
 - **proposal.md**: Ask user about the change if not clear. Fill in Why, What Changes, Capabilities, Impact.
   - The Capabilities section is critical - each capability listed will need a spec file.
-- **specs/<capability>/spec.md**: Create one spec per capability listed in the proposal's Capabilities section (use the capability name, not the change name).
+- **specs/*.md**: Create one spec per capability listed in the proposal.
 - **design.md**: Document technical decisions, architecture, and implementation approach.
 - **tasks.md**: Break down implementation into checkboxed tasks.
 
