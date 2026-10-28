@@ -1,0 +1,10 @@
+# AGENTS.md — `generator-maven-plugin/src/main/java/hu/blackbelt/judo/meta/psm/generator/maven/plugin`
+
+| File | Purpose |
+|---|---|
+| `AbstractPsmProjectMojo.java` | Base mojo of every `judo-psm-generator` goal. Declares shared `@Parameter`s `psm`, `destination`, `modelName`, `actors`; `execute()` rebuilds the thread context classloader from project compile classpath + `PluginDescriptor` realm, then builds a `PsmGeneratorParameter` and delegates to abstract `performExecutionOnPsmParameters`. → see `AbstractPsmProjectMojo.java.AGENTS.md` |
+| `PsmProjectCalculateChecksumMojo.java` | Goal `checksum`, phase `generate-resources`, calls `PsmGenerator.recalculateChecksumForDirectory`. Rewrites the checksum ledger of already-generated files so a later `generate` accepts them as unmodified; running it after hand-editing generated output silently blesses those edits. |
+| `PsmProjectCleanMojo.java` | Goal `clean`, phase `clean`, calls `PsmGenerator.cleanGeneratedFromChecksumInDirectory`. Deletes only files whose recorded checksum still matches, so hand-modified generated files survive; a preceding `checksum` run makes them deletable. |
+| `PsmProjectGenerateMojo.java` | Goal `generate`, phase `generate-resources`. Resolves template `uris`, `helpers` and `contextAccessor` classes, merges template variables by `variablePrecedence`, then calls `PsmGenerator.generateToDirectory`. → see `PsmProjectGenerateMojo.java.AGENTS.md` |
+| `PsmProjectResetChecksumMojo.java` | Goal `resetChecksum`, phase `clean`, calls `PsmGenerator.resetChecksumsInDirectory`. Drops recorded checksums so `generate` overwrites every file unconditionally; pending hand edits in the destination are lost on the next generate. |
+| `PsmProjectSynchronizeGitignoreMojo.java` | Goal `synchronizeGitignore`, phase `process-resources`. Passes `@Parameter ignoredFiles` (default empty) to `PsmGenerator.synchronizeGitignoreInDirectory`, which rewrites `.gitignore` under `destination` from the generated-file set plus those extra entries. |
