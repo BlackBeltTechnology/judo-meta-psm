@@ -125,7 +125,7 @@ mvn clean install -P update-category-versions -f site/pom.xml
 ## Technology stack
 
 - **Eclipse EMF 2.21+** — Ecore, GenModel, ResourceSet
-- **Epsilon 2.8.0** — EVL validation and transformation runtime
+- **Epsilon 2.8.0** — EVL validation and transformation runtime; `model` declares `epsilon-runtime-execution` `provided` (optional, only `PsmEpsilonValidator` needs it; callers declare Epsilon themselves, not transitive). See change: split-etl-artifacts.
 - **MWE2** — code generation pipeline (EcoreGenerator → HelperGenerator → BuilderGenerator → RuntimeModelGenerator)
 - **Handlebars 4.1.2** — template engine
 - **Spring Expression Language 6.2.7** — expression evaluation in YAML descriptors and templates

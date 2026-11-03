@@ -194,6 +194,8 @@
         <dependency>
             <groupId>hu.blackbelt.epsilon</groupId>
             <artifactId>epsilon-runtime-execution</artifactId>
+            <!-- Optional: only the *EpsilonValidator (Eclipse / ETL add-ons) needs it; callers declare it. split-etl-artifacts -->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
