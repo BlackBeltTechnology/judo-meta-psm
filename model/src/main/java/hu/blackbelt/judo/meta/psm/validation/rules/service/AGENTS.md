@@ -1,0 +1,18 @@
+# AGENTS.md — `model/src/main/java/hu/blackbelt/judo/meta/psm/validation/rules/service`
+
+Validation rules for PSM service operations, transfer object types, bindings, parameters, and operation behaviours.
+
+| File | Purpose |
+| --- | --- |
+| `BoundBehaviourValidations.java` | Validates `TransferOperationBehaviour` configurations. Exports `ownerOfBoundBehaviourIsRelation()`, `ownerOfBoundBehaviourIsValid()`, `createTargetIsNotAbstract()`. Restricts relation-bound behaviours to valid relations and ensures creation target entity types are concrete. |
+| `BoundOperationValidations.java` | Validates `BoundTransferOperation` instances. Exports `ownerIsMappedTransferObjectType()`. Rejects operations contained within any element other than `MappedTransferObjectType`. |
+| `GetPrincipalBehaviourValidations.java` | Validates `GET_PRINCIPAL` operation behaviours; exports `operationOfGetPrincipalBehaviourIsValid()` plus owner/relation/input/output name and cardinality rules (1..1 output). → see `GetPrincipalBehaviourValidations.java.AGENTS.md` |
+| `GetRangeBehaviourValidations.java` | Validates `GET_RANGE` operation behaviours. Exports `ownerIsRelationOrOperationUnboundBehaviourGetRange()`, `ownerIsValidGetRangeBehaviour()`, `getRangeBehaviourInputParameterIsDefined()`, `getRangeBehaviourInputNameIsValid()`, `getRangeBehaviourInputCardinalityIsValid()`. Requires relation or unbound operation ownership and verifies single input parameter presence and cardinality. |
+| `GetTemplateBehaviourValidations.java` | Validates `GET_TEMPLATE` operation behaviours. Exports `operationOfGetTemplateBehaviourIsValid()`, `ownerOfGetTemplateBehaviourIsValid()`, `relationOfGetTemplateBehaviourIsUndefined()`. Enforces ownership by unbound operations on transfer object types without relation bindings. |
+| `InvariantConstraintValidations.java` | Validates `InvariantConstraint` within entity hierarchies. Exports `inheritedAndOwnInvariantConstraintNameIsUniqueInEntityType()`. Flags duplicate constraint names across inherited entity type superclasses. |
+| `MappedTransferObjectTypeValidations.java` | Validation context registration for `MappedTransferObjectType`. Declares `@ValidationContext(MappedTransferObjectType.class)` binding for Zeta rule discovery. |
+| `ParameterValidations.java` | Validates `Parameter` configurations on transfer operations. Exports `faultCardinalityIsValid()`. Enforces exact 1..1 cardinality bounds on fault parameters. |
+| `TransferAttributeValidations.java` | Validates `TransferAttribute` bindings. Exports `dataTypeMatchesBindingDataType()`, `requiredFlagMatchesBindingRequiredFlag()`, `transferAttributeBindingIsValid()`. Enforces strict type and nullability parity between transfer attribute and its bound entity property. |
+| `TransferObjectRelationValidations.java` | Validates `TransferObjectRelation` definitions. Exports `targetMatchesBindingTarget()`, `cardinalityMatchesBindingCardinality()`, `transferObjectRelationIsEmbedded()`, `transferObjectRelationBindingIsValid()`, `embeddedOnBothSidesAreNotAllowed()`. Verifies relation endpoint consistency with model association ends and prohibits mutual embedding. |
+| `TransferObjectTypeValidations.java` | Validates `TransferObjectType` uniqueness across the model. Exports `transferObjectTypeNamesAreUnique()`. Emits WARNING critique on case-insensitive duplicate transfer object type names. |
+| `UnboundOperationValidations.java` | Validates `UnboundOperation` contracts. Exports `behaviourOrImplementationIsRequired()`, `initOperationCannotHaveInput()`. Requires either behaviour or implementation and rejects input parameters on initializer operations. |
