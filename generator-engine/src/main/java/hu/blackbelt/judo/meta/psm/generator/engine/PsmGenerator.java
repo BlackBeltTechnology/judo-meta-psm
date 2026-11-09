@@ -111,6 +111,13 @@ public class PsmGenerator {
     }
 
     private static GeneratorResult<ActorType> execute(PsmModel psmModel, GeneratorParameter<ActorType> parameter, Logger log) throws InterruptedException, ExecutionException {
+        // Template helpers memoize model-wide indexes per generation run (see ModelCache); the scope ends with the run.
+        try (ModelCache.Handle ignored = ModelCache.open(psmModel.getResourceSet())) {
+            return executeInCacheScope(psmModel, parameter, log);
+        }
+    }
+
+    private static GeneratorResult<ActorType> executeInCacheScope(PsmModel psmModel, GeneratorParameter<ActorType> parameter, Logger log) throws InterruptedException, ExecutionException {
         GeneratorResult<ActorType> result = GeneratorResult.<ActorType>generatorResult().build();
 
         PsmModelResourceSupport modelResourceSupport = PsmModelResourceSupport.psmModelResourceSupportBuilder()
