@@ -202,7 +202,8 @@ public class TransferObjectRelationValidations {
         boolean hasCircular = self.getTarget().getRelations().stream()
                 .anyMatch(r -> r.isEmbedded()
                         && r.getBinding() != null
-                        && r.getBinding() == bindingAssoc.getPartner());
+                        && r.getBinding() == bindingAssoc.getPartner()
+                        && r.getTarget() == self.eContainer());
 
         if (hasCircular) {
             return ValidationResult.fail(
