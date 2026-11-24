@@ -26,6 +26,10 @@ import hu.blackbelt.judo.meta.psm.data.AssociationEnd;
 import hu.blackbelt.judo.meta.psm.data.EntityType;
 import hu.blackbelt.judo.meta.psm.namespace.Model;
 import hu.blackbelt.judo.meta.psm.runtime.PsmModel;
+import hu.blackbelt.judo.meta.psm.service.MappedTransferObjectType;
+import hu.blackbelt.judo.meta.psm.service.TransferObjectRelation;
+import hu.blackbelt.judo.meta.psm.type.Cardinality;
+import hu.blackbelt.model.northwind.Demo;
 import hu.blackbelt.judo.meta.psm.type.NumericType;
 import hu.blackbelt.judo.meta.psm.type.StringType;
 import hu.blackbelt.judo.meta.psm.validation.PsmValidator;
@@ -39,6 +43,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -47,6 +53,7 @@ import java.util.stream.Stream;
 import static hu.blackbelt.judo.meta.psm.data.util.builder.DataBuilders.*;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newModelBuilder;
 import static hu.blackbelt.judo.meta.psm.namespace.util.builder.NamespaceBuilders.newPackageBuilder;
+import static hu.blackbelt.judo.meta.psm.service.util.builder.ServiceBuilders.*;
 import static hu.blackbelt.judo.meta.psm.type.util.builder.TypeBuilders.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -383,5 +390,217 @@ class PsmValidationParameterizedTest {
                     String.format("Constraint '%s' inconsistency: EVL=%s, Java=%s",
                             expectedConstraint, evlHas, javaHas));
         }
+    }
+
+    // ------------------------------------------------------------------------------------------------
+    // EmbeddedOnBothSidesAreNotAllowed: only a real cycle (reverse relation targets the container) is reported.
+    // See change: yaml-pipeline-adoption-blockers (D5)
+    // ------------------------------------------------------------------------------------------------
+
+    private static final String EMBEDDED_CYCLE = "EmbeddedOnBothSidesAreNotAllowed";
+
+    private static Cardinality manyCardinality() {
+        return newCardinalityBuilder().withLower(0).withUpper(-1).build();
+    }
+
+    private static AssociationEnd end(String name, EntityType target) {
+        return newAssociationEndBuilder().withName(name).withTarget(target).withCardinality(manyCardinality()).build();
+    }
+
+    private static void pair(AssociationEnd a, EntityType ownerOfA, AssociationEnd b, EntityType ownerOfB) {
+        ownerOfA.getRelations().add(a);
+        ownerOfB.getRelations().add(b);
+        a.setPartner(b);
+        b.setPartner(a);
+    }
+
+    private static TransferObjectRelation relation(String name, MappedTransferObjectType owner,
+                                                   MappedTransferObjectType target, AssociationEnd binding,
+                                                   boolean embedded) {
+        TransferObjectRelation r = newTransferObjectRelationBuilder().withName(name)
+                .withTarget(target).withEmbedded(embedded).withBinding(binding).withCardinality(manyCardinality()).build();
+        owner.getRelations().add(r);
+        return r;
+    }
+
+    /** TP-1: T1.r1 embedded -> T2, T2.r2 embedded -> T1, bindings are partner ends. */
+    private static void twoSidedCycle(PsmModel psmModel) {
+        EntityType e1 = newEntityTypeBuilder().withName("E1").build();
+        EntityType e2 = newEntityTypeBuilder().withName("E2").build();
+        AssociationEnd end1 = end("end1", e2);
+        AssociationEnd end2 = end("end2", e1);
+        pair(end1, e1, end2, e2);
+        MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1").withEntityType(e1).build();
+        MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("T2").withEntityType(e2).build();
+        relation("r1", t1, t2, end1, true);
+        relation("r2", t2, t1, end2, true);
+        psmModel.addContent(newModelBuilder().withName("M").withElements(ImmutableList.of(e1, e2, t1, t2)).build());
+    }
+
+    /** TP-2: rackinspect shape, the reverse relation targets a different transfer object of the same entity. */
+    private static void rackInspectShape(PsmModel psmModel) {
+        EntityType rackType = newEntityTypeBuilder().withName("RackType").build();
+        EntityType rackElement = newEntityTypeBuilder().withName("RackElement").build();
+        AssociationEnd rackElementEnd = end("rackElement", rackElement);
+        AssociationEnd rackTypeEnd = end("rackType", rackType);
+        pair(rackElementEnd, rackType, rackTypeEnd, rackElement);
+        MappedTransferObjectType rackTypeTo = newMappedTransferObjectTypeBuilder().withName("RackTypeTO")
+                .withEntityType(rackType).build();
+        MappedTransferObjectType rackElementTo = newMappedTransferObjectTypeBuilder().withName("RackElementTO")
+                .withEntityType(rackElement).build();
+        MappedTransferObjectType rackTypeForRackElement = newMappedTransferObjectTypeBuilder()
+                .withName("RackTypeForRackElement").withEntityType(rackType).build();
+        relation("rackElement", rackTypeTo, rackElementTo, rackElementEnd, true);
+        relation("rackType", rackElementTo, rackTypeForRackElement, rackTypeEnd, true);
+        psmModel.addContent(newModelBuilder().withName("M")
+                .withElements(ImmutableList.of(rackType, rackElement, rackTypeTo, rackElementTo, rackTypeForRackElement))
+                .build());
+    }
+
+    /** TP-3: T1.r1 and T1.r2 both embedded -> T1, bound to the two ends of a self-association. */
+    private static void selfAssociationCycle(PsmModel psmModel) {
+        EntityType e1 = newEntityTypeBuilder().withName("E1").build();
+        AssociationEnd end1 = end("end1", e1);
+        AssociationEnd end2 = end("end2", e1);
+        pair(end1, e1, end2, e1);
+        MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1").withEntityType(e1).build();
+        relation("r1", t1, t1, end1, true);
+        relation("r2", t1, t1, end2, true);
+        psmModel.addContent(newModelBuilder().withName("M").withElements(ImmutableList.of(e1, t1)).build());
+    }
+
+    /** TP-4: reverse relation bound to the partner end, targeting the container, but not embedded. */
+    private static void reverseNotEmbedded(PsmModel psmModel) {
+        EntityType e1 = newEntityTypeBuilder().withName("E1").build();
+        EntityType e2 = newEntityTypeBuilder().withName("E2").build();
+        AssociationEnd end1 = end("end1", e2);
+        AssociationEnd end2 = end("end2", e1);
+        pair(end1, e1, end2, e2);
+        MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1").withEntityType(e1).build();
+        MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("T2").withEntityType(e2).build();
+        relation("r1", t1, t2, end1, true);
+        relation("r2", t2, t1, end2, false);
+        psmModel.addContent(newModelBuilder().withName("M").withElements(ImmutableList.of(e1, e2, t1, t2)).build());
+    }
+
+    /** TP-5: reverse relation embedded and targeting the container, but bound to an end of another association. */
+    private static void reverseBoundToOtherAssociation(PsmModel psmModel) {
+        EntityType e1 = newEntityTypeBuilder().withName("E1").build();
+        EntityType e2 = newEntityTypeBuilder().withName("E2").build();
+        AssociationEnd end1 = end("end1", e2);
+        AssociationEnd end2 = end("end2", e1);
+        pair(end1, e1, end2, e2);
+        AssociationEnd end3 = end("end3", e1);
+        AssociationEnd end4 = end("end4", e2);
+        pair(end3, e2, end4, e1);
+        MappedTransferObjectType t1 = newMappedTransferObjectTypeBuilder().withName("T1").withEntityType(e1).build();
+        MappedTransferObjectType t2 = newMappedTransferObjectTypeBuilder().withName("T2").withEntityType(e2).build();
+        relation("r1", t1, t2, end1, true);
+        relation("r2", t2, t1, end3, true);
+        psmModel.addContent(newModelBuilder().withName("M").withElements(ImmutableList.of(e1, e2, t1, t2)).build());
+    }
+
+    /** Scenario name, model setup, relation names expected to be reported by {@value #EMBEDDED_CYCLE}. */
+    static Stream<Arguments> embeddedCycleScenarios() {
+        List<Arguments> scenarios = Arrays.asList(
+                Arguments.of("TP-1 two-sided cycle", (Consumer<PsmModel>) PsmValidationParameterizedTest::twoSidedCycle,
+                        new TreeSet<>(Arrays.asList("r1", "r2"))),
+                Arguments.of("TP-2 rackinspect shape", (Consumer<PsmModel>) PsmValidationParameterizedTest::rackInspectShape,
+                        new TreeSet<String>()),
+                Arguments.of("TP-3 self-association cycle", (Consumer<PsmModel>) PsmValidationParameterizedTest::selfAssociationCycle,
+                        new TreeSet<>(Arrays.asList("r1", "r2"))),
+                Arguments.of("TP-4 reverse not embedded", (Consumer<PsmModel>) PsmValidationParameterizedTest::reverseNotEmbedded,
+                        new TreeSet<String>()),
+                Arguments.of("TP-5 reverse bound to another association",
+                        (Consumer<PsmModel>) PsmValidationParameterizedTest::reverseBoundToOtherAssociation,
+                        new TreeSet<String>()));
+        return scenarios.stream().flatMap(a -> Stream.of(
+                Arguments.of(a.get()[0], a.get()[1], a.get()[2], ValidationEngine.EVL),
+                Arguments.of(a.get()[0], a.get()[1], a.get()[2], ValidationEngine.JAVA)));
+    }
+
+    /** Names of the relations reported by {@value #EMBEDDED_CYCLE}, empty when none is reported. */
+    private Set<String> embeddedCycleRelations(ValidationEngine engine) {
+        Set<String> relations = new TreeSet<>();
+        if (engine == ValidationEngine.JAVA) {
+            for (ValidationResult r : PsmValidator.validate(log, psmModel)) {
+                if (EMBEDDED_CYCLE.equals(r.getConstraintName())) {
+                    relations.add(((TransferObjectRelation) r.getContext()).getName());
+                }
+            }
+            return relations;
+        }
+        try (BufferedSlf4jLogger bufferedLog = new BufferedSlf4jLogger(log)) {
+            PsmEpsilonValidator.validatePsm(bufferedLog, psmModel, PsmEpsilonValidator.calculatePsmValidationScriptURI(),
+                    Collections.emptyList(), Collections.emptyList());
+        } catch (hu.blackbelt.epsilon.runtime.execution.exceptions.EvlScriptExecutionException ex) {
+            // message format: "EmbeddedOnBothSidesAreNotAllowed|Circular aggregation found on relation: M::E2.r2"
+            for (String error : ex.getUnexpectedErrors()) {
+                if (error.startsWith(EMBEDDED_CYCLE + "|")) {
+                    relations.add(error.substring(error.lastIndexOf('.') + 1).trim());
+                }
+            }
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
+        }
+        return relations;
+    }
+
+    private void reloadThroughXmi() throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        psmModel.savePsmModel(PsmModel.SaveArguments.psmSaveArgumentsBuilder().outputStream(out).validateModel(false));
+        psmModel = PsmModel.buildPsmModel().uri(URI.createURI(MODEL_URI)).build();
+        psmModel.loadResource(PsmModel.LoadArguments.psmLoadArgumentsBuilder()
+                .inputStream(new ByteArrayInputStream(out.toByteArray())).validateModel(false));
+    }
+
+    @ParameterizedTest(name = "{0} with {3} validation")
+    @MethodSource("embeddedCycleScenarios")
+    @DisplayName("Embedded cycle rule reports only real cycles")
+    void testEmbeddedCycleRule(String scenario, Consumer<PsmModel> modelSetup, Set<String> expected,
+                               ValidationEngine engine) {
+        modelSetup.accept(psmModel);
+        assertEquals(expected, embeddedCycleRelations(engine), scenario + " / " + engine);
+    }
+
+    @ParameterizedTest(name = "{0} with {3} validation after XMI reload")
+    @MethodSource("embeddedCycleScenarios")
+    @DisplayName("Embedded cycle rule gives the same result after an XMI save/reload")
+    void testEmbeddedCycleRuleAfterXmiReload(String scenario, Consumer<PsmModel> modelSetup, Set<String> expected,
+                                             ValidationEngine engine) throws Exception {
+        modelSetup.accept(psmModel);
+        reloadThroughXmi();
+        assertEquals(expected, embeddedCycleRelations(engine), scenario + " / " + engine + " / reloaded");
+    }
+
+    @ParameterizedTest(name = "Consistency: {0}")
+    @MethodSource("embeddedCycleConsistencyScenarios")
+    @DisplayName("EVL and Java agree on the embedded cycle rule")
+    void testEmbeddedCycleRuleConsistency(String scenario, Consumer<PsmModel> modelSetup) {
+        modelSetup.accept(psmModel);
+        Set<String> evl = embeddedCycleRelations(ValidationEngine.EVL);
+        psmModel = PsmModel.buildPsmModel().uri(URI.createURI(MODEL_URI)).build();
+        modelSetup.accept(psmModel);
+        Set<String> java = embeddedCycleRelations(ValidationEngine.JAVA);
+        assertEquals(evl, java, scenario);
+    }
+
+    static Stream<Arguments> embeddedCycleConsistencyScenarios() {
+        return embeddedCycleScenarios()
+                .filter(a -> a.get()[3] == ValidationEngine.EVL)
+                .map(a -> Arguments.of(a.get()[0], a.get()[1]));
+    }
+
+    /** TP-6: Northwind has no circular aggregation, in either engine. */
+    @ParameterizedTest(name = "Northwind with {0} validation")
+    @MethodSource("engines")
+    @DisplayName("Northwind reports no embedded cycle")
+    void testNorthwindHasNoEmbeddedCycle(ValidationEngine engine) {
+        psmModel = new Demo().fullDemo();
+        assertEquals(Collections.emptySet(), embeddedCycleRelations(engine));
+    }
+
+    static Stream<ValidationEngine> engines() {
+        return Stream.of(ValidationEngine.EVL, ValidationEngine.JAVA);
     }
 }

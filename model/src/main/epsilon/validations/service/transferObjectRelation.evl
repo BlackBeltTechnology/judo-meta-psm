@@ -42,7 +42,8 @@ context PSM!TransferObjectRelation {
     		and self.embedded and self.binding.isKindOf(PSM!AssociationEnd) and self.binding.partner.isDefined()
     	check: not self.target.relations.exists(r | r.embedded
     												and r.binding.isDefined()
-    												and r.binding == self.binding.partner)
+    												and r.binding == self.binding.partner
+    												and r.target == self.eContainer())
     	message: "Circular aggregation found on relation: " + psmUtils.transferObjectRelationToString(self)
     }
 }
