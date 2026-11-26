@@ -22,7 +22,7 @@ package hu.blackbelt.judo.meta.psm.generator.engine;
 
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
-import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
+import hu.blackbelt.judo.generator.commons.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.ModelGenerator;
 import hu.blackbelt.judo.generator.commons.TemplateHelperFinder;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
