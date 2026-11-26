@@ -83,7 +83,7 @@
                     <obrRepository>NONE</obrRepository>
                     <instructions>
                         <Export-Package>
-                            hu.blackbelt.judo.psm.generator.engine.*;version=${project.version}
+                            hu.blackbelt.judo.meta.psm.generator.engine.*;version=${project.version}
                         </Export-Package>
                         <Import-Package>
                             ${osgi-default-import},
@@ -92,6 +92,68 @@
                         <Embed-Dependency>compiler</Embed-Dependency>
                     </instructions>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/EpsilonFreeManifestTest.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <!-- bundle manifest exists only after the package phase -->
+                    <execution>
+                        <id>manifest-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/EpsilonFreeManifestTest.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- The generator engine must not bring Epsilon to its consumers (compile/runtime); test scope may keep it
+                 through the Northwind model. See change: yaml-pipeline-generators (D1a). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>ban-epsilon</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <searchTransitive>true</searchTransitive>
+                                    <excludes>
+                                        <exclude>hu.blackbelt.epsilon:*:*:*:compile</exclude>
+                                        <exclude>hu.blackbelt.epsilon:*:*:*:runtime</exclude>
+                                        <exclude>org.eclipse.epsilon:*:*:*:compile</exclude>
+                                        <exclude>org.eclipse.epsilon:*:*:*:runtime</exclude>
+                                        <exclude>*:*-etl:*:*:compile</exclude>
+                                        <exclude>*:*-etl:*:*:runtime</exclude>
+                                    </excludes>
+                                    <message>Epsilon is banned from the generator engine's compile/runtime class path (yaml-pipeline-generators D1a).</message>
+                                </bannedDependencies>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
@@ -106,6 +168,7 @@
         <dependency>
             <groupId>hu.blackbelt.judo.meta</groupId>
             <artifactId>hu.blackbelt.judo.meta.psm.model.northwind</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -129,12 +192,6 @@
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>hu.blackbelt.epsilon</groupId>
-            <artifactId>epsilon-runtime-execution</artifactId>
             <scope>compile</scope>
         </dependency>
 

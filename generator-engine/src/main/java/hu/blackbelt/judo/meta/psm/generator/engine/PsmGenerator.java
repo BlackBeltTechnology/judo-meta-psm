@@ -24,7 +24,7 @@ import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.ValueResolver;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
-import hu.blackbelt.epsilon.runtime.execution.impl.BufferedSlf4jLogger;
+import hu.blackbelt.judo.generator.commons.BufferedSlf4jLogger;
 import hu.blackbelt.judo.generator.commons.*;
 import hu.blackbelt.judo.meta.psm.PsmUtils;
 import hu.blackbelt.judo.meta.psm.accesspoint.ActorType;
