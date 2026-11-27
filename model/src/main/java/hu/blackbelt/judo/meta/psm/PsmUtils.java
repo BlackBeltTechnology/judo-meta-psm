@@ -697,9 +697,25 @@ public class PsmUtils {
      * @return measure of the unit
      */
     public static Optional<Measure> getMeasure(final Unit unit) {
-        return getAllContents(unit, Measure.class)
-                .filter(m -> m.getUnits().contains(unit))
-                .findAny();
+        // Measure.units is a containment reference, so the only measure listing the unit is its container. The former
+        // code walked the whole resource set per call (half of the PSM validation time on large models, via
+        // DerivedMeasureValidations -> getAllTermMeasures). Same contract: the unit must be in a resource of a resource
+        // set, and only a measure in that resource set counts.
+        if (unit.eResource() == null) {
+            throw new IllegalStateException("No object added to resource - " + unit.eClass().toString());
+        }
+        final ResourceSet resourceSet = unit.eResource().getResourceSet();
+        if (resourceSet == null) {
+            throw new IllegalStateException("No resource in resourceset");
+        }
+        final EObject container = unit.eContainer();
+        if (container instanceof Measure
+                && ((Measure) container).getUnits().contains(unit)
+                && container.eResource() != null
+                && container.eResource().getResourceSet() == resourceSet) {
+            return Optional.of((Measure) container);
+        }
+        return Optional.empty();
     }
 
     /**
